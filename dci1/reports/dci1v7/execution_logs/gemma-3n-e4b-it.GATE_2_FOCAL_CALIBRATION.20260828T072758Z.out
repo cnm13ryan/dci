@@ -1,0 +1,7 @@
+2026-08-28T09:38:12Z [gemma-3n-e4b-it gpu1] START GATE_2_FOCAL_CALIBRATION (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/gemma-3n-e4b-it.GATE_2_FOCAL_CALIBRATION.20260828T072758Z.out
+{
+  "stage": "GATE_2_FOCAL_CALIBRATION",
+  "outcome": "PASS",
+  "record": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v7/gemma-3n-e4b-it/GATE_2_FOCAL_CALIBRATION/records/gate2_focal_calibration.json",
+  "signing_key": "present"
+}

@@ -1,0 +1,27 @@
+{
+ "artifact_type": "durability_report",
+ "comparison": {
+  "critical_diverged": [],
+  "critical_files": 149,
+  "critical_missing_from_mirror": [],
+  "durable_files": 355,
+  "evidence_files": 355,
+  "matched": true,
+  "n_critical_diverged": 0,
+  "n_critical_missing": 0
+ },
+ "durable_root": "/home/cnm13ryan/git/dci/dci1/durable_root/dci1v4r4",
+ "evidence_root": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4",
+ "manifest": "/home/cnm13ryan/git/dci/dci1/reports/dci1v4r4/evidence_manifest.json",
+ "manifest_tracked_in_git": true,
+ "off_machine_copy": false,
+ "passed": true,
+ "producing_commit": "c147efbdabd1d449a0b05672485de86d0b2fa468",
+ "restore_rehearsal": {
+  "failures": [],
+  "passed": true,
+  "rehearsed": 8
+ },
+ "roots_on_one_device": true,
+ "stated_limitation": "Both roots are local. This establishes that two filesystem copies agree and that a restore works when rehearsed; it does NOT establish off-machine durability, and no off-machine copy exists. Loss of this machine loses the raw evidence. What survives in version control is the manifest, the hashes, the producing commit and the reproduction commands, which make loss detectable and the run repeatable \u2014 not recoverable. Both roots are on ONE device, so device failure loses both copies at once."
+}

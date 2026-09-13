@@ -1,0 +1,6482 @@
+{
+ "artifact_type": "v4r3-mutation-validation",
+ "audited_kinds": [
+  "A",
+  "B",
+  "CL7",
+  "CL8",
+  "CP4",
+  "CP7",
+  "CR1",
+  "CR10",
+  "CR11",
+  "CR12",
+  "CR2",
+  "CR3",
+  "CR4",
+  "CR5",
+  "CR6",
+  "CR7",
+  "CR8",
+  "CR9",
+  "CX1",
+  "CX2",
+  "RF1",
+  "RF10",
+  "RF11",
+  "RF12",
+  "RF2",
+  "RF3",
+  "RF4",
+  "RF5",
+  "RF6",
+  "RF7",
+  "RF8",
+  "RF9"
+ ],
+ "by_defect": {
+  "denominator_swap": {
+   "families_detected": 14,
+   "families_not_applicable": 18,
+   "families_where_meaningful": 14,
+   "not_applicable_kinds": [
+    "A",
+    "B",
+    "CL7",
+    "CL8",
+    "CX1",
+    "CX2",
+    "RF1",
+    "RF10",
+    "RF11",
+    "RF12",
+    "RF2",
+    "RF3",
+    "RF4",
+    "RF5",
+    "RF6",
+    "RF7",
+    "RF8",
+    "RF9"
+   ],
+   "reasons_for_non_applicability": [
+    "count_budget compares a count and has no denominator, so there is nothing to swap",
+    "count_lower_bound compares a count and has no denominator, so there is nothing to swap",
+    "exact_count compares a count and has no denominator, so there is nothing to swap",
+    "focal_budget compares a count and has no denominator, so there is nothing to swap"
+   ],
+   "undetected_kinds": []
+  },
+  "inequality_flip": {
+   "families_detected": 32,
+   "families_not_applicable": 0,
+   "families_where_meaningful": 32,
+   "not_applicable_kinds": [],
+   "reasons_for_non_applicability": [],
+   "undetected_kinds": []
+  },
+  "numerator_swap": {
+   "families_detected": 32,
+   "families_not_applicable": 0,
+   "families_where_meaningful": 32,
+   "not_applicable_kinds": [],
+   "reasons_for_non_applicability": [],
+   "undetected_kinds": []
+  },
+  "off_by_one": {
+   "families_detected": 32,
+   "families_not_applicable": 0,
+   "families_where_meaningful": 32,
+   "not_applicable_kinds": [],
+   "reasons_for_non_applicability": [],
+   "undetected_kinds": []
+  },
+  "segmentation_drift": {
+   "families_detected": 24,
+   "families_not_applicable": 8,
+   "families_where_meaningful": 24,
+   "not_applicable_kinds": [
+    "CL8",
+    "CX2",
+    "RF10",
+    "RF12",
+    "RF2",
+    "RF5",
+    "RF6",
+    "RF8"
+   ],
+   "reasons_for_non_applicability": [
+    "capital_char counts raw characters of the answer and count_budget has no word denominator, so no composition order can move either side of the comparison",
+    "comma counts raw characters of the answer and count_budget has no word denominator, so no composition order can move either side of the comparison",
+    "folding before segmenting splits a word carrying U+0130 into a first piece ending in the folded i and a final piece carrying the original word's ending. A suffix test therefore matches the same words under either order: the extra piece can never end in 'ing', and the piece that does keeps the ending it had. Registered as a non-separable reading and checked against the whole corpus rather than asserted",
+    "folding before segmenting splits a word carrying U+0130 into a first piece ending in the folded i and a final piece carrying the original word's ending. A suffix test therefore matches the same words under either order: the extra piece can never end in 's', and the piece that does keeps the ending it had. Registered as a non-separable reading and checked against the whole corpus rather than asserted",
+    "folding before segmenting splits a word carrying U+0130 into a first piece ending in the folded i and a final piece carrying the original word's ending. A suffix test therefore matches the same words under either order: the extra piece can never end in 'y', and the piece that does keeps the ending it had. Registered as a non-separable reading and checked against the whole corpus rather than asserted",
+    "semicolon counts raw characters of the answer and exact_count has no word denominator, so no composition order can move either side of the comparison",
+    "sentence counts raw characters of the answer and count_budget has no word denominator, so no composition order can move either side of the comparison"
+   ],
+   "undetected_kinds": []
+  },
+  "vacuity_ignored": {
+   "families_detected": 19,
+   "families_not_applicable": 13,
+   "families_where_meaningful": 19,
+   "not_applicable_kinds": [
+    "B",
+    "RF1",
+    "RF10",
+    "RF11",
+    "RF12",
+    "RF2",
+    "RF3",
+    "RF4",
+    "RF5",
+    "RF6",
+    "RF7",
+    "RF8",
+    "RF9"
+   ],
+   "reasons_for_non_applicability": [
+    "count_budget is satisfied by an empty answer under the registered reading as well, so no verdict moves. \u00a79.3's non-vacuity flag records that pass separately and is not part of the predicate",
+    "focal_budget is satisfied by an empty answer under the registered reading as well, so no verdict moves. \u00a79.3's non-vacuity flag records that pass separately and is not part of the predicate"
+   ],
+   "undetected_kinds": []
+  }
+ },
+ "by_form": {
+  "count_budget": {
+   "detected": {
+    "denominator_swap": 0,
+    "inequality_flip": 12,
+    "numerator_swap": 12,
+    "off_by_one": 12,
+    "segmentation_drift": 6,
+    "vacuity_ignored": 0
+   },
+   "kinds": [
+    "RF1",
+    "RF10",
+    "RF11",
+    "RF12",
+    "RF2",
+    "RF3",
+    "RF4",
+    "RF5",
+    "RF6",
+    "RF7",
+    "RF8",
+    "RF9"
+   ],
+   "meaningful": {
+    "denominator_swap": 0,
+    "inequality_flip": 12,
+    "numerator_swap": 12,
+    "off_by_one": 12,
+    "segmentation_drift": 6,
+    "vacuity_ignored": 0
+   }
+  },
+  "count_lower_bound": {
+   "detected": {
+    "denominator_swap": 0,
+    "inequality_flip": 2,
+    "numerator_swap": 2,
+    "off_by_one": 2,
+    "segmentation_drift": 1,
+    "vacuity_ignored": 2
+   },
+   "kinds": [
+    "CL7",
+    "CL8"
+   ],
+   "meaningful": {
+    "denominator_swap": 0,
+    "inequality_flip": 2,
+    "numerator_swap": 2,
+    "off_by_one": 2,
+    "segmentation_drift": 1,
+    "vacuity_ignored": 2
+   }
+  },
+  "exact_count": {
+   "detected": {
+    "denominator_swap": 0,
+    "inequality_flip": 3,
+    "numerator_swap": 3,
+    "off_by_one": 3,
+    "segmentation_drift": 2,
+    "vacuity_ignored": 3
+   },
+   "kinds": [
+    "A",
+    "CX1",
+    "CX2"
+   ],
+   "meaningful": {
+    "denominator_swap": 0,
+    "inequality_flip": 3,
+    "numerator_swap": 3,
+    "off_by_one": 3,
+    "segmentation_drift": 2,
+    "vacuity_ignored": 3
+   }
+  },
+  "focal_budget": {
+   "detected": {
+    "denominator_swap": 0,
+    "inequality_flip": 1,
+    "numerator_swap": 1,
+    "off_by_one": 1,
+    "segmentation_drift": 1,
+    "vacuity_ignored": 0
+   },
+   "kinds": [
+    "B"
+   ],
+   "meaningful": {
+    "denominator_swap": 0,
+    "inequality_flip": 1,
+    "numerator_swap": 1,
+    "off_by_one": 1,
+    "segmentation_drift": 1,
+    "vacuity_ignored": 0
+   }
+  },
+  "rate_budget": {
+   "detected": {
+    "denominator_swap": 12,
+    "inequality_flip": 12,
+    "numerator_swap": 12,
+    "off_by_one": 12,
+    "segmentation_drift": 12,
+    "vacuity_ignored": 12
+   },
+   "kinds": [
+    "CR1",
+    "CR10",
+    "CR11",
+    "CR12",
+    "CR2",
+    "CR3",
+    "CR4",
+    "CR5",
+    "CR6",
+    "CR7",
+    "CR8",
+    "CR9"
+   ],
+   "meaningful": {
+    "denominator_swap": 12,
+    "inequality_flip": 12,
+    "numerator_swap": 12,
+    "off_by_one": 12,
+    "segmentation_drift": 12,
+    "vacuity_ignored": 12
+   }
+  },
+  "rate_lower_bound": {
+   "detected": {
+    "denominator_swap": 2,
+    "inequality_flip": 2,
+    "numerator_swap": 2,
+    "off_by_one": 2,
+    "segmentation_drift": 2,
+    "vacuity_ignored": 2
+   },
+   "kinds": [
+    "CP4",
+    "CP7"
+   ],
+   "meaningful": {
+    "denominator_swap": 2,
+    "inequality_flip": 2,
+    "numerator_swap": 2,
+    "off_by_one": 2,
+    "segmentation_drift": 2,
+    "vacuity_ignored": 2
+   }
+  }
+ },
+ "classification": "DCI-1 PROTOCOL v4 REVISION 3 (ADOPTED, NOT FROZEN)",
+ "component": "\u00a710.7-R5 D",
+ "criterion": "every reading the applicability rule calls meaningful is exhibited by a discriminating case somewhere in the frozen suites or the constructed cases, at some declared severity; every reading it calls not meaningful discriminates nowhere, and its reason is recorded",
+ "defect_kinds": [
+  "numerator_swap",
+  "denominator_swap",
+  "inequality_flip",
+  "off_by_one",
+  "segmentation_drift",
+  "vacuity_ignored"
+ ],
+ "discrimination_cap": 40,
+ "families": {
+  "A": {
+   "audit_severity": 1,
+   "contradictions": [],
+   "corpus": 178,
+   "defects": {
+    "denominator_swap": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 1424,
+     "why": "exact_count compares a count and has no denominator, so there is nothing to swap"
+    },
+    "inequality_flip": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 19,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "however however"
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "however; however: however!"
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "This however, that however."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 1424,
+     "why": "every form carries a direction, so a reader can take the other one"
+    },
+    "numerator_swap": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 4,
+     "examples": [
+      {
+       "defective": true,
+       "label": "separator:numerator_swap",
+       "registered": false,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "however\u0130"
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": "Howeverhowever"
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": "howeverhowever stands"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 1424,
+     "why": "every form reads a numerator, so a reader can read the wrong one"
+    },
+    "off_by_one": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 48,
+     "why": "every form carries a threshold, so a reader can put the boundary on the wrong side of it"
+    },
+    "segmentation_drift": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 1,
+     "examples": [
+      {
+       "defective": false,
+       "label": "separator:segmentation_drift",
+       "registered": true,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "\u0130however"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 1424,
+     "why": "the numerator reads a word list, and folding before segmenting changes which words are in it"
+    },
+    "vacuity_ignored": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 762,
+     "why": "an empty answer reaches the threshold from below, and treating it as satisfying is the reading the rule excludes"
+    }
+   },
+   "form": "exact_count",
+   "kind": "A",
+   "reading_source": "\u00a710.7-R5, this module (\u00a710.4-R2's defect_verdict covers families only)",
+   "severities": 8,
+   "undetected": []
+  },
+  "B": {
+   "audit_severity": 7,
+   "contradictions": [],
+   "corpus": 173,
+   "defects": {
+    "denominator_swap": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 1038,
+     "why": "focal_budget compares a count and has no denominator, so there is nothing to swap"
+    },
+    "inequality_flip": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 7,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 7,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 7,
+       "source": "boundary_suite",
+       "text": "Howeverhowever"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 65,
+     "why": "every form carries a direction, so a reader can take the other one"
+    },
+    "numerator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 7,
+       "source": "boundary_suite",
+       "text": "The result was surprising because howev"
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 7,
+       "source": "boundary_suite",
+       "text": "The queue formed quickly following heavy interest."
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 7,
+       "source": "boundary_suite",
+       "text": "The plan.However succeeded."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 862,
+     "why": "every form reads a numerator, so a reader can read the wrong one"
+    },
+    "off_by_one": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 7,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 7,
+       "source": "boundary_suite",
+       "text": "however however"
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 7,
+       "source": "boundary_suite",
+       "text": "'however'"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 267,
+     "why": "every form carries a threshold, so a reader can put the boundary on the wrong side of it"
+    },
+    "segmentation_drift": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 4,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 7,
+       "source": "boundary_suite",
+       "text": "\u0130stanbul is big"
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 7,
+       "source": "boundary_suite",
+       "text": "\u0130stanbul under"
+      },
+      {
+       "defective": true,
+       "label": "unicode_boundary",
+       "registered": false,
+       "severity": 7,
+       "source": "specification_audit",
+       "text": "\u0130stanbul is one word here"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 1038,
+     "why": "the numerator reads a word list, and folding before segmenting changes which words are in it"
+    },
+    "vacuity_ignored": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 1038,
+     "why": "focal_budget is satisfied by an empty answer under the registered reading as well, so no verdict moves. \u00a79.3's non-vacuity flag records that pass separately and is not part of the predicate"
+    }
+   },
+   "form": "focal_budget",
+   "kind": "B",
+   "reading_source": "\u00a710.7-R5, this module (\u00a710.4-R2's defect_verdict covers families only)",
+   "severities": 6,
+   "undetected": []
+  },
+  "CL7": {
+   "audit_severity": 5,
+   "contradictions": [],
+   "corpus": 178,
+   "defects": {
+    "denominator_swap": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 4984,
+     "why": "count_lower_bound compares a count and has no denominator, so there is nothing to swap"
+    },
+    "inequality_flip": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 5,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 5,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 5,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 40,
+     "why": "every form carries a direction, so a reader can take the other one"
+    },
+    "numerator_swap": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 6,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 5,
+       "source": "boundary_suite",
+       "text": "Apple orange Igloo under Egg"
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 5,
+       "source": "boundary_suite",
+       "text": "tap tap tap tap tap tap tap tap"
+      },
+      {
+       "defective": false,
+       "label": "threshold_at",
+       "registered": true,
+       "severity": 5,
+       "source": "specification_audit",
+       "text": "car car car car car"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 4984,
+     "why": "every form reads a numerator, so a reader can read the wrong one"
+    },
+    "off_by_one": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 5,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 5,
+       "source": "boundary_suite",
+       "text": "Aardvarks and apples are amazing."
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 5,
+       "source": "boundary_suite",
+       "text": "as at ax an am"
+      },
+      {
+       "defective": false,
+       "label": "threshold_at",
+       "registered": true,
+       "severity": 5,
+       "source": "specification_audit",
+       "text": "car car car car car"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 4984,
+     "why": "every form carries a threshold, so a reader can put the boundary on the wrong side of it"
+    },
+    "segmentation_drift": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 1,
+     "examples": [
+      {
+       "defective": true,
+       "label": "separator:segmentation_drift",
+       "registered": false,
+       "severity": 5,
+       "source": "specification_audit",
+       "text": "car car\u0130car car\u0130car"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 4984,
+     "why": "the numerator reads a word list, and folding before segmenting changes which words are in it"
+    },
+    "vacuity_ignored": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 5,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 5,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 5,
+       "source": "boundary_suite",
+       "text": ""
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 762,
+     "why": "an empty answer reaches the threshold from below, and treating it as satisfying is the reading the rule excludes"
+    }
+   },
+   "form": "count_lower_bound",
+   "kind": "CL7",
+   "reading_source": "\u00a710.4-R2 microcase.defect_verdict, unchanged",
+   "severities": 28,
+   "undetected": []
+  },
+  "CL8": {
+   "audit_severity": 1,
+   "contradictions": [],
+   "corpus": 177,
+   "defects": {
+    "denominator_swap": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 4956,
+     "why": "count_lower_bound compares a count and has no denominator, so there is nothing to swap"
+    },
+    "inequality_flip": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 40,
+     "why": "every form carries a direction, so a reader can take the other one"
+    },
+    "numerator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "HoWeVeR appears once."
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "The result was surprising because howev"
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "31 dogs, 42 cats"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 136,
+     "why": "every form reads a numerator, so a reader can read the wrong one"
+    },
+    "off_by_one": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 29,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "Singing and dancing bring joy"
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "He said However loudly."
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "Bright blue banners blew by."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 4956,
+     "why": "every form carries a threshold, so a reader can put the boundary on the wrong side of it"
+    },
+    "segmentation_drift": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 4956,
+     "why": "folding before segmenting splits a word carrying U+0130 into a first piece ending in the folded i and a final piece carrying the original word's ending. A suffix test therefore matches the same words under either order: the extra piece can never end in 'y', and the piece that does keeps the ending it had. Registered as a non-separable reading and checked against the whole corpus rather than asserted"
+    },
+    "vacuity_ignored": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 758,
+     "why": "an empty answer reaches the threshold from below, and treating it as satisfying is the reading the rule excludes"
+    }
+   },
+   "form": "count_lower_bound",
+   "kind": "CL8",
+   "reading_source": "\u00a710.4-R2 microcase.defect_verdict, unchanged",
+   "severities": 28,
+   "undetected": []
+  },
+  "CP4": {
+   "audit_severity": 2,
+   "contradictions": [],
+   "corpus": 179,
+   "defects": {
+    "denominator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": "One two three four five six seven eight nine ten however."
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": "Twenty words follow here to show a long normal answer that a"
+      },
+      {
+       "defective": false,
+       "label": "threshold_at",
+       "registered": true,
+       "severity": 2,
+       "source": "specification_audit",
+       "text": "cell cell point clue form step field cloud north guide point"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 630,
+     "why": "the form divides by a word count, and a reader looking at a string can divide by its characters instead"
+    },
+    "inequality_flip": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 40,
+     "why": "every form carries a direction, so a reader can take the other one"
+    },
+    "numerator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": "**However** we agree."
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": "HoWeVeR appears once."
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": "coffee shop"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 120,
+     "why": "every form reads a numerator, so a reader can read the wrong one"
+    },
+    "off_by_one": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 19,
+     "examples": [
+      {
+       "defective": false,
+       "label": "threshold_at",
+       "registered": true,
+       "severity": 2,
+       "source": "specification_audit",
+       "text": "cell cell point clue form step field cloud north guide point"
+      },
+      {
+       "defective": false,
+       "label": "separator:off_by_one",
+       "registered": true,
+       "severity": 2,
+       "source": "specification_audit",
+       "text": "cell cell point clue form step field cloud north guide point"
+      },
+      {
+       "defective": false,
+       "label": "separator:segmentation_drift",
+       "registered": true,
+       "severity": 2,
+       "source": "specification_audit",
+       "text": "cell point clue form step field cloud north guide point clue"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 5549,
+     "why": "every form carries a threshold, so a reader can put the boundary on the wrong side of it"
+    },
+    "segmentation_drift": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 1,
+     "examples": [
+      {
+       "defective": false,
+       "label": "separator:segmentation_drift",
+       "registered": true,
+       "severity": 2,
+       "source": "specification_audit",
+       "text": "cell point clue form step field cloud north guide point clue"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 5549,
+     "why": "the rate denominator is a word count, and folding before segmenting splits a word that carries U+0130, so the denominator moves whatever the numerator reads"
+    },
+    "vacuity_ignored": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": ""
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 538,
+     "why": "a wordless answer has no rate, and treating 0/0 as satisfying is the reading the rule exists to exclude"
+    }
+   },
+   "form": "rate_lower_bound",
+   "kind": "CP4",
+   "reading_source": "\u00a710.4-R2 microcase.defect_verdict, unchanged",
+   "severities": 31,
+   "undetected": []
+  },
+  "CP7": {
+   "audit_severity": 20,
+   "contradictions": [],
+   "corpus": 179,
+   "defects": {
+    "denominator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 20,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 20,
+       "source": "boundary_suite",
+       "text": "**However** we agree."
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 20,
+       "source": "boundary_suite",
+       "text": "HoWeVeR appears once."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 107,
+     "why": "the form divides by a word count, and a reader looking at a string can divide by its characters instead"
+    },
+    "inequality_flip": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 20,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 20,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 20,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 40,
+     "why": "every form carries a direction, so a reader can take the other one"
+    },
+    "numerator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 20,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 20,
+       "source": "boundary_suite",
+       "text": "how-ever"
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 20,
+       "source": "boundary_suite",
+       "text": "The result was surprising because howev"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 114,
+     "why": "every form reads a numerator, so a reader can read the wrong one"
+    },
+    "off_by_one": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 32,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 20,
+       "source": "boundary_suite",
+       "text": "Bright blue banners blew by."
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 20,
+       "source": "boundary_suite",
+       "text": "People however remained hopeful throughout."
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 20,
+       "source": "boundary_suite",
+       "text": "How ever did you manage?"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 5191,
+     "why": "every form carries a threshold, so a reader can put the boundary on the wrong side of it"
+    },
+    "segmentation_drift": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 15,
+     "examples": [
+      {
+       "defective": false,
+       "label": "unicode_boundary",
+       "registered": true,
+       "severity": 20,
+       "source": "specification_audit",
+       "text": "\u0130stanbul is one word here"
+      },
+      {
+       "defective": false,
+       "label": "separator:segmentation_drift",
+       "registered": true,
+       "severity": 20,
+       "source": "specification_audit",
+       "text": "\u0130stanbul is one word here"
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 26,
+       "source": "boundary_suite",
+       "text": "\u0130stanbul is big"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 5191,
+     "why": "the rate denominator is a word count, and folding before segmenting splits a word that carries U+0130, so the denominator moves whatever the numerator reads"
+    },
+    "vacuity_ignored": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 20,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 20,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 20,
+       "source": "boundary_suite",
+       "text": ""
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 538,
+     "why": "a wordless answer has no rate, and treating 0/0 as satisfying is the reading the rule exists to exclude"
+    }
+   },
+   "form": "rate_lower_bound",
+   "kind": "CP7",
+   "reading_source": "\u00a710.4-R2 microcase.defect_verdict, unchanged",
+   "severities": 29,
+   "undetected": []
+  },
+  "CR1": {
+   "audit_severity": 1,
+   "contradictions": [],
+   "corpus": 179,
+   "defects": {
+    "denominator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "   \n\t "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ",,,,,,,,,,,,"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 701,
+     "why": "the form divides by a word count, and a reader looking at a string can divide by its characters instead"
+    },
+    "inequality_flip": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 40,
+     "why": "every form carries a direction, so a reader can take the other one"
+    },
+    "numerator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "a b c"
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "Truly lovely melody"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 106,
+     "why": "every form reads a numerator, so a reader can read the wrong one"
+    },
+    "off_by_one": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 7,
+     "examples": [
+      {
+       "defective": false,
+       "label": "threshold_at",
+       "registered": true,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "bold point clue form step field cloud north guide point clue"
+      },
+      {
+       "defective": false,
+       "label": "separator:off_by_one",
+       "registered": true,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "bold point clue form step field cloud north guide point clue"
+      },
+      {
+       "defective": false,
+       "label": "threshold_above",
+       "registered": true,
+       "severity": 2,
+       "source": "specification_audit",
+       "text": "bold bold point clue form step field cloud north guide point"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 2506,
+     "why": "every form carries a threshold, so a reader can put the boundary on the wrong side of it"
+    },
+    "segmentation_drift": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 14,
+     "examples": [
+      {
+       "defective": false,
+       "label": "separator:segmentation_drift",
+       "registered": true,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "\u0130bold"
+      },
+      {
+       "defective": false,
+       "label": "separator:segmentation_drift",
+       "registered": true,
+       "severity": 2,
+       "source": "specification_audit",
+       "text": "\u0130bold"
+      },
+      {
+       "defective": false,
+       "label": "separator:segmentation_drift",
+       "registered": true,
+       "severity": 3,
+       "source": "specification_audit",
+       "text": "\u0130bold"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 2506,
+     "why": "the rate denominator is a word count, and folding before segmenting splits a word that carries U+0130, so the denominator moves whatever the numerator reads"
+    },
+    "vacuity_ignored": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 538,
+     "why": "a wordless answer has no rate, and treating 0/0 as satisfying is the reading the rule exists to exclude"
+    }
+   },
+   "form": "rate_budget",
+   "kind": "CR1",
+   "reading_source": "\u00a710.4-R2 microcase.defect_verdict, unchanged",
+   "severities": 14,
+   "undetected": []
+  },
+  "CR10": {
+   "audit_severity": 1,
+   "contradictions": [],
+   "corpus": 179,
+   "defects": {
+    "denominator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "   \n\t "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ",,,,,,,,,,,,"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 582,
+     "why": "the form divides by a word count, and a reader looking at a string can divide by its characters instead"
+    },
+    "inequality_flip": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 40,
+     "why": "every form carries a direction, so a reader can take the other one"
+    },
+    "numerator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "HoWeVeR appears once."
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "The result was surprising because howev"
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "31 dogs, 42 cats"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 136,
+     "why": "every form reads a numerator, so a reader can read the wrong one"
+    },
+    "off_by_one": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 23,
+     "examples": [
+      {
+       "defective": false,
+       "label": "threshold_at",
+       "registered": true,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "clues point clue form step field cloud north guide point clu"
+      },
+      {
+       "defective": false,
+       "label": "separator:off_by_one",
+       "registered": true,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "clues point clue form step field cloud north guide point clu"
+      },
+      {
+       "defective": false,
+       "label": "threshold_above",
+       "registered": true,
+       "severity": 2,
+       "source": "specification_audit",
+       "text": "clues clues point clue form step field cloud north guide poi"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 4654,
+     "why": "every form carries a threshold, so a reader can put the boundary on the wrong side of it"
+    },
+    "segmentation_drift": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 6,
+     "examples": [
+      {
+       "defective": true,
+       "label": "separator:segmentation_drift",
+       "registered": false,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "clues point clue form step field cloud north guide point clu"
+      },
+      {
+       "defective": true,
+       "label": "unicode_boundary",
+       "registered": false,
+       "severity": 17,
+       "source": "specification_audit",
+       "text": "\u0130stanbul is one word here"
+      },
+      {
+       "defective": true,
+       "label": "unicode_boundary",
+       "registered": false,
+       "severity": 18,
+       "source": "specification_audit",
+       "text": "\u0130stanbul is one word here"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 4654,
+     "why": "the rate denominator is a word count, and folding before segmenting splits a word that carries U+0130, so the denominator moves whatever the numerator reads"
+    },
+    "vacuity_ignored": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 538,
+     "why": "a wordless answer has no rate, and treating 0/0 as satisfying is the reading the rule exists to exclude"
+    }
+   },
+   "form": "rate_budget",
+   "kind": "CR10",
+   "reading_source": "\u00a710.4-R2 microcase.defect_verdict, unchanged",
+   "severities": 26,
+   "undetected": []
+  },
+  "CR11": {
+   "audit_severity": 2,
+   "contradictions": [],
+   "corpus": 179,
+   "defects": {
+    "denominator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": "The queue formed quickly following heavy interest."
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": "   \n\t "
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 529,
+     "why": "the form divides by a word count, and a reader looking at a string can divide by its characters instead"
+    },
+    "inequality_flip": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 40,
+     "why": "every form carries a direction, so a reader can take the other one"
+    },
+    "numerator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": "how-ever"
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": "The result was surprising because howev"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 110,
+     "why": "every form reads a numerator, so a reader can read the wrong one"
+    },
+    "off_by_one": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 37,
+     "examples": [
+      {
+       "defective": false,
+       "label": "threshold_at",
+       "registered": true,
+       "severity": 2,
+       "source": "specification_audit",
+       "text": "under under point clue form step field cloud north guide poi"
+      },
+      {
+       "defective": false,
+       "label": "separator:off_by_one",
+       "registered": true,
+       "severity": 2,
+       "source": "specification_audit",
+       "text": "under under point clue form step field cloud north guide poi"
+      },
+      {
+       "defective": false,
+       "label": "threshold_above",
+       "registered": true,
+       "severity": 3,
+       "source": "specification_audit",
+       "text": "under under under point clue form step field cloud north gui"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 6981,
+     "why": "every form carries a threshold, so a reader can put the boundary on the wrong side of it"
+    },
+    "segmentation_drift": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 39,
+     "examples": [
+      {
+       "defective": false,
+       "label": "separator:segmentation_drift",
+       "registered": true,
+       "severity": 2,
+       "source": "specification_audit",
+       "text": "x\u0130under"
+      },
+      {
+       "defective": false,
+       "label": "separator:segmentation_drift",
+       "registered": true,
+       "severity": 3,
+       "source": "specification_audit",
+       "text": "x\u0130under"
+      },
+      {
+       "defective": false,
+       "label": "separator:segmentation_drift",
+       "registered": true,
+       "severity": 4,
+       "source": "specification_audit",
+       "text": "x\u0130under"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 6981,
+     "why": "the rate denominator is a word count, and folding before segmenting splits a word that carries U+0130, so the denominator moves whatever the numerator reads"
+    },
+    "vacuity_ignored": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": ""
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 538,
+     "why": "a wordless answer has no rate, and treating 0/0 as satisfying is the reading the rule exists to exclude"
+    }
+   },
+   "form": "rate_budget",
+   "kind": "CR11",
+   "reading_source": "\u00a710.4-R2 microcase.defect_verdict, unchanged",
+   "severities": 39,
+   "undetected": []
+  },
+  "CR12": {
+   "audit_severity": 1,
+   "contradictions": [],
+   "corpus": 178,
+   "defects": {
+    "denominator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "   \n\t "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "Twenty words follow here to show a long normal answer that a"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 520,
+     "why": "the form divides by a word count, and a reader looking at a string can divide by its characters instead"
+    },
+    "inequality_flip": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 40,
+     "why": "every form carries a direction, so a reader can take the other one"
+    },
+    "numerator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "however however"
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "Howeverhowever"
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "how-ever"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 48,
+     "why": "every form reads a numerator, so a reader can read the wrong one"
+    },
+    "off_by_one": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 20,
+     "examples": [
+      {
+       "defective": false,
+       "label": "threshold_at",
+       "registered": true,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "point clue form step field cloud north guide point clue form"
+      },
+      {
+       "defective": false,
+       "label": "separator:off_by_one",
+       "registered": true,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "point clue form step field cloud north guide point clue form"
+      },
+      {
+       "defective": false,
+       "label": "threshold_above",
+       "registered": true,
+       "severity": 2,
+       "source": "specification_audit",
+       "text": "point. point clue form step field cloud north guide point cl"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 2492,
+     "why": "every form carries a threshold, so a reader can put the boundary on the wrong side of it"
+    },
+    "segmentation_drift": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 1,
+     "examples": [
+      {
+       "defective": true,
+       "label": "separator:segmentation_drift",
+       "registered": false,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "point clue form step field cloud north guide point clue form"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 2492,
+     "why": "the rate denominator is a word count, and folding before segmenting splits a word that carries U+0130, so the denominator moves whatever the numerator reads"
+    },
+    "vacuity_ignored": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 535,
+     "why": "a wordless answer has no rate, and treating 0/0 as satisfying is the reading the rule exists to exclude"
+    }
+   },
+   "form": "rate_budget",
+   "kind": "CR12",
+   "reading_source": "\u00a710.4-R2 microcase.defect_verdict, unchanged",
+   "severities": 14,
+   "undetected": []
+  },
+  "CR2": {
+   "audit_severity": 1,
+   "contradictions": [],
+   "corpus": 179,
+   "defects": {
+    "denominator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "   \n\t "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ",,,,,,,,,,,,"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 628,
+     "why": "the form divides by a word count, and a reader looking at a string can divide by its characters instead"
+    },
+    "inequality_flip": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 40,
+     "why": "every form carries a direction, so a reader can take the other one"
+    },
+    "numerator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "The result was surprising because howev"
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "Truly lovely melody"
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "He said However loudly."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 233,
+     "why": "every form reads a numerator, so a reader can read the wrong one"
+    },
+    "off_by_one": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 6,
+     "examples": [
+      {
+       "defective": false,
+       "label": "threshold_at",
+       "registered": true,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "helping point clue form step field cloud north guide point c"
+      },
+      {
+       "defective": false,
+       "label": "separator:off_by_one",
+       "registered": true,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "helping point clue form step field cloud north guide point c"
+      },
+      {
+       "defective": false,
+       "label": "threshold_above",
+       "registered": true,
+       "severity": 2,
+       "source": "specification_audit",
+       "text": "helping helping point clue form step field cloud north guide"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 2506,
+     "why": "every form carries a threshold, so a reader can put the boundary on the wrong side of it"
+    },
+    "segmentation_drift": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 1,
+     "examples": [
+      {
+       "defective": true,
+       "label": "separator:segmentation_drift",
+       "registered": false,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "helping point clue form step field cloud north guide point c"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 2506,
+     "why": "the rate denominator is a word count, and folding before segmenting splits a word that carries U+0130, so the denominator moves whatever the numerator reads"
+    },
+    "vacuity_ignored": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 538,
+     "why": "a wordless answer has no rate, and treating 0/0 as satisfying is the reading the rule exists to exclude"
+    }
+   },
+   "form": "rate_budget",
+   "kind": "CR2",
+   "reading_source": "\u00a710.4-R2 microcase.defect_verdict, unchanged",
+   "severities": 14,
+   "undetected": []
+  },
+  "CR3": {
+   "audit_severity": 1,
+   "contradictions": [],
+   "corpus": 179,
+   "defects": {
+    "denominator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "   \n\t "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ",,,,,,,,,,,,"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 712,
+     "why": "the form divides by a word count, and a reader looking at a string can divide by its characters instead"
+    },
+    "inequality_flip": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 40,
+     "why": "every form carries a direction, so a reader can take the other one"
+    },
+    "numerator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "**However** we agree."
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "HoWeVeR appears once."
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "coffee shop"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 120,
+     "why": "every form reads a numerator, so a reader can read the wrong one"
+    },
+    "off_by_one": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 7,
+     "examples": [
+      {
+       "defective": false,
+       "label": "threshold_at",
+       "registered": true,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "n point clue form step field cloud north guide point clue fo"
+      },
+      {
+       "defective": false,
+       "label": "separator:off_by_one",
+       "registered": true,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "n point clue form step field cloud north guide point clue fo"
+      },
+      {
+       "defective": false,
+       "label": "threshold_above",
+       "registered": true,
+       "severity": 2,
+       "source": "specification_audit",
+       "text": "n n point clue form step field cloud north guide point clue "
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 2506,
+     "why": "every form carries a threshold, so a reader can put the boundary on the wrong side of it"
+    },
+    "segmentation_drift": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "\u0130stanbul is big"
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "\u0130\u0130\u0130"
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "\u0130stanbul under"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 1431,
+     "why": "the rate denominator is a word count, and folding before segmenting splits a word that carries U+0130, so the denominator moves whatever the numerator reads"
+    },
+    "vacuity_ignored": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 538,
+     "why": "a wordless answer has no rate, and treating 0/0 as satisfying is the reading the rule exists to exclude"
+    }
+   },
+   "form": "rate_budget",
+   "kind": "CR3",
+   "reading_source": "\u00a710.4-R2 microcase.defect_verdict, unchanged",
+   "severities": 14,
+   "undetected": []
+  },
+  "CR4": {
+   "audit_severity": 2,
+   "contradictions": [],
+   "corpus": 179,
+   "defects": {
+    "denominator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": "The queue formed quickly following heavy interest."
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": "One two three four five six seven eight nine ten however."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 442,
+     "why": "the form divides by a word count, and a reader looking at a string can divide by its characters instead"
+    },
+    "inequality_flip": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 40,
+     "why": "every form carries a direction, so a reader can take the other one"
+    },
+    "numerator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": "**However** we agree."
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": "HoWeVeR appears once."
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": "coffee shop"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 120,
+     "why": "every form reads a numerator, so a reader can read the wrong one"
+    },
+    "off_by_one": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 14,
+     "examples": [
+      {
+       "defective": false,
+       "label": "threshold_at",
+       "registered": true,
+       "severity": 2,
+       "source": "specification_audit",
+       "text": "cell cell point clue form step field cloud north guide point"
+      },
+      {
+       "defective": false,
+       "label": "separator:off_by_one",
+       "registered": true,
+       "severity": 2,
+       "source": "specification_audit",
+       "text": "cell cell point clue form step field cloud north guide point"
+      },
+      {
+       "defective": false,
+       "label": "threshold_above",
+       "registered": true,
+       "severity": 3,
+       "source": "specification_audit",
+       "text": "cell cell cell point clue form step field cloud north guide "
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 3401,
+     "why": "every form carries a threshold, so a reader can put the boundary on the wrong side of it"
+    },
+    "segmentation_drift": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 1,
+     "examples": [
+      {
+       "defective": true,
+       "label": "separator:segmentation_drift",
+       "registered": false,
+       "severity": 2,
+       "source": "specification_audit",
+       "text": "cell point clue form step field cloud north guide point clue"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 3401,
+     "why": "the rate denominator is a word count, and folding before segmenting splits a word that carries U+0130, so the denominator moves whatever the numerator reads"
+    },
+    "vacuity_ignored": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": ""
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 538,
+     "why": "a wordless answer has no rate, and treating 0/0 as satisfying is the reading the rule exists to exclude"
+    }
+   },
+   "form": "rate_budget",
+   "kind": "CR4",
+   "reading_source": "\u00a710.4-R2 microcase.defect_verdict, unchanged",
+   "severities": 19,
+   "undetected": []
+  },
+  "CR5": {
+   "audit_severity": 1,
+   "contradictions": [],
+   "corpus": 180,
+   "defects": {
+    "denominator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "   \n\t "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "3.14159 42 100"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 744,
+     "why": "the form divides by a word count, and a reader looking at a string can divide by its characters instead"
+    },
+    "inequality_flip": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 40,
+     "why": "every form carries a direction, so a reader can take the other one"
+    },
+    "numerator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "31 dogs, 42 cats"
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "however; however: however!"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 330,
+     "why": "every form reads a numerator, so a reader can read the wrong one"
+    },
+    "off_by_one": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 5,
+     "examples": [
+      {
+       "defective": false,
+       "label": "threshold_at",
+       "registered": true,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "point, point clue form step field cloud north guide point cl"
+      },
+      {
+       "defective": false,
+       "label": "separator:off_by_one",
+       "registered": true,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "point, point clue form step field cloud north guide point cl"
+      },
+      {
+       "defective": false,
+       "label": "threshold_above",
+       "registered": true,
+       "severity": 2,
+       "source": "specification_audit",
+       "text": "point, clue, point clue form step field cloud north guide po"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 2520,
+     "why": "every form carries a threshold, so a reader can put the boundary on the wrong side of it"
+    },
+    "segmentation_drift": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 1,
+     "examples": [
+      {
+       "defective": true,
+       "label": "separator:segmentation_drift",
+       "registered": false,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "point, point clue form step field cloud north guide point cl"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 2520,
+     "why": "the rate denominator is a word count, and folding before segmenting splits a word that carries U+0130, so the denominator moves whatever the numerator reads"
+    },
+    "vacuity_ignored": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 541,
+     "why": "a wordless answer has no rate, and treating 0/0 as satisfying is the reading the rule exists to exclude"
+    }
+   },
+   "form": "rate_budget",
+   "kind": "CR5",
+   "reading_source": "\u00a710.4-R2 microcase.defect_verdict, unchanged",
+   "severities": 14,
+   "undetected": []
+  },
+  "CR6": {
+   "audit_severity": 1,
+   "contradictions": [],
+   "corpus": 179,
+   "defects": {
+    "denominator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "   \n\t "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ",,,,,,,,,,,,"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 540,
+     "why": "the form divides by a word count, and a reader looking at a string can divide by its characters instead"
+    },
+    "inequality_flip": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 40,
+     "why": "every form carries a direction, so a reader can take the other one"
+    },
+    "numerator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "\u0394elta and \u03a9mega"
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "\u0397\u03bfwever"
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "\u0130stanbul is big"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 890,
+     "why": "every form reads a numerator, so a reader can read the wrong one"
+    },
+    "off_by_one": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 11,
+     "examples": [
+      {
+       "defective": false,
+       "label": "threshold_at",
+       "registered": true,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "Point point clue form step field cloud north guide point clu"
+      },
+      {
+       "defective": false,
+       "label": "separator:off_by_one",
+       "registered": true,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "Point point clue form step field cloud north guide point clu"
+      },
+      {
+       "defective": false,
+       "label": "threshold_above",
+       "registered": true,
+       "severity": 2,
+       "source": "specification_audit",
+       "text": "Point Point point clue form step field cloud north guide poi"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 2864,
+     "why": "every form carries a threshold, so a reader can put the boundary on the wrong side of it"
+    },
+    "segmentation_drift": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "Howeverhowever"
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "**However** we agree."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 74,
+     "why": "the rate denominator is a word count, and folding before segmenting splits a word that carries U+0130, so the denominator moves whatever the numerator reads"
+    },
+    "vacuity_ignored": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 538,
+     "why": "a wordless answer has no rate, and treating 0/0 as satisfying is the reading the rule exists to exclude"
+    }
+   },
+   "form": "rate_budget",
+   "kind": "CR6",
+   "reading_source": "\u00a710.4-R2 microcase.defect_verdict, unchanged",
+   "severities": 16,
+   "undetected": []
+  },
+  "CR7": {
+   "audit_severity": 20,
+   "contradictions": [],
+   "corpus": 179,
+   "defects": {
+    "denominator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 20,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 20,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 20,
+       "source": "boundary_suite",
+       "text": "**However** we agree."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 93,
+     "why": "the form divides by a word count, and a reader looking at a string can divide by its characters instead"
+    },
+    "inequality_flip": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 20,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 20,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 20,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 40,
+     "why": "every form carries a direction, so a reader can take the other one"
+    },
+    "numerator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 20,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 20,
+       "source": "boundary_suite",
+       "text": "how-ever"
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 20,
+       "source": "boundary_suite",
+       "text": "The result was surprising because howev"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 116,
+     "why": "every form reads a numerator, so a reader can read the wrong one"
+    },
+    "off_by_one": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 37,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 20,
+       "source": "boundary_suite",
+       "text": "Bright blue banners blew by."
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 20,
+       "source": "boundary_suite",
+       "text": "People however remained hopeful throughout."
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 20,
+       "source": "boundary_suite",
+       "text": "How ever did you manage?"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 3401,
+     "why": "every form carries a threshold, so a reader can put the boundary on the wrong side of it"
+    },
+    "segmentation_drift": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 14,
+     "examples": [
+      {
+       "defective": false,
+       "label": "separator:segmentation_drift",
+       "registered": true,
+       "severity": 20,
+       "source": "specification_audit",
+       "text": "car car car\u0130car car\u0130car point clue form step field cloud nor"
+      },
+      {
+       "defective": false,
+       "label": "separator:segmentation_drift",
+       "registered": true,
+       "severity": 22,
+       "source": "specification_audit",
+       "text": "car car car\u0130car car\u0130car point clue form step field cloud nor"
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 26,
+       "source": "boundary_suite",
+       "text": "\u0130stanbul is big"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 3401,
+     "why": "the rate denominator is a word count, and folding before segmenting splits a word that carries U+0130, so the denominator moves whatever the numerator reads"
+    },
+    "vacuity_ignored": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 20,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 20,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 20,
+       "source": "boundary_suite",
+       "text": ""
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 538,
+     "why": "a wordless answer has no rate, and treating 0/0 as satisfying is the reading the rule exists to exclude"
+    }
+   },
+   "form": "rate_budget",
+   "kind": "CR7",
+   "reading_source": "\u00a710.4-R2 microcase.defect_verdict, unchanged",
+   "severities": 19,
+   "undetected": []
+  },
+  "CR8": {
+   "audit_severity": 1,
+   "contradictions": [],
+   "corpus": 179,
+   "defects": {
+    "denominator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "   \n\t "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ",,,,,,,,,,,,"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 618,
+     "why": "the form divides by a word count, and a reader looking at a string can divide by its characters instead"
+    },
+    "inequality_flip": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 40,
+     "why": "every form carries a direction, so a reader can take the other one"
+    },
+    "numerator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "HoWeVeR appears once."
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "The result was surprising because howev"
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "31 dogs, 42 cats"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 136,
+     "why": "every form reads a numerator, so a reader can read the wrong one"
+    },
+    "off_by_one": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 8,
+     "examples": [
+      {
+       "defective": false,
+       "label": "threshold_at",
+       "registered": true,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "duty point clue form step field cloud north guide point clue"
+      },
+      {
+       "defective": false,
+       "label": "separator:off_by_one",
+       "registered": true,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "duty point clue form step field cloud north guide point clue"
+      },
+      {
+       "defective": false,
+       "label": "threshold_above",
+       "registered": true,
+       "severity": 2,
+       "source": "specification_audit",
+       "text": "duty duty point clue form step field cloud north guide point"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 2506,
+     "why": "every form carries a threshold, so a reader can put the boundary on the wrong side of it"
+    },
+    "segmentation_drift": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 1,
+     "examples": [
+      {
+       "defective": true,
+       "label": "separator:segmentation_drift",
+       "registered": false,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "duty point clue form step field cloud north guide point clue"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 2506,
+     "why": "the rate denominator is a word count, and folding before segmenting splits a word that carries U+0130, so the denominator moves whatever the numerator reads"
+    },
+    "vacuity_ignored": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 538,
+     "why": "a wordless answer has no rate, and treating 0/0 as satisfying is the reading the rule exists to exclude"
+    }
+   },
+   "form": "rate_budget",
+   "kind": "CR8",
+   "reading_source": "\u00a710.4-R2 microcase.defect_verdict, unchanged",
+   "severities": 14,
+   "undetected": []
+  },
+  "CR9": {
+   "audit_severity": 1,
+   "contradictions": [],
+   "corpus": 179,
+   "defects": {
+    "denominator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "   \n\t "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ",,,,,,,,,,,,"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 587,
+     "why": "the form divides by a word count, and a reader looking at a string can divide by its characters instead"
+    },
+    "inequality_flip": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 40,
+     "why": "every form carries a direction, so a reader can take the other one"
+    },
+    "numerator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "a b c"
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "Truly lovely melody"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 106,
+     "why": "every form reads a numerator, so a reader can read the wrong one"
+    },
+    "off_by_one": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 14,
+     "examples": [
+      {
+       "defective": false,
+       "label": "threshold_at",
+       "registered": true,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "top point clue form step field cloud north guide point clue "
+      },
+      {
+       "defective": false,
+       "label": "separator:off_by_one",
+       "registered": true,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "top point clue form step field cloud north guide point clue "
+      },
+      {
+       "defective": false,
+       "label": "threshold_above",
+       "registered": true,
+       "severity": 2,
+       "source": "specification_audit",
+       "text": "top top point clue form step field cloud north guide point c"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 3580,
+     "why": "every form carries a threshold, so a reader can put the boundary on the wrong side of it"
+    },
+    "segmentation_drift": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 20,
+     "examples": [
+      {
+       "defective": false,
+       "label": "separator:segmentation_drift",
+       "registered": true,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "\u0130top"
+      },
+      {
+       "defective": false,
+       "label": "separator:segmentation_drift",
+       "registered": true,
+       "severity": 2,
+       "source": "specification_audit",
+       "text": "\u0130top"
+      },
+      {
+       "defective": false,
+       "label": "separator:segmentation_drift",
+       "registered": true,
+       "severity": 3,
+       "source": "specification_audit",
+       "text": "\u0130top"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 3580,
+     "why": "the rate denominator is a word count, and folding before segmenting splits a word that carries U+0130, so the denominator moves whatever the numerator reads"
+    },
+    "vacuity_ignored": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 538,
+     "why": "a wordless answer has no rate, and treating 0/0 as satisfying is the reading the rule exists to exclude"
+    }
+   },
+   "form": "rate_budget",
+   "kind": "CR9",
+   "reading_source": "\u00a710.4-R2 microcase.defect_verdict, unchanged",
+   "severities": 20,
+   "undetected": []
+  },
+  "CX1": {
+   "audit_severity": 1,
+   "contradictions": [],
+   "corpus": 178,
+   "defects": {
+    "denominator_swap": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 1424,
+     "why": "exact_count compares a count and has no denominator, so there is nothing to swap"
+    },
+    "inequality_flip": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 9,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "thus thus"
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "thus thus thus"
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "Thus THUS thus"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 1424,
+     "why": "every form carries a direction, so a reader can take the other one"
+    },
+    "numerator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "The result was surprising because howev"
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "Truly lovely melody"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 1405,
+     "why": "every form reads a numerator, so a reader can read the wrong one"
+    },
+    "off_by_one": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 40,
+     "why": "every form carries a threshold, so a reader can put the boundary on the wrong side of it"
+    },
+    "segmentation_drift": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 1,
+     "examples": [
+      {
+       "defective": true,
+       "label": "separator:segmentation_drift",
+       "registered": false,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "\u0130thus"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 1424,
+     "why": "the numerator reads a word list, and folding before segmenting changes which words are in it"
+    },
+    "vacuity_ignored": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 762,
+     "why": "an empty answer reaches the threshold from below, and treating it as satisfying is the reading the rule excludes"
+    }
+   },
+   "form": "exact_count",
+   "kind": "CX1",
+   "reading_source": "\u00a710.4-R2 microcase.defect_verdict, unchanged",
+   "severities": 8,
+   "undetected": []
+  },
+  "CX2": {
+   "audit_severity": 1,
+   "contradictions": [],
+   "corpus": 178,
+   "defects": {
+    "denominator_swap": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 1780,
+     "why": "exact_count compares a count and has no denominator, so there is nothing to swap"
+    },
+    "inequality_flip": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 8,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "a; b;; c"
+      },
+      {
+       "defective": true,
+       "label": "threshold_above",
+       "registered": false,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "point; clue;"
+      },
+      {
+       "defective": true,
+       "label": "wordless_answer",
+       "registered": false,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": ",,, ;;; ..."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 1780,
+     "why": "every form carries a direction, so a reader can take the other one"
+    },
+    "numerator_swap": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 22,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "31 dogs, 42 cats"
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "however; however: however!"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 1780,
+     "why": "every form reads a numerator, so a reader can read the wrong one"
+    },
+    "off_by_one": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 40,
+     "why": "every form carries a threshold, so a reader can put the boundary on the wrong side of it"
+    },
+    "segmentation_drift": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 1780,
+     "why": "semicolon counts raw characters of the answer and exact_count has no word denominator, so no composition order can move either side of the comparison"
+    },
+    "vacuity_ignored": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 762,
+     "why": "an empty answer reaches the threshold from below, and treating it as satisfying is the reading the rule excludes"
+    }
+   },
+   "form": "exact_count",
+   "kind": "CX2",
+   "reading_source": "\u00a710.4-R2 microcase.defect_verdict, unchanged",
+   "severities": 10,
+   "undetected": []
+  },
+  "RF1": {
+   "audit_severity": 1,
+   "contradictions": [],
+   "corpus": 177,
+   "defects": {
+    "denominator_swap": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 1593,
+     "why": "count_budget compares a count and has no denominator, so there is nothing to swap"
+    },
+    "inequality_flip": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 40,
+     "why": "every form carries a direction, so a reader can take the other one"
+    },
+    "numerator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "a b c"
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "Truly lovely melody"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 106,
+     "why": "every form reads a numerator, so a reader can read the wrong one"
+    },
+    "off_by_one": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 45,
+     "why": "every form carries a threshold, so a reader can put the boundary on the wrong side of it"
+    },
+    "segmentation_drift": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 2,
+     "examples": [
+      {
+       "defective": false,
+       "label": "separator:segmentation_drift",
+       "registered": true,
+       "severity": 0,
+       "source": "specification_audit",
+       "text": "\u0130bold \u0130bold"
+      },
+      {
+       "defective": false,
+       "label": "separator:segmentation_drift",
+       "registered": true,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "\u0130bold \u0130bold"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 1593,
+     "why": "the numerator reads a word list, and folding before segmenting changes which words are in it"
+    },
+    "vacuity_ignored": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 1593,
+     "why": "count_budget is satisfied by an empty answer under the registered reading as well, so no verdict moves. \u00a79.3's non-vacuity flag records that pass separately and is not part of the predicate"
+    }
+   },
+   "form": "count_budget",
+   "kind": "RF1",
+   "reading_source": "\u00a710.4-R2 microcase.defect_verdict, unchanged",
+   "severities": 9,
+   "undetected": []
+  },
+  "RF10": {
+   "audit_severity": 1,
+   "contradictions": [],
+   "corpus": 176,
+   "defects": {
+    "denominator_swap": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 5456,
+     "why": "count_budget compares a count and has no denominator, so there is nothing to swap"
+    },
+    "inequality_flip": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 40,
+     "why": "every form carries a direction, so a reader can take the other one"
+    },
+    "numerator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "HoWeVeR appears once."
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "The result was surprising because howev"
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "31 dogs, 42 cats"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 136,
+     "why": "every form reads a numerator, so a reader can read the wrong one"
+    },
+    "off_by_one": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 50,
+     "why": "every form carries a threshold, so a reader can put the boundary on the wrong side of it"
+    },
+    "segmentation_drift": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 5456,
+     "why": "folding before segmenting splits a word carrying U+0130 into a first piece ending in the folded i and a final piece carrying the original word's ending. A suffix test therefore matches the same words under either order: the extra piece can never end in 's', and the piece that does keeps the ending it had. Registered as a non-separable reading and checked against the whole corpus rather than asserted"
+    },
+    "vacuity_ignored": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 5456,
+     "why": "count_budget is satisfied by an empty answer under the registered reading as well, so no verdict moves. \u00a79.3's non-vacuity flag records that pass separately and is not part of the predicate"
+    }
+   },
+   "form": "count_budget",
+   "kind": "RF10",
+   "reading_source": "\u00a710.4-R2 microcase.defect_verdict, unchanged",
+   "severities": 31,
+   "undetected": []
+  },
+  "RF11": {
+   "audit_severity": 1,
+   "contradictions": [],
+   "corpus": 177,
+   "defects": {
+    "denominator_swap": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 8673,
+     "why": "count_budget compares a count and has no denominator, so there is nothing to swap"
+    },
+    "inequality_flip": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 40,
+     "why": "every form carries a direction, so a reader can take the other one"
+    },
+    "numerator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "how-ever"
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "The result was surprising because howev"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 110,
+     "why": "every form reads a numerator, so a reader can read the wrong one"
+    },
+    "off_by_one": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 57,
+     "why": "every form carries a threshold, so a reader can put the boundary on the wrong side of it"
+    },
+    "segmentation_drift": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 3,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "\u0130\u0130\u0130"
+      },
+      {
+       "defective": false,
+       "label": "separator:segmentation_drift",
+       "registered": true,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "\u0130under"
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 2,
+       "source": "boundary_suite",
+       "text": "\u0130\u0130\u0130"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 8673,
+     "why": "the numerator reads a word list, and folding before segmenting changes which words are in it"
+    },
+    "vacuity_ignored": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 8673,
+     "why": "count_budget is satisfied by an empty answer under the registered reading as well, so no verdict moves. \u00a79.3's non-vacuity flag records that pass separately and is not part of the predicate"
+    }
+   },
+   "form": "count_budget",
+   "kind": "RF11",
+   "reading_source": "\u00a710.4-R2 microcase.defect_verdict, unchanged",
+   "severities": 49,
+   "undetected": []
+  },
+  "RF12": {
+   "audit_severity": 1,
+   "contradictions": [],
+   "corpus": 176,
+   "defects": {
+    "denominator_swap": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 2112,
+     "why": "count_budget compares a count and has no denominator, so there is nothing to swap"
+    },
+    "inequality_flip": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 40,
+     "why": "every form carries a direction, so a reader can take the other one"
+    },
+    "numerator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "Stop! Don't shout."
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "The plan.However succeeded."
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "Yes. However! No? however..."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 1492,
+     "why": "every form reads a numerator, so a reader can read the wrong one"
+    },
+    "off_by_one": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "however however"
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 1,
+       "source": "boundary_suite",
+       "text": "Howeverhowever"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 44,
+     "why": "every form carries a threshold, so a reader can put the boundary on the wrong side of it"
+    },
+    "segmentation_drift": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 2112,
+     "why": "sentence counts raw characters of the answer and count_budget has no word denominator, so no composition order can move either side of the comparison"
+    },
+    "vacuity_ignored": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 2112,
+     "why": "count_budget is satisfied by an empty answer under the registered reading as well, so no verdict moves. \u00a79.3's non-vacuity flag records that pass separately and is not part of the predicate"
+    }
+   },
+   "form": "count_budget",
+   "kind": "RF12",
+   "reading_source": "\u00a710.4-R2 microcase.defect_verdict, unchanged",
+   "severities": 12,
+   "undetected": []
+  },
+  "RF2": {
+   "audit_severity": 1,
+   "contradictions": [],
+   "corpus": 176,
+   "defects": {
+    "denominator_swap": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 1584,
+     "why": "count_budget compares a count and has no denominator, so there is nothing to swap"
+    },
+    "inequality_flip": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 40,
+     "why": "every form carries a direction, so a reader can take the other one"
+    },
+    "numerator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "The result was surprising because howev"
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "Truly lovely melody"
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "He said However loudly."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 252,
+     "why": "every form reads a numerator, so a reader can read the wrong one"
+    },
+    "off_by_one": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 44,
+     "why": "every form carries a threshold, so a reader can put the boundary on the wrong side of it"
+    },
+    "segmentation_drift": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 1584,
+     "why": "folding before segmenting splits a word carrying U+0130 into a first piece ending in the folded i and a final piece carrying the original word's ending. A suffix test therefore matches the same words under either order: the extra piece can never end in 'ing', and the piece that does keeps the ending it had. Registered as a non-separable reading and checked against the whole corpus rather than asserted"
+    },
+    "vacuity_ignored": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 1584,
+     "why": "count_budget is satisfied by an empty answer under the registered reading as well, so no verdict moves. \u00a79.3's non-vacuity flag records that pass separately and is not part of the predicate"
+    }
+   },
+   "form": "count_budget",
+   "kind": "RF2",
+   "reading_source": "\u00a710.4-R2 microcase.defect_verdict, unchanged",
+   "severities": 9,
+   "undetected": []
+  },
+  "RF3": {
+   "audit_severity": 1,
+   "contradictions": [],
+   "corpus": 177,
+   "defects": {
+    "denominator_swap": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 1593,
+     "why": "count_budget compares a count and has no denominator, so there is nothing to swap"
+    },
+    "inequality_flip": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 40,
+     "why": "every form carries a direction, so a reader can take the other one"
+    },
+    "numerator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "**However** we agree."
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "HoWeVeR appears once."
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "coffee shop"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 120,
+     "why": "every form reads a numerator, so a reader can read the wrong one"
+    },
+    "off_by_one": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 42,
+     "why": "every form carries a threshold, so a reader can put the boundary on the wrong side of it"
+    },
+    "segmentation_drift": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 8,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "\u0130stanbul is big"
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "\u0130\u0130\u0130"
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "\u0130stanbul under"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 1593,
+     "why": "the numerator reads a word list, and folding before segmenting changes which words are in it"
+    },
+    "vacuity_ignored": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 1593,
+     "why": "count_budget is satisfied by an empty answer under the registered reading as well, so no verdict moves. \u00a79.3's non-vacuity flag records that pass separately and is not part of the predicate"
+    }
+   },
+   "form": "count_budget",
+   "kind": "RF3",
+   "reading_source": "\u00a710.4-R2 microcase.defect_verdict, unchanged",
+   "severities": 9,
+   "undetected": []
+  },
+  "RF4": {
+   "audit_severity": 1,
+   "contradictions": [],
+   "corpus": 177,
+   "defects": {
+    "denominator_swap": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 1239,
+     "why": "count_budget compares a count and has no denominator, so there is nothing to swap"
+    },
+    "inequality_flip": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 40,
+     "why": "every form carries a direction, so a reader can take the other one"
+    },
+    "numerator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "**However** we agree."
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "HoWeVeR appears once."
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "coffee shop"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 120,
+     "why": "every form reads a numerator, so a reader can read the wrong one"
+    },
+    "off_by_one": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 50,
+     "why": "every form carries a threshold, so a reader can put the boundary on the wrong side of it"
+    },
+    "segmentation_drift": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 1,
+     "examples": [
+      {
+       "defective": false,
+       "label": "separator:segmentation_drift",
+       "registered": true,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "cell\u0130cell"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 1239,
+     "why": "the numerator reads a word list, and folding before segmenting changes which words are in it"
+    },
+    "vacuity_ignored": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 1239,
+     "why": "count_budget is satisfied by an empty answer under the registered reading as well, so no verdict moves. \u00a79.3's non-vacuity flag records that pass separately and is not part of the predicate"
+    }
+   },
+   "form": "count_budget",
+   "kind": "RF4",
+   "reading_source": "\u00a710.4-R2 microcase.defect_verdict, unchanged",
+   "severities": 7,
+   "undetected": []
+  },
+  "RF5": {
+   "audit_severity": 1,
+   "contradictions": [],
+   "corpus": 177,
+   "defects": {
+    "denominator_swap": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 2301,
+     "why": "count_budget compares a count and has no denominator, so there is nothing to swap"
+    },
+    "inequality_flip": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 40,
+     "why": "every form carries a direction, so a reader can take the other one"
+    },
+    "numerator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "31 dogs, 42 cats"
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "however; however: however!"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 615,
+     "why": "every form reads a numerator, so a reader can read the wrong one"
+    },
+    "off_by_one": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "however however"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 46,
+     "why": "every form carries a threshold, so a reader can put the boundary on the wrong side of it"
+    },
+    "segmentation_drift": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 2301,
+     "why": "comma counts raw characters of the answer and count_budget has no word denominator, so no composition order can move either side of the comparison"
+    },
+    "vacuity_ignored": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 2301,
+     "why": "count_budget is satisfied by an empty answer under the registered reading as well, so no verdict moves. \u00a79.3's non-vacuity flag records that pass separately and is not part of the predicate"
+    }
+   },
+   "form": "count_budget",
+   "kind": "RF5",
+   "reading_source": "\u00a710.4-R2 microcase.defect_verdict, unchanged",
+   "severities": 13,
+   "undetected": []
+  },
+  "RF6": {
+   "audit_severity": 1,
+   "contradictions": [],
+   "corpus": 176,
+   "defects": {
+    "denominator_swap": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 2288,
+     "why": "count_budget compares a count and has no denominator, so there is nothing to swap"
+    },
+    "inequality_flip": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 40,
+     "why": "every form carries a direction, so a reader can take the other one"
+    },
+    "numerator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "\u0394elta and \u03a9mega"
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "\u0397\u03bfwever"
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "\u0130stanbul is big"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 877,
+     "why": "every form reads a numerator, so a reader can read the wrong one"
+    },
+    "off_by_one": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "however however"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 85,
+     "why": "every form carries a threshold, so a reader can put the boundary on the wrong side of it"
+    },
+    "segmentation_drift": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 2288,
+     "why": "capital_char counts raw characters of the answer and count_budget has no word denominator, so no composition order can move either side of the comparison"
+    },
+    "vacuity_ignored": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 2288,
+     "why": "count_budget is satisfied by an empty answer under the registered reading as well, so no verdict moves. \u00a79.3's non-vacuity flag records that pass separately and is not part of the predicate"
+    }
+   },
+   "form": "count_budget",
+   "kind": "RF6",
+   "reading_source": "\u00a710.4-R2 microcase.defect_verdict, unchanged",
+   "severities": 13,
+   "undetected": []
+  },
+  "RF7": {
+   "audit_severity": 1,
+   "contradictions": [],
+   "corpus": 177,
+   "defects": {
+    "denominator_swap": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 4425,
+     "why": "count_budget compares a count and has no denominator, so there is nothing to swap"
+    },
+    "inequality_flip": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 40,
+     "why": "every form carries a direction, so a reader can take the other one"
+    },
+    "numerator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "how-ever"
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "The result was surprising because howev"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 110,
+     "why": "every form reads a numerator, so a reader can read the wrong one"
+    },
+    "off_by_one": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "however however"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 79,
+     "why": "every form carries a threshold, so a reader can put the boundary on the wrong side of it"
+    },
+    "segmentation_drift": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 1,
+     "examples": [
+      {
+       "defective": false,
+       "label": "separator:segmentation_drift",
+       "registered": true,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "car\u0130car"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 4425,
+     "why": "the numerator reads a word list, and folding before segmenting changes which words are in it"
+    },
+    "vacuity_ignored": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 4425,
+     "why": "count_budget is satisfied by an empty answer under the registered reading as well, so no verdict moves. \u00a79.3's non-vacuity flag records that pass separately and is not part of the predicate"
+    }
+   },
+   "form": "count_budget",
+   "kind": "RF7",
+   "reading_source": "\u00a710.4-R2 microcase.defect_verdict, unchanged",
+   "severities": 25,
+   "undetected": []
+  },
+  "RF8": {
+   "audit_severity": 1,
+   "contradictions": [],
+   "corpus": 176,
+   "defects": {
+    "denominator_swap": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 1584,
+     "why": "count_budget compares a count and has no denominator, so there is nothing to swap"
+    },
+    "inequality_flip": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 40,
+     "why": "every form carries a direction, so a reader can take the other one"
+    },
+    "numerator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "HoWeVeR appears once."
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "The result was surprising because howev"
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "31 dogs, 42 cats"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 136,
+     "why": "every form reads a numerator, so a reader can read the wrong one"
+    },
+    "off_by_one": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 46,
+     "why": "every form carries a threshold, so a reader can put the boundary on the wrong side of it"
+    },
+    "segmentation_drift": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 1584,
+     "why": "folding before segmenting splits a word carrying U+0130 into a first piece ending in the folded i and a final piece carrying the original word's ending. A suffix test therefore matches the same words under either order: the extra piece can never end in 'y', and the piece that does keeps the ending it had. Registered as a non-separable reading and checked against the whole corpus rather than asserted"
+    },
+    "vacuity_ignored": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 1584,
+     "why": "count_budget is satisfied by an empty answer under the registered reading as well, so no verdict moves. \u00a79.3's non-vacuity flag records that pass separately and is not part of the predicate"
+    }
+   },
+   "form": "count_budget",
+   "kind": "RF8",
+   "reading_source": "\u00a710.4-R2 microcase.defect_verdict, unchanged",
+   "severities": 9,
+   "undetected": []
+  },
+  "RF9": {
+   "audit_severity": 1,
+   "contradictions": [],
+   "corpus": 177,
+   "defects": {
+    "denominator_swap": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 4779,
+     "why": "count_budget compares a count and has no denominator, so there is nothing to swap"
+    },
+    "inequality_flip": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 40,
+     "why": "every form carries a direction, so a reader can take the other one"
+    },
+    "numerator_swap": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "However, the plan failed."
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "a b c"
+      },
+      {
+       "defective": true,
+       "label": "",
+       "registered": false,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "Truly lovely melody"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 106,
+     "why": "every form reads a numerator, so a reader can read the wrong one"
+    },
+    "off_by_one": {
+     "capped": true,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 40,
+     "examples": [
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": ""
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "  \n\t  "
+      },
+      {
+       "defective": false,
+       "label": "",
+       "registered": true,
+       "severity": 0,
+       "source": "boundary_suite",
+       "text": "however however"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 55,
+     "why": "every form carries a threshold, so a reader can put the boundary on the wrong side of it"
+    },
+    "segmentation_drift": {
+     "capped": false,
+     "contradiction": false,
+     "detected": true,
+     "discriminating": 2,
+     "examples": [
+      {
+       "defective": false,
+       "label": "separator:segmentation_drift",
+       "registered": true,
+       "severity": 0,
+       "source": "specification_audit",
+       "text": "\u0130top \u0130top"
+      },
+      {
+       "defective": false,
+       "label": "separator:segmentation_drift",
+       "registered": true,
+       "severity": 1,
+       "source": "specification_audit",
+       "text": "\u0130top \u0130top"
+      }
+     ],
+     "meaningful": true,
+     "not_applicable_and_silent": false,
+     "scanned": 4779,
+     "why": "the numerator reads a word list, and folding before segmenting changes which words are in it"
+    },
+    "vacuity_ignored": {
+     "capped": false,
+     "contradiction": false,
+     "detected": false,
+     "discriminating": 0,
+     "examples": [],
+     "meaningful": false,
+     "not_applicable_and_silent": true,
+     "scanned": 4779,
+     "why": "count_budget is satisfied by an empty answer under the registered reading as well, so no verdict moves. \u00a79.3's non-vacuity flag records that pass separately and is not part of the predicate"
+    }
+   },
+   "form": "count_budget",
+   "kind": "RF9",
+   "reading_source": "\u00a710.4-R2 microcase.defect_verdict, unchanged",
+   "severities": 27,
+   "undetected": []
+  }
+ },
+ "kinds_with_a_contradiction": [],
+ "kinds_with_an_undetected_defect": [],
+ "passed": true,
+ "population_kinds": [
+  "A",
+  "B",
+  "CL7",
+  "CL8",
+  "CP4",
+  "CP7",
+  "CR1",
+  "CR10",
+  "CR11",
+  "CR12",
+  "CR2",
+  "CR3",
+  "CR4",
+  "CR5",
+  "CR6",
+  "CR7",
+  "CR8",
+  "CR9",
+  "CX1",
+  "CX2",
+  "RF1",
+  "RF10",
+  "RF11",
+  "RF12",
+  "RF2",
+  "RF3",
+  "RF4",
+  "RF5",
+  "RF6",
+  "RF7",
+  "RF8",
+  "RF9"
+ ],
+ "producing_commit": "8feb30a4e496044f43de0d2e7c041c315a4eb360",
+ "uncovered_kinds": [],
+ "what_this_does_not_measure": "practical consequence on real answers. A defect detected here may move no natural label, and one that moves many may be detected here by a single constructed case. The natural-response defect sensitivity is reported separately and is never read as semantic validation"
+}

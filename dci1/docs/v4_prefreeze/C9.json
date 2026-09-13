@@ -1,0 +1,8 @@
+{
+  "base_sentence": "the river runs west then it drifts to the north.",
+  "check": "C9",
+  "covers": "A+B, A+R, B+R and R+R' at every registered severity combination, with joint satisfiability and both non-entailment directions",
+  "distinct_kind_pairs": 45,
+  "pairs_certified": 4910,
+  "status": "COMPLETE"
+}

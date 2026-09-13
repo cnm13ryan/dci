@@ -1,0 +1,171 @@
+{
+ "_decision": "\u00a734 D1",
+ "_units": "generations = prompt x draw; one generation is one model response",
+ "_what": "\u00a734 D1's registered options, costed from the code's own constants and the arm-derived cell set",
+ "calibration": {
+  "candidate_calibration": {
+   "carried_rungs_tier12": 88,
+   "d16": "complete_population",
+   "population": 112,
+   "population_is": "\u00a712.7: all Tier-1/2 rungs + at most 24 Tier-3, NOT \u00a712.2's carried set, which is high-recall and much larger",
+   "round": 0,
+   "rows_per_rung_per_split": 384,
+   "rows_tier12_both_splits": 67584,
+   "rows_tier3_both_splits": 18432,
+   "splits": 2,
+   "tier3_cap": 24
+  },
+  "focal_grids": {
+   "a_rungs": 8,
+   "b_rungs": 8,
+   "b_rungs_with_extension": 10,
+   "conditional_extension_rows": 1536,
+   "draws": 4,
+   "rows": 13824,
+   "topics": 192,
+   "topics_are": "pooled: Calibration-A and Calibration-B together",
+   "unconstrained_cell_per_grid": 1
+  },
+  "ladder_screen": {
+   "draws": 1,
+   "round": 0,
+   "rows": 8208,
+   "rungs": 342,
+   "topics": 24
+  },
+  "pilot": {
+   "cells": 56,
+   "draws": 4,
+   "rows": 2688,
+   "topics": 12
+  }
+ },
+ "cells_by_arm": {
+  "base": 5,
+  "class": 3,
+  "core": 21,
+  "nearform": 9,
+  "spectrum": 18
+ },
+ "cells_full": 56,
+ "library": {
+  "tier_1": {
+   "families": 8,
+   "ladder_rungs": 64,
+   "reserve_rungs": 96
+  },
+  "tier_2": {
+   "families": 3,
+   "ladder_rungs": 24,
+   "reserve_rungs": 44
+  },
+  "tier_3": {
+   "families": 26,
+   "ladder_rungs": 238,
+   "reserve_rungs": 492
+  }
+ },
+ "options": {
+  "384_blocks_m4": {
+   "arms": [
+    "base",
+    "core",
+    "spectrum",
+    "nearform",
+    "class"
+   ],
+   "blocks": 384,
+   "cells_per_block": 56,
+   "draws_per_cell": 4,
+   "models": 4,
+   "per_model": {
+    "calibration": 110736,
+    "confirmatory": 86016,
+    "gate_4_composed_headroom": 5376,
+    "greedy_sensitivity": 5376,
+    "total": 207504
+   },
+   "total_generations": 830016
+  },
+  "four_models_47_cells": {
+   "arms": [
+    "base",
+    "core",
+    "spectrum",
+    "class"
+   ],
+   "blocks": 384,
+   "cells_per_block": 47,
+   "draws_per_cell": 8,
+   "models": 4,
+   "per_model": {
+    "calibration": 110304,
+    "confirmatory": 144384,
+    "gate_4_composed_headroom": 4512,
+    "greedy_sensitivity": 4512,
+    "total": 263712
+   },
+   "total_generations": 1054848
+  },
+  "four_models_56_cells": {
+   "arms": [
+    "base",
+    "core",
+    "spectrum",
+    "nearform",
+    "class"
+   ],
+   "blocks": 384,
+   "cells_per_block": 56,
+   "draws_per_cell": 8,
+   "models": 4,
+   "per_model": {
+    "calibration": 110736,
+    "confirmatory": 172032,
+    "gate_4_composed_headroom": 5376,
+    "greedy_sensitivity": 5376,
+    "total": 293520
+   },
+   "total_generations": 1174080
+  },
+  "two_models_56_cells": {
+   "arms": [
+    "base",
+    "core",
+    "spectrum",
+    "nearform",
+    "class"
+   ],
+   "blocks": 384,
+   "cells_per_block": 56,
+   "draws_per_cell": 8,
+   "models": 2,
+   "per_model": {
+    "calibration": 110736,
+    "confirmatory": 172032,
+    "gate_4_composed_headroom": 5376,
+    "greedy_sensitivity": 5376,
+    "total": 293520
+   },
+   "total_generations": 587040
+  }
+ },
+ "removing_one_arm": {
+  "class": {
+   "cells_saved": 3,
+   "cells_without": 53
+  },
+  "core": {
+   "cells_without": null,
+   "refused": "\u00a713.12 draws both spectrum rungs from an admitted core reference's own family, so the spectrum arm cannot be admitted without the core arm"
+  },
+  "nearform": {
+   "cells_saved": 9,
+   "cells_without": 47
+  },
+  "spectrum": {
+   "cells_saved": 18,
+   "cells_without": 38
+  }
+ }
+}

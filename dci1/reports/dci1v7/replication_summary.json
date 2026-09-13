@@ -1,0 +1,921 @@
+{
+ "_what": "per-replication summary of the v7 study, read from signed records; no estimation, no pooling",
+ "replications": {
+  "gemma-3n-e2b-it": {
+   "admitted_arms": [
+    "base",
+    "class"
+   ],
+   "artifact_checks": {
+    "failed": 1,
+    "n": 26,
+    "unresolved": 0
+   },
+   "behavioural_rows": 141096,
+   "blocked_checks": [
+    "support_satisfied"
+   ],
+   "coverage_12_6": {
+    "certified_conditions": {
+     "C1": true,
+     "C2": true,
+     "C3": true,
+     "C4": true,
+     "C5": true,
+     "C6": true,
+     "C7": true,
+     "C8": true
+    },
+    "conditions_moved_by_the_basis": [
+     "C4",
+     "C8"
+    ],
+    "conditions_on_calibration_basis": {
+     "C1": true,
+     "C2": true,
+     "C3": true,
+     "C4": false,
+     "C5": true,
+     "C6": true,
+     "C7": true,
+     "C8": false
+    },
+    "core_met": null,
+    "decisive_met": false,
+    "iota_a": 0.6166,
+    "n_eligible": 100,
+    "spectrum_met": null,
+    "straddling_groups": [
+     "marker_indeed",
+     "sentence"
+    ]
+   },
+   "delta_r_identified": false,
+   "derived_cell_count": 8,
+   "gate4": {
+    "any_structural_zero": false,
+    "contrast_statuses": [],
+    "rows": 768,
+    "terminates_nothing": true
+   },
+   "identification_statuses": [
+    "COMPANION_CLASS_NOT_MATCHED",
+    "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+    "EXCESS_NOT_IDENTIFIED",
+    "NEAR_FORM_ARM_NOT_AVAILABLE",
+    "REFERENCE_POOL_SAME_FORM",
+    "REFERENCE_SUPPORT_NOT_IDENTIFIED"
+   ],
+   "m_star": 10,
+   "model_key": "gemma-3n-e2b-it",
+   "n_star": 8,
+   "probe": {
+    "contrast_statuses": [],
+    "contrasts": {
+     "D(A<-B)|outcome_first": {
+      "estimate": 0.2865,
+      "statuses": []
+     },
+     "D(A<-B)|outcome_second": {
+      "estimate": 0.2565,
+      "statuses": []
+     },
+     "D(B<-A)|outcome_first": {
+      "estimate": -0.0234,
+      "statuses": []
+     },
+     "D(B<-A)|outcome_second": {
+      "estimate": 0.237,
+      "statuses": []
+     },
+     "Lambda|outcome_first": {
+      "estimate": -0.3099,
+      "statuses": []
+     },
+     "Lambda|outcome_second": {
+      "estimate": -0.0195,
+      "statuses": []
+     },
+     "Ord_A|cross": {
+      "estimate": 0.0299,
+      "statuses": []
+     },
+     "Ord_B|cross": {
+      "estimate": -0.2604,
+      "statuses": []
+     },
+     "Ord_Lambda|cross": {
+      "estimate": -0.2904,
+      "statuses": []
+     }
+    },
+    "decides": "nothing",
+    "determinate_entries": {
+     "pair:A+B@outcome_first": 0.3346,
+     "pair:A+B@outcome_second": 0.5716,
+     "pair:B+A@outcome_first": 0.832,
+     "pair:B+A@outcome_second": 0.3646,
+     "solo:A@None": 0.6211,
+     "solo:B@None": 0.8086
+    },
+    "what_this_is": "the composed contrasts at the frozen m*, on the calibration topics, before any reference exists: a projection of what the confirmatory blocks will estimate, labelled as one and read by no rule. The same readings are recomputed at Gate 4 on the composed set and at UNMASKED_ANALYSIS on the 384 blocks"
+   },
+   "stage_reached": "GATE_4_COMPOSED_CONTRAST",
+   "support": {
+    "disposition": "REFERENCE_SUPPORT_NOT_IDENTIFIED",
+    "failures": [
+     "\u00a712.6: the identification-coverage criterion is not met at the iota_A reference selection matches on, evaluated on the calibration basis where iota(R), the eligibility coordinate, the vacuity and iota_A are all measured on the same 192 topics at the same four draws"
+    ],
+    "realised": {
+     "core_references": 3,
+     "feature_groups": [
+      "marker_thus",
+      "marker_whereas",
+      "sentence"
+     ],
+     "frozen_backups": [
+      "CR5",
+      "MK2"
+     ],
+     "qualified_families": 12,
+     "structurally_eligible_tier12_families": 11,
+     "tier1_core": 2
+    },
+    "support_met": false
+   },
+   "terminal_gate": "PREFREEZE_AUDIT",
+   "terminal_status": "PREFREEZE_AUDIT_FAILURE",
+   "timeline": [
+    {
+     "at": "2026-08-28T05:04:14+00:00",
+     "commit": "ed0446ff58d0",
+     "outcome": "PASS",
+     "stage": "PROTOCOL_REGISTERED"
+    },
+    {
+     "at": "2026-08-28T06:14:55+00:00",
+     "commit": "a4d35f684bb8",
+     "outcome": "PASS",
+     "stage": "QUALIFIED"
+    },
+    {
+     "at": "2026-08-28T06:34:20+00:00",
+     "commit": "a4d35f684bb8",
+     "outcome": "PASS",
+     "stage": "GATE_0_APPARATUS"
+    },
+    {
+     "at": "2026-08-28T08:58:50+00:00",
+     "commit": "0f56bce826b8",
+     "outcome": "PASS",
+     "stage": "REGIME_SCREEN"
+    },
+    {
+     "at": "2026-08-28T09:02:05+00:00",
+     "commit": "0f56bce826b8",
+     "outcome": "PASS",
+     "stage": "GATE_1_MEASUREMENT"
+    },
+    {
+     "at": "2026-08-28T13:04:27+00:00",
+     "commit": "0f56bce826b8",
+     "outcome": "PASS",
+     "stage": "GATE_2_FOCAL_CALIBRATION"
+    },
+    {
+     "at": "2026-08-28T13:04:27+00:00",
+     "commit": "0f56bce826b8",
+     "outcome": "PASS",
+     "stage": "GATE_2_5_CANDIDATE_QUALIFICATION"
+    },
+    {
+     "at": "2026-08-28T13:28:32+00:00",
+     "commit": "0f56bce826b8",
+     "outcome": "PASS",
+     "stage": "GATE_2_75_COMPOSED_PROBE"
+    },
+    {
+     "at": "2026-08-28T13:29:34+00:00",
+     "commit": "0f56bce826b8",
+     "outcome": "PASS",
+     "stage": "GATE_3A_REFERENCE_CALIBRATION"
+    },
+    {
+     "at": "2026-08-28T13:29:34+00:00",
+     "commit": "0f56bce826b8",
+     "outcome": "PASS",
+     "stage": "GATE_3B_REFERENCE_SELECTION"
+    },
+    {
+     "at": "2026-08-28T13:29:34+00:00",
+     "commit": "0f56bce826b8",
+     "outcome": "PASS",
+     "stage": "GATE_3C_IDENTIFICATION"
+    },
+    {
+     "at": "2026-08-28T13:31:15+00:00",
+     "commit": "0f56bce826b8",
+     "outcome": "PASS",
+     "stage": "GATE_4_COMPOSED_CONTRAST"
+    },
+    {
+     "at": "2026-08-28T13:31:16+00:00",
+     "commit": "0f56bce826b8",
+     "outcome": "TERMINAL",
+     "stage": "PREFREEZE_AUDIT"
+    }
+   ]
+  },
+  "gemma-3n-e4b-it": {
+   "admitted_arms": [
+    "base",
+    "class"
+   ],
+   "artifact_checks": {
+    "failed": 1,
+    "n": 26,
+    "unresolved": 0
+   },
+   "behavioural_rows": 142320,
+   "blocked_checks": [
+    "support_satisfied"
+   ],
+   "coverage_12_6": {
+    "certified_conditions": {
+     "C1": true,
+     "C2": true,
+     "C3": true,
+     "C4": true,
+     "C5": true,
+     "C6": true,
+     "C7": true,
+     "C8": false
+    },
+    "conditions_moved_by_the_basis": [
+     "C4"
+    ],
+    "conditions_on_calibration_basis": {
+     "C1": true,
+     "C2": true,
+     "C3": true,
+     "C4": false,
+     "C5": true,
+     "C6": true,
+     "C7": true,
+     "C8": false
+    },
+    "core_met": null,
+    "decisive_met": false,
+    "iota_a": 0.7252,
+    "n_eligible": 104,
+    "spectrum_met": null,
+    "straddling_groups": [
+     "marker_hence",
+     "marker_indeed",
+     "marker_thus",
+     "marker_whereas"
+    ]
+   },
+   "delta_r_identified": false,
+   "derived_cell_count": 8,
+   "gate4": {
+    "any_structural_zero": false,
+    "contrast_statuses": [],
+    "rows": 768,
+    "terminates_nothing": true
+   },
+   "identification_statuses": [
+    "COMPANION_CLASS_NOT_MATCHED",
+    "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+    "EXCESS_NOT_IDENTIFIED",
+    "NEAR_FORM_ARM_NOT_AVAILABLE",
+    "REFERENCE_POOL_SAME_FORM",
+    "REFERENCE_SUPPORT_NOT_IDENTIFIED"
+   ],
+   "m_star": 9,
+   "model_key": "gemma-3n-e4b-it",
+   "n_star": 6,
+   "probe": {
+    "contrast_statuses": [],
+    "contrasts": {
+     "D(A<-B)|outcome_first": {
+      "estimate": 0.2096,
+      "statuses": []
+     },
+     "D(A<-B)|outcome_second": {
+      "estimate": 0.1576,
+      "statuses": []
+     },
+     "D(B<-A)|outcome_first": {
+      "estimate": 0.0156,
+      "statuses": []
+     },
+     "D(B<-A)|outcome_second": {
+      "estimate": 0.3958,
+      "statuses": []
+     },
+     "Lambda|outcome_first": {
+      "estimate": -0.194,
+      "statuses": []
+     },
+     "Lambda|outcome_second": {
+      "estimate": 0.2383,
+      "statuses": []
+     },
+     "Ord_A|cross": {
+      "estimate": 0.0521,
+      "statuses": []
+     },
+     "Ord_B|cross": {
+      "estimate": -0.3802,
+      "statuses": []
+     },
+     "Ord_Lambda|cross": {
+      "estimate": -0.4323,
+      "statuses": []
+     }
+    },
+    "decides": "nothing",
+    "determinate_entries": {
+     "pair:A+B@outcome_first": 0.5221,
+     "pair:A+B@outcome_second": 0.3555,
+     "pair:B+A@outcome_first": 0.7357,
+     "pair:B+A@outcome_second": 0.5742,
+     "solo:A@None": 0.7318,
+     "solo:B@None": 0.7513
+    },
+    "what_this_is": "the composed contrasts at the frozen m*, on the calibration topics, before any reference exists: a projection of what the confirmatory blocks will estimate, labelled as one and read by no rule. The same readings are recomputed at Gate 4 on the composed set and at UNMASKED_ANALYSIS on the 384 blocks"
+   },
+   "stage_reached": "GATE_4_COMPOSED_CONTRAST",
+   "support": {
+    "disposition": "REFERENCE_SUPPORT_NOT_IDENTIFIED",
+    "failures": [
+     "\u00a712.6: the identification-coverage criterion is not met at the iota_A reference selection matches on, evaluated on the calibration basis where iota(R), the eligibility coordinate, the vacuity and iota_A are all measured on the same 192 topics at the same four draws"
+    ],
+    "realised": {
+     "core_references": 3,
+     "feature_groups": [
+      "marker_indeed",
+      "marker_namely",
+      "marker_whereas"
+     ],
+     "frozen_backups": [
+      "MK1",
+      "MK2"
+     ],
+     "qualified_families": 11,
+     "structurally_eligible_tier12_families": 11,
+     "tier1_core": 3
+    },
+    "support_met": false
+   },
+   "terminal_gate": "PREFREEZE_AUDIT",
+   "terminal_status": "PREFREEZE_AUDIT_FAILURE",
+   "timeline": [
+    {
+     "at": "2026-08-28T05:04:15+00:00",
+     "commit": "ed0446ff58d0",
+     "outcome": "PASS",
+     "stage": "PROTOCOL_REGISTERED"
+    },
+    {
+     "at": "2026-08-28T06:14:55+00:00",
+     "commit": "a4d35f684bb8",
+     "outcome": "PASS",
+     "stage": "QUALIFIED"
+    },
+    {
+     "at": "2026-08-28T06:41:43+00:00",
+     "commit": "a4d35f684bb8",
+     "outcome": "PASS",
+     "stage": "GATE_0_APPARATUS"
+    },
+    {
+     "at": "2026-08-28T07:24:16+00:00",
+     "commit": "a4d35f684bb8",
+     "outcome": "PASS",
+     "stage": "REGIME_SCREEN"
+    },
+    {
+     "at": "2026-08-28T07:27:45+00:00",
+     "commit": "a894e204b737",
+     "outcome": "PASS",
+     "stage": "GATE_1_MEASUREMENT"
+    },
+    {
+     "at": "2026-08-28T17:06:58+00:00",
+     "commit": "0f56bce826b8",
+     "outcome": "PASS",
+     "stage": "GATE_2_FOCAL_CALIBRATION"
+    },
+    {
+     "at": "2026-08-28T17:06:59+00:00",
+     "commit": "7fda7d916960",
+     "outcome": "PASS",
+     "stage": "GATE_2_5_CANDIDATE_QUALIFICATION"
+    },
+    {
+     "at": "2026-08-28T17:26:58+00:00",
+     "commit": "7fda7d916960",
+     "outcome": "PASS",
+     "stage": "GATE_2_75_COMPOSED_PROBE"
+    },
+    {
+     "at": "2026-08-28T17:28:02+00:00",
+     "commit": "7fda7d916960",
+     "outcome": "PASS",
+     "stage": "GATE_3A_REFERENCE_CALIBRATION"
+    },
+    {
+     "at": "2026-08-28T17:28:02+00:00",
+     "commit": "7fda7d916960",
+     "outcome": "PASS",
+     "stage": "GATE_3B_REFERENCE_SELECTION"
+    },
+    {
+     "at": "2026-08-28T17:28:02+00:00",
+     "commit": "7fda7d916960",
+     "outcome": "PASS",
+     "stage": "GATE_3C_IDENTIFICATION"
+    },
+    {
+     "at": "2026-08-28T17:31:01+00:00",
+     "commit": "7fda7d916960",
+     "outcome": "PASS",
+     "stage": "GATE_4_COMPOSED_CONTRAST"
+    },
+    {
+     "at": "2026-08-28T17:31:01+00:00",
+     "commit": "7fda7d916960",
+     "outcome": "TERMINAL",
+     "stage": "PREFREEZE_AUDIT"
+    }
+   ]
+  },
+  "qwen3-4b": {
+   "admitted_arms": [
+    "base"
+   ],
+   "artifact_checks": {
+    "failed": 1,
+    "n": 26,
+    "unresolved": 0
+   },
+   "behavioural_rows": 123552,
+   "blocked_checks": [
+    "support_satisfied"
+   ],
+   "coverage_12_6": {
+    "certified_conditions": {
+     "C1": true,
+     "C2": true,
+     "C3": true,
+     "C4": true,
+     "C5": true,
+     "C6": true,
+     "C7": true,
+     "C8": false
+    },
+    "conditions_moved_by_the_basis": [
+     "C4",
+     "C8"
+    ],
+    "conditions_on_calibration_basis": {
+     "C1": true,
+     "C2": true,
+     "C3": true,
+     "C4": false,
+     "C5": true,
+     "C6": true,
+     "C7": true,
+     "C8": true
+    },
+    "core_met": null,
+    "decisive_met": false,
+    "iota_a": 0.6827,
+    "n_eligible": 81,
+    "spectrum_met": null,
+    "straddling_groups": [
+     "marker_indeed",
+     "marker_instead",
+     "marker_though",
+     "marker_whereas",
+     "semicolon"
+    ]
+   },
+   "delta_r_identified": false,
+   "derived_cell_count": 5,
+   "gate4": {
+    "any_structural_zero": false,
+    "contrast_statuses": [
+     "COMPOSED_CONTRAST_RANGE_COMPRESSED"
+    ],
+    "rows": 480,
+    "terminates_nothing": true
+   },
+   "identification_statuses": [
+    "CLASS_ARM_NOT_AVAILABLE",
+    "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+    "EXCESS_NOT_IDENTIFIED",
+    "NEAR_FORM_ARM_NOT_AVAILABLE",
+    "REFERENCE_POOL_SAME_FORM",
+    "REFERENCE_ROLE_NOT_MATCHED",
+    "REFERENCE_SUPPORT_NOT_IDENTIFIED"
+   ],
+   "m_star": 12,
+   "model_key": "qwen3-4b",
+   "n_star": 2,
+   "probe": {
+    "contrast_statuses": [],
+    "contrasts": {
+     "D(A<-B)|outcome_first": {
+      "estimate": 0.306,
+      "statuses": []
+     },
+     "D(A<-B)|outcome_second": {
+      "estimate": 0.3268,
+      "statuses": []
+     },
+     "D(B<-A)|outcome_first": {
+      "estimate": -0.1146,
+      "statuses": []
+     },
+     "D(B<-A)|outcome_second": {
+      "estimate": -0.0156,
+      "statuses": []
+     },
+     "Lambda|outcome_first": {
+      "estimate": -0.4206,
+      "statuses": []
+     },
+     "Lambda|outcome_second": {
+      "estimate": -0.3424,
+      "statuses": []
+     },
+     "Ord_A|cross": {
+      "estimate": -0.0208,
+      "statuses": []
+     },
+     "Ord_B|cross": {
+      "estimate": -0.099,
+      "statuses": []
+     },
+     "Ord_Lambda|cross": {
+      "estimate": -0.0781,
+      "statuses": []
+     }
+    },
+    "decides": "nothing",
+    "determinate_entries": {
+     "pair:A+B@outcome_first": 0.3789,
+     "pair:A+B@outcome_second": 0.7826,
+     "pair:B+A@outcome_first": 0.8815,
+     "pair:B+A@outcome_second": 0.3581,
+     "solo:A@None": 0.6849,
+     "solo:B@None": 0.7669
+    },
+    "what_this_is": "the composed contrasts at the frozen m*, on the calibration topics, before any reference exists: a projection of what the confirmatory blocks will estimate, labelled as one and read by no rule. The same readings are recomputed at Gate 4 on the composed set and at UNMASKED_ANALYSIS on the 384 blocks"
+   },
+   "stage_reached": "GATE_4_COMPOSED_CONTRAST",
+   "support": {
+    "disposition": "REFERENCE_SUPPORT_NOT_IDENTIFIED",
+    "failures": [
+     "\u00a712.6: the identification-coverage criterion is not met at the iota_A reference selection matches on, evaluated on the calibration basis where iota(R), the eligibility coordinate, the vacuity and iota_A are all measured on the same 192 topics at the same four draws"
+    ],
+    "realised": {
+     "core_references": 3,
+     "feature_groups": [
+      "marker_instead",
+      "marker_namely",
+      "marker_thus"
+     ],
+     "frozen_backups": [
+      "CR6",
+      "MK2"
+     ],
+     "qualified_families": 11,
+     "structurally_eligible_tier12_families": 11,
+     "tier1_core": 3
+    },
+    "support_met": false
+   },
+   "terminal_gate": "PREFREEZE_AUDIT",
+   "terminal_status": "PREFREEZE_AUDIT_FAILURE",
+   "timeline": [
+    {
+     "at": "2026-08-28T05:04:15+00:00",
+     "commit": "ed0446ff58d0",
+     "outcome": "PASS",
+     "stage": "PROTOCOL_REGISTERED"
+    },
+    {
+     "at": "2026-08-28T06:14:55+00:00",
+     "commit": "a4d35f684bb8",
+     "outcome": "PASS",
+     "stage": "QUALIFIED"
+    },
+    {
+     "at": "2026-08-28T06:18:42+00:00",
+     "commit": "a4d35f684bb8",
+     "outcome": "PASS",
+     "stage": "GATE_0_APPARATUS"
+    },
+    {
+     "at": "2026-08-28T06:33:30+00:00",
+     "commit": "a4d35f684bb8",
+     "outcome": "PASS",
+     "stage": "REGIME_SCREEN"
+    },
+    {
+     "at": "2026-08-28T06:35:44+00:00",
+     "commit": "a4d35f684bb8",
+     "outcome": "PASS",
+     "stage": "GATE_1_MEASUREMENT"
+    },
+    {
+     "at": "2026-08-28T08:49:52+00:00",
+     "commit": "a4d35f684bb8",
+     "outcome": "PASS",
+     "stage": "GATE_2_FOCAL_CALIBRATION"
+    },
+    {
+     "at": "2026-08-28T08:49:58+00:00",
+     "commit": "0f56bce826b8",
+     "outcome": "PASS",
+     "stage": "GATE_2_5_CANDIDATE_QUALIFICATION"
+    },
+    {
+     "at": "2026-08-28T09:21:37+00:00",
+     "commit": "0f56bce826b8",
+     "outcome": "PASS",
+     "stage": "GATE_2_75_COMPOSED_PROBE"
+    },
+    {
+     "at": "2026-08-28T09:22:30+00:00",
+     "commit": "0f56bce826b8",
+     "outcome": "PASS",
+     "stage": "GATE_3A_REFERENCE_CALIBRATION"
+    },
+    {
+     "at": "2026-08-28T09:22:30+00:00",
+     "commit": "0f56bce826b8",
+     "outcome": "PASS",
+     "stage": "GATE_3B_REFERENCE_SELECTION"
+    },
+    {
+     "at": "2026-08-28T09:22:31+00:00",
+     "commit": "0f56bce826b8",
+     "outcome": "PASS",
+     "stage": "GATE_3C_IDENTIFICATION"
+    },
+    {
+     "at": "2026-08-28T13:05:11+00:00",
+     "commit": "0f56bce826b8",
+     "outcome": "PASS",
+     "stage": "GATE_4_COMPOSED_CONTRAST"
+    },
+    {
+     "at": "2026-08-28T13:05:11+00:00",
+     "commit": "0f56bce826b8",
+     "outcome": "TERMINAL",
+     "stage": "PREFREEZE_AUDIT"
+    }
+   ]
+  },
+  "qwen3-4b-instruct-2507": {
+   "admitted_arms": [
+    "base"
+   ],
+   "artifact_checks": {
+    "failed": 1,
+    "n": 26,
+    "unresolved": 0
+   },
+   "behavioural_rows": 118176,
+   "blocked_checks": [
+    "support_satisfied"
+   ],
+   "coverage_12_6": {
+    "certified_conditions": {
+     "C1": true,
+     "C2": true,
+     "C3": true,
+     "C4": true,
+     "C5": true,
+     "C6": true,
+     "C7": true,
+     "C8": true
+    },
+    "conditions_moved_by_the_basis": [
+     "C4",
+     "C8"
+    ],
+    "conditions_on_calibration_basis": {
+     "C1": true,
+     "C2": true,
+     "C3": true,
+     "C4": false,
+     "C5": true,
+     "C6": true,
+     "C7": true,
+     "C8": false
+    },
+    "core_met": null,
+    "decisive_met": false,
+    "iota_a": 0.5399,
+    "n_eligible": 65,
+    "spectrum_met": null,
+    "straddling_groups": [
+     "marker_overall",
+     "marker_though",
+     "marker_whereas",
+     "semicolon"
+    ]
+   },
+   "delta_r_identified": false,
+   "derived_cell_count": 5,
+   "gate4": {
+    "any_structural_zero": false,
+    "contrast_statuses": [
+     "COMPOSED_CONTRAST_RANGE_COMPRESSED"
+    ],
+    "rows": 480,
+    "terminates_nothing": true
+   },
+   "identification_statuses": [
+    "CLASS_ARM_NOT_AVAILABLE",
+    "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+    "EXCESS_NOT_IDENTIFIED",
+    "NEAR_FORM_ARM_NOT_AVAILABLE",
+    "REFERENCE_POOL_SAME_FORM",
+    "REFERENCE_SUPPORT_NOT_IDENTIFIED"
+   ],
+   "m_star": 11,
+   "model_key": "qwen3-4b-instruct-2507",
+   "n_star": 5,
+   "probe": {
+    "contrast_statuses": [
+     "COMPOSED_CONTRAST_RANGE_COMPRESSED"
+    ],
+    "contrasts": {
+     "D(A<-B)|outcome_first": {
+      "estimate": -0.0495,
+      "statuses": []
+     },
+     "D(A<-B)|outcome_second": {
+      "estimate": -0.0391,
+      "statuses": []
+     },
+     "D(B<-A)|outcome_first": {
+      "estimate": -0.138,
+      "statuses": [
+       "COMPOSED_CONTRAST_RANGE_COMPRESSED"
+      ]
+     },
+     "D(B<-A)|outcome_second": {
+      "estimate": -0.1159,
+      "statuses": []
+     },
+     "Lambda|outcome_first": {
+      "estimate": -0.0885,
+      "statuses": []
+     },
+     "Lambda|outcome_second": {
+      "estimate": -0.0768,
+      "statuses": []
+     },
+     "Ord_A|cross": {
+      "estimate": -0.0104,
+      "statuses": []
+     },
+     "Ord_B|cross": {
+      "estimate": -0.0221,
+      "statuses": [
+       "COMPOSED_CONTRAST_RANGE_COMPRESSED"
+      ]
+     },
+     "Ord_Lambda|cross": {
+      "estimate": -0.0117,
+      "statuses": []
+     }
+    },
+    "decides": "nothing",
+    "determinate_entries": {
+     "pair:A+B@outcome_first": 0.6146,
+     "pair:A+B@outcome_second": 0.8932,
+     "pair:B+A@outcome_first": 0.9154,
+     "pair:B+A@outcome_second": 0.6042,
+     "solo:A@None": 0.5651,
+     "solo:B@None": 0.7773
+    },
+    "what_this_is": "the composed contrasts at the frozen m*, on the calibration topics, before any reference exists: a projection of what the confirmatory blocks will estimate, labelled as one and read by no rule. The same readings are recomputed at Gate 4 on the composed set and at UNMASKED_ANALYSIS on the 384 blocks"
+   },
+   "stage_reached": "GATE_4_COMPOSED_CONTRAST",
+   "support": {
+    "disposition": "REFERENCE_SUPPORT_NOT_IDENTIFIED",
+    "failures": [
+     "\u00a712.6: the identification-coverage criterion is not met at the iota_A reference selection matches on, evaluated on the calibration basis where iota(R), the eligibility coordinate, the vacuity and iota_A are all measured on the same 192 topics at the same four draws"
+    ],
+    "realised": {
+     "core_references": 3,
+     "feature_groups": [
+      "marker_though",
+      "marker_thus",
+      "marker_whereas"
+     ],
+     "frozen_backups": [
+      "CR6",
+      "MK2"
+     ],
+     "qualified_families": 11,
+     "structurally_eligible_tier12_families": 11,
+     "tier1_core": 3
+    },
+    "support_met": false
+   },
+   "terminal_gate": "PREFREEZE_AUDIT",
+   "terminal_status": "PREFREEZE_AUDIT_FAILURE",
+   "timeline": [
+    {
+     "at": "2026-08-28T05:04:15+00:00",
+     "commit": "ed0446ff58d0",
+     "outcome": "PASS",
+     "stage": "PROTOCOL_REGISTERED"
+    },
+    {
+     "at": "2026-08-28T06:14:55+00:00",
+     "commit": "a4d35f684bb8",
+     "outcome": "PASS",
+     "stage": "QUALIFIED"
+    },
+    {
+     "at": "2026-08-28T06:19:29+00:00",
+     "commit": "a4d35f684bb8",
+     "outcome": "PASS",
+     "stage": "GATE_0_APPARATUS"
+    },
+    {
+     "at": "2026-08-28T06:36:41+00:00",
+     "commit": "a4d35f684bb8",
+     "outcome": "PASS",
+     "stage": "REGIME_SCREEN"
+    },
+    {
+     "at": "2026-08-28T06:39:01+00:00",
+     "commit": "a4d35f684bb8",
+     "outcome": "PASS",
+     "stage": "GATE_1_MEASUREMENT"
+    },
+    {
+     "at": "2026-08-28T09:38:12+00:00",
+     "commit": "0f56bce826b8",
+     "outcome": "PASS",
+     "stage": "GATE_2_FOCAL_CALIBRATION"
+    },
+    {
+     "at": "2026-08-28T09:38:13+00:00",
+     "commit": "0f56bce826b8",
+     "outcome": "PASS",
+     "stage": "GATE_2_5_CANDIDATE_QUALIFICATION"
+    },
+    {
+     "at": "2026-08-28T13:50:55+00:00",
+     "commit": "0f56bce826b8",
+     "outcome": "PASS",
+     "stage": "GATE_2_75_COMPOSED_PROBE"
+    },
+    {
+     "at": "2026-08-28T13:51:48+00:00",
+     "commit": "0f56bce826b8",
+     "outcome": "PASS",
+     "stage": "GATE_3A_REFERENCE_CALIBRATION"
+    },
+    {
+     "at": "2026-08-28T13:51:48+00:00",
+     "commit": "0f56bce826b8",
+     "outcome": "PASS",
+     "stage": "GATE_3B_REFERENCE_SELECTION"
+    },
+    {
+     "at": "2026-08-28T13:51:48+00:00",
+     "commit": "0f56bce826b8",
+     "outcome": "PASS",
+     "stage": "GATE_3C_IDENTIFICATION"
+    },
+    {
+     "at": "2026-08-28T13:52:38+00:00",
+     "commit": "0f56bce826b8",
+     "outcome": "PASS",
+     "stage": "GATE_4_COMPOSED_CONTRAST"
+    },
+    {
+     "at": "2026-08-28T13:52:38+00:00",
+     "commit": "0f56bce826b8",
+     "outcome": "TERMINAL",
+     "stage": "PREFREEZE_AUDIT"
+    }
+   ]
+  }
+ },
+ "study_id": "dci1v7"
+}

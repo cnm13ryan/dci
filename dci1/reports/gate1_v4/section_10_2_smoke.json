@@ -1,0 +1,591 @@
+{
+ "adversarial_corpus": {
+  "corpus_size": 372,
+  "coverage": {
+   "adjacent-punctuation": 276,
+   "apostrophised-form": 15,
+   "capitalisation-of-target": 47,
+   "combining-marks": 5,
+   "concatenated-copies": 15,
+   "digits-adjacent-to-words": 7,
+   "empty-output": 7,
+   "hyphenation": 11,
+   "markdown-emphasis": 14,
+   "non-breaking-and-soft-hyphen": 17,
+   "non-latin-script": 46,
+   "repeated-words": 59,
+   "sentence-boundary-punctuation": 16,
+   "single-token-output": 21,
+   "target-inside-longer-word": 15,
+   "unicode-lookalikes": 12,
+   "unicode-punctuation": 13,
+   "zero-width-characters": 19
+  },
+  "genuine_generations": 60,
+  "incidence_over_the_targeted_corpus": {
+   "adjacent-punctuation": {
+    "count": 276,
+    "rate": 0.7419354838709677
+   },
+   "apostrophised-form": {
+    "count": 15,
+    "rate": 0.04032258064516129
+   },
+   "capitalisation-of-target": {
+    "count": 47,
+    "rate": 0.12634408602150538
+   },
+   "combining-marks": {
+    "count": 5,
+    "rate": 0.013440860215053764
+   },
+   "concatenated-copies": {
+    "count": 15,
+    "rate": 0.04032258064516129
+   },
+   "digits-adjacent-to-words": {
+    "count": 7,
+    "rate": 0.01881720430107527
+   },
+   "empty-output": {
+    "count": 7,
+    "rate": 0.01881720430107527
+   },
+   "hyphenation": {
+    "count": 11,
+    "rate": 0.02956989247311828
+   },
+   "markdown-emphasis": {
+    "count": 14,
+    "rate": 0.03763440860215054
+   },
+   "non-breaking-and-soft-hyphen": {
+    "count": 17,
+    "rate": 0.0456989247311828
+   },
+   "non-latin-script": {
+    "count": 46,
+    "rate": 0.12365591397849462
+   },
+   "repeated-words": {
+    "count": 59,
+    "rate": 0.1586021505376344
+   },
+   "sentence-boundary-punctuation": {
+    "count": 16,
+    "rate": 0.043010752688172046
+   },
+   "single-token-output": {
+    "count": 21,
+    "rate": 0.056451612903225805
+   },
+   "target-inside-longer-word": {
+    "count": 15,
+    "rate": 0.04032258064516129
+   },
+   "unicode-lookalikes": {
+    "count": 12,
+    "rate": 0.03225806451612903
+   },
+   "unicode-punctuation": {
+    "count": 13,
+    "rate": 0.03494623655913978
+   },
+   "zero-width-characters": {
+    "count": 19,
+    "rate": 0.051075268817204304
+   }
+  },
+  "line": "adversarial corpus",
+  "note": "realised incidence is over the deduplicated natural pool; a case with zero natural incidence is exercised by the targeted corpus and by the frozen boundary suite, which is what \u00a710.2 requires of it",
+  "realised_incidence_in_genuine_generations": {
+   "adjacent-punctuation": {
+    "count": 60,
+    "rate": 1.0
+   },
+   "apostrophised-form": {
+    "count": 56,
+    "rate": 0.9333333333333333
+   },
+   "capitalisation-of-target": {
+    "count": 16,
+    "rate": 0.26666666666666666
+   },
+   "combining-marks": {
+    "count": 0,
+    "rate": 0.0
+   },
+   "concatenated-copies": {
+    "count": 0,
+    "rate": 0.0
+   },
+   "digits-adjacent-to-words": {
+    "count": 9,
+    "rate": 0.15
+   },
+   "empty-output": {
+    "count": 0,
+    "rate": 0.0
+   },
+   "hyphenation": {
+    "count": 49,
+    "rate": 0.8166666666666667
+   },
+   "markdown-emphasis": {
+    "count": 58,
+    "rate": 0.9666666666666667
+   },
+   "non-breaking-and-soft-hyphen": {
+    "count": 0,
+    "rate": 0.0
+   },
+   "non-latin-script": {
+    "count": 0,
+    "rate": 0.0
+   },
+   "repeated-words": {
+    "count": 14,
+    "rate": 0.23333333333333334
+   },
+   "sentence-boundary-punctuation": {
+    "count": 10,
+    "rate": 0.16666666666666666
+   },
+   "single-token-output": {
+    "count": 0,
+    "rate": 0.0
+   },
+   "target-inside-longer-word": {
+    "count": 0,
+    "rate": 0.0
+   },
+   "unicode-lookalikes": {
+    "count": 0,
+    "rate": 0.0
+   },
+   "unicode-punctuation": {
+    "count": 18,
+    "rate": 0.3
+   },
+   "zero-width-characters": {
+    "count": 0,
+    "rate": 0.0
+   }
+  }
+ },
+ "artifact": "\u00a710.2 verifier-correctness evidence for A and B",
+ "boundary_suite": {
+  "A": {
+   "agreement": 1.0,
+   "authored_for_v4": 8,
+   "carried_from_v3": 40,
+   "cases": 48,
+   "coverage_categories": [
+    "adjacent-punctuation",
+    "capitalisation",
+    "combining-marks",
+    "concatenated-copies",
+    "empty-response",
+    "hyphenation",
+    "non-breaking-and-soft-hyphen",
+    "non-latin-characters",
+    "repeated-words",
+    "sentence-boundary-punctuation",
+    "truncation-mid-word",
+    "unicode-lookalikes",
+    "unicode-punctuation",
+    "zero-width-characters"
+   ],
+   "meets_minimum": true,
+   "minimum_required": 40
+  },
+  "B": {
+   "agreement": 1.0,
+   "authored_for_v4": 45,
+   "carried_from_v3": 0,
+   "cases": 45,
+   "coverage_categories": [
+    "adjacent-punctuation",
+    "apostrophised-forms",
+    "capitalisation",
+    "comma-budget",
+    "digits-and-symbols-adjacent",
+    "doubled-letters",
+    "empty-output",
+    "extreme-word-length",
+    "hyphenated-forms",
+    "initial-letter-b",
+    "letter-a",
+    "markdown-emphasis",
+    "non-latin-script",
+    "repeated-words",
+    "sentence-boundary-punctuation",
+    "single-letter-words",
+    "single-token-output",
+    "suffix-ing",
+    "suffix-y",
+    "unicode-lookalikes",
+    "unicode-punctuation",
+    "zero-width-characters"
+   ],
+   "meets_minimum": true,
+   "minimum_required": 40
+  },
+  "carried_specification_hash": "5d1bb797165b47810c1286f4d85dc343e88a44be7cd6466de3ace1ed2ad667cd",
+  "coverage_counts": {
+   "focal_cases": 45,
+   "focal_coverage_categories": 22,
+   "target_cases": 48,
+   "target_coverage_categories": 14
+  },
+  "failures": [],
+  "frozen_before": "qualification; the case texts and expected verdicts are literals in verifiers/boundary.py and are inside the canonical verifier hash",
+  "line": "boundary suite",
+  "suite_hash": "c996a52ecbff834e04268d9b34001910cb246f59e65a4e9c208796f59550d44c"
+ },
+ "canonical_verifier_hash": "f5d4f7e74e757769ec43d7007b0121687fa4b5b388184e5ef32b171ea7580ee4",
+ "carry_over": {
+  "applies_to": "A only; B is authored for v4 in full and carries nothing",
+  "boundary_record": {
+   "cases": 40,
+   "specification_bytes": 2855,
+   "v3_sha256": "5d1bb797165b47810c1286f4d85dc343e88a44be7cd6466de3ace1ed2ad667cd",
+   "v3_source": "/home/cnm13ryan/git/dci/dci1/src/dci1v3/verifiers/boundary.py",
+   "v4_sha256": "5d1bb797165b47810c1286f4d85dc343e88a44be7cd6466de3ace1ed2ad667cd"
+  },
+  "line": "carry-over",
+  "refusal_detail": null,
+  "refused": false,
+  "rule": "A's instrument may supply carried evidence only when the construct string, the segmentation source, the counting source and the forty case texts with their expectations are byte-identical to the v3 artifacts",
+  "symbol_record": {
+   "boundary": {
+    "cases": 40,
+    "specification_bytes": 2855,
+    "v3_sha256": "5d1bb797165b47810c1286f4d85dc343e88a44be7cd6466de3ace1ed2ad667cd",
+    "v3_source": "/home/cnm13ryan/git/dci/dci1/src/dci1v3/verifiers/boundary.py",
+    "v4_sha256": "5d1bb797165b47810c1286f4d85dc343e88a44be7cd6466de3ace1ed2ad667cd"
+   },
+   "construct_string": "however",
+   "entries": [
+    {
+     "function": "alpha_runs",
+     "identical": true,
+     "module": "words.py",
+     "role": "carry_over",
+     "v3_module": "words.py",
+     "v3_sha256": "20ec7170695411330562ba856aca3313411ecc503c310269c8039d6dc64181ea",
+     "v4_sha256": "20ec7170695411330562ba856aca3313411ecc503c310269c8039d6dc64181ea"
+    },
+    {
+     "function": "words_lower",
+     "identical": true,
+     "module": "words.py",
+     "role": "carry_over",
+     "v3_module": "words.py",
+     "v3_sha256": "ead3e1d34053d8fe85e951e20b76f2b0ac324896c9757648ca48c21e85345043",
+     "v4_sha256": "ead3e1d34053d8fe85e951e20b76f2b0ac324896c9757648ca48c21e85345043"
+    },
+    {
+     "function": "TARGET_WORD",
+     "identical": true,
+     "module": "target.py",
+     "role": "carry_over",
+     "v3_module": "target.py",
+     "v3_sha256": "77cc94b8a087c671a1540541946a2ea995e4e19a70e99f64a4f75e4391af1a6a",
+     "v4_sha256": "77cc94b8a087c671a1540541946a2ea995e4e19a70e99f64a4f75e4391af1a6a"
+    },
+    {
+     "function": "s0_count",
+     "identical": true,
+     "module": "target.py",
+     "role": "carry_over",
+     "v3_module": "target.py",
+     "v3_sha256": "066989e8eeb60865dd5184a28c81fed995af04d89b2a406cc294ab1fa8773b8f",
+     "v4_sha256": "066989e8eeb60865dd5184a28c81fed995af04d89b2a406cc294ab1fa8773b8f"
+    },
+    {
+     "function": "s1_count",
+     "identical": true,
+     "module": "target.py",
+     "role": "carry_over",
+     "v3_module": "target.py",
+     "v3_sha256": "ecdcb1565f5c4bcf53a66fca409d58fbbabb98d932844afc7689ea556fb58f53",
+     "v4_sha256": "ecdcb1565f5c4bcf53a66fca409d58fbbabb98d932844afc7689ea556fb58f53"
+    },
+    {
+     "function": "s2_count",
+     "identical": true,
+     "module": "target.py",
+     "role": "carry_over",
+     "v3_module": "target.py",
+     "v3_sha256": "265981cf4d32622761a549f214f6da4d7cd88ab478147eb1ffaa93f67c86d409",
+     "v4_sha256": "265981cf4d32622761a549f214f6da4d7cd88ab478147eb1ffaa93f67c86d409"
+    },
+    {
+     "function": "s3_preprocess",
+     "identical": true,
+     "module": "target.py",
+     "role": "carry_over",
+     "v3_module": "target.py",
+     "v3_sha256": "5b531dadbd2e777bdf862456b11160452ce7714e99840604d48b572d301bdf3e",
+     "v4_sha256": "5b531dadbd2e777bdf862456b11160452ce7714e99840604d48b572d301bdf3e"
+    },
+    {
+     "function": "s3_count",
+     "identical": true,
+     "module": "target.py",
+     "role": "carry_over",
+     "v3_module": "target.py",
+     "v3_sha256": "d2e1b9b342daa828ab7c17d959e6cdb30493c54d0c3105bb88e603815cec4dbc",
+     "v4_sha256": "d2e1b9b342daa828ab7c17d959e6cdb30493c54d0c3105bb88e603815cec4dbc"
+    },
+    {
+     "function": "focal_statistic",
+     "identical": true,
+     "module": "statistics.py",
+     "role": "compatibility",
+     "v3_module": "families.py",
+     "v3_sha256": "a5ef7a31b7e0d7f9ca6d5e00e64ee29f785c5b85b69a786c356a7d129a33897b",
+     "v4_sha256": "a5ef7a31b7e0d7f9ca6d5e00e64ee29f785c5b85b69a786c356a7d129a33897b"
+    },
+    {
+     "function": "_rf1",
+     "identical": true,
+     "module": "statistics.py",
+     "role": "compatibility",
+     "v3_module": "families.py",
+     "v3_sha256": "1613ea8ec05b54b350ebeb283ba4661757e6f23474181c324574e4a1da9f2cc5",
+     "v4_sha256": "1613ea8ec05b54b350ebeb283ba4661757e6f23474181c324574e4a1da9f2cc5"
+    },
+    {
+     "function": "_rf2",
+     "identical": true,
+     "module": "statistics.py",
+     "role": "compatibility",
+     "v3_module": "families.py",
+     "v3_sha256": "0a556e22f6be015f6e91b804d822b4f6aa3309ed984b1a7e6a11ba8a6a9922a6",
+     "v4_sha256": "0a556e22f6be015f6e91b804d822b4f6aa3309ed984b1a7e6a11ba8a6a9922a6"
+    },
+    {
+     "function": "_rf3",
+     "identical": true,
+     "module": "statistics.py",
+     "role": "compatibility",
+     "v3_module": "families.py",
+     "v3_sha256": "4a01857b5ab27202c5a8dfd949cdf82d7f4e9b07db9f01fb37753af31fea9e16",
+     "v4_sha256": "4a01857b5ab27202c5a8dfd949cdf82d7f4e9b07db9f01fb37753af31fea9e16"
+    },
+    {
+     "function": "_rf4",
+     "identical": true,
+     "module": "statistics.py",
+     "role": "compatibility",
+     "v3_module": "families.py",
+     "v3_sha256": "a72654791f685b6423b40d7c04ef9c6a9cdcc1dbd7923f2a28414c9cdcd3f85c",
+     "v4_sha256": "a72654791f685b6423b40d7c04ef9c6a9cdcc1dbd7923f2a28414c9cdcd3f85c"
+    },
+    {
+     "function": "_rf5",
+     "identical": true,
+     "module": "statistics.py",
+     "role": "compatibility",
+     "v3_module": "families.py",
+     "v3_sha256": "f70ee92300e8d46bb8a31e280c317890c505fdd3cb16e644f682ef1ef43a65af",
+     "v4_sha256": "f70ee92300e8d46bb8a31e280c317890c505fdd3cb16e644f682ef1ef43a65af"
+    },
+    {
+     "function": "_rf6",
+     "identical": true,
+     "module": "statistics.py",
+     "role": "compatibility",
+     "v3_module": "families.py",
+     "v3_sha256": "732b567b40d4830d59d317ebd47e890f7e26e195c309ed9709d9312f03c16d37",
+     "v4_sha256": "732b567b40d4830d59d317ebd47e890f7e26e195c309ed9709d9312f03c16d37"
+    },
+    {
+     "function": "_rf7",
+     "identical": true,
+     "module": "statistics.py",
+     "role": "compatibility",
+     "v3_module": "families.py",
+     "v3_sha256": "16f8f7375e20f7c690f6edf1fb24599a8069ce214aefd51d7888a9ffb24b72b7",
+     "v4_sha256": "16f8f7375e20f7c690f6edf1fb24599a8069ce214aefd51d7888a9ffb24b72b7"
+    },
+    {
+     "function": "_rf8",
+     "identical": true,
+     "module": "statistics.py",
+     "role": "compatibility",
+     "v3_module": "families.py",
+     "v3_sha256": "73229abfcad655d00a446c59d80d688dcbb54de386e5ac9769f92f7f2db5c9a4",
+     "v4_sha256": "73229abfcad655d00a446c59d80d688dcbb54de386e5ac9769f92f7f2db5c9a4"
+    }
+   ],
+   "provenance": "the v3 files are read as data for this comparison and are never imported, executed or modified",
+   "record_hash": "07d63316a0c1e36e7c0b31aad70fad71d95b947e7c1e21f54d6d2775beddeb8b",
+   "rule": "DCI1_preregistration_v4r2.md \u00a710.2",
+   "v3_source": "/home/cnm13ryan/git/dci/dci1/src/dci1v3/verifiers"
+  }
+ },
+ "classification": "Gate 1 input evidence. Gate 1 is NOT approved by this artifact and remains unapproved.",
+ "determinism": {
+  "agreement": 1.0,
+  "all_batches_exactly_one": true,
+  "batches": 1,
+  "instruments": 12,
+  "line": "determinism",
+  "note": "batched only to bound the subprocess payload; every response is still covered by three separate processes, and the reported agreement is the minimum over batches",
+  "processes_per_batch": 3,
+  "processes_total": 3,
+  "responses": 60,
+  "seconds": 0.5,
+  "verdicts_per_process": 720
+ },
+ "independent_reimplementation": {
+  "agreement": {
+   "A@1": 1.0,
+   "A@2": 1.0,
+   "A@3": 1.0,
+   "A@4": 1.0,
+   "A@5": 1.0,
+   "A@6": 1.0,
+   "A@7": 1.0,
+   "A@8": 1.0,
+   "B@10": 1.0,
+   "B@7": 1.0,
+   "B@8": 1.0,
+   "B@9": 1.0
+  },
+  "all_exactly_one": true,
+  "disagreements": [],
+  "line": "independent reimplementation",
+  "minimum_agreement": 1.0,
+  "responses_including_suites": 153,
+  "seconds": 0.2,
+  "source_material": "the registered prose of v4r2 \u00a77.1, \u00a77.2, \u00a77.4, \u00a79.2 and \u00a79.3 only; the reimplementation imports nothing from dci1v4.verifiers"
+ },
+ "response_pool": {
+  "distinct_texts": 13953,
+  "is_smoke_run": true,
+  "limitation": "Gate 2 has not run, so no solo-calibration response exists. The \u00a710.2 determinism and reimplementation lines must be re-run over the calibration pool when it exists; this establishes them over every natural response that exists at Gate 1.",
+  "pool_hash": "ec0462a46d1f35113ee42f80fb3b930b4f5cbf4e8661224e47391d882e37eb0e",
+  "provenance": "the \u00a712.2 dense ladder screen, the three \u00a712.1 cap screens and the Gate 0 pilot, on all four registered models, read from evidence/dci1-v4 without regeneration",
+  "rows_read": 16128,
+  "sources": [
+   {
+    "path": "evidence/dci1-v4/gemma-3n-e2b-it/pilot/pilot-cap768/cache.jsonl",
+    "rows": 1200
+   },
+   {
+    "path": "evidence/dci1-v4/gemma-3n-e2b-it/prescreen/capscreen-cap1024/cache.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1-v4/gemma-3n-e2b-it/prescreen/capscreen-cap512/cache.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1-v4/gemma-3n-e2b-it/prescreen/capscreen-cap768/cache.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1-v4/gemma-3n-e2b-it/prescreen/ladder-cap512/cache.jsonl",
+    "rows": 2544
+   },
+   {
+    "path": "evidence/dci1-v4/gemma-3n-e4b-it/pilot/pilot-cap768/cache.jsonl",
+    "rows": 1200
+   },
+   {
+    "path": "evidence/dci1-v4/gemma-3n-e4b-it/prescreen/capscreen-cap1024/cache.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1-v4/gemma-3n-e4b-it/prescreen/capscreen-cap512/cache.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1-v4/gemma-3n-e4b-it/prescreen/capscreen-cap768/cache.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1-v4/gemma-3n-e4b-it/prescreen/ladder-cap512/cache.jsonl",
+    "rows": 2544
+   },
+   {
+    "path": "evidence/dci1-v4/qwen3-4b/pilot/pilot-cap768/cache.jsonl",
+    "rows": 1200
+   },
+   {
+    "path": "evidence/dci1-v4/qwen3-4b/prescreen/capscreen-cap1024/cache.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1-v4/qwen3-4b/prescreen/capscreen-cap512/cache.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1-v4/qwen3-4b/prescreen/capscreen-cap768/cache.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1-v4/qwen3-4b/prescreen/ladder-cap512/cache.jsonl",
+    "rows": 2544
+   },
+   {
+    "path": "evidence/dci1-v4/qwen3-4b-instruct-2507/pilot/pilot-cap768/cache.jsonl",
+    "rows": 1200
+   },
+   {
+    "path": "evidence/dci1-v4/qwen3-4b-instruct-2507/prescreen/capscreen-cap1024/cache.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1-v4/qwen3-4b-instruct-2507/prescreen/capscreen-cap512/cache.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1-v4/qwen3-4b-instruct-2507/prescreen/capscreen-cap768/cache.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1-v4/qwen3-4b-instruct-2507/prescreen/ladder-cap512/cache.jsonl",
+    "rows": 2544
+   }
+  ],
+  "texts_used": 60
+ },
+ "scope": {
+  "in_scope": [
+   "A: the exact-count rule",
+   "B: the word-length rule"
+  ],
+  "instruments": [
+   "A@1",
+   "A@2",
+   "A@3",
+   "A@4",
+   "A@5",
+   "A@6",
+   "A@7",
+   "A@8",
+   "B@7",
+   "B@8",
+   "B@9",
+   "B@10"
+  ],
+  "out_of_scope": "every reference family verifier; the pool is under revision and Gate 1 cannot be approved until it is final"
+ },
+ "summary": {
+  "A_and_B_meet_10_2": true,
+  "boundary_agreement_exactly_one": true,
+  "carry_over_refused": false,
+  "determinism_exactly_one": true,
+  "reimplementation_exactly_one": true,
+  "still_outstanding_before_gate_1": [
+   "\u00a710.2 for every family verifier the final pool admits",
+   "\u00a710.4 judge selection and one-shot calibration",
+   "explicit researcher approval of the measurement basis"
+  ]
+ }
+}

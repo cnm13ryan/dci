@@ -1,0 +1,578 @@
+[
+ {
+  "topic_id": "everyday-science-b01",
+  "area": "everyday science",
+  "question": "Why does a torch beam become visible in a dusty room?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "everyday-science-b02",
+  "area": "everyday science",
+  "question": "Why does a pot of water boil sooner with a lid on it?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "everyday-science-b03",
+  "area": "everyday science",
+  "question": "Why do cracks in a windscreen spread long after the impact?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "everyday-science-b04",
+  "area": "everyday science",
+  "question": "How does a hot air balloon control the height it flies at?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "everyday-science-b05",
+  "area": "everyday science",
+  "question": "Why does a wooden door stick in wet weather?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "everyday-science-b06",
+  "area": "everyday science",
+  "question": "Why does a bowl of soup cool faster than a mug holding the same amount?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "everyday-science-b07",
+  "area": "everyday science",
+  "question": "How does a zip stay closed under strain?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "everyday-science-b08",
+  "area": "everyday science",
+  "question": "Why does a dropped glass sometimes bounce and sometimes shatter?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "history-b01",
+  "area": "history",
+  "question": "Why did some empires invest heavily in roads they rarely travelled?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "history-b02",
+  "area": "history",
+  "question": "Why did some cities keep their walls long after they stopped defending them?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "history-b03",
+  "area": "history",
+  "question": "How did the rise of written contracts change who could do business with whom?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "history-b04",
+  "area": "history",
+  "question": "Why did coastal towns often develop differently from inland ones under the same ruler?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "history-b05",
+  "area": "history",
+  "question": "Why did some royal courts move constantly while others stayed in one place?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "history-b06",
+  "area": "history",
+  "question": "How did the drawing of a new border change the people on both sides of it?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "history-b07",
+  "area": "history",
+  "question": "Why did some occupations lose standing while others gained it?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "history-b08",
+  "area": "history",
+  "question": "Why do accounts of the same battle differ so much between the sides that fought it?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "geography-b01",
+  "area": "geography",
+  "question": "How does the boundary of a national park change the land just outside it?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "geography-b02",
+  "area": "geography",
+  "question": "Why do earthquakes of similar strength cause such different damage?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "geography-b03",
+  "area": "geography",
+  "question": "How does a city's water supply set the limit of its growth?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "geography-b04",
+  "area": "geography",
+  "question": "How does a long drought change a farming region permanently?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "geography-b05",
+  "area": "geography",
+  "question": "Why do some rural districts lose population while their neighbours hold steady?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "geography-b06",
+  "area": "geography",
+  "question": "How does a new bridge change the two places it joins?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "geography-b07",
+  "area": "geography",
+  "question": "Why are the frontiers between some climates so abrupt?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "geography-b08",
+  "area": "geography",
+  "question": "How does peat change the ground it forms on?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "food-b01",
+  "area": "food",
+  "question": "Why does the same recipe taste different when cooked in a much larger batch?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "food-b02",
+  "area": "food",
+  "question": "How does the size of a gathering change the way a meal is planned?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "food-b03",
+  "area": "food",
+  "question": "Why do people disagree so strongly about how a familiar dish should be made?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "food-b04",
+  "area": "food",
+  "question": "How does a cook judge doneness without a timer?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "food-b05",
+  "area": "food",
+  "question": "Why do children reject foods they later come to enjoy?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "food-b06",
+  "area": "food",
+  "question": "How does the way food is presented change the way it tastes?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "food-b07",
+  "area": "food",
+  "question": "How does a household decide what counts as a proper meal?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "food-b08",
+  "area": "food",
+  "question": "Why do celebration foods change more slowly than everyday ones?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "music-b01",
+  "area": "music",
+  "question": "Why does a familiar piece sound different once someone has learned to play it?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "music-b02",
+  "area": "music",
+  "question": "Why do some songs feel slower than the tempo they are played at?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "music-b03",
+  "area": "music",
+  "question": "Why do some ensembles sound like one instrument and others like many?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "music-b04",
+  "area": "music",
+  "question": "Why do some instruments dominate an ensemble without playing louder?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "music-b05",
+  "area": "music",
+  "question": "Why do encores follow such predictable patterns?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "music-b06",
+  "area": "music",
+  "question": "Why do performers describe some passages as harder than they sound?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "music-b07",
+  "area": "music",
+  "question": "How does an amateur choir differ from a professional one in what it can attempt?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "music-b08",
+  "area": "music",
+  "question": "Why do some pieces reward repeated listening and others do not?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "sport-b01",
+  "area": "sport",
+  "question": "Why do the rules of a sport differ between its amateur and professional forms?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "sport-b02",
+  "area": "sport",
+  "question": "How does an early decision by an official shape the rest of a match?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "sport-b03",
+  "area": "sport",
+  "question": "Why do some contests stay tense long after the result is settled?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "sport-b04",
+  "area": "sport",
+  "question": "How does prize money change the way a sport is played?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "sport-b05",
+  "area": "sport",
+  "question": "Why do teams that dominate possession sometimes lose?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "sport-b06",
+  "area": "sport",
+  "question": "How does a governing body decide what counts as an unfair advantage?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "sport-b07",
+  "area": "sport",
+  "question": "How does an athlete decide when to retire?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "sport-b08",
+  "area": "sport",
+  "question": "Why do commentators and coaches describe the same match so differently?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "work-and-organisations-b01",
+  "area": "work and organisations",
+  "question": "Why do temporary arrangements in a workplace become permanent?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "work-and-organisations-b02",
+  "area": "work and organisations",
+  "question": "How does an organisation notice that a job has quietly changed?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "work-and-organisations-b03",
+  "area": "work and organisations",
+  "question": "Why do meetings multiply as an organisation grows?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "work-and-organisations-b04",
+  "area": "work and organisations",
+  "question": "How does a team work differently when half of its members are new?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "work-and-organisations-b05",
+  "area": "work and organisations",
+  "question": "Why do the people closest to a problem often have the least say in fixing it?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "work-and-organisations-b06",
+  "area": "work and organisations",
+  "question": "How does an organisation choose between two things it calls priorities?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "work-and-organisations-b07",
+  "area": "work and organisations",
+  "question": "Why does an apology from an organisation so often land badly?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "work-and-organisations-b08",
+  "area": "work and organisations",
+  "question": "Why does a job advertisement so often describe a different role from the one that exists?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "health-and-the-body-b01",
+  "area": "health and the body",
+  "question": "Why does pain sometimes appear far from its source?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "health-and-the-body-b02",
+  "area": "health and the body",
+  "question": "How does the body hold its temperature steady during a long walk in the heat?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "health-and-the-body-b03",
+  "area": "health and the body",
+  "question": "How does a person's sense of balance change with age?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "health-and-the-body-b04",
+  "area": "health and the body",
+  "question": "How does regular movement change the way a joint ages?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "health-and-the-body-b05",
+  "area": "health and the body",
+  "question": "Why does appetite change so much when someone is unwell?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "health-and-the-body-b06",
+  "area": "health and the body",
+  "question": "How does the body know when it has had enough to eat?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "health-and-the-body-b07",
+  "area": "health and the body",
+  "question": "Why do the senses of taste and smell fade together?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "health-and-the-body-b08",
+  "area": "health and the body",
+  "question": "Why do some medicines work better taken at particular times of day?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "technology-b01",
+  "area": "technology",
+  "question": "Why do so many devices need restarting before they work properly again?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "technology-b02",
+  "area": "technology",
+  "question": "How does a large system keep working while parts of it are being replaced?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "technology-b03",
+  "area": "technology",
+  "question": "Why do the same instructions help one person and confuse another?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "technology-b04",
+  "area": "technology",
+  "question": "How does a system tell a real user from an automated one?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "technology-b05",
+  "area": "technology",
+  "question": "Why do automated systems make mistakes that no person would make?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "technology-b06",
+  "area": "technology",
+  "question": "How does a shared document keep two people's edits from colliding?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "technology-b07",
+  "area": "technology",
+  "question": "Why do people work around a tool rather than report what is wrong with it?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "technology-b08",
+  "area": "technology",
+  "question": "How does a service stay available when a whole data centre fails?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "language-and-writing-b01",
+  "area": "language and writing",
+  "question": "Why do some words change meaning within a single generation?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "language-and-writing-b02",
+  "area": "language and writing",
+  "question": "How does a writer make an unfamiliar subject readable without simplifying it?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "language-and-writing-b03",
+  "area": "language and writing",
+  "question": "Why do arguments in writing escalate faster than arguments in person?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "language-and-writing-b04",
+  "area": "language and writing",
+  "question": "How does an editor improve a piece without changing its voice?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "language-and-writing-b05",
+  "area": "language and writing",
+  "question": "Why do technical terms leak into everyday speech?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "language-and-writing-b06",
+  "area": "language and writing",
+  "question": "Why do people remember the rhythm of a phrase better than its meaning?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "language-and-writing-b07",
+  "area": "language and writing",
+  "question": "Why do some texts survive translation better than others?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "language-and-writing-b08",
+  "area": "language and writing",
+  "question": "How does a name for something new come to be settled on?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "art-and-design-b01",
+  "area": "art and design",
+  "question": "Why do some posters still communicate from across a street?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "art-and-design-b02",
+  "area": "art and design",
+  "question": "How does an unfinished building reveal the intentions of its designer?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "art-and-design-b03",
+  "area": "art and design",
+  "question": "Why do some colours seem to advance and others to recede?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "art-and-design-b04",
+  "area": "art and design",
+  "question": "How does a designer make an object that people will repair rather than replace?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "art-and-design-b05",
+  "area": "art and design",
+  "question": "Why do some everyday tools become objects people keep?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "art-and-design-b06",
+  "area": "art and design",
+  "question": "Why do some traditional tools keep the same shape for centuries?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "art-and-design-b07",
+  "area": "art and design",
+  "question": "Why do copies of a famous work so rarely satisfy?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "art-and-design-b08",
+  "area": "art and design",
+  "question": "How does scale change the effect of an image?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "the-natural-world-b01",
+  "area": "the natural world",
+  "question": "Why do some plants flower only once in many years?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "the-natural-world-b02",
+  "area": "the natural world",
+  "question": "How does a lake change when its water level falls for several years?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "the-natural-world-b03",
+  "area": "the natural world",
+  "question": "Why do young animals of some species stay with their parents for years?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "the-natural-world-b04",
+  "area": "the natural world",
+  "question": "How does a coral reef support so much life on so little?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "the-natural-world-b05",
+  "area": "the natural world",
+  "question": "Why do insects appear in such sudden abundance after rain?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "the-natural-world-b06",
+  "area": "the natural world",
+  "question": "How does a colony of ants organise its work without a leader?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "the-natural-world-b07",
+  "area": "the natural world",
+  "question": "Why do some animals live far longer than others of similar size?",
+  "set": "calibration_b"
+ },
+ {
+  "topic_id": "the-natural-world-b08",
+  "area": "the natural world",
+  "question": "How does a swarm hold together while it moves?",
+  "set": "calibration_b"
+ }
+]

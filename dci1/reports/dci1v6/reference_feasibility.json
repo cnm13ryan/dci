@@ -1,0 +1,258 @@
+{
+  "_classification": "DEVELOPMENT_EVIDENCE",
+  "_decisions_applied": {
+    "already_in_force_from_v6s_own_record": [
+      "D0",
+      "D1",
+      "D10",
+      "D11",
+      "D12",
+      "D13",
+      "D14",
+      "D15",
+      "D16",
+      "D17",
+      "D18",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9"
+    ],
+    "n_applied": 0,
+    "n_recorded": 19,
+    "source": "dci1/reports/dci1v5/researcher_decisions.json",
+    "standing": "v5's own closures, applied in this process to re-read v5's own data. v6's record carries D0-D18 at v5's values, so these are normally already in force and nothing is applied --- and `apply_recorded_closures` refuses a record that disagrees with a closure in force, so a zero here is a check that the carried values ARE v5's, not an omission"
+  },
+  "_generated_by": "dci1/tools/v6_reference_feasibility.py",
+  "_generates_no_rows": "\u00a713.7, \u00a713.8-\u00a713.12 and \u00a713.15 are pure functions of what Gate 2 and Gate 2.5 measured. Nothing here generates, and nothing here reads a composed outcome",
+  "_not_evidence_about": [
+    "Delta_R",
+    "Delta_j",
+    "Xi",
+    "any v5 replication's verdict",
+    "whether a library the researcher has not authored would qualify"
+  ],
+  "_one_implementation": "the registered stages, this report and the operating-point search call dci1v6.stages.feasibility. There is no development copy of the criterion to drift from the registered one",
+  "_v5_is_unchanged": "no v5 record is written, mutated or re-verdicted; \u00a734 D6 is irreversible and the four terminal outcomes stand as signed. The recomputations are validated against those records before anything is reported",
+  "_what": "\u00a713.15's support criterion, evaluated by the production kernels in dci1v6.stages.feasibility, on the four signed v5 records",
+  "binding_requirement_counts": {
+    "tier1_core": 4
+  },
+  "per_model": {
+    "gemma-3n-e2b-it": {
+      "admitted_arms": [
+        "base",
+        "class"
+      ],
+      "baseline_reproduces_signed_record": true,
+      "failures": [
+        "\u00a712.6: the identification-coverage criterion was not met after the registered expansion rounds, so the replication runs without the core and spectrum arms"
+      ],
+      "m_star": 10,
+      "margin": {
+        "binding": [
+          "tier1_core"
+        ],
+        "margins": {
+          "qualified_families": 7,
+          "structurally_eligible_tier12_families": 3,
+          "tier1_core": 0
+        },
+        "min_margin": 0,
+        "n_backup_families": 2,
+        "note": "realised minus the \u00a713.15 minimum, per requirement. Zero means the criterion is met with nothing to spare. The backup count is not a margin --- \u00a713.15's five qualified families ARE three used plus two frozen, so the qualified-family margin is the spare beyond both"
+      },
+      "n_qualified_families": 12,
+      "realised": {
+        "core_references": 3,
+        "feature_groups": [
+          "marker_hence",
+          "marker_indeed",
+          "sentence"
+        ],
+        "frozen_backups": [
+          "CR5",
+          "MK1"
+        ],
+        "qualified_families": 12,
+        "structurally_eligible_tier12_families": 11,
+        "tier1_core": 2
+      },
+      "requirements": {
+        "backups_may_substitute_after_gate_4": false,
+        "min_qualified_families": 5,
+        "min_structurally_eligible_tier12_families": 8,
+        "min_tier1_core": 2,
+        "n_backup_families": 2,
+        "n_core_feature_groups": 3,
+        "n_core_references": 3
+      },
+      "signed_support_met": false,
+      "support_met": false
+    },
+    "gemma-3n-e4b-it": {
+      "admitted_arms": [
+        "base",
+        "class"
+      ],
+      "baseline_reproduces_signed_record": true,
+      "failures": [
+        "\u00a712.6: the identification-coverage criterion was not met after the registered expansion rounds, so the replication runs without the core and spectrum arms"
+      ],
+      "m_star": 10,
+      "margin": {
+        "binding": [
+          "tier1_core"
+        ],
+        "margins": {
+          "qualified_families": 7,
+          "structurally_eligible_tier12_families": 3,
+          "tier1_core": 1
+        },
+        "min_margin": 1,
+        "n_backup_families": 2,
+        "note": "realised minus the \u00a713.15 minimum, per requirement. Zero means the criterion is met with nothing to spare. The backup count is not a margin --- \u00a713.15's five qualified families ARE three used plus two frozen, so the qualified-family margin is the spare beyond both"
+      },
+      "n_qualified_families": 12,
+      "realised": {
+        "core_references": 3,
+        "feature_groups": [
+          "marker_hence",
+          "marker_thus",
+          "marker_whereas"
+        ],
+        "frozen_backups": [
+          "CR6",
+          "MK3"
+        ],
+        "qualified_families": 12,
+        "structurally_eligible_tier12_families": 11,
+        "tier1_core": 3
+      },
+      "requirements": {
+        "backups_may_substitute_after_gate_4": false,
+        "min_qualified_families": 5,
+        "min_structurally_eligible_tier12_families": 8,
+        "min_tier1_core": 2,
+        "n_backup_families": 2,
+        "n_core_feature_groups": 3,
+        "n_core_references": 3
+      },
+      "signed_support_met": false,
+      "support_met": false
+    },
+    "qwen3-4b": {
+      "admitted_arms": [
+        "base"
+      ],
+      "baseline_reproduces_signed_record": true,
+      "failures": [
+        "\u00a712.6: the identification-coverage criterion was not met after the registered expansion rounds, so the replication runs without the core and spectrum arms"
+      ],
+      "m_star": 12,
+      "margin": {
+        "binding": [
+          "tier1_core"
+        ],
+        "margins": {
+          "qualified_families": 6,
+          "structurally_eligible_tier12_families": 3,
+          "tier1_core": 0
+        },
+        "min_margin": 0,
+        "n_backup_families": 2,
+        "note": "realised minus the \u00a713.15 minimum, per requirement. Zero means the criterion is met with nothing to spare. The backup count is not a margin --- \u00a713.15's five qualified families ARE three used plus two frozen, so the qualified-family margin is the spare beyond both"
+      },
+      "n_qualified_families": 11,
+      "realised": {
+        "core_references": 3,
+        "feature_groups": [
+          "marker_indeed",
+          "marker_thus",
+          "sentence"
+        ],
+        "frozen_backups": [
+          "CR6",
+          "MK2"
+        ],
+        "qualified_families": 11,
+        "structurally_eligible_tier12_families": 11,
+        "tier1_core": 2
+      },
+      "requirements": {
+        "backups_may_substitute_after_gate_4": false,
+        "min_qualified_families": 5,
+        "min_structurally_eligible_tier12_families": 8,
+        "min_tier1_core": 2,
+        "n_backup_families": 2,
+        "n_core_feature_groups": 3,
+        "n_core_references": 3
+      },
+      "signed_support_met": false,
+      "support_met": false
+    },
+    "qwen3-4b-instruct-2507": {
+      "admitted_arms": [
+        "base",
+        "core"
+      ],
+      "baseline_reproduces_signed_record": true,
+      "failures": [],
+      "m_star": 11,
+      "margin": {
+        "binding": [
+          "tier1_core"
+        ],
+        "margins": {
+          "qualified_families": 6,
+          "structurally_eligible_tier12_families": 3,
+          "tier1_core": 1
+        },
+        "min_margin": 1,
+        "n_backup_families": 2,
+        "note": "realised minus the \u00a713.15 minimum, per requirement. Zero means the criterion is met with nothing to spare. The backup count is not a margin --- \u00a713.15's five qualified families ARE three used plus two frozen, so the qualified-family margin is the spare beyond both"
+      },
+      "n_qualified_families": 11,
+      "realised": {
+        "core_references": 3,
+        "feature_groups": [
+          "marker_instead",
+          "marker_overall",
+          "marker_though"
+        ],
+        "frozen_backups": [
+          "CR6",
+          "MK1"
+        ],
+        "qualified_families": 11,
+        "structurally_eligible_tier12_families": 11,
+        "tier1_core": 3
+      },
+      "requirements": {
+        "backups_may_substitute_after_gate_4": false,
+        "min_qualified_families": 5,
+        "min_structurally_eligible_tier12_families": 8,
+        "min_tier1_core": 2,
+        "n_backup_families": 2,
+        "n_core_feature_groups": 3,
+        "n_core_references": 3
+      },
+      "signed_support_met": true,
+      "support_met": true
+    }
+  },
+  "reading": "the boolean \u00a713.15 records answers 'did this qualify'. The margin answers 'by how much', which is the question a library has to pass before it is frozen, and on these four replications the binding requirement is not the family count",
+  "requirements": {
+    "min_qualified_families": 5,
+    "min_structurally_eligible_tier12_families": 8,
+    "min_tier1_core": 2,
+    "n_backup_families": 2,
+    "n_core_feature_groups": 3,
+    "n_core_references": 3
+  },
+  "what_still_needs_new_data": "whether a Tier-1 family the researcher adds would pass the full V(R) on these models. Nothing in the closed data measures an unauthored instrument, and no proxy for it is reported here"
+}

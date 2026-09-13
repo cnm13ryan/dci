@@ -1,0 +1,364 @@
+{
+  "a_versus_reference_correlation": {
+    "reason": "the correlation the \u00a716.1 formulas use is between a cell containing A and a cell containing a reference with the SAME outcome constraint. The pilot cannot supply it: its A term comes from a disjoint topic set. The v3 confirmatory cache carries AB and AR_j on the same 384 blocks, but there the outcome recorded is the exact-count target, so those cells share the outcome A, not B, and its reference cells are R in the companion slot rather than B+R cells",
+    "registered_response_meanwhile": "rho = 0.5 is assumed and both phi settings are carried; an unfavourable realisation appears as INSUFFICIENT_PRECISION rather than as a silent widening (\u00a729)",
+    "status": "BLOCKED",
+    "what_settles_it": "a v4 calibration or confirmatory stage carrying two composed cells with the same outcome constraint on the same blocks, which the v4 design supplies by construction"
+  },
+  "among_reference_correlation_summary": {
+    "estimates": [
+      0.7222827779507941,
+      0.7255300609933197
+    ],
+    "mean": 0.7239064194720569,
+    "registered_assumptions": {
+      "phi_0.27": "among-reference correlation 1",
+      "phi_0.37": "among-reference correlation 0.5"
+    }
+  },
+  "check": "C12",
+  "menu_rule_under_the_registered_constants": {
+    "candidates": [
+      {
+        "M": 4,
+        "blocks": 288,
+        "generations_per_model": 28800,
+        "half_widths": {
+          "0.27": {
+            "D": 0.05423364318767674,
+            "Delta_R": 0.04876201569263475,
+            "Delta_j": 0.057284485432590335,
+            "Lambda": 0.07669795373291566
+          },
+          "0.37": {
+            "D": 0.056328372406173506,
+            "Delta_R": 0.051831754942659125,
+            "Delta_j": 0.059497050887338636,
+            "Lambda": 0.079660348203213
+          }
+        },
+        "meets_all": false,
+        "meets_preconditions": {
+          "0.27": false,
+          "0.37": false
+        }
+      },
+      {
+        "M": 4,
+        "blocks": 384,
+        "generations_per_model": 38400,
+        "half_widths": {
+          "0.27": {
+            "D": 0.04696771274030892,
+            "Delta_R": 0.04222914432955714,
+            "Delta_j": 0.04960981962734284,
+            "Lambda": 0.06642237635098848
+          },
+          "0.37": {
+            "D": 0.04878180145757665,
+            "Delta_R": 0.04488761650307244,
+            "Delta_j": 0.05152595751869074,
+            "Lambda": 0.0689878852182965
+          }
+        },
+        "meets_all": true,
+        "meets_preconditions": {
+          "0.27": true,
+          "0.37": true
+        }
+      },
+      {
+        "M": 4,
+        "blocks": 480,
+        "generations_per_model": 48000,
+        "half_widths": {
+          "0.27": {
+            "D": 0.04200919937400547,
+            "Delta_R": 0.03777089494101583,
+            "Delta_j": 0.044372371615296745,
+            "Lambda": 0.059409979499153866
+          },
+          "0.37": {
+            "D": 0.04363176964961588,
+            "Delta_R": 0.040148704739524546,
+            "Delta_j": 0.046086217447023556,
+            "Lambda": 0.06170464038882556
+          }
+        },
+        "meets_all": true,
+        "meets_preconditions": {
+          "0.27": true,
+          "0.37": true
+        }
+      },
+      {
+        "M": 8,
+        "blocks": 384,
+        "generations_per_model": 76800,
+        "half_widths": {
+          "0.27": {
+            "D": 0.039648050723607636,
+            "Delta_R": 0.036886789255192155,
+            "Delta_j": 0.04187839965402108,
+            "Lambda": 0.05607081105498232
+          },
+          "0.37": {
+            "D": 0.04280788591214403,
+            "Delta_R": 0.04062181774868496,
+            "Delta_j": 0.045215987213844636,
+            "Lambda": 0.06053949283347423
+          }
+        },
+        "meets_all": true,
+        "meets_preconditions": {
+          "0.27": true,
+          "0.37": true
+        }
+      },
+      {
+        "M": 8,
+        "blocks": 480,
+        "generations_per_model": 96000,
+        "half_widths": {
+          "0.27": {
+            "D": 0.035462294637338555,
+            "Delta_R": 0.032992547298527394,
+            "Delta_j": 0.037457179366117914,
+            "Lambda": 0.050151258028994866
+          },
+          "0.37": {
+            "D": 0.03828853714904385,
+            "Delta_R": 0.03633325834226681,
+            "Delta_j": 0.04044240843196716,
+            "Lambda": 0.0541481685196039
+          }
+        },
+        "meets_all": true,
+        "meets_preconditions": {
+          "0.27": true,
+          "0.37": true
+        }
+      }
+    ],
+    "decision_status": "REPORTED, NOT DECIDED: the allocation and the number of models carried to confirmation are registered open decision V1",
+    "phi_settings": [
+      0.27,
+      0.37
+    ],
+    "preconditions": {
+      "D": 0.05,
+      "Delta_R": 0.05,
+      "Delta_j": 0.06,
+      "Lambda": 0.08
+    },
+    "rho": 0.5,
+    "rule": "smallest entry meeting every precision precondition under every carried variance setting (\u00a716.3)",
+    "selected": {
+      "M": 4,
+      "blocks": 384,
+      "generations_per_model": 38400
+    }
+  },
+  "models": {
+    "gemma-3n-e2b-it": {
+      "among_reference_correlation": {
+        "mean_covariance": 0.08476790935672514,
+        "pairs": 3,
+        "rho": 0.7222827779507941,
+        "rho_clipped": 0.7222827779507941,
+        "sigma2_topic": 0.11736111111111111
+      },
+      "cell_compliance": {
+        "br:RF1:5": 0.609375,
+        "br:RF2:5": 0.6666666666666666,
+        "br:RF6:4": 0.7864583333333334
+      },
+      "cells": [
+        "br:RF1:5",
+        "br:RF2:5",
+        "br:RF6:4"
+      ],
+      "decomposition": {
+        "M": 2,
+        "cells": 3,
+        "mean_cell_mean_variance": 0.1642361111111111,
+        "phi": 0.555921052631579,
+        "sigma2_draw": 0.09375,
+        "sigma2_topic": 0.11736111111111111
+      },
+      "draws_per_cell": 2,
+      "outcome": "B at the pilot m* = 7, re-scored from raw text under the current v4 instrument",
+      "topics": 96,
+      "within_order_decomposition": {
+        "B_first": {
+          "decomposition": {
+            "M": 2,
+            "cells": 3,
+            "mean_cell_mean_variance": 0.06586140661938535,
+            "phi": 0.2873646209386282,
+            "sigma2_draw": 0.07291666666666667,
+            "sigma2_topic": 0.02940307328605201
+          },
+          "topics": 48
+        },
+        "R_first": {
+          "decomposition": {
+            "M": 2,
+            "cells": 3,
+            "mean_cell_mean_variance": 0.17808067375886527,
+            "phi": 0.5131826741996234,
+            "sigma2_draw": 0.11458333333333333,
+            "sigma2_topic": 0.12078900709219861
+          },
+          "topics": 48
+        }
+      },
+      "within_order_phi": [
+        0.2873646209386282,
+        0.5131826741996234
+      ]
+    },
+    "gemma-3n-e4b-it": {
+      "among_reference_correlation": {
+        "mean_covariance": 0.045650584795321636,
+        "pairs": 3,
+        "rho": 0.7255300609933197,
+        "rho_clipped": 0.7255300609933197,
+        "sigma2_topic": 0.0629203216374269
+      },
+      "cell_compliance": {
+        "br:RF2:2": 0.7916666666666666,
+        "br:RF4:4": 0.7395833333333334,
+        "br:RF6:4": 0.9270833333333334
+      },
+      "cells": [
+        "br:RF2:2",
+        "br:RF4:4",
+        "br:RF6:4"
+      ],
+      "decomposition": {
+        "M": 2,
+        "cells": 3,
+        "mean_cell_mean_variance": 0.10285087719298246,
+        "phi": 0.44067579674900814,
+        "sigma2_draw": 0.0798611111111111,
+        "sigma2_topic": 0.0629203216374269
+      },
+      "draws_per_cell": 2,
+      "outcome": "B at the pilot m* = 7, re-scored from raw text under the current v4 instrument",
+      "topics": 96,
+      "within_order_decomposition": {
+        "B_first": {
+          "decomposition": {
+            "M": 2,
+            "cells": 3,
+            "mean_cell_mean_variance": 0.049571513002364065,
+            "phi": 0.4081846799580273,
+            "sigma2_draw": 0.041666666666666664,
+            "sigma2_topic": 0.028738179669030733
+          },
+          "topics": 48
+        },
+        "R_first": {
+          "decomposition": {
+            "M": 2,
+            "cells": 3,
+            "mean_cell_mean_variance": 0.12891548463356975,
+            "phi": 0.37185534591194974,
+            "sigma2_draw": 0.11805555555555555,
+            "sigma2_topic": 0.06988770685579197
+          },
+          "topics": 48
+        }
+      },
+      "within_order_phi": [
+        0.4081846799580273,
+        0.37185534591194974
+      ]
+    }
+  },
+  "note": "the among-reference correlation and phi are estimable from the pilot rows and are reported; the A-versus-reference correlation is not, and the registered response is to carry both phi settings. The menu rule is re-run under the realised phi and its selection reported",
+  "phi_at_which_384_by_M4_stops_qualifying": 0.44,
+  "realised_phi": {
+    "caveat": "estimated at two draws per cell on 96 topics, so the draw component is noisy; and the pilot assigns one order per topic, shared across its three reference cells, so order variance loads into the topic component here in a way it cannot in v4, where order is within-block. The figure is therefore an upper bound on phi rather than a point estimate",
+    "mean": 0.49829842469029356,
+    "per_model": [
+      0.555921052631579,
+      0.44067579674900814
+    ],
+    "registered": [
+      0.27,
+      0.37
+    ],
+    "within_order_mean": 0.39514683025205716,
+    "within_order_per_stratum": [
+      0.2873646209386282,
+      0.5131826741996234,
+      0.4081846799580273,
+      0.37185534591194974
+    ]
+  },
+  "sensitivity": {
+    "realised_pooled": {
+      "384_M4_meets_every_precondition": false,
+      "half_widths_at_384_M4": {
+        "D": 0.051014861527234175,
+        "Delta_R": 0.04808361508444261,
+        "Delta_j": 0.05388463544463657,
+        "Lambda": 0.07214590905439999
+      },
+      "menu_rule_selects": {
+        "M": 4,
+        "blocks": 480,
+        "generations_per_model": 48000
+      },
+      "phi": 0.49829842469029356
+    },
+    "realised_within_order": {
+      "384_M4_meets_every_precondition": true,
+      "half_widths_at_384_M4": {
+        "D": 0.04922746919324311,
+        "Delta_R": 0.045531720169869096,
+        "Delta_j": 0.0519966957064834,
+        "Lambda": 0.06961815457438812
+      },
+      "menu_rule_selects": {
+        "M": 4,
+        "blocks": 384,
+        "generations_per_model": 38400
+      },
+      "phi": 0.39514683025205716
+    },
+    "registered_high": {
+      "384_M4_meets_every_precondition": true,
+      "half_widths_at_384_M4": {
+        "D": 0.04878180145757665,
+        "Delta_R": 0.04488761650307244,
+        "Delta_j": 0.05152595751869074,
+        "Lambda": 0.0689878852182965
+      },
+      "menu_rule_selects": {
+        "M": 4,
+        "blocks": 384,
+        "generations_per_model": 38400
+      },
+      "phi": 0.37
+    },
+    "registered_low": {
+      "384_M4_meets_every_precondition": true,
+      "half_widths_at_384_M4": {
+        "D": 0.04696771274030892,
+        "Delta_R": 0.04222914432955714,
+        "Delta_j": 0.04960981962734284,
+        "Lambda": 0.06642237635098848
+      },
+      "menu_rule_selects": {
+        "M": 4,
+        "blocks": 384,
+        "generations_per_model": 38400
+      },
+      "phi": 0.27
+    }
+  },
+  "status": "PARTIAL"
+}

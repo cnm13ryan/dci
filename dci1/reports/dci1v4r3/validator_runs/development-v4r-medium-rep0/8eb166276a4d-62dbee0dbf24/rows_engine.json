@@ -1,0 +1,158 @@
+{
+ "blocked": false,
+ "engine_kwargs": {
+  "model": "openai/gpt-oss-20b",
+  "dtype": "bfloat16",
+  "tensor_parallel_size": "1",
+  "max_model_len": "4096",
+  "gpu_memory_utilization": "0.85",
+  "disable_custom_all_reduce": "True",
+  "enforce_eager": "True",
+  "seed": "20260819",
+  "trust_remote_code": "False",
+  "revision": "6cee5e81ee83917806bbde320786a8fb61efebee"
+ },
+ "sampling": {
+  "temperature": 0.0,
+  "top_p": 0.9,
+  "top_k": -1,
+  "max_tokens": 2048,
+  "answer_tokens": 2048,
+  "stop": [],
+  "include_stop_str_in_output": false,
+  "skip_special_tokens": false
+ },
+ "run": {
+  "chunk_size": 1,
+  "deadline_seconds": null,
+  "chat_template_kwargs": {
+   "reasoning_effort": "medium"
+  },
+  "strategy": "single_phase",
+  "reasoning_mode": "NO_THINKING"
+ },
+ "model_card": {
+  "model_id": "openai/gpt-oss-20b",
+  "family": "gpt-oss",
+  "reasoning_parser": null,
+  "think_open": "<think>",
+  "think_close": "</think>",
+  "supported_modes": []
+ },
+ "reasoning_parser_used": "none (NO_THINKING: no channel)",
+ "template_switch_evidence": {
+  "checked": [],
+  "kwargs": {
+   "reasoning_effort": "medium"
+  },
+  "card": {
+   "model_id": "openai/gpt-oss-20b",
+   "tokenizer_acquisition": "vllm.LLM.get_tokenizer",
+   "tokenizer_revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+   "supported_modes": [],
+   "modes": {},
+   "modes_render_distinctly": true,
+   "modes_sharing_a_prompt": [],
+   "pre_opens_reasoning": {}
+  }
+ },
+ "preflight_detail": "",
+ "host": {
+  "device_count": 1,
+  "gcn_archs": [
+   "gfx1100"
+  ],
+  "device_names": [
+   "Radeon RX 7900 XTX"
+  ],
+  "total_vram_gib": [
+   23.98
+  ],
+  "torch_version": "2.9.1+rocm7.2.0.git7e1940d4",
+  "torch_hip": "7.2.26015-fc0010cf6a",
+  "vllm_version": "0.15.1",
+  "platform_class": "RocmPlatform",
+  "supports_fp8": false,
+  "supports_mx": false,
+  "use_custom_allreduce": false,
+  "is_navi": true,
+  "env": {
+   "TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL": "1",
+   "PYTORCH_HIP_ALLOC_CONF": "expandable_segments:True",
+   "PYTORCH_ROCM_ARCH": "gfx1100",
+   "VLLM_TARGET_DEVICE": "rocm",
+   "HIP_VISIBLE_DEVICES": "0",
+   "VLLM_WORKER_MULTIPROC_METHOD": "spawn",
+   "NCCL_P2P_DISABLE": "1"
+  }
+ },
+ "capability": {
+  "model_id": "openai/gpt-oss-20b",
+  "architectures": [
+   "GptOssForCausalLM"
+  ],
+  "vllm_supported": true,
+  "is_multimodal": null,
+  "needs_remote_code": false,
+  "reasoning_parser_available": null,
+  "probe_error": "",
+  "supported_architectures": [
+   "GptOssForCausalLM"
+  ]
+ },
+ "load_seconds": 15.6,
+ "generation_seconds": 6563.0,
+ "rocm_smi_before_load": {
+  "card0": {
+   "GPU Memory Allocated (VRAM%)": "3",
+   "GPU Memory Read/Write Activity (%)": "0",
+   "Memory Activity": "N/A",
+   "Avg. Memory Bandwidth": "0"
+  },
+  "card1": {
+   "GPU Memory Allocated (VRAM%)": "0",
+   "GPU Memory Read/Write Activity (%)": "0",
+   "Memory Activity": "N/A",
+   "Avg. Memory Bandwidth": "0"
+  },
+  "card2": {
+   "GPU Memory Allocated (VRAM%)": "0",
+   "Memory Activity": "N/A"
+  }
+ },
+ "rocm_smi_after_load": {
+  "card0": {
+   "GPU Memory Allocated (VRAM%)": "88",
+   "GPU Memory Read/Write Activity (%)": "3",
+   "Memory Activity": "N/A",
+   "Avg. Memory Bandwidth": "0"
+  },
+  "card1": {
+   "GPU Memory Allocated (VRAM%)": "0",
+   "GPU Memory Read/Write Activity (%)": "0",
+   "Memory Activity": "N/A",
+   "Avg. Memory Bandwidth": "0"
+  },
+  "card2": {
+   "GPU Memory Allocated (VRAM%)": "0",
+   "Memory Activity": "N/A"
+  }
+ },
+ "torch_memory_this_process": {
+  "cuda:0": 0.0
+ },
+ "rendered_prompt_example": "lower-cased for the suffix and letter tests. Comma and upper-case counts read the raw characters of the answer, not the segmented words.\n  Counted (occurrences of the word however): 11\n  Count: 11 = 11\n  Required: count == 1\n  Verdict recorded: FAIL\n\nReply with exactly one word on the first line: CORRECT or INCORRECT. If INCORRECT, add one short line naming what is wrong.\n<|end|><|start|>assistant",
+ "summary": {
+  "rows": 96,
+  "by_outcome": {
+   "OK": 96
+  },
+  "behavioural_rows": 96,
+  "reasoning_emitted": 0,
+  "reasoning_cap_hits": 30,
+  "empty_answers": 0,
+  "answers_truncated": 30
+ },
+ "plan_source": "/home/cnm13ryan/git/dci/dci1/reports/dci1v4r3/validator_runs/development-v4r-medium-rep0/8eb166276a4d-62dbee0dbf24/plan.json",
+ "expected_rows": 96
+}

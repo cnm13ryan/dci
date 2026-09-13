@@ -1,0 +1,35 @@
+2026-08-28T06:14:53Z [gemma-3n-e4b-it gpu1] START QUALIFIED (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/gemma-3n-e4b-it.QUALIFIED.20260828T061453Z.out
+2026-08-28T06:14:55Z [gemma-3n-e4b-it gpu1] EXIT QUALIFIED code=0
+2026-08-28T06:14:55Z [gemma-3n-e4b-it gpu1] START GATE_0_APPARATUS (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/gemma-3n-e4b-it.GATE_0_APPARATUS.20260828T061455Z.out
+2026-08-28T06:14:55Z [gemma-3n-e4b-it gpu1] EXIT GATE_0_APPARATUS code=1
+2026-08-28T06:14:55Z [gemma-3n-e4b-it gpu1] card busy; retrying GATE_0_APPARATUS after 60s
+2026-08-28T06:32:25Z [gemma-3n-e4b-it gpu1] START GATE_0_APPARATUS (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/gemma-3n-e4b-it.GATE_0_APPARATUS.20260828T063225Z.out
+2026-08-28T06:41:43Z [gemma-3n-e4b-it gpu1] EXIT GATE_0_APPARATUS code=0
+2026-08-28T06:41:43Z [gemma-3n-e4b-it gpu1] START REGIME_SCREEN (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/gemma-3n-e4b-it.REGIME_SCREEN.20260828T064143Z.out
+2026-08-28T07:24:22Z [gemma-3n-e4b-it gpu1] predecessor process 3209626 has exited
+2026-08-28T07:24:22Z [gemma-3n-e4b-it gpu1] START GATE_1_MEASUREMENT (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/gemma-3n-e4b-it.GATE_1_MEASUREMENT.20260828T072422Z.out
+2026-08-28T07:27:57Z [gemma-3n-e4b-it gpu1] predecessor process 3371805 has exited
+2026-08-28T07:27:58Z [gemma-3n-e4b-it gpu1] WAIT card 1 for GATE_2_FOCAL_CALIBRATION
+2026-08-28T09:38:12Z [gemma-3n-e4b-it gpu1] START GATE_2_FOCAL_CALIBRATION (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/gemma-3n-e4b-it.GATE_2_FOCAL_CALIBRATION.20260828T072758Z.out
+2026-08-28T17:06:58Z [gemma-3n-e4b-it gpu1] EXIT GATE_2_FOCAL_CALIBRATION code=0
+2026-08-28T17:06:58Z [gemma-3n-e4b-it gpu1] START GATE_2_5_CANDIDATE_QUALIFICATION (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/gemma-3n-e4b-it.GATE_2_5_CANDIDATE_QUALIFICATION.20260828T170658Z.out
+2026-08-28T17:06:59Z [gemma-3n-e4b-it gpu1] EXIT GATE_2_5_CANDIDATE_QUALIFICATION code=0
+2026-08-28T17:06:59Z [gemma-3n-e4b-it gpu1] WAIT card 1 for GATE_2_75_COMPOSED_PROBE
+2026-08-28T17:06:59Z [gemma-3n-e4b-it gpu1] START GATE_2_75_COMPOSED_PROBE (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/gemma-3n-e4b-it.GATE_2_75_COMPOSED_PROBE.20260828T170659Z.out
+2026-08-28T17:26:58Z [gemma-3n-e4b-it gpu1] EXIT GATE_2_75_COMPOSED_PROBE code=0
+2026-08-28T17:26:58Z [gemma-3n-e4b-it gpu1] START GATE_3A_REFERENCE_CALIBRATION (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/gemma-3n-e4b-it.GATE_3A_REFERENCE_CALIBRATION.20260828T172658Z.out
+2026-08-28T17:28:02Z [gemma-3n-e4b-it gpu1] EXIT GATE_3A_REFERENCE_CALIBRATION code=0
+2026-08-28T17:28:02Z [gemma-3n-e4b-it gpu1] START GATE_3B_REFERENCE_SELECTION (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/gemma-3n-e4b-it.GATE_3B_REFERENCE_SELECTION.20260828T172802Z.out
+2026-08-28T17:28:02Z [gemma-3n-e4b-it gpu1] EXIT GATE_3B_REFERENCE_SELECTION code=0
+2026-08-28T17:28:02Z [gemma-3n-e4b-it gpu1] START GATE_3C_IDENTIFICATION (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/gemma-3n-e4b-it.GATE_3C_IDENTIFICATION.20260828T172802Z.out
+2026-08-28T17:28:02Z [gemma-3n-e4b-it gpu1] EXIT GATE_3C_IDENTIFICATION code=0
+2026-08-28T17:28:02Z [gemma-3n-e4b-it gpu1] WAIT card 1 for GATE_4_COMPOSED_CONTRAST
+2026-08-28T17:28:02Z [gemma-3n-e4b-it gpu1] START GATE_4_COMPOSED_CONTRAST (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/gemma-3n-e4b-it.GATE_4_COMPOSED_CONTRAST.20260828T172802Z.out
+2026-08-28T17:31:01Z [gemma-3n-e4b-it gpu1] EXIT GATE_4_COMPOSED_CONTRAST code=0
+2026-08-28T17:31:01Z [gemma-3n-e4b-it gpu1] START PREFREEZE_AUDIT (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/gemma-3n-e4b-it.PREFREEZE_AUDIT.20260828T173101Z.out
+2026-08-28T17:31:01Z [gemma-3n-e4b-it gpu1] EXIT PREFREEZE_AUDIT code=1
+{
+  "error": "TerminalStatus",
+  "message": "PREFREEZE_AUDIT: PREFREEZE_AUDIT_FAILURE"
+}
+2026-08-28T17:31:01Z [gemma-3n-e4b-it gpu1] TERMINAL PREFREEZE_AUDIT_FAILURE at GATE_4_COMPOSED_CONTRAST; stopping

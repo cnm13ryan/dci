@@ -1,0 +1,91 @@
+{
+  "artifact_type": "qualification_record",
+  "canonical_verifier_hash": "41edc84c8c1381c698aa3ea62265ef11ff1162993fa2f68d1245dbce10096074",
+  "checks": [
+    {
+      "check": "clean_worktree",
+      "detail": {
+        "changed_paths": 0,
+        "why_it_matters": "a run whose producing commit does not contain the code that produced it has no provenance"
+      },
+      "passed": true
+    },
+    {
+      "check": "commit_hashable",
+      "detail": "161870b8cb507b146105d4a2a650794a70d8806c",
+      "passed": true
+    },
+    {
+      "check": "tracked_implementation",
+      "detail": "tracked",
+      "passed": true
+    },
+    {
+      "check": "resolved_revisions",
+      "detail": {
+        "gemma-3n-e2b-it": true,
+        "gemma-3n-e4b-it": true,
+        "qwen3-4b": true,
+        "qwen3-4b-instruct-2507": true
+      },
+      "passed": true
+    },
+    {
+      "check": "dependency_manifest",
+      "detail": "dci1/uv.lock",
+      "passed": true
+    },
+    {
+      "check": "prompt_plan_schema",
+      "detail": {
+        "loads": [
+          0,
+          1,
+          2
+        ],
+        "stem": "Answer in 60 to 120 words."
+      },
+      "passed": true
+    },
+    {
+      "check": "wording_suite",
+      "detail": {
+        "instruments": 584,
+        "verdicts_checked": 46720
+      },
+      "passed": true
+    },
+    {
+      "check": "witness_suite",
+      "detail": {
+        "pairs": 92988
+      },
+      "passed": true
+    },
+    {
+      "check": "class_labelling",
+      "detail": {
+        "families": 30
+      },
+      "passed": true
+    },
+    {
+      "check": "durable_store_reachable",
+      "detail": "/home/cnm13ryan/git/dci/dci1/durable_root",
+      "passed": true
+    },
+    {
+      "check": "environment_hashable",
+      "detail": {
+        "python_executable": "/home/cnm13ryan/git/dci/.venv/bin/python3",
+        "python_version": "3.13.12"
+      },
+      "passed": true
+    }
+  ],
+  "instrument_population": 584,
+  "outcome": "PASS",
+  "producing_commit": "161870b8cb507b146105d4a2a650794a70d8806c",
+  "reads_no_behavioural_rate": true,
+  "stage": "QUALIFIED"
+}

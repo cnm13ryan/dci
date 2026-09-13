@@ -1,0 +1,7 @@
+2026-08-28T13:31:51Z [qwen3-4b-instruct-2507 gpu0] START GATE_2_75_COMPOSED_PROBE (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/qwen3-4b-instruct-2507.GATE_2_75_COMPOSED_PROBE.20260828T133151Z.out
+{
+  "stage": "GATE_2_75_COMPOSED_PROBE",
+  "outcome": "PASS",
+  "record": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v7/qwen3-4b-instruct-2507/GATE_2_75_COMPOSED_PROBE/records/gate2_75_composed_probe.json",
+  "signing_key": "present"
+}

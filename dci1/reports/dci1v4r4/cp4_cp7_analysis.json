@@ -1,0 +1,3211 @@
+{
+  "artifact_type": "v4r4-cp4-cp7-decision",
+  "class_arm_still_matched_on_every_model": true,
+  "decision": "REMOVE_CP4_AND_CP7",
+  "decision_rule": "remove CP4 and CP7 if every registered coverage requirement holds without them with acceptable support; otherwise rewrite the ambiguous wordings, invalidate every row generated under them and regenerate before recomputing coverage",
+  "every_coverage_condition_holds_without_them": true,
+  "finding": {
+    "CP4": {
+      "finding": "specification_ambiguity",
+      "form": "rate_lower_bound",
+      "role": "class_control",
+      "rule": "§10.2 removal rule, coverage re-evaluated under §12.6",
+      "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (100*S/W >= q) from the reading that takes q as exact; the two disagree on every answer past q, which the verifier scores as a pass",
+      "wordings": "Give {q} percent of words doubled letters. / Make {q} percent of words carry doubled letters."
+    },
+    "CP7": {
+      "finding": "specification_ambiguity",
+      "form": "rate_lower_bound",
+      "role": "class_control",
+      "rule": "§10.2 removal rule, coverage re-evaluated under §12.6",
+      "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (100*S/W >= q) from the reading that takes q as exact; the two disagree on every answer past q, which the verifier scores as a pass",
+      "wordings": "Give {q} percent of words letter a. / Make {q} percent of words carry letter a."
+    }
+  },
+  "leave_one_family_out_finding": "coverage is NOT robust to dropping an arbitrary eligible reference family on three of the four replications. C4 requires four well-formed straddling feature groups and three models have exactly four, so any one of them is load-bearing. This is a property of the reference pool that v4r3 already had: the sweep run on v4r3's population returns the same families. It is reported, not repaired, because repairing it would mean adding candidate families after seeing a coverage result, which §12.6 forbids outside its registered expansion --- and the registered expansion draws from the frozen reserve, which is available if the researcher decides the margin is too thin",
+  "leave_one_family_out_is_unchanged_by_the_removal": true,
+  "models": {
+    "gemma-3n-e2b-it": {
+      "conditions_that_moved": [],
+      "coverage_with_cp4_cp7": {
+        "class_matched": true,
+        "conditions": {
+          "C1_bracketed": {
+            "met": true,
+            "observed": {
+              "above": true,
+              "below": true
+            },
+            "rule": "an eligible reference rung strictly below iota_A and one strictly above"
+          },
+          "C2_groups_per_side": {
+            "met": true,
+            "observed": {
+              "above": [
+                "capital",
+                "comma",
+                "one_letter",
+                "t_initial",
+                "vowel_initial",
+                "y_final"
+              ],
+              "below": [
+                "b_initial",
+                "capital",
+                "comma",
+                "doubled_letter",
+                "ing_final",
+                "letter_a",
+                "one_letter",
+                "s_final",
+                "sentence",
+                "t_initial",
+                "vowel_initial",
+                "y_final"
+              ]
+            },
+            "rule": "at least 3 eligible reference FEATURE GROUPS on each side of iota_A"
+          },
+          "C3_near_density": {
+            "met": true,
+            "observed": {
+              "families": [
+                "capital",
+                "comma",
+                "letter_a",
+                "one_letter",
+                "sentence",
+                "t_initial",
+                "vowel_initial",
+                "y_final"
+              ],
+              "rungs": [
+                "CR5:1",
+                "CR5:2",
+                "CR5:4",
+                "RF11:26",
+                "RF12:6",
+                "RF3:4",
+                "RF3:5",
+                "RF3:6",
+                "RF3:7",
+                "RF6:1",
+                "RF7:23",
+                "RF8:6",
+                "RF9:10",
+                "RF9:13",
+                "RF9:16"
+              ]
+            },
+            "rule": "at least 6 eligible rungs within 0.15 of iota_A, from at least 3 feature groups"
+          },
+          "C4_straddling_families": {
+            "met": true,
+            "observed": {
+              "straddling": [
+                "CR3",
+                "CR5",
+                "RF11",
+                "RF3",
+                "RF6",
+                "RF8",
+                "RF9"
+              ],
+              "well_formed": [
+                "CR3",
+                "CR5",
+                "RF11",
+                "RF3",
+                "RF8"
+              ],
+              "well_formed_groups": [
+                "comma",
+                "one_letter",
+                "vowel_initial",
+                "y_final"
+              ]
+            },
+            "rule": "at least 4 reference families straddle iota_A with at least 3 eligible rungs spanning 0.40 in iota, from that many distinct feature groups"
+          },
+          "C5_total_points": {
+            "met": true,
+            "observed": {
+              "n": 67
+            },
+            "rule": "at least 12 eligible reference rungs in total"
+          },
+          "C6_shortlist_feasible": {
+            "met": true,
+            "observed": {
+              "families": [
+                "CR11",
+                "CR3",
+                "CR5",
+                "CR6",
+                "CR7",
+                "CR8",
+                "CR9",
+                "RF1",
+                "RF10",
+                "RF11",
+                "RF12",
+                "RF2",
+                "RF3",
+                "RF4",
+                "RF6",
+                "RF7",
+                "RF8",
+                "RF9"
+              ],
+              "groups": [
+                "b_initial",
+                "capital",
+                "comma",
+                "doubled_letter",
+                "ing_final",
+                "letter_a",
+                "one_letter",
+                "s_final",
+                "sentence",
+                "t_initial",
+                "vowel_initial",
+                "y_final"
+              ]
+            },
+            "rule": "at least 6 eligible reference families, from at least 4 feature groups, so §12.3's shortlist is not short before it starts"
+          },
+          "C7_class_matched": {
+            "met": true,
+            "observed": {
+              "rungs": [
+                "CL7:80",
+                "CL8:25",
+                "CP4:8",
+                "CP7:34",
+                "CP7:42",
+                "CP7:46",
+                "CP7:50",
+                "CX1:1",
+                "CX1:2",
+                "CX1:4",
+                "CX1:5",
+                "CX1:6",
+                "CX1:7",
+                "CX2:1"
+              ]
+            },
+            "rule": "at least one eligible class rung within 0.15 of iota_A. NOT terminal: an unmatched class companion attaches COMPANION_CLASS_NOT_MATCHED and the study proceeds",
+            "terminal": false
+          }
+        },
+        "iota_a": 0.555555555556,
+        "n_eligible_families": 18,
+        "n_eligible_reference_rungs": 67,
+        "passed": true,
+        "straddling_families": [
+          "CR3",
+          "CR5",
+          "RF11",
+          "RF3",
+          "RF6",
+          "RF8",
+          "RF9"
+        ]
+      },
+      "coverage_without_cp4_cp7": {
+        "class_matched": true,
+        "conditions": {
+          "C1_bracketed": {
+            "met": true,
+            "observed": {
+              "above": true,
+              "below": true
+            },
+            "rule": "an eligible reference rung strictly below iota_A and one strictly above"
+          },
+          "C2_groups_per_side": {
+            "met": true,
+            "observed": {
+              "above": [
+                "capital",
+                "comma",
+                "one_letter",
+                "t_initial",
+                "vowel_initial",
+                "y_final"
+              ],
+              "below": [
+                "b_initial",
+                "capital",
+                "comma",
+                "doubled_letter",
+                "ing_final",
+                "letter_a",
+                "one_letter",
+                "s_final",
+                "sentence",
+                "t_initial",
+                "vowel_initial",
+                "y_final"
+              ]
+            },
+            "rule": "at least 3 eligible reference FEATURE GROUPS on each side of iota_A"
+          },
+          "C3_near_density": {
+            "met": true,
+            "observed": {
+              "families": [
+                "capital",
+                "comma",
+                "letter_a",
+                "one_letter",
+                "sentence",
+                "t_initial",
+                "vowel_initial",
+                "y_final"
+              ],
+              "rungs": [
+                "CR5:1",
+                "CR5:2",
+                "CR5:4",
+                "RF11:26",
+                "RF12:6",
+                "RF3:4",
+                "RF3:5",
+                "RF3:6",
+                "RF3:7",
+                "RF6:1",
+                "RF7:23",
+                "RF8:6",
+                "RF9:10",
+                "RF9:13",
+                "RF9:16"
+              ]
+            },
+            "rule": "at least 6 eligible rungs within 0.15 of iota_A, from at least 3 feature groups"
+          },
+          "C4_straddling_families": {
+            "met": true,
+            "observed": {
+              "straddling": [
+                "CR3",
+                "CR5",
+                "RF11",
+                "RF3",
+                "RF6",
+                "RF8",
+                "RF9"
+              ],
+              "well_formed": [
+                "CR3",
+                "CR5",
+                "RF11",
+                "RF3",
+                "RF8"
+              ],
+              "well_formed_groups": [
+                "comma",
+                "one_letter",
+                "vowel_initial",
+                "y_final"
+              ]
+            },
+            "rule": "at least 4 reference families straddle iota_A with at least 3 eligible rungs spanning 0.40 in iota, from that many distinct feature groups"
+          },
+          "C5_total_points": {
+            "met": true,
+            "observed": {
+              "n": 67
+            },
+            "rule": "at least 12 eligible reference rungs in total"
+          },
+          "C6_shortlist_feasible": {
+            "met": true,
+            "observed": {
+              "families": [
+                "CR11",
+                "CR3",
+                "CR5",
+                "CR6",
+                "CR7",
+                "CR8",
+                "CR9",
+                "RF1",
+                "RF10",
+                "RF11",
+                "RF12",
+                "RF2",
+                "RF3",
+                "RF4",
+                "RF6",
+                "RF7",
+                "RF8",
+                "RF9"
+              ],
+              "groups": [
+                "b_initial",
+                "capital",
+                "comma",
+                "doubled_letter",
+                "ing_final",
+                "letter_a",
+                "one_letter",
+                "s_final",
+                "sentence",
+                "t_initial",
+                "vowel_initial",
+                "y_final"
+              ]
+            },
+            "rule": "at least 6 eligible reference families, from at least 4 feature groups, so §12.3's shortlist is not short before it starts"
+          },
+          "C7_class_matched": {
+            "met": true,
+            "observed": {
+              "rungs": [
+                "CL7:80",
+                "CL8:25",
+                "CX1:1",
+                "CX1:2",
+                "CX1:4",
+                "CX1:5",
+                "CX1:6",
+                "CX1:7",
+                "CX2:1"
+              ]
+            },
+            "rule": "at least one eligible class rung within 0.15 of iota_A. NOT terminal: an unmatched class companion attaches COMPANION_CLASS_NOT_MATCHED and the study proceeds",
+            "terminal": false
+          }
+        },
+        "iota_a": 0.555555555556,
+        "n_eligible_families": 18,
+        "n_eligible_reference_rungs": 67,
+        "passed": true,
+        "straddling_families": [
+          "CR3",
+          "CR5",
+          "RF11",
+          "RF3",
+          "RF6",
+          "RF8",
+          "RF9"
+        ]
+      },
+      "iota_a_prescreen": 0.5555555555555555,
+      "leave_one_family_out": {
+        "families_whose_removal_breaks_coverage": [
+          "CR5",
+          "RF11",
+          "RF8"
+        ],
+        "per_family": {
+          "CL7": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CL8": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR1": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR10": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR11": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR12": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR2": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR3": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR4": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR5": {
+            "class_matched": true,
+            "failed": [
+              "C4_straddling_families"
+            ],
+            "passed": false
+          },
+          "CR6": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR7": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR8": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR9": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CX1": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CX2": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF1": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF10": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF11": {
+            "class_matched": true,
+            "failed": [
+              "C4_straddling_families"
+            ],
+            "passed": false
+          },
+          "RF12": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF2": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF3": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF4": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF5": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF6": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF7": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF8": {
+            "class_matched": true,
+            "failed": [
+              "C4_straddling_families"
+            ],
+            "passed": false
+          },
+          "RF9": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          }
+        },
+        "robust": false
+      },
+      "leave_one_family_out_with_cp4_cp7": {
+        "families_whose_removal_breaks_coverage": [
+          "CR5",
+          "RF11",
+          "RF8"
+        ],
+        "per_family": {
+          "CL7": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CL8": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CP4": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CP7": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR1": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR10": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR11": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR12": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR2": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR3": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR4": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR5": {
+            "class_matched": true,
+            "failed": [
+              "C4_straddling_families"
+            ],
+            "passed": false
+          },
+          "CR6": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR7": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR8": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR9": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CX1": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CX2": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF1": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF10": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF11": {
+            "class_matched": true,
+            "failed": [
+              "C4_straddling_families"
+            ],
+            "passed": false
+          },
+          "RF12": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF2": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF3": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF4": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF5": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF6": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF7": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF8": {
+            "class_matched": true,
+            "failed": [
+              "C4_straddling_families"
+            ],
+            "passed": false
+          },
+          "RF9": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          }
+        },
+        "robust": false
+      },
+      "rungs_measured": {
+        "v4r3": 270,
+        "v4r4": 254
+      },
+      "source_record": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r3/gemma-3n-e2b-it/REGIME_SCREEN/records/regime_record.json",
+      "source_record_hash": "b82f255348990a5eaf088eb0a7f06cb38166a029f2c6eb8b949001a5a9c0dd04",
+      "support_without_cp4_cp7": {
+        "class_arm": {
+          "caliper": 0.15,
+          "matched": true,
+          "matched_families": [
+            "CL7",
+            "CL8",
+            "CX1",
+            "CX2"
+          ],
+          "matched_rungs": [
+            "CL7:80",
+            "CL8:25",
+            "CX1:1",
+            "CX1:2",
+            "CX1:4",
+            "CX1:5",
+            "CX1:6",
+            "CX1:7",
+            "CX2:1"
+          ]
+        },
+        "core_reference_availability": {
+          "available": 18,
+          "eligible_families": [
+            "CR11",
+            "CR3",
+            "CR5",
+            "CR6",
+            "CR7",
+            "CR8",
+            "CR9",
+            "RF1",
+            "RF10",
+            "RF11",
+            "RF12",
+            "RF2",
+            "RF3",
+            "RF4",
+            "RF6",
+            "RF7",
+            "RF8",
+            "RF9"
+          ],
+          "shortlist_needs": 6
+        },
+        "distinct_supporting_families": 18,
+        "distinct_supporting_feature_groups": 12,
+        "easier_support": {
+          "feature_groups": [
+            "b_initial",
+            "capital",
+            "comma",
+            "doubled_letter",
+            "ing_final",
+            "letter_a",
+            "one_letter",
+            "s_final",
+            "sentence",
+            "t_initial",
+            "vowel_initial",
+            "y_final"
+          ],
+          "meets_min_below": true,
+          "meets_min_families_per_side": true,
+          "rungs": 56
+        },
+        "eligible_reference_rungs": 67,
+        "harder_support": {
+          "feature_groups": [
+            "capital",
+            "comma",
+            "one_letter",
+            "t_initial",
+            "vowel_initial",
+            "y_final"
+          ],
+          "meets_min_above": true,
+          "meets_min_families_per_side": true,
+          "rungs": 11
+        },
+        "local_density": {
+          "caliper": 0.15,
+          "feature_groups": [
+            "capital",
+            "comma",
+            "letter_a",
+            "one_letter",
+            "sentence",
+            "t_initial",
+            "vowel_initial",
+            "y_final"
+          ],
+          "labels": [
+            "CR5:1",
+            "CR5:2",
+            "CR5:4",
+            "RF11:26",
+            "RF12:6",
+            "RF3:4",
+            "RF3:5",
+            "RF3:6",
+            "RF3:7",
+            "RF6:1",
+            "RF7:23",
+            "RF8:6",
+            "RF9:10",
+            "RF9:13",
+            "RF9:16"
+          ],
+          "rungs": 15
+        },
+        "spectrum_support": {
+          "needed": 3,
+          "straddling_families": [
+            "CR3",
+            "CR5",
+            "RF11",
+            "RF3",
+            "RF6",
+            "RF8",
+            "RF9"
+          ],
+          "straddling_feature_groups": [
+            "capital",
+            "comma",
+            "one_letter",
+            "t_initial",
+            "vowel_initial",
+            "y_final"
+          ],
+          "sufficient_for_a_full_spectrum": true
+        }
+      }
+    },
+    "gemma-3n-e4b-it": {
+      "conditions_that_moved": [],
+      "coverage_with_cp4_cp7": {
+        "class_matched": true,
+        "conditions": {
+          "C1_bracketed": {
+            "met": true,
+            "observed": {
+              "above": true,
+              "below": true
+            },
+            "rule": "an eligible reference rung strictly below iota_A and one strictly above"
+          },
+          "C2_groups_per_side": {
+            "met": true,
+            "observed": {
+              "above": [
+                "b_initial",
+                "capital",
+                "comma",
+                "one_letter",
+                "t_initial",
+                "vowel_initial"
+              ],
+              "below": [
+                "b_initial",
+                "comma",
+                "doubled_letter",
+                "ing_final",
+                "letter_a",
+                "one_letter",
+                "s_final",
+                "sentence",
+                "t_initial",
+                "vowel_initial",
+                "y_final"
+              ]
+            },
+            "rule": "at least 3 eligible reference FEATURE GROUPS on each side of iota_A"
+          },
+          "C3_near_density": {
+            "met": true,
+            "observed": {
+              "families": [
+                "b_initial",
+                "capital",
+                "comma",
+                "one_letter",
+                "s_final",
+                "sentence",
+                "t_initial",
+                "y_final"
+              ],
+              "rungs": [
+                "CR3:8",
+                "CR5:6",
+                "RF10:19",
+                "RF12:4",
+                "RF1:2",
+                "RF1:6",
+                "RF3:8",
+                "RF5:11",
+                "RF6:2",
+                "RF8:6",
+                "RF9:10",
+                "RF9:13",
+                "RF9:8"
+              ]
+            },
+            "rule": "at least 6 eligible rungs within 0.15 of iota_A, from at least 3 feature groups"
+          },
+          "C4_straddling_families": {
+            "met": true,
+            "observed": {
+              "straddling": [
+                "CR5",
+                "RF1",
+                "RF11",
+                "RF3",
+                "RF9"
+              ],
+              "well_formed": [
+                "CR5",
+                "RF1",
+                "RF11",
+                "RF3",
+                "RF9"
+              ],
+              "well_formed_groups": [
+                "b_initial",
+                "comma",
+                "one_letter",
+                "t_initial",
+                "vowel_initial"
+              ]
+            },
+            "rule": "at least 4 reference families straddle iota_A with at least 3 eligible rungs spanning 0.40 in iota, from that many distinct feature groups"
+          },
+          "C5_total_points": {
+            "met": true,
+            "observed": {
+              "n": 69
+            },
+            "rule": "at least 12 eligible reference rungs in total"
+          },
+          "C6_shortlist_feasible": {
+            "met": true,
+            "observed": {
+              "families": [
+                "CR11",
+                "CR3",
+                "CR4",
+                "CR5",
+                "CR7",
+                "CR8",
+                "CR9",
+                "RF1",
+                "RF10",
+                "RF11",
+                "RF12",
+                "RF2",
+                "RF3",
+                "RF5",
+                "RF6",
+                "RF7",
+                "RF8",
+                "RF9"
+              ],
+              "groups": [
+                "b_initial",
+                "capital",
+                "comma",
+                "doubled_letter",
+                "ing_final",
+                "letter_a",
+                "one_letter",
+                "s_final",
+                "sentence",
+                "t_initial",
+                "vowel_initial",
+                "y_final"
+              ]
+            },
+            "rule": "at least 6 eligible reference families, from at least 4 feature groups, so §12.3's shortlist is not short before it starts"
+          },
+          "C7_class_matched": {
+            "met": true,
+            "observed": {
+              "rungs": [
+                "CL7:80",
+                "CL8:25",
+                "CP7:46",
+                "CP7:50",
+                "CX1:1",
+                "CX1:5",
+                "CX1:6",
+                "CX1:7",
+                "CX2:1"
+              ]
+            },
+            "rule": "at least one eligible class rung within 0.15 of iota_A. NOT terminal: an unmatched class companion attaches COMPANION_CLASS_NOT_MATCHED and the study proceeds",
+            "terminal": false
+          }
+        },
+        "iota_a": 0.666666666667,
+        "n_eligible_families": 18,
+        "n_eligible_reference_rungs": 69,
+        "passed": true,
+        "straddling_families": [
+          "CR5",
+          "RF1",
+          "RF11",
+          "RF3",
+          "RF9"
+        ]
+      },
+      "coverage_without_cp4_cp7": {
+        "class_matched": true,
+        "conditions": {
+          "C1_bracketed": {
+            "met": true,
+            "observed": {
+              "above": true,
+              "below": true
+            },
+            "rule": "an eligible reference rung strictly below iota_A and one strictly above"
+          },
+          "C2_groups_per_side": {
+            "met": true,
+            "observed": {
+              "above": [
+                "b_initial",
+                "capital",
+                "comma",
+                "one_letter",
+                "t_initial",
+                "vowel_initial"
+              ],
+              "below": [
+                "b_initial",
+                "comma",
+                "doubled_letter",
+                "ing_final",
+                "letter_a",
+                "one_letter",
+                "s_final",
+                "sentence",
+                "t_initial",
+                "vowel_initial",
+                "y_final"
+              ]
+            },
+            "rule": "at least 3 eligible reference FEATURE GROUPS on each side of iota_A"
+          },
+          "C3_near_density": {
+            "met": true,
+            "observed": {
+              "families": [
+                "b_initial",
+                "capital",
+                "comma",
+                "one_letter",
+                "s_final",
+                "sentence",
+                "t_initial",
+                "y_final"
+              ],
+              "rungs": [
+                "CR3:8",
+                "CR5:6",
+                "RF10:19",
+                "RF12:4",
+                "RF1:2",
+                "RF1:6",
+                "RF3:8",
+                "RF5:11",
+                "RF6:2",
+                "RF8:6",
+                "RF9:10",
+                "RF9:13",
+                "RF9:8"
+              ]
+            },
+            "rule": "at least 6 eligible rungs within 0.15 of iota_A, from at least 3 feature groups"
+          },
+          "C4_straddling_families": {
+            "met": true,
+            "observed": {
+              "straddling": [
+                "CR5",
+                "RF1",
+                "RF11",
+                "RF3",
+                "RF9"
+              ],
+              "well_formed": [
+                "CR5",
+                "RF1",
+                "RF11",
+                "RF3",
+                "RF9"
+              ],
+              "well_formed_groups": [
+                "b_initial",
+                "comma",
+                "one_letter",
+                "t_initial",
+                "vowel_initial"
+              ]
+            },
+            "rule": "at least 4 reference families straddle iota_A with at least 3 eligible rungs spanning 0.40 in iota, from that many distinct feature groups"
+          },
+          "C5_total_points": {
+            "met": true,
+            "observed": {
+              "n": 69
+            },
+            "rule": "at least 12 eligible reference rungs in total"
+          },
+          "C6_shortlist_feasible": {
+            "met": true,
+            "observed": {
+              "families": [
+                "CR11",
+                "CR3",
+                "CR4",
+                "CR5",
+                "CR7",
+                "CR8",
+                "CR9",
+                "RF1",
+                "RF10",
+                "RF11",
+                "RF12",
+                "RF2",
+                "RF3",
+                "RF5",
+                "RF6",
+                "RF7",
+                "RF8",
+                "RF9"
+              ],
+              "groups": [
+                "b_initial",
+                "capital",
+                "comma",
+                "doubled_letter",
+                "ing_final",
+                "letter_a",
+                "one_letter",
+                "s_final",
+                "sentence",
+                "t_initial",
+                "vowel_initial",
+                "y_final"
+              ]
+            },
+            "rule": "at least 6 eligible reference families, from at least 4 feature groups, so §12.3's shortlist is not short before it starts"
+          },
+          "C7_class_matched": {
+            "met": true,
+            "observed": {
+              "rungs": [
+                "CL7:80",
+                "CL8:25",
+                "CX1:1",
+                "CX1:5",
+                "CX1:6",
+                "CX1:7",
+                "CX2:1"
+              ]
+            },
+            "rule": "at least one eligible class rung within 0.15 of iota_A. NOT terminal: an unmatched class companion attaches COMPANION_CLASS_NOT_MATCHED and the study proceeds",
+            "terminal": false
+          }
+        },
+        "iota_a": 0.666666666667,
+        "n_eligible_families": 18,
+        "n_eligible_reference_rungs": 69,
+        "passed": true,
+        "straddling_families": [
+          "CR5",
+          "RF1",
+          "RF11",
+          "RF3",
+          "RF9"
+        ]
+      },
+      "iota_a_prescreen": 0.6666666666666666,
+      "leave_one_family_out": {
+        "families_whose_removal_breaks_coverage": [],
+        "per_family": {
+          "CL7": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CL8": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR1": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR10": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR11": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR12": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR2": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR3": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR4": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR5": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR6": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR7": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR8": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR9": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CX1": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CX2": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF1": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF10": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF11": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF12": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF2": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF3": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF4": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF5": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF6": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF7": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF8": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF9": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          }
+        },
+        "robust": true
+      },
+      "leave_one_family_out_with_cp4_cp7": {
+        "families_whose_removal_breaks_coverage": [],
+        "per_family": {
+          "CL7": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CL8": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CP4": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CP7": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR1": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR10": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR11": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR12": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR2": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR3": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR4": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR5": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR6": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR7": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR8": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR9": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CX1": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CX2": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF1": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF10": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF11": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF12": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF2": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF3": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF4": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF5": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF6": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF7": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF8": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF9": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          }
+        },
+        "robust": true
+      },
+      "rungs_measured": {
+        "v4r3": 270,
+        "v4r4": 254
+      },
+      "source_record": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r3/gemma-3n-e4b-it/REGIME_SCREEN/records/regime_record.json",
+      "source_record_hash": "1ca4c6a83d72cdf627e221780371a896a01df7338fc9e25eb866fab82e397b8d",
+      "support_without_cp4_cp7": {
+        "class_arm": {
+          "caliper": 0.15,
+          "matched": true,
+          "matched_families": [
+            "CL7",
+            "CL8",
+            "CX1",
+            "CX2"
+          ],
+          "matched_rungs": [
+            "CL7:80",
+            "CL8:25",
+            "CX1:1",
+            "CX1:5",
+            "CX1:6",
+            "CX1:7",
+            "CX2:1"
+          ]
+        },
+        "core_reference_availability": {
+          "available": 18,
+          "eligible_families": [
+            "CR11",
+            "CR3",
+            "CR4",
+            "CR5",
+            "CR7",
+            "CR8",
+            "CR9",
+            "RF1",
+            "RF10",
+            "RF11",
+            "RF12",
+            "RF2",
+            "RF3",
+            "RF5",
+            "RF6",
+            "RF7",
+            "RF8",
+            "RF9"
+          ],
+          "shortlist_needs": 6
+        },
+        "distinct_supporting_families": 18,
+        "distinct_supporting_feature_groups": 12,
+        "easier_support": {
+          "feature_groups": [
+            "b_initial",
+            "comma",
+            "doubled_letter",
+            "ing_final",
+            "letter_a",
+            "one_letter",
+            "s_final",
+            "sentence",
+            "t_initial",
+            "vowel_initial",
+            "y_final"
+          ],
+          "meets_min_below": true,
+          "meets_min_families_per_side": true,
+          "rungs": 56
+        },
+        "eligible_reference_rungs": 69,
+        "harder_support": {
+          "feature_groups": [
+            "b_initial",
+            "capital",
+            "comma",
+            "one_letter",
+            "t_initial",
+            "vowel_initial"
+          ],
+          "meets_min_above": true,
+          "meets_min_families_per_side": true,
+          "rungs": 12
+        },
+        "local_density": {
+          "caliper": 0.15,
+          "feature_groups": [
+            "b_initial",
+            "capital",
+            "comma",
+            "one_letter",
+            "s_final",
+            "sentence",
+            "t_initial",
+            "y_final"
+          ],
+          "labels": [
+            "CR3:8",
+            "CR5:6",
+            "RF10:19",
+            "RF12:4",
+            "RF1:2",
+            "RF1:6",
+            "RF3:8",
+            "RF5:11",
+            "RF6:2",
+            "RF8:6",
+            "RF9:10",
+            "RF9:13",
+            "RF9:8"
+          ],
+          "rungs": 13
+        },
+        "spectrum_support": {
+          "needed": 3,
+          "straddling_families": [
+            "CR5",
+            "RF1",
+            "RF11",
+            "RF3",
+            "RF9"
+          ],
+          "straddling_feature_groups": [
+            "b_initial",
+            "comma",
+            "one_letter",
+            "t_initial",
+            "vowel_initial"
+          ],
+          "sufficient_for_a_full_spectrum": true
+        }
+      }
+    },
+    "qwen3-4b": {
+      "conditions_that_moved": [],
+      "coverage_with_cp4_cp7": {
+        "class_matched": true,
+        "conditions": {
+          "C1_bracketed": {
+            "met": true,
+            "observed": {
+              "above": true,
+              "below": true
+            },
+            "rule": "an eligible reference rung strictly below iota_A and one strictly above"
+          },
+          "C2_groups_per_side": {
+            "met": true,
+            "observed": {
+              "above": [
+                "capital",
+                "comma",
+                "one_letter",
+                "sentence",
+                "vowel_initial"
+              ],
+              "below": [
+                "capital",
+                "comma",
+                "doubled_letter",
+                "ing_final",
+                "letter_a",
+                "one_letter",
+                "s_final",
+                "t_initial",
+                "vowel_initial",
+                "y_final"
+              ]
+            },
+            "rule": "at least 3 eligible reference FEATURE GROUPS on each side of iota_A"
+          },
+          "C3_near_density": {
+            "met": true,
+            "observed": {
+              "families": [
+                "comma",
+                "ing_final",
+                "letter_a",
+                "one_letter",
+                "sentence",
+                "vowel_initial",
+                "y_final"
+              ],
+              "rungs": [
+                "CR5:10",
+                "CR5:6",
+                "CR5:8",
+                "CR7:52",
+                "RF11:16",
+                "RF11:21",
+                "RF11:26",
+                "RF12:1",
+                "RF2:3",
+                "RF2:6",
+                "RF3:4",
+                "RF5:1",
+                "RF5:2",
+                "RF5:4",
+                "RF7:24",
+                "RF8:7"
+              ]
+            },
+            "rule": "at least 6 eligible rungs within 0.15 of iota_A, from at least 3 feature groups"
+          },
+          "C4_straddling_families": {
+            "met": true,
+            "observed": {
+              "straddling": [
+                "CR5",
+                "RF11",
+                "RF3",
+                "RF6"
+              ],
+              "well_formed": [
+                "CR5",
+                "RF11",
+                "RF3",
+                "RF6"
+              ],
+              "well_formed_groups": [
+                "capital",
+                "comma",
+                "one_letter",
+                "vowel_initial"
+              ]
+            },
+            "rule": "at least 4 reference families straddle iota_A with at least 3 eligible rungs spanning 0.40 in iota, from that many distinct feature groups"
+          },
+          "C5_total_points": {
+            "met": true,
+            "observed": {
+              "n": 73
+            },
+            "rule": "at least 12 eligible reference rungs in total"
+          },
+          "C6_shortlist_feasible": {
+            "met": true,
+            "observed": {
+              "families": [
+                "CR11",
+                "CR2",
+                "CR3",
+                "CR4",
+                "CR5",
+                "CR7",
+                "CR8",
+                "RF10",
+                "RF11",
+                "RF12",
+                "RF2",
+                "RF3",
+                "RF4",
+                "RF5",
+                "RF6",
+                "RF7",
+                "RF8",
+                "RF9"
+              ],
+              "groups": [
+                "capital",
+                "comma",
+                "doubled_letter",
+                "ing_final",
+                "letter_a",
+                "one_letter",
+                "s_final",
+                "sentence",
+                "t_initial",
+                "vowel_initial",
+                "y_final"
+              ]
+            },
+            "rule": "at least 6 eligible reference families, from at least 4 feature groups, so §12.3's shortlist is not short before it starts"
+          },
+          "C7_class_matched": {
+            "met": true,
+            "observed": {
+              "rungs": [
+                "CX1:2",
+                "CX1:3",
+                "CX1:4",
+                "CX1:5",
+                "CX1:6",
+                "CX2:2"
+              ]
+            },
+            "rule": "at least one eligible class rung within 0.15 of iota_A. NOT terminal: an unmatched class companion attaches COMPANION_CLASS_NOT_MATCHED and the study proceeds",
+            "terminal": false
+          }
+        },
+        "iota_a": 0.75,
+        "n_eligible_families": 18,
+        "n_eligible_reference_rungs": 73,
+        "passed": true,
+        "straddling_families": [
+          "CR5",
+          "RF11",
+          "RF3",
+          "RF6"
+        ]
+      },
+      "coverage_without_cp4_cp7": {
+        "class_matched": true,
+        "conditions": {
+          "C1_bracketed": {
+            "met": true,
+            "observed": {
+              "above": true,
+              "below": true
+            },
+            "rule": "an eligible reference rung strictly below iota_A and one strictly above"
+          },
+          "C2_groups_per_side": {
+            "met": true,
+            "observed": {
+              "above": [
+                "capital",
+                "comma",
+                "one_letter",
+                "sentence",
+                "vowel_initial"
+              ],
+              "below": [
+                "capital",
+                "comma",
+                "doubled_letter",
+                "ing_final",
+                "letter_a",
+                "one_letter",
+                "s_final",
+                "t_initial",
+                "vowel_initial",
+                "y_final"
+              ]
+            },
+            "rule": "at least 3 eligible reference FEATURE GROUPS on each side of iota_A"
+          },
+          "C3_near_density": {
+            "met": true,
+            "observed": {
+              "families": [
+                "comma",
+                "ing_final",
+                "letter_a",
+                "one_letter",
+                "sentence",
+                "vowel_initial",
+                "y_final"
+              ],
+              "rungs": [
+                "CR5:10",
+                "CR5:6",
+                "CR5:8",
+                "CR7:52",
+                "RF11:16",
+                "RF11:21",
+                "RF11:26",
+                "RF12:1",
+                "RF2:3",
+                "RF2:6",
+                "RF3:4",
+                "RF5:1",
+                "RF5:2",
+                "RF5:4",
+                "RF7:24",
+                "RF8:7"
+              ]
+            },
+            "rule": "at least 6 eligible rungs within 0.15 of iota_A, from at least 3 feature groups"
+          },
+          "C4_straddling_families": {
+            "met": true,
+            "observed": {
+              "straddling": [
+                "CR5",
+                "RF11",
+                "RF3",
+                "RF6"
+              ],
+              "well_formed": [
+                "CR5",
+                "RF11",
+                "RF3",
+                "RF6"
+              ],
+              "well_formed_groups": [
+                "capital",
+                "comma",
+                "one_letter",
+                "vowel_initial"
+              ]
+            },
+            "rule": "at least 4 reference families straddle iota_A with at least 3 eligible rungs spanning 0.40 in iota, from that many distinct feature groups"
+          },
+          "C5_total_points": {
+            "met": true,
+            "observed": {
+              "n": 73
+            },
+            "rule": "at least 12 eligible reference rungs in total"
+          },
+          "C6_shortlist_feasible": {
+            "met": true,
+            "observed": {
+              "families": [
+                "CR11",
+                "CR2",
+                "CR3",
+                "CR4",
+                "CR5",
+                "CR7",
+                "CR8",
+                "RF10",
+                "RF11",
+                "RF12",
+                "RF2",
+                "RF3",
+                "RF4",
+                "RF5",
+                "RF6",
+                "RF7",
+                "RF8",
+                "RF9"
+              ],
+              "groups": [
+                "capital",
+                "comma",
+                "doubled_letter",
+                "ing_final",
+                "letter_a",
+                "one_letter",
+                "s_final",
+                "sentence",
+                "t_initial",
+                "vowel_initial",
+                "y_final"
+              ]
+            },
+            "rule": "at least 6 eligible reference families, from at least 4 feature groups, so §12.3's shortlist is not short before it starts"
+          },
+          "C7_class_matched": {
+            "met": true,
+            "observed": {
+              "rungs": [
+                "CX1:2",
+                "CX1:3",
+                "CX1:4",
+                "CX1:5",
+                "CX1:6",
+                "CX2:2"
+              ]
+            },
+            "rule": "at least one eligible class rung within 0.15 of iota_A. NOT terminal: an unmatched class companion attaches COMPANION_CLASS_NOT_MATCHED and the study proceeds",
+            "terminal": false
+          }
+        },
+        "iota_a": 0.75,
+        "n_eligible_families": 18,
+        "n_eligible_reference_rungs": 73,
+        "passed": true,
+        "straddling_families": [
+          "CR5",
+          "RF11",
+          "RF3",
+          "RF6"
+        ]
+      },
+      "iota_a_prescreen": 0.75,
+      "leave_one_family_out": {
+        "families_whose_removal_breaks_coverage": [
+          "CR5",
+          "RF11",
+          "RF3",
+          "RF6"
+        ],
+        "per_family": {
+          "CL7": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CL8": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR1": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR10": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR11": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR12": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR2": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR3": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR4": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR5": {
+            "class_matched": true,
+            "failed": [
+              "C4_straddling_families"
+            ],
+            "passed": false
+          },
+          "CR6": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR7": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR8": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR9": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CX1": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CX2": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF1": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF10": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF11": {
+            "class_matched": true,
+            "failed": [
+              "C4_straddling_families"
+            ],
+            "passed": false
+          },
+          "RF12": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF2": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF3": {
+            "class_matched": true,
+            "failed": [
+              "C4_straddling_families"
+            ],
+            "passed": false
+          },
+          "RF4": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF5": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF6": {
+            "class_matched": true,
+            "failed": [
+              "C4_straddling_families"
+            ],
+            "passed": false
+          },
+          "RF7": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF8": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF9": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          }
+        },
+        "robust": false
+      },
+      "leave_one_family_out_with_cp4_cp7": {
+        "families_whose_removal_breaks_coverage": [
+          "CR5",
+          "RF11",
+          "RF3",
+          "RF6"
+        ],
+        "per_family": {
+          "CL7": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CL8": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CP4": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CP7": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR1": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR10": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR11": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR12": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR2": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR3": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR4": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR5": {
+            "class_matched": true,
+            "failed": [
+              "C4_straddling_families"
+            ],
+            "passed": false
+          },
+          "CR6": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR7": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR8": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR9": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CX1": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CX2": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF1": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF10": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF11": {
+            "class_matched": true,
+            "failed": [
+              "C4_straddling_families"
+            ],
+            "passed": false
+          },
+          "RF12": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF2": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF3": {
+            "class_matched": true,
+            "failed": [
+              "C4_straddling_families"
+            ],
+            "passed": false
+          },
+          "RF4": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF5": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF6": {
+            "class_matched": true,
+            "failed": [
+              "C4_straddling_families"
+            ],
+            "passed": false
+          },
+          "RF7": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF8": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF9": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          }
+        },
+        "robust": false
+      },
+      "rungs_measured": {
+        "v4r3": 270,
+        "v4r4": 254
+      },
+      "source_record": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r3/qwen3-4b/REGIME_SCREEN/records/regime_record.json",
+      "source_record_hash": "be654246bddc15280497f1da618d28b74f5de4e351552a6d3e36dbdf9ddee036",
+      "support_without_cp4_cp7": {
+        "class_arm": {
+          "caliper": 0.15,
+          "matched": true,
+          "matched_families": [
+            "CX1",
+            "CX2"
+          ],
+          "matched_rungs": [
+            "CX1:2",
+            "CX1:3",
+            "CX1:4",
+            "CX1:5",
+            "CX1:6",
+            "CX2:2"
+          ]
+        },
+        "core_reference_availability": {
+          "available": 18,
+          "eligible_families": [
+            "CR11",
+            "CR2",
+            "CR3",
+            "CR4",
+            "CR5",
+            "CR7",
+            "CR8",
+            "RF10",
+            "RF11",
+            "RF12",
+            "RF2",
+            "RF3",
+            "RF4",
+            "RF5",
+            "RF6",
+            "RF7",
+            "RF8",
+            "RF9"
+          ],
+          "shortlist_needs": 6
+        },
+        "distinct_supporting_families": 18,
+        "distinct_supporting_feature_groups": 11,
+        "easier_support": {
+          "feature_groups": [
+            "capital",
+            "comma",
+            "doubled_letter",
+            "ing_final",
+            "letter_a",
+            "one_letter",
+            "s_final",
+            "t_initial",
+            "vowel_initial",
+            "y_final"
+          ],
+          "meets_min_below": true,
+          "meets_min_families_per_side": true,
+          "rungs": 60
+        },
+        "eligible_reference_rungs": 73,
+        "harder_support": {
+          "feature_groups": [
+            "capital",
+            "comma",
+            "one_letter",
+            "sentence",
+            "vowel_initial"
+          ],
+          "meets_min_above": true,
+          "meets_min_families_per_side": true,
+          "rungs": 13
+        },
+        "local_density": {
+          "caliper": 0.15,
+          "feature_groups": [
+            "comma",
+            "ing_final",
+            "letter_a",
+            "one_letter",
+            "sentence",
+            "vowel_initial",
+            "y_final"
+          ],
+          "labels": [
+            "CR5:10",
+            "CR5:6",
+            "CR5:8",
+            "CR7:52",
+            "RF11:16",
+            "RF11:21",
+            "RF11:26",
+            "RF12:1",
+            "RF2:3",
+            "RF2:6",
+            "RF3:4",
+            "RF5:1",
+            "RF5:2",
+            "RF5:4",
+            "RF7:24",
+            "RF8:7"
+          ],
+          "rungs": 16
+        },
+        "spectrum_support": {
+          "needed": 3,
+          "straddling_families": [
+            "CR5",
+            "RF11",
+            "RF3",
+            "RF6"
+          ],
+          "straddling_feature_groups": [
+            "capital",
+            "comma",
+            "one_letter",
+            "vowel_initial"
+          ],
+          "sufficient_for_a_full_spectrum": true
+        }
+      }
+    },
+    "qwen3-4b-instruct-2507": {
+      "conditions_that_moved": [],
+      "coverage_with_cp4_cp7": {
+        "class_matched": true,
+        "conditions": {
+          "C1_bracketed": {
+            "met": true,
+            "observed": {
+              "above": true,
+              "below": true
+            },
+            "rule": "an eligible reference rung strictly below iota_A and one strictly above"
+          },
+          "C2_groups_per_side": {
+            "met": true,
+            "observed": {
+              "above": [
+                "comma",
+                "one_letter",
+                "s_final",
+                "t_initial",
+                "vowel_initial",
+                "y_final"
+              ],
+              "below": [
+                "b_initial",
+                "capital",
+                "comma",
+                "doubled_letter",
+                "ing_final",
+                "letter_a",
+                "one_letter",
+                "s_final",
+                "t_initial",
+                "vowel_initial",
+                "y_final"
+              ]
+            },
+            "rule": "at least 3 eligible reference FEATURE GROUPS on each side of iota_A"
+          },
+          "C3_near_density": {
+            "met": true,
+            "observed": {
+              "families": [
+                "letter_a",
+                "one_letter",
+                "s_final",
+                "t_initial",
+                "vowel_initial",
+                "y_final"
+              ],
+              "rungs": [
+                "CR3:6",
+                "RF10:19",
+                "RF11:16",
+                "RF7:22",
+                "RF7:24",
+                "RF8:7",
+                "RF8:8",
+                "RF9:10"
+              ]
+            },
+            "rule": "at least 6 eligible rungs within 0.15 of iota_A, from at least 3 feature groups"
+          },
+          "C4_straddling_families": {
+            "met": true,
+            "observed": {
+              "straddling": [
+                "RF10",
+                "RF11",
+                "RF8",
+                "RF9"
+              ],
+              "well_formed": [
+                "RF10",
+                "RF11",
+                "RF8",
+                "RF9"
+              ],
+              "well_formed_groups": [
+                "s_final",
+                "t_initial",
+                "vowel_initial",
+                "y_final"
+              ]
+            },
+            "rule": "at least 4 reference families straddle iota_A with at least 3 eligible rungs spanning 0.40 in iota, from that many distinct feature groups"
+          },
+          "C5_total_points": {
+            "met": true,
+            "observed": {
+              "n": 46
+            },
+            "rule": "at least 12 eligible reference rungs in total"
+          },
+          "C6_shortlist_feasible": {
+            "met": true,
+            "observed": {
+              "families": [
+                "CR11",
+                "CR2",
+                "CR3",
+                "CR5",
+                "CR7",
+                "CR8",
+                "RF1",
+                "RF10",
+                "RF11",
+                "RF2",
+                "RF3",
+                "RF4",
+                "RF5",
+                "RF6",
+                "RF7",
+                "RF8",
+                "RF9"
+              ],
+              "groups": [
+                "b_initial",
+                "capital",
+                "comma",
+                "doubled_letter",
+                "ing_final",
+                "letter_a",
+                "one_letter",
+                "s_final",
+                "t_initial",
+                "vowel_initial",
+                "y_final"
+              ]
+            },
+            "rule": "at least 6 eligible reference families, from at least 4 feature groups, so §12.3's shortlist is not short before it starts"
+          },
+          "C7_class_matched": {
+            "met": true,
+            "observed": {
+              "rungs": [
+                "CL7:45",
+                "CL8:3",
+                "CX1:6",
+                "CX1:7",
+                "CX1:8",
+                "CX2:2"
+              ]
+            },
+            "rule": "at least one eligible class rung within 0.15 of iota_A. NOT terminal: an unmatched class companion attaches COMPANION_CLASS_NOT_MATCHED and the study proceeds",
+            "terminal": false
+          }
+        },
+        "iota_a": 0.625,
+        "n_eligible_families": 17,
+        "n_eligible_reference_rungs": 46,
+        "passed": true,
+        "straddling_families": [
+          "RF10",
+          "RF11",
+          "RF8",
+          "RF9"
+        ]
+      },
+      "coverage_without_cp4_cp7": {
+        "class_matched": true,
+        "conditions": {
+          "C1_bracketed": {
+            "met": true,
+            "observed": {
+              "above": true,
+              "below": true
+            },
+            "rule": "an eligible reference rung strictly below iota_A and one strictly above"
+          },
+          "C2_groups_per_side": {
+            "met": true,
+            "observed": {
+              "above": [
+                "comma",
+                "one_letter",
+                "s_final",
+                "t_initial",
+                "vowel_initial",
+                "y_final"
+              ],
+              "below": [
+                "b_initial",
+                "capital",
+                "comma",
+                "doubled_letter",
+                "ing_final",
+                "letter_a",
+                "one_letter",
+                "s_final",
+                "t_initial",
+                "vowel_initial",
+                "y_final"
+              ]
+            },
+            "rule": "at least 3 eligible reference FEATURE GROUPS on each side of iota_A"
+          },
+          "C3_near_density": {
+            "met": true,
+            "observed": {
+              "families": [
+                "letter_a",
+                "one_letter",
+                "s_final",
+                "t_initial",
+                "vowel_initial",
+                "y_final"
+              ],
+              "rungs": [
+                "CR3:6",
+                "RF10:19",
+                "RF11:16",
+                "RF7:22",
+                "RF7:24",
+                "RF8:7",
+                "RF8:8",
+                "RF9:10"
+              ]
+            },
+            "rule": "at least 6 eligible rungs within 0.15 of iota_A, from at least 3 feature groups"
+          },
+          "C4_straddling_families": {
+            "met": true,
+            "observed": {
+              "straddling": [
+                "RF10",
+                "RF11",
+                "RF8",
+                "RF9"
+              ],
+              "well_formed": [
+                "RF10",
+                "RF11",
+                "RF8",
+                "RF9"
+              ],
+              "well_formed_groups": [
+                "s_final",
+                "t_initial",
+                "vowel_initial",
+                "y_final"
+              ]
+            },
+            "rule": "at least 4 reference families straddle iota_A with at least 3 eligible rungs spanning 0.40 in iota, from that many distinct feature groups"
+          },
+          "C5_total_points": {
+            "met": true,
+            "observed": {
+              "n": 46
+            },
+            "rule": "at least 12 eligible reference rungs in total"
+          },
+          "C6_shortlist_feasible": {
+            "met": true,
+            "observed": {
+              "families": [
+                "CR11",
+                "CR2",
+                "CR3",
+                "CR5",
+                "CR7",
+                "CR8",
+                "RF1",
+                "RF10",
+                "RF11",
+                "RF2",
+                "RF3",
+                "RF4",
+                "RF5",
+                "RF6",
+                "RF7",
+                "RF8",
+                "RF9"
+              ],
+              "groups": [
+                "b_initial",
+                "capital",
+                "comma",
+                "doubled_letter",
+                "ing_final",
+                "letter_a",
+                "one_letter",
+                "s_final",
+                "t_initial",
+                "vowel_initial",
+                "y_final"
+              ]
+            },
+            "rule": "at least 6 eligible reference families, from at least 4 feature groups, so §12.3's shortlist is not short before it starts"
+          },
+          "C7_class_matched": {
+            "met": true,
+            "observed": {
+              "rungs": [
+                "CL7:45",
+                "CL8:3",
+                "CX1:6",
+                "CX1:7",
+                "CX1:8",
+                "CX2:2"
+              ]
+            },
+            "rule": "at least one eligible class rung within 0.15 of iota_A. NOT terminal: an unmatched class companion attaches COMPANION_CLASS_NOT_MATCHED and the study proceeds",
+            "terminal": false
+          }
+        },
+        "iota_a": 0.625,
+        "n_eligible_families": 17,
+        "n_eligible_reference_rungs": 46,
+        "passed": true,
+        "straddling_families": [
+          "RF10",
+          "RF11",
+          "RF8",
+          "RF9"
+        ]
+      },
+      "iota_a_prescreen": 0.625,
+      "leave_one_family_out": {
+        "families_whose_removal_breaks_coverage": [
+          "RF10",
+          "RF11",
+          "RF8",
+          "RF9"
+        ],
+        "per_family": {
+          "CL7": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CL8": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR1": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR10": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR11": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR12": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR2": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR3": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR4": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR5": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR6": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR7": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR8": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR9": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CX1": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CX2": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF1": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF10": {
+            "class_matched": true,
+            "failed": [
+              "C4_straddling_families"
+            ],
+            "passed": false
+          },
+          "RF11": {
+            "class_matched": true,
+            "failed": [
+              "C4_straddling_families"
+            ],
+            "passed": false
+          },
+          "RF12": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF2": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF3": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF4": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF5": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF6": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF7": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF8": {
+            "class_matched": true,
+            "failed": [
+              "C4_straddling_families"
+            ],
+            "passed": false
+          },
+          "RF9": {
+            "class_matched": true,
+            "failed": [
+              "C4_straddling_families"
+            ],
+            "passed": false
+          }
+        },
+        "robust": false
+      },
+      "leave_one_family_out_with_cp4_cp7": {
+        "families_whose_removal_breaks_coverage": [
+          "RF10",
+          "RF11",
+          "RF8",
+          "RF9"
+        ],
+        "per_family": {
+          "CL7": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CL8": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CP4": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CP7": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR1": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR10": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR11": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR12": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR2": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR3": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR4": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR5": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR6": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR7": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR8": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CR9": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CX1": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "CX2": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF1": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF10": {
+            "class_matched": true,
+            "failed": [
+              "C4_straddling_families"
+            ],
+            "passed": false
+          },
+          "RF11": {
+            "class_matched": true,
+            "failed": [
+              "C4_straddling_families"
+            ],
+            "passed": false
+          },
+          "RF12": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF2": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF3": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF4": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF5": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF6": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF7": {
+            "class_matched": true,
+            "failed": [],
+            "passed": true
+          },
+          "RF8": {
+            "class_matched": true,
+            "failed": [
+              "C4_straddling_families"
+            ],
+            "passed": false
+          },
+          "RF9": {
+            "class_matched": true,
+            "failed": [
+              "C4_straddling_families"
+            ],
+            "passed": false
+          }
+        },
+        "robust": false
+      },
+      "rungs_measured": {
+        "v4r3": 270,
+        "v4r4": 254
+      },
+      "source_record": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r3/qwen3-4b-instruct-2507/REGIME_SCREEN/records/regime_record.json",
+      "source_record_hash": "2d54add225d42fac0f2048d70ac234dba8f18c2ea42681bee3e48497078db481",
+      "support_without_cp4_cp7": {
+        "class_arm": {
+          "caliper": 0.15,
+          "matched": true,
+          "matched_families": [
+            "CL7",
+            "CL8",
+            "CX1",
+            "CX2"
+          ],
+          "matched_rungs": [
+            "CL7:45",
+            "CL8:3",
+            "CX1:6",
+            "CX1:7",
+            "CX1:8",
+            "CX2:2"
+          ]
+        },
+        "core_reference_availability": {
+          "available": 17,
+          "eligible_families": [
+            "CR11",
+            "CR2",
+            "CR3",
+            "CR5",
+            "CR7",
+            "CR8",
+            "RF1",
+            "RF10",
+            "RF11",
+            "RF2",
+            "RF3",
+            "RF4",
+            "RF5",
+            "RF6",
+            "RF7",
+            "RF8",
+            "RF9"
+          ],
+          "shortlist_needs": 6
+        },
+        "distinct_supporting_families": 17,
+        "distinct_supporting_feature_groups": 11,
+        "easier_support": {
+          "feature_groups": [
+            "b_initial",
+            "capital",
+            "comma",
+            "doubled_letter",
+            "ing_final",
+            "letter_a",
+            "one_letter",
+            "s_final",
+            "t_initial",
+            "vowel_initial",
+            "y_final"
+          ],
+          "meets_min_below": true,
+          "meets_min_families_per_side": true,
+          "rungs": 35
+        },
+        "eligible_reference_rungs": 46,
+        "harder_support": {
+          "feature_groups": [
+            "comma",
+            "one_letter",
+            "s_final",
+            "t_initial",
+            "vowel_initial",
+            "y_final"
+          ],
+          "meets_min_above": true,
+          "meets_min_families_per_side": true,
+          "rungs": 11
+        },
+        "local_density": {
+          "caliper": 0.15,
+          "feature_groups": [
+            "letter_a",
+            "one_letter",
+            "s_final",
+            "t_initial",
+            "vowel_initial",
+            "y_final"
+          ],
+          "labels": [
+            "CR3:6",
+            "RF10:19",
+            "RF11:16",
+            "RF7:22",
+            "RF7:24",
+            "RF8:7",
+            "RF8:8",
+            "RF9:10"
+          ],
+          "rungs": 8
+        },
+        "spectrum_support": {
+          "needed": 3,
+          "straddling_families": [
+            "RF10",
+            "RF11",
+            "RF8",
+            "RF9"
+          ],
+          "straddling_feature_groups": [
+            "s_final",
+            "t_initial",
+            "vowel_initial",
+            "y_final"
+          ],
+          "sufficient_for_a_full_spectrum": true
+        }
+      }
+    }
+  },
+  "no_condition_changed_on_any_model": true,
+  "not_chosen_for_cost": "the rule above is prospective and reads coverage only. The cost comparison is recorded because it is a real difference between the two remedies and a reader is entitled to see it, not because it entered the decision",
+  "reads": "the §12.2 pre-screen difficulty table on each v4r3 REGIME_SCREEN record: solo compliance, chance compliance and solo vacuity per rung",
+  "reads_no_composed_outcome": true,
+  "what_removal_costs": "CP4 and CP7 were the only families carrying the rate-lower-bound form. The class arm becomes {count lower bound, exact count}. §7.4-R3's own argument is why that is tolerable: A is an exact-count production constraint and CX1 is A's rule over a different marker word, which is the tightest class companion the grammar can build. The removed families were the loosest",
+  "what_rewriting_would_have_cost": "the four wordings render at 60 severities across CP4 and CP7's declared ranges. Changing a live wording invalidates every measurement taken under it, and the §12.2 screen spreads four wordings over its 24 pre-screen topics, so the whole of both families' measured rows --- 16 round-0 rungs x 24 topics on each of four replications, 1,536 generations --- would have to be regenerated, not only the 768 rows carrying the two defective wordings",
+  "why_c1_to_c6_cannot_move": "§12.6's first six conditions read rows whose role is `reference`. CP4 and CP7 are `class_control`, so their removal cannot change those six on any table. This is a property of the criterion, not an observation about these four models, and the run below confirms it rather than resting on it"
+}

@@ -1,0 +1,243 @@
+{
+  "v4r2_table_reproduced": {
+    "D": 0.047,
+    "Delta_R": 0.0422,
+    "Lambda": 0.0664,
+    "Delta_j": 0.0496
+  },
+  "design": {
+    "cells_per_block": 47,
+    "unconstrained": 1,
+    "core_solo": 5,
+    "core_composed": 20,
+    "spectrum_solo": 6,
+    "spectrum_composed": 12,
+    "class_solo": 1,
+    "class_composed": 2,
+    "primary_family_size": 6,
+    "sidak_primary": 2.631
+  },
+  "delta_difficulty_planning": {
+    "beta": 0.5,
+    "sum_w_squared": 0.121528,
+    "variance_inflation": 1.25
+  },
+  "preconditions": {
+    "D": 0.05,
+    "Delta_R": 0.05,
+    "delta_difficulty": 0.05,
+    "Lambda": 0.08,
+    "Delta_j": 0.06
+  },
+  "minimum_blocks_at_M4": 408,
+  "menu": [
+    {
+      "blocks": 384,
+      "M": 4,
+      "cells": 47,
+      "generations_per_model": 72192,
+      "generations_four_models": 288768,
+      "sequestered_total": 96,
+      "sequestered_admissible": true,
+      "phi_0.27": {
+        "D": 0.0496,
+        "Delta_R": 0.0446,
+        "delta_difficulty": 0.048,
+        "Lambda": 0.0702,
+        "Delta_j": 0.0496
+      },
+      "meets_phi_0.27": true,
+      "phi_0.37": {
+        "D": 0.0515,
+        "Delta_R": 0.0474,
+        "delta_difficulty": 0.0515,
+        "Lambda": 0.0729,
+        "Delta_j": 0.0515
+      },
+      "meets_phi_0.37": false,
+      "registrable": false
+    },
+    {
+      "blocks": 384,
+      "M": 8,
+      "cells": 47,
+      "generations_per_model": 144384,
+      "generations_four_models": 577536,
+      "sequestered_total": 96,
+      "sequestered_admissible": true,
+      "phi_0.27": {
+        "D": 0.0419,
+        "Delta_R": 0.039,
+        "delta_difficulty": 0.0425,
+        "Lambda": 0.0592,
+        "Delta_j": 0.0419
+      },
+      "meets_phi_0.27": true,
+      "phi_0.37": {
+        "D": 0.0452,
+        "Delta_R": 0.0429,
+        "delta_difficulty": 0.0471,
+        "Lambda": 0.0639,
+        "Delta_j": 0.0452
+      },
+      "meets_phi_0.37": true,
+      "registrable": true
+    },
+    {
+      "blocks": 408,
+      "M": 4,
+      "cells": 47,
+      "generations_per_model": 76704,
+      "generations_four_models": 306816,
+      "sequestered_total": 72,
+      "sequestered_admissible": true,
+      "phi_0.27": {
+        "D": 0.0481,
+        "Delta_R": 0.0433,
+        "delta_difficulty": 0.0465,
+        "Lambda": 0.0681,
+        "Delta_j": 0.0481
+      },
+      "meets_phi_0.27": true,
+      "phi_0.37": {
+        "D": 0.05,
+        "Delta_R": 0.046,
+        "delta_difficulty": 0.0499,
+        "Lambda": 0.0707,
+        "Delta_j": 0.05
+      },
+      "meets_phi_0.37": true,
+      "registrable": true
+    },
+    {
+      "blocks": 408,
+      "M": 8,
+      "cells": 47,
+      "generations_per_model": 153408,
+      "generations_four_models": 613632,
+      "sequestered_total": 72,
+      "sequestered_admissible": true,
+      "phi_0.27": {
+        "D": 0.0406,
+        "Delta_R": 0.0378,
+        "delta_difficulty": 0.0412,
+        "Lambda": 0.0575,
+        "Delta_j": 0.0406
+      },
+      "meets_phi_0.27": true,
+      "phi_0.37": {
+        "D": 0.0439,
+        "Delta_R": 0.0416,
+        "delta_difficulty": 0.0457,
+        "Lambda": 0.062,
+        "Delta_j": 0.0439
+      },
+      "meets_phi_0.37": true,
+      "registrable": true
+    },
+    {
+      "blocks": 432,
+      "M": 4,
+      "cells": 47,
+      "generations_per_model": 81216,
+      "generations_four_models": 324864,
+      "sequestered_total": 48,
+      "sequestered_admissible": true,
+      "phi_0.27": {
+        "D": 0.0468,
+        "Delta_R": 0.0421,
+        "delta_difficulty": 0.0452,
+        "Lambda": 0.0661,
+        "Delta_j": 0.0468
+      },
+      "meets_phi_0.27": true,
+      "phi_0.37": {
+        "D": 0.0486,
+        "Delta_R": 0.0447,
+        "delta_difficulty": 0.0485,
+        "Lambda": 0.0687,
+        "Delta_j": 0.0486
+      },
+      "meets_phi_0.37": true,
+      "registrable": true
+    },
+    {
+      "blocks": 432,
+      "M": 8,
+      "cells": 47,
+      "generations_per_model": 162432,
+      "generations_four_models": 649728,
+      "sequestered_total": 48,
+      "sequestered_admissible": true,
+      "phi_0.27": {
+        "D": 0.0395,
+        "Delta_R": 0.0367,
+        "delta_difficulty": 0.04,
+        "Lambda": 0.0558,
+        "Delta_j": 0.0395
+      },
+      "meets_phi_0.27": true,
+      "phi_0.37": {
+        "D": 0.0426,
+        "Delta_R": 0.0405,
+        "delta_difficulty": 0.0444,
+        "Lambda": 0.0603,
+        "Delta_j": 0.0426
+      },
+      "meets_phi_0.37": true,
+      "registrable": true
+    },
+    {
+      "blocks": 456,
+      "M": 4,
+      "cells": 47,
+      "generations_per_model": 85728,
+      "generations_four_models": 342912,
+      "sequestered_total": 24,
+      "sequestered_admissible": false,
+      "phi_0.27": {
+        "D": 0.0455,
+        "Delta_R": 0.0409,
+        "delta_difficulty": 0.044,
+        "Lambda": 0.0644,
+        "Delta_j": 0.0455
+      },
+      "meets_phi_0.27": true,
+      "phi_0.37": {
+        "D": 0.0473,
+        "Delta_R": 0.0435,
+        "delta_difficulty": 0.0472,
+        "Lambda": 0.0669,
+        "Delta_j": 0.0473
+      },
+      "meets_phi_0.37": true,
+      "registrable": false
+    },
+    {
+      "blocks": 456,
+      "M": 8,
+      "cells": 47,
+      "generations_per_model": 171456,
+      "generations_four_models": 685824,
+      "sequestered_total": 24,
+      "sequestered_admissible": false,
+      "phi_0.27": {
+        "D": 0.0384,
+        "Delta_R": 0.0358,
+        "delta_difficulty": 0.039,
+        "Lambda": 0.0543,
+        "Delta_j": 0.0384
+      },
+      "meets_phi_0.27": true,
+      "phi_0.37": {
+        "D": 0.0415,
+        "Delta_R": 0.0394,
+        "delta_difficulty": 0.0432,
+        "Lambda": 0.0587,
+        "Delta_j": 0.0415
+      },
+      "meets_phi_0.37": true,
+      "registrable": false
+    }
+  ]
+}

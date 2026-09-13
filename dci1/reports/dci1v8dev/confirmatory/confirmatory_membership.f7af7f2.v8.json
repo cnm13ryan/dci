@@ -1,0 +1,985 @@
+{
+ "allocation": {
+  "chosen_blocks_per_frame": 384,
+  "decided_at_n_frames": 3,
+  "frames_entering_local_by_model": {
+   "gemma-3n-e2b-it": 3,
+   "gemma-3n-e4b-it": 3,
+   "qwen3-4b": 2,
+   "qwen3-4b-instruct-2507": 0
+  },
+  "joint_family_size": 18,
+  "multiplicity_rule": "per (model, frame, configuration): F1 as registered (six members), bootstrap studentised maximum-modulus; per (model, configuration): the JOINT family of every F1 member of every entering frame, critical value from a topic-level block bootstrap with one draw shared across frames; the decision interval of every primary claim is the joint one; a model-level LOCAL claim is the conjunction over its entering frames (intersection-union; no further adjustment); no at-least-one-frame claim exists",
+  "per_model": {
+   "gemma-3n-e2b-it": {
+    "blocks_per_frame": 384,
+    "joint_family_size": 18,
+    "multiplicity_rule": "per (model, frame, configuration): F1 as registered (six members), bootstrap studentised maximum-modulus; per (model, configuration): the JOINT family of every F1 member of every entering frame, critical value from a topic-level block bootstrap with one draw shared across frames; the decision interval of every primary claim is the joint one; a model-level LOCAL claim is the conjunction over its entering frames (intersection-union; no further adjustment); no at-least-one-frame claim exists",
+    "n_frames": 3,
+    "precision_rule": "one allocation, rules.CONFIRMATORY_BLOCKS_PER_FRAME = 384 blocks per entering frame (the ceiling), for every model; \u00a716.1's variance form is projected at it under the registered planning constants and the adverse scenarios at the joint \u0160id\u00e1k constant (k = 6 x LOCAL frames entering) and the projection is recorded; \u00a716.2's precondition and \u00a717.3's realised evaluation decide, and no allocation is chosen from a menu",
+    "precondition": 0.05,
+    "precondition_met_adverse": true,
+    "precondition_met_planning": true,
+    "rule_scenarios": [
+     "REGISTERED_ALTERNATE",
+     "COMPOSED_AT_HALF"
+    ],
+    "table": {
+     "ALTERNATE_AT_HALF": {
+      "blocks": 384,
+      "critical_frame": 2.6310382845367783,
+      "critical_joint": 2.9839458641803693,
+      "half_width_frame": 0.046267748325851246,
+      "half_width_joint": 0.052473754210752205,
+      "is_rule_scenario": false,
+      "joint_family_size": 18,
+      "m_draws": 8,
+      "mde_80_joint": 0.06727396432152977,
+      "meets_precondition_joint": false,
+      "n_frames": 3,
+      "p_one_minus_p": 0.25,
+      "phi": 0.37,
+      "precondition": 0.05,
+      "rho": 0.5,
+      "scenario": "ALTERNATE_AT_HALF",
+      "se_delta_r": 0.017585357308473056
+     },
+     "COMPOSED_AT_HALF": {
+      "blocks": 384,
+      "critical_frame": 2.6310382845367783,
+      "critical_joint": 2.9839458641803693,
+      "half_width_frame": 0.04201359703710438,
+      "half_width_joint": 0.047648983237916005,
+      "is_rule_scenario": true,
+      "joint_family_size": 18,
+      "m_draws": 8,
+      "mde_80_joint": 0.0610883678234689,
+      "meets_precondition_joint": true,
+      "n_frames": 3,
+      "p_one_minus_p": 0.25,
+      "phi": 0.27,
+      "precondition": 0.05,
+      "rho": 0.5,
+      "scenario": "COMPOSED_AT_HALF",
+      "se_delta_r": 0.01596844762162072
+     },
+     "REGISTERED_ALTERNATE": {
+      "blocks": 384,
+      "critical_frame": 2.6310382845367783,
+      "critical_joint": 2.9839458641803693,
+      "half_width_frame": 0.042906944661955444,
+      "half_width_joint": 0.04866215775769272,
+      "is_rule_scenario": true,
+      "joint_family_size": 18,
+      "m_draws": 8,
+      "mde_80_joint": 0.06238730797974564,
+      "meets_precondition_joint": true,
+      "n_frames": 3,
+      "p_one_minus_p": 0.215,
+      "phi": 0.37,
+      "precondition": 0.05,
+      "rho": 0.5,
+      "scenario": "REGISTERED_ALTERNATE",
+      "se_delta_r": 0.016307989478575625
+     },
+     "REGISTERED_PLANNING": {
+      "blocks": 384,
+      "critical_frame": 2.6310382845367783,
+      "critical_joint": 2.9839458641803693,
+      "half_width_frame": 0.03896180705455947,
+      "half_width_joint": 0.04418784922467026,
+      "is_rule_scenario": false,
+      "joint_family_size": 18,
+      "m_draws": 8,
+      "mde_80_joint": 0.05665102177073659,
+      "meets_precondition_joint": true,
+      "n_frames": 3,
+      "p_one_minus_p": 0.215,
+      "phi": 0.27,
+      "precondition": 0.05,
+      "rho": 0.5,
+      "scenario": "REGISTERED_PLANNING",
+      "se_delta_r": 0.01480852912082163
+     },
+     "WORST_CASE": {
+      "blocks": 384,
+      "critical_frame": 2.6310382845367783,
+      "critical_joint": 2.9839458641803693,
+      "half_width_frame": 0.06171062063666176,
+      "half_width_joint": 0.06998801663472964,
+      "is_rule_scenario": false,
+      "joint_family_size": 18,
+      "m_draws": 8,
+      "mde_80_joint": 0.08972812036869011,
+      "meets_precondition_joint": false,
+      "n_frames": 3,
+      "p_one_minus_p": 0.25,
+      "phi": 0.37,
+      "precondition": 0.05,
+      "rho": 0.0,
+      "scenario": "WORST_CASE",
+      "se_delta_r": 0.023454854685828547
+     }
+    }
+   },
+   "gemma-3n-e4b-it": {
+    "blocks_per_frame": 384,
+    "joint_family_size": 18,
+    "multiplicity_rule": "per (model, frame, configuration): F1 as registered (six members), bootstrap studentised maximum-modulus; per (model, configuration): the JOINT family of every F1 member of every entering frame, critical value from a topic-level block bootstrap with one draw shared across frames; the decision interval of every primary claim is the joint one; a model-level LOCAL claim is the conjunction over its entering frames (intersection-union; no further adjustment); no at-least-one-frame claim exists",
+    "n_frames": 3,
+    "precision_rule": "one allocation, rules.CONFIRMATORY_BLOCKS_PER_FRAME = 384 blocks per entering frame (the ceiling), for every model; \u00a716.1's variance form is projected at it under the registered planning constants and the adverse scenarios at the joint \u0160id\u00e1k constant (k = 6 x LOCAL frames entering) and the projection is recorded; \u00a716.2's precondition and \u00a717.3's realised evaluation decide, and no allocation is chosen from a menu",
+    "precondition": 0.05,
+    "precondition_met_adverse": true,
+    "precondition_met_planning": true,
+    "rule_scenarios": [
+     "REGISTERED_ALTERNATE",
+     "COMPOSED_AT_HALF"
+    ],
+    "table": {
+     "ALTERNATE_AT_HALF": {
+      "blocks": 384,
+      "critical_frame": 2.6310382845367783,
+      "critical_joint": 2.9839458641803693,
+      "half_width_frame": 0.046267748325851246,
+      "half_width_joint": 0.052473754210752205,
+      "is_rule_scenario": false,
+      "joint_family_size": 18,
+      "m_draws": 8,
+      "mde_80_joint": 0.06727396432152977,
+      "meets_precondition_joint": false,
+      "n_frames": 3,
+      "p_one_minus_p": 0.25,
+      "phi": 0.37,
+      "precondition": 0.05,
+      "rho": 0.5,
+      "scenario": "ALTERNATE_AT_HALF",
+      "se_delta_r": 0.017585357308473056
+     },
+     "COMPOSED_AT_HALF": {
+      "blocks": 384,
+      "critical_frame": 2.6310382845367783,
+      "critical_joint": 2.9839458641803693,
+      "half_width_frame": 0.04201359703710438,
+      "half_width_joint": 0.047648983237916005,
+      "is_rule_scenario": true,
+      "joint_family_size": 18,
+      "m_draws": 8,
+      "mde_80_joint": 0.0610883678234689,
+      "meets_precondition_joint": true,
+      "n_frames": 3,
+      "p_one_minus_p": 0.25,
+      "phi": 0.27,
+      "precondition": 0.05,
+      "rho": 0.5,
+      "scenario": "COMPOSED_AT_HALF",
+      "se_delta_r": 0.01596844762162072
+     },
+     "REGISTERED_ALTERNATE": {
+      "blocks": 384,
+      "critical_frame": 2.6310382845367783,
+      "critical_joint": 2.9839458641803693,
+      "half_width_frame": 0.042906944661955444,
+      "half_width_joint": 0.04866215775769272,
+      "is_rule_scenario": true,
+      "joint_family_size": 18,
+      "m_draws": 8,
+      "mde_80_joint": 0.06238730797974564,
+      "meets_precondition_joint": true,
+      "n_frames": 3,
+      "p_one_minus_p": 0.215,
+      "phi": 0.37,
+      "precondition": 0.05,
+      "rho": 0.5,
+      "scenario": "REGISTERED_ALTERNATE",
+      "se_delta_r": 0.016307989478575625
+     },
+     "REGISTERED_PLANNING": {
+      "blocks": 384,
+      "critical_frame": 2.6310382845367783,
+      "critical_joint": 2.9839458641803693,
+      "half_width_frame": 0.03896180705455947,
+      "half_width_joint": 0.04418784922467026,
+      "is_rule_scenario": false,
+      "joint_family_size": 18,
+      "m_draws": 8,
+      "mde_80_joint": 0.05665102177073659,
+      "meets_precondition_joint": true,
+      "n_frames": 3,
+      "p_one_minus_p": 0.215,
+      "phi": 0.27,
+      "precondition": 0.05,
+      "rho": 0.5,
+      "scenario": "REGISTERED_PLANNING",
+      "se_delta_r": 0.01480852912082163
+     },
+     "WORST_CASE": {
+      "blocks": 384,
+      "critical_frame": 2.6310382845367783,
+      "critical_joint": 2.9839458641803693,
+      "half_width_frame": 0.06171062063666176,
+      "half_width_joint": 0.06998801663472964,
+      "is_rule_scenario": false,
+      "joint_family_size": 18,
+      "m_draws": 8,
+      "mde_80_joint": 0.08972812036869011,
+      "meets_precondition_joint": false,
+      "n_frames": 3,
+      "p_one_minus_p": 0.25,
+      "phi": 0.37,
+      "precondition": 0.05,
+      "rho": 0.0,
+      "scenario": "WORST_CASE",
+      "se_delta_r": 0.023454854685828547
+     }
+    }
+   },
+   "qwen3-4b": {
+    "blocks_per_frame": 384,
+    "joint_family_size": 12,
+    "multiplicity_rule": "per (model, frame, configuration): F1 as registered (six members), bootstrap studentised maximum-modulus; per (model, configuration): the JOINT family of every F1 member of every entering frame, critical value from a topic-level block bootstrap with one draw shared across frames; the decision interval of every primary claim is the joint one; a model-level LOCAL claim is the conjunction over its entering frames (intersection-union; no further adjustment); no at-least-one-frame claim exists",
+    "n_frames": 2,
+    "precision_rule": "one allocation, rules.CONFIRMATORY_BLOCKS_PER_FRAME = 384 blocks per entering frame (the ceiling), for every model; \u00a716.1's variance form is projected at it under the registered planning constants and the adverse scenarios at the joint \u0160id\u00e1k constant (k = 6 x LOCAL frames entering) and the projection is recorded; \u00a716.2's precondition and \u00a717.3's realised evaluation decide, and no allocation is chosen from a menu",
+    "precondition": 0.05,
+    "precondition_met_adverse": true,
+    "precondition_met_planning": true,
+    "rule_scenarios": [
+     "REGISTERED_ALTERNATE",
+     "COMPOSED_AT_HALF"
+    ],
+    "table": {
+     "ALTERNATE_AT_HALF": {
+      "blocks": 384,
+      "critical_frame": 2.6310382845367783,
+      "critical_joint": 2.8578426239489367,
+      "half_width_frame": 0.046267748325851246,
+      "half_width_joint": 0.05025618367352625,
+      "is_rule_scenario": false,
+      "joint_family_size": 12,
+      "m_draws": 8,
+      "mde_80_joint": 0.0650563937843038,
+      "meets_precondition_joint": false,
+      "n_frames": 2,
+      "p_one_minus_p": 0.25,
+      "phi": 0.37,
+      "precondition": 0.05,
+      "rho": 0.5,
+      "scenario": "ALTERNATE_AT_HALF",
+      "se_delta_r": 0.017585357308473056
+     },
+     "COMPOSED_AT_HALF": {
+      "blocks": 384,
+      "critical_frame": 2.6310382845367783,
+      "critical_joint": 2.8578426239489367,
+      "half_width_frame": 0.04201359703710438,
+      "half_width_joint": 0.04563531025136372,
+      "is_rule_scenario": true,
+      "joint_family_size": 12,
+      "m_draws": 8,
+      "mde_80_joint": 0.059074694836916616,
+      "meets_precondition_joint": true,
+      "n_frames": 2,
+      "p_one_minus_p": 0.25,
+      "phi": 0.27,
+      "precondition": 0.05,
+      "rho": 0.5,
+      "scenario": "COMPOSED_AT_HALF",
+      "se_delta_r": 0.01596844762162072
+     },
+     "REGISTERED_ALTERNATE": {
+      "blocks": 384,
+      "critical_frame": 2.6310382845367783,
+      "critical_joint": 2.8578426239489367,
+      "half_width_frame": 0.042906944661955444,
+      "half_width_joint": 0.046605667442784215,
+      "is_rule_scenario": true,
+      "joint_family_size": 12,
+      "m_draws": 8,
+      "mde_80_joint": 0.060330817664837146,
+      "meets_precondition_joint": true,
+      "n_frames": 2,
+      "p_one_minus_p": 0.215,
+      "phi": 0.37,
+      "precondition": 0.05,
+      "rho": 0.5,
+      "scenario": "REGISTERED_ALTERNATE",
+      "se_delta_r": 0.016307989478575625
+     },
+     "REGISTERED_PLANNING": {
+      "blocks": 384,
+      "critical_frame": 2.6310382845367783,
+      "critical_joint": 2.8578426239489367,
+      "half_width_frame": 0.03896180705455947,
+      "half_width_joint": 0.042320445719473125,
+      "is_rule_scenario": false,
+      "joint_family_size": 12,
+      "m_draws": 8,
+      "mde_80_joint": 0.05478361826553945,
+      "meets_precondition_joint": true,
+      "n_frames": 2,
+      "p_one_minus_p": 0.215,
+      "phi": 0.27,
+      "precondition": 0.05,
+      "rho": 0.5,
+      "scenario": "REGISTERED_PLANNING",
+      "se_delta_r": 0.01480852912082163
+     },
+     "WORST_CASE": {
+      "blocks": 384,
+      "critical_frame": 2.6310382845367783,
+      "critical_joint": 2.8578426239489367,
+      "half_width_frame": 0.06171062063666176,
+      "half_width_joint": 0.06703028345968927,
+      "is_rule_scenario": false,
+      "joint_family_size": 12,
+      "m_draws": 8,
+      "mde_80_joint": 0.08677038719364974,
+      "meets_precondition_joint": false,
+      "n_frames": 2,
+      "p_one_minus_p": 0.25,
+      "phi": 0.37,
+      "precondition": 0.05,
+      "rho": 0.0,
+      "scenario": "WORST_CASE",
+      "se_delta_r": 0.023454854685828547
+     }
+    }
+   },
+   "qwen3-4b-instruct-2507": {
+    "blocks_per_frame": 384,
+    "joint_family_size": 6,
+    "multiplicity_rule": "per (model, frame, configuration): F1 as registered (six members), bootstrap studentised maximum-modulus; per (model, configuration): the JOINT family of every F1 member of every entering frame, critical value from a topic-level block bootstrap with one draw shared across frames; the decision interval of every primary claim is the joint one; a model-level LOCAL claim is the conjunction over its entering frames (intersection-union; no further adjustment); no at-least-one-frame claim exists",
+    "n_frames": 1,
+    "precision_rule": "one allocation, rules.CONFIRMATORY_BLOCKS_PER_FRAME = 384 blocks per entering frame (the ceiling), for every model; \u00a716.1's variance form is projected at it under the registered planning constants and the adverse scenarios at the joint \u0160id\u00e1k constant (k = 6 x LOCAL frames entering) and the projection is recorded; \u00a716.2's precondition and \u00a717.3's realised evaluation decide, and no allocation is chosen from a menu",
+    "precondition": 0.05,
+    "precondition_met_adverse": true,
+    "precondition_met_planning": true,
+    "rule_scenarios": [
+     "REGISTERED_ALTERNATE",
+     "COMPOSED_AT_HALF"
+    ],
+    "table": {
+     "ALTERNATE_AT_HALF": {
+      "blocks": 384,
+      "critical_frame": 2.6310382845367783,
+      "critical_joint": 2.6310382845367783,
+      "half_width_frame": 0.046267748325851246,
+      "half_width_joint": 0.046267748325851246,
+      "is_rule_scenario": false,
+      "joint_family_size": 6,
+      "m_draws": 8,
+      "mde_80_joint": 0.0610679584366288,
+      "meets_precondition_joint": true,
+      "n_frames": 1,
+      "p_one_minus_p": 0.25,
+      "phi": 0.37,
+      "precondition": 0.05,
+      "rho": 0.5,
+      "scenario": "ALTERNATE_AT_HALF",
+      "se_delta_r": 0.017585357308473056
+     },
+     "COMPOSED_AT_HALF": {
+      "blocks": 384,
+      "critical_frame": 2.6310382845367783,
+      "critical_joint": 2.6310382845367783,
+      "half_width_frame": 0.04201359703710438,
+      "half_width_joint": 0.04201359703710438,
+      "is_rule_scenario": true,
+      "joint_family_size": 6,
+      "m_draws": 8,
+      "mde_80_joint": 0.05545298162265728,
+      "meets_precondition_joint": true,
+      "n_frames": 1,
+      "p_one_minus_p": 0.25,
+      "phi": 0.27,
+      "precondition": 0.05,
+      "rho": 0.5,
+      "scenario": "COMPOSED_AT_HALF",
+      "se_delta_r": 0.01596844762162072
+     },
+     "REGISTERED_ALTERNATE": {
+      "blocks": 384,
+      "critical_frame": 2.6310382845367783,
+      "critical_joint": 2.6310382845367783,
+      "half_width_frame": 0.042906944661955444,
+      "half_width_joint": 0.042906944661955444,
+      "is_rule_scenario": true,
+      "joint_family_size": 6,
+      "m_draws": 8,
+      "mde_80_joint": 0.05663209488400837,
+      "meets_precondition_joint": true,
+      "n_frames": 1,
+      "p_one_minus_p": 0.215,
+      "phi": 0.37,
+      "precondition": 0.05,
+      "rho": 0.5,
+      "scenario": "REGISTERED_ALTERNATE",
+      "se_delta_r": 0.016307989478575625
+     },
+     "REGISTERED_PLANNING": {
+      "blocks": 384,
+      "critical_frame": 2.6310382845367783,
+      "critical_joint": 2.6310382845367783,
+      "half_width_frame": 0.03896180705455947,
+      "half_width_joint": 0.03896180705455947,
+      "is_rule_scenario": false,
+      "joint_family_size": 6,
+      "m_draws": 8,
+      "mde_80_joint": 0.05142497960062579,
+      "meets_precondition_joint": true,
+      "n_frames": 1,
+      "p_one_minus_p": 0.215,
+      "phi": 0.27,
+      "precondition": 0.05,
+      "rho": 0.5,
+      "scenario": "REGISTERED_PLANNING",
+      "se_delta_r": 0.01480852912082163
+     },
+     "WORST_CASE": {
+      "blocks": 384,
+      "critical_frame": 2.6310382845367783,
+      "critical_joint": 2.6310382845367783,
+      "half_width_frame": 0.06171062063666176,
+      "half_width_joint": 0.06171062063666176,
+      "is_rule_scenario": false,
+      "joint_family_size": 6,
+      "m_draws": 8,
+      "mde_80_joint": 0.08145072437062223,
+      "meets_precondition_joint": false,
+      "n_frames": 1,
+      "p_one_minus_p": 0.25,
+      "phi": 0.37,
+      "precondition": 0.05,
+      "rho": 0.0,
+      "scenario": "WORST_CASE",
+      "se_delta_r": 0.023454854685828547
+     }
+    }
+   }
+  },
+  "precision_rule": "one allocation, rules.CONFIRMATORY_BLOCKS_PER_FRAME = 384 blocks per entering frame (the ceiling), for every model; \u00a716.1's variance form is projected at it under the registered planning constants and the adverse scenarios at the joint \u0160id\u00e1k constant (k = 6 x LOCAL frames entering) and the projection is recorded; \u00a716.2's precondition and \u00a717.3's realised evaluation decide, and no allocation is chosen from a menu",
+  "precondition": 0.05,
+  "precondition_met_adverse_at_max": true,
+  "source": "rules.CONFIRMATORY_BLOCKS_PER_FRAME",
+  "table": {
+   "ALTERNATE_AT_HALF": {
+    "blocks": 384,
+    "critical_frame": 2.6310382845367783,
+    "critical_joint": 2.9839458641803693,
+    "half_width_frame": 0.046267748325851246,
+    "half_width_joint": 0.052473754210752205,
+    "is_rule_scenario": false,
+    "joint_family_size": 18,
+    "m_draws": 8,
+    "mde_80_joint": 0.06727396432152977,
+    "meets_precondition_joint": false,
+    "n_frames": 3,
+    "p_one_minus_p": 0.25,
+    "phi": 0.37,
+    "precondition": 0.05,
+    "rho": 0.5,
+    "scenario": "ALTERNATE_AT_HALF",
+    "se_delta_r": 0.017585357308473056
+   },
+   "COMPOSED_AT_HALF": {
+    "blocks": 384,
+    "critical_frame": 2.6310382845367783,
+    "critical_joint": 2.9839458641803693,
+    "half_width_frame": 0.04201359703710438,
+    "half_width_joint": 0.047648983237916005,
+    "is_rule_scenario": true,
+    "joint_family_size": 18,
+    "m_draws": 8,
+    "mde_80_joint": 0.0610883678234689,
+    "meets_precondition_joint": true,
+    "n_frames": 3,
+    "p_one_minus_p": 0.25,
+    "phi": 0.27,
+    "precondition": 0.05,
+    "rho": 0.5,
+    "scenario": "COMPOSED_AT_HALF",
+    "se_delta_r": 0.01596844762162072
+   },
+   "REGISTERED_ALTERNATE": {
+    "blocks": 384,
+    "critical_frame": 2.6310382845367783,
+    "critical_joint": 2.9839458641803693,
+    "half_width_frame": 0.042906944661955444,
+    "half_width_joint": 0.04866215775769272,
+    "is_rule_scenario": true,
+    "joint_family_size": 18,
+    "m_draws": 8,
+    "mde_80_joint": 0.06238730797974564,
+    "meets_precondition_joint": true,
+    "n_frames": 3,
+    "p_one_minus_p": 0.215,
+    "phi": 0.37,
+    "precondition": 0.05,
+    "rho": 0.5,
+    "scenario": "REGISTERED_ALTERNATE",
+    "se_delta_r": 0.016307989478575625
+   },
+   "REGISTERED_PLANNING": {
+    "blocks": 384,
+    "critical_frame": 2.6310382845367783,
+    "critical_joint": 2.9839458641803693,
+    "half_width_frame": 0.03896180705455947,
+    "half_width_joint": 0.04418784922467026,
+    "is_rule_scenario": false,
+    "joint_family_size": 18,
+    "m_draws": 8,
+    "mde_80_joint": 0.05665102177073659,
+    "meets_precondition_joint": true,
+    "n_frames": 3,
+    "p_one_minus_p": 0.215,
+    "phi": 0.27,
+    "precondition": 0.05,
+    "rho": 0.5,
+    "scenario": "REGISTERED_PLANNING",
+    "se_delta_r": 0.01480852912082163
+   },
+   "WORST_CASE": {
+    "blocks": 384,
+    "critical_frame": 2.6310382845367783,
+    "critical_joint": 2.9839458641803693,
+    "half_width_frame": 0.06171062063666176,
+    "half_width_joint": 0.06998801663472964,
+    "is_rule_scenario": false,
+    "joint_family_size": 18,
+    "m_draws": 8,
+    "mde_80_joint": 0.08972812036869011,
+    "meets_precondition_joint": false,
+    "n_frames": 3,
+    "p_one_minus_p": 0.25,
+    "phi": 0.37,
+    "precondition": 0.05,
+    "rho": 0.0,
+    "scenario": "WORST_CASE",
+    "se_delta_r": 0.023454854685828547
+   }
+  }
+ },
+ "document": "dci1/reports/dci1v8dev/confirmatory_membership.json",
+ "models": {
+  "gemma-3n-e2b-it": {
+   "by_frame": {
+    "0": {
+     "cells_per_block": 68,
+     "enters_local": true,
+     "enters_spectrum": true,
+     "iota_a": 0.7542372881355932,
+     "local_valid_families": [
+      "MK1",
+      "MK2",
+      "MK4",
+      "MK5",
+      "MK8",
+      "XC3"
+     ],
+     "m_star": 8,
+     "n_star": 1,
+     "state": "LOCAL_AND_SPECTRUM"
+    },
+    "1": {
+     "cells_per_block": 56,
+     "enters_local": true,
+     "enters_spectrum": true,
+     "iota_a": 0.6119791666666666,
+     "local_valid_families": [
+      "MK1",
+      "MK2",
+      "MK4",
+      "MK5",
+      "MK8",
+      "XC3"
+     ],
+     "m_star": 10,
+     "n_star": 3,
+     "state": "LOCAL_AND_SPECTRUM"
+    },
+    "2": {
+     "cells_per_block": 0,
+     "enters_local": false,
+     "enters_spectrum": false,
+     "iota_a": 0.8187744458930899,
+     "local_valid_families": [
+      "MK2",
+      "MK4",
+      "MK5"
+     ],
+     "m_star": 10,
+     "n_star": 2,
+     "state": "LOCAL_ONLY"
+    },
+    "3": {
+     "cells_per_block": 59,
+     "enters_local": true,
+     "enters_spectrum": true,
+     "iota_a": 0.6627604166666666,
+     "local_valid_families": [
+      "MK1",
+      "MK2",
+      "MK4",
+      "MK5",
+      "MK8",
+      "XC1",
+      "XC3"
+     ],
+     "m_star": 11,
+     "n_star": 7,
+     "state": "LOCAL_AND_SPECTRUM"
+    }
+   },
+   "frames_entering_local": [
+    0,
+    1,
+    3
+   ],
+   "frames_entering_spectrum": [
+    0,
+    1,
+    3
+   ],
+   "local_eligible": true,
+   "local_supported_frames": [
+    0,
+    1,
+    3
+   ],
+   "membership_record_hash": "16ed7358ffe4ca3c6feae1471359c41f574410ba61a7aae442dcaeba11343298",
+   "runner_up_slots": {
+    "0": [
+     "A2",
+     "B2"
+    ],
+    "1": [],
+    "2": [],
+    "3": [
+     "A2"
+    ]
+   },
+   "stability": {
+    "0": 0.4995,
+    "1": 0.911,
+    "2": 0.9465,
+    "3": 0.51
+   },
+   "stability_status": {
+    "0": "OPERATING_POINT_UNSTABLE",
+    "1": "OPERATING_POINT_STABLE",
+    "2": "OPERATING_POINT_STABLE",
+    "3": "OPERATING_POINT_UNSTABLE"
+   },
+   "topped_up": false
+  },
+  "gemma-3n-e4b-it": {
+   "by_frame": {
+    "0": {
+     "cells_per_block": 68,
+     "enters_local": true,
+     "enters_spectrum": true,
+     "iota_a": 0.7447916666666666,
+     "local_valid_families": [
+      "MK1",
+      "MK2",
+      "MK4",
+      "MK5",
+      "MK8"
+     ],
+     "m_star": 9,
+     "n_star": 6,
+     "state": "LOCAL_AND_SPECTRUM"
+    },
+    "1": {
+     "cells_per_block": 59,
+     "enters_local": true,
+     "enters_spectrum": true,
+     "iota_a": 0.7109375,
+     "local_valid_families": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "XC3"
+     ],
+     "m_star": 9,
+     "n_star": 6,
+     "state": "LOCAL_AND_SPECTRUM"
+    },
+    "2": {
+     "cells_per_block": 35,
+     "enters_local": false,
+     "enters_spectrum": true,
+     "iota_a": 0.67578125,
+     "local_valid_families": [
+      "MK1",
+      "MK2",
+      "MK4",
+      "MK5"
+     ],
+     "m_star": 9,
+     "n_star": 7,
+     "state": "LOCAL_AND_SPECTRUM"
+    },
+    "3": {
+     "cells_per_block": 56,
+     "enters_local": true,
+     "enters_spectrum": true,
+     "iota_a": 0.6861979166666666,
+     "local_valid_families": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK8",
+      "XC3"
+     ],
+     "m_star": 10,
+     "n_star": 8,
+     "state": "LOCAL_AND_SPECTRUM"
+    }
+   },
+   "frames_entering_local": [
+    0,
+    1,
+    3
+   ],
+   "frames_entering_spectrum": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "local_eligible": true,
+   "local_supported_frames": [
+    0,
+    1,
+    3
+   ],
+   "membership_record_hash": "d30ced8235e4077cbe60051d6e429d86936ecb123efdd93402be3bc7ffd2df50",
+   "runner_up_slots": {
+    "0": [
+     "A2",
+     "B2"
+    ],
+    "1": [
+     "A2"
+    ],
+    "2": [],
+    "3": []
+   },
+   "stability": {
+    "0": 0.4345,
+    "1": 0.415,
+    "2": 0.8605,
+    "3": 0.7855
+   },
+   "stability_status": {
+    "0": "OPERATING_POINT_UNSTABLE",
+    "1": "OPERATING_POINT_UNSTABLE",
+    "2": "OPERATING_POINT_STABLE",
+    "3": "OPERATING_POINT_STABLE"
+   },
+   "topped_up": false
+  },
+  "qwen3-4b": {
+   "by_frame": {
+    "0": {
+     "cells_per_block": 59,
+     "enters_local": true,
+     "enters_spectrum": true,
+     "iota_a": 0.6705729166666666,
+     "local_valid_families": [
+      "MK1",
+      "MK2",
+      "MK6",
+      "MK8",
+      "XC3"
+     ],
+     "m_star": 12,
+     "n_star": 6,
+     "state": "LOCAL_AND_SPECTRUM"
+    },
+    "1": {
+     "cells_per_block": 32,
+     "enters_local": false,
+     "enters_spectrum": true,
+     "iota_a": 0.6080729166666666,
+     "local_valid_families": [
+      "MK1",
+      "MK7",
+      "MK8",
+      "XC3"
+     ],
+     "m_star": 12,
+     "n_star": 7,
+     "state": "LOCAL_AND_SPECTRUM"
+    },
+    "2": {
+     "cells_per_block": 32,
+     "enters_local": false,
+     "enters_spectrum": true,
+     "iota_a": 0.671875,
+     "local_valid_families": [
+      "MK1",
+      "MK2",
+      "MK6",
+      "MK7"
+     ],
+     "m_star": 12,
+     "n_star": 3,
+     "state": "LOCAL_AND_SPECTRUM"
+    },
+    "3": {
+     "cells_per_block": 59,
+     "enters_local": true,
+     "enters_spectrum": true,
+     "iota_a": 0.6966145833333334,
+     "local_valid_families": [
+      "MK1",
+      "MK2",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "XC3"
+     ],
+     "m_star": 13,
+     "n_star": 5,
+     "state": "LOCAL_AND_SPECTRUM"
+    }
+   },
+   "frames_entering_local": [
+    0,
+    3
+   ],
+   "frames_entering_spectrum": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "local_eligible": true,
+   "local_supported_frames": [
+    0,
+    3
+   ],
+   "membership_record_hash": "eb84e293e9fd915dbe5a3632e1f6c0b2cd87df07684bcb8c7599dccd533f1610",
+   "runner_up_slots": {
+    "0": [
+     "A2"
+    ],
+    "1": [],
+    "2": [],
+    "3": [
+     "A2"
+    ]
+   },
+   "stability": {
+    "0": 0.5345,
+    "1": 0.585,
+    "2": 0.573,
+    "3": 0.3975
+   },
+   "stability_status": {
+    "0": "OPERATING_POINT_UNSTABLE",
+    "1": "OPERATING_POINT_UNSTABLE",
+    "2": "OPERATING_POINT_UNSTABLE",
+    "3": "OPERATING_POINT_UNSTABLE"
+   },
+   "topped_up": true
+  },
+  "qwen3-4b-instruct-2507": {
+   "by_frame": {
+    "0": {
+     "cells_per_block": null,
+     "enters_local": false,
+     "enters_spectrum": false,
+     "iota_a": null,
+     "local_valid_families": null,
+     "m_star": null,
+     "n_star": null,
+     "state": "UNSUPPORTED"
+    },
+    "1": {
+     "cells_per_block": 35,
+     "enters_local": false,
+     "enters_spectrum": true,
+     "iota_a": 0.6419270833333334,
+     "local_valid_families": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8"
+     ],
+     "m_star": 10,
+     "n_star": 6,
+     "state": "LOCAL_AND_SPECTRUM"
+    },
+    "2": {
+     "cells_per_block": null,
+     "enters_local": false,
+     "enters_spectrum": false,
+     "iota_a": null,
+     "local_valid_families": null,
+     "m_star": null,
+     "n_star": null,
+     "state": "UNSUPPORTED"
+    },
+    "3": {
+     "cells_per_block": 32,
+     "enters_local": false,
+     "enters_spectrum": true,
+     "iota_a": 0.6809895833333334,
+     "local_valid_families": [
+      "MK2",
+      "MK6",
+      "XC1"
+     ],
+     "m_star": 12,
+     "n_star": 6,
+     "state": "LOCAL_AND_SPECTRUM"
+    }
+   },
+   "frames_entering_local": [],
+   "frames_entering_spectrum": [
+    1,
+    3
+   ],
+   "local_eligible": false,
+   "local_supported_frames": [
+    1
+   ],
+   "membership_record_hash": "83a07d560a26edb71fc96dacea1b53851777847a4b7395669ef9a986666faedb",
+   "runner_up_slots": {
+    "0": [],
+    "1": [],
+    "2": [],
+    "3": []
+   },
+   "stability": {
+    "0": null,
+    "1": 0.636,
+    "2": null,
+    "3": 0.942
+   },
+   "stability_status": {
+    "0": null,
+    "1": "OPERATING_POINT_UNSTABLE",
+    "2": null,
+    "3": "OPERATING_POINT_STABLE"
+   },
+   "topped_up": false
+  }
+ },
+ "no_composed_cells": true,
+ "root": "/home/cnm13ryan/git/dci-v8-canonical/dci1/evidence/dci1v8-confirm-r2",
+ "rule": {
+  "local": "LOCAL_SUPPORTED frames of a LOCAL_ELIGIBLE model (>= 2 supported frames); all of them",
+  "spectrum": "coverage_identified frames of any model"
+ }
+}

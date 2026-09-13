@@ -1,0 +1,45 @@
+{
+ "_classification": "REGISTERED_OUTCOME",
+ "_reads": "signed per-replication stage records only. No estimation, no pooling, no masked quantity, no row re-read",
+ "_what": "the v7 study-level closure record",
+ "apparatus_faults": [],
+ "firewall": "\u00a76.1: four replications analysed separately and never pooled; no cross-model scalar carries a claim, and \u00a715 registers no cross-model multiplicity family",
+ "last_stage_recorded": {
+  "gemma-3n-e2b-it": "GATE_4_COMPOSED_CONTRAST",
+  "gemma-3n-e4b-it": "GATE_4_COMPOSED_CONTRAST",
+  "qwen3-4b": "GATE_4_COMPOSED_CONTRAST",
+  "qwen3-4b-instruct-2507": "GATE_4_COMPOSED_CONTRAST"
+ },
+ "n_survivors": 0,
+ "payload_sha256": "73ff0a3f0364cfa72219b6f7f2e7b8a0207cc782229097046840787f32b3374d",
+ "registered_replications": [
+  "gemma-3n-e2b-it",
+  "gemma-3n-e4b-it",
+  "qwen3-4b",
+  "qwen3-4b-instruct-2507"
+ ],
+ "study_id": "dci1v7",
+ "study_level": {
+  "l5_withheld": "generalisation is never licensed by this design",
+  "n_survivors": 0,
+  "reached_the_freeze_means": "a passing GATE_5_FREEZE record: the replication froze on the estimands it identified; its freeze record's non_identification block names any it did not (v7 A8)",
+  "rule": "\u00a76.1",
+  "statement": "No replication reached GATE_5_FREEZE identified. The study makes no claim about the effect at any level. Every replication's terminal status is a statement about the apparatus reaching identification, not about the effect.",
+  "survivors": [],
+  "terminal": {
+   "gemma-3n-e2b-it": "PREFREEZE_AUDIT_FAILURE",
+   "gemma-3n-e4b-it": "PREFREEZE_AUDIT_FAILURE",
+   "qwen3-4b": "PREFREEZE_AUDIT_FAILURE",
+   "qwen3-4b-instruct-2507": "PREFREEZE_AUDIT_FAILURE"
+  }
+ },
+ "survivor_identification": {},
+ "survivor_means": "a passing GATE_5_FREEZE record: the replication froze on the estimands it identified; its freeze record's non_identification block names any it did not (v7 A8)",
+ "survivors": [],
+ "terminal_statuses": {
+  "gemma-3n-e2b-it": "PREFREEZE_AUDIT_FAILURE",
+  "gemma-3n-e4b-it": "PREFREEZE_AUDIT_FAILURE",
+  "qwen3-4b": "PREFREEZE_AUDIT_FAILURE",
+  "qwen3-4b-instruct-2507": "PREFREEZE_AUDIT_FAILURE"
+ }
+}

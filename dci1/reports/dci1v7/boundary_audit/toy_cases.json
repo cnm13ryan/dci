@@ -1,0 +1,899 @@
+{
+ "resamples": 10000,
+ "n_blocks": 384,
+ "cases": [
+  {
+   "case": "case1_A090_R060",
+   "meaning": "A permits BETTER B delivery than the references: Delta_R = -0.30",
+   "P(B|B+A)": 0.9,
+   "P(B|B+R_j)": [
+    0.6,
+    0.6,
+    0.6
+   ],
+   "expected_delta_r": -0.30000000000000004,
+   "estimator_mean_of_block_vector": -0.3000000000000005,
+   "estimate": -0.30000000000000054,
+   "decision_interval": [
+    -0.30616442396564136,
+    -0.2938355760343597
+   ],
+   "direction_label": "A_COMPARATIVELY_BETTER",
+   "direction_reading": "the comparison companions cost B more than A does; A produces comparatively better delivery of B",
+   "beyond_sesoi": true,
+   "levels": [
+    "L3c"
+   ],
+   "markers": [],
+   "statuses": [
+    "COMPOSED_CONTRAST_RANGE_COMPRESSED"
+   ],
+   "structural_zero": false,
+   "allowance": [
+    0.0,
+    0.0
+   ],
+   "compression": {
+    "positive_arm": 0.5999999999999999,
+    "negative_arm": 0.9000000000000004,
+    "positive_direction_compressed": true,
+    "negative_direction_compressed": false
+   },
+   "counterfactual_lifted_veto": {
+    "levels": [
+     "L3c"
+    ],
+    "markers": [],
+    "direction": "A_COMPARATIVELY_BETTER"
+   },
+   "l3_statements": [
+    {
+     "claim_level": "L3c",
+     "emitted": true,
+     "direction": {
+      "direction": "A_COMPARATIVELY_BETTER",
+      "structural_zero": false,
+      "beyond_sesoi": true,
+      "reading": "the comparison companions cost B more than A does; A produces comparatively better delivery of B"
+     },
+     "markers": [],
+     "identification_status": [
+      "A_GENERAL_NOT_EXCLUDED",
+      "COMPOSED_CONTRAST_RANGE_COMPRESSED",
+      "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+      "L3C_STRONG_CONCLUSION_WITHHELD",
+      "NEAR_FORM_ARM_NOT_AVAILABLE",
+      "REFERENCE_POOL_SAME_FORM"
+     ],
+     "l3c_scope": "same_form_only",
+     "l3c_scope_sentence": "no excess relative to same-form exact-count companions; this is not the refutation verdict, which requires the near-form arm (\u00a734 D18)",
+     "structural_zero_sentence": null,
+     "reason": null
+    }
+   ]
+  },
+  {
+   "case": "case2_A060_R090",
+   "meaning": "A does MORE damage to B than the references: Delta_R = +0.30",
+   "P(B|B+A)": 0.6,
+   "P(B|B+R_j)": [
+    0.9,
+    0.9,
+    0.9
+   ],
+   "expected_delta_r": 0.30000000000000004,
+   "estimator_mean_of_block_vector": 0.3000000000000002,
+   "estimate": 0.3000000000000002,
+   "decision_interval": [
+    0.2938355760343594,
+    0.30616442396564103
+   ],
+   "direction_label": "A_HARMS_MORE",
+   "direction_reading": "A costs B more than the comparison companions do",
+   "beyond_sesoi": true,
+   "levels": [
+    "L3a",
+    "L3b"
+   ],
+   "markers": [],
+   "statuses": [
+    "COMPOSED_CONTRAST_RANGE_COMPRESSED"
+   ],
+   "structural_zero": false,
+   "allowance": [
+    0.0,
+    0.0
+   ],
+   "compression": {
+    "positive_arm": 0.9000000000000001,
+    "negative_arm": 0.5999999999999999,
+    "positive_direction_compressed": false,
+    "negative_direction_compressed": true
+   },
+   "counterfactual_lifted_veto": {
+    "levels": [
+     "L3a",
+     "L3b"
+    ],
+    "markers": [],
+    "direction": "A_HARMS_MORE"
+   },
+   "l3_statements": [
+    {
+     "claim_level": "L3a",
+     "emitted": true,
+     "direction": {
+      "direction": "A_HARMS_MORE",
+      "structural_zero": false,
+      "beyond_sesoi": true,
+      "reading": "A costs B more than the comparison companions do"
+     },
+     "markers": [],
+     "identification_status": [
+      "COMPOSED_CONTRAST_RANGE_COMPRESSED",
+      "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+      "NEAR_FORM_ARM_NOT_AVAILABLE",
+      "REFERENCE_POOL_SAME_FORM"
+     ],
+     "l3c_scope": null,
+     "l3c_scope_sentence": null,
+     "structural_zero_sentence": null,
+     "reason": null
+    },
+    {
+     "claim_level": "L3b",
+     "emitted": true,
+     "direction": {
+      "direction": "A_HARMS_MORE",
+      "structural_zero": false,
+      "beyond_sesoi": true,
+      "reading": "A costs B more than the comparison companions do"
+     },
+     "markers": [],
+     "identification_status": [
+      "COMPOSED_CONTRAST_RANGE_COMPRESSED",
+      "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+      "NEAR_FORM_ARM_NOT_AVAILABLE",
+      "REFERENCE_POOL_SAME_FORM"
+     ],
+     "l3c_scope": null,
+     "l3c_scope_sentence": null,
+     "structural_zero_sentence": null,
+     "reason": null
+    }
+   ]
+  },
+  {
+   "case": "case3_A092_R060",
+   "meaning": "as case 1 with the A arm above the 0.90 compression level",
+   "P(B|B+A)": 0.92,
+   "P(B|B+R_j)": [
+    0.6,
+    0.6,
+    0.6
+   ],
+   "expected_delta_r": -0.32000000000000006,
+   "estimator_mean_of_block_vector": -0.32000000000000023,
+   "estimate": -0.32000000000000034,
+   "decision_interval": [
+    -0.32616442396564116,
+    -0.3138355760343595
+   ],
+   "direction_label": "A_COMPARATIVELY_BETTER",
+   "direction_reading": "the comparison companions cost B more than A does; A produces comparatively better delivery of B",
+   "beyond_sesoi": true,
+   "levels": [
+    "L3c"
+   ],
+   "markers": [],
+   "statuses": [
+    "COMPOSED_CONTRAST_RANGE_COMPRESSED"
+   ],
+   "structural_zero": false,
+   "allowance": [
+    0.0,
+    0.0
+   ],
+   "compression": {
+    "positive_arm": 0.5999999999999999,
+    "negative_arm": 0.9200000000000003,
+    "positive_direction_compressed": true,
+    "negative_direction_compressed": false
+   },
+   "counterfactual_lifted_veto": {
+    "levels": [
+     "L3c"
+    ],
+    "markers": [],
+    "direction": "A_COMPARATIVELY_BETTER"
+   },
+   "l3_statements": [
+    {
+     "claim_level": "L3c",
+     "emitted": true,
+     "direction": {
+      "direction": "A_COMPARATIVELY_BETTER",
+      "structural_zero": false,
+      "beyond_sesoi": true,
+      "reading": "the comparison companions cost B more than A does; A produces comparatively better delivery of B"
+     },
+     "markers": [],
+     "identification_status": [
+      "A_GENERAL_NOT_EXCLUDED",
+      "COMPOSED_CONTRAST_RANGE_COMPRESSED",
+      "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+      "L3C_STRONG_CONCLUSION_WITHHELD",
+      "NEAR_FORM_ARM_NOT_AVAILABLE",
+      "REFERENCE_POOL_SAME_FORM"
+     ],
+     "l3c_scope": "same_form_only",
+     "l3c_scope_sentence": "no excess relative to same-form exact-count companions; this is not the refutation verdict, which requires the near-form arm (\u00a734 D18)",
+     "structural_zero_sentence": null,
+     "reason": null
+    }
+   ]
+  },
+  {
+   "case": "case4_A060_R092",
+   "meaning": "as case 2 with the reference arm above the compression level",
+   "P(B|B+A)": 0.6,
+   "P(B|B+R_j)": [
+    0.92,
+    0.92,
+    0.92
+   ],
+   "expected_delta_r": 0.32000000000000006,
+   "estimator_mean_of_block_vector": 0.3200000000000001,
+   "estimate": 0.3200000000000001,
+   "decision_interval": [
+    0.3138355760343593,
+    0.32616442396564094
+   ],
+   "direction_label": "A_HARMS_MORE",
+   "direction_reading": "A costs B more than the comparison companions do",
+   "beyond_sesoi": true,
+   "levels": [
+    "L3a",
+    "L3b"
+   ],
+   "markers": [],
+   "statuses": [
+    "COMPOSED_CONTRAST_RANGE_COMPRESSED"
+   ],
+   "structural_zero": false,
+   "allowance": [
+    0.0,
+    0.0
+   ],
+   "compression": {
+    "positive_arm": 0.92,
+    "negative_arm": 0.5999999999999999,
+    "positive_direction_compressed": false,
+    "negative_direction_compressed": true
+   },
+   "counterfactual_lifted_veto": {
+    "levels": [
+     "L3a",
+     "L3b"
+    ],
+    "markers": [],
+    "direction": "A_HARMS_MORE"
+   },
+   "l3_statements": [
+    {
+     "claim_level": "L3a",
+     "emitted": true,
+     "direction": {
+      "direction": "A_HARMS_MORE",
+      "structural_zero": false,
+      "beyond_sesoi": true,
+      "reading": "A costs B more than the comparison companions do"
+     },
+     "markers": [],
+     "identification_status": [
+      "COMPOSED_CONTRAST_RANGE_COMPRESSED",
+      "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+      "NEAR_FORM_ARM_NOT_AVAILABLE",
+      "REFERENCE_POOL_SAME_FORM"
+     ],
+     "l3c_scope": null,
+     "l3c_scope_sentence": null,
+     "structural_zero_sentence": null,
+     "reason": null
+    },
+    {
+     "claim_level": "L3b",
+     "emitted": true,
+     "direction": {
+      "direction": "A_HARMS_MORE",
+      "structural_zero": false,
+      "beyond_sesoi": true,
+      "reading": "A costs B more than the comparison companions do"
+     },
+     "markers": [],
+     "identification_status": [
+      "COMPOSED_CONTRAST_RANGE_COMPRESSED",
+      "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+      "NEAR_FORM_ARM_NOT_AVAILABLE",
+      "REFERENCE_POOL_SAME_FORM"
+     ],
+     "l3c_scope": null,
+     "l3c_scope_sentence": null,
+     "structural_zero_sentence": null,
+     "reason": null
+    }
+   ]
+  },
+  {
+   "case": "exact_zero_interior",
+   "meaning": "Delta_R = 0 with block variation: no direction",
+   "P(B|B+A)": 0.7,
+   "P(B|B+R_j)": [
+    0.7,
+    0.7,
+    0.7
+   ],
+   "expected_delta_r": -1.1102230246251565e-16,
+   "estimator_mean_of_block_vector": 4.625929269271486e-17,
+   "estimate": 4.625929269271486e-17,
+   "decision_interval": [
+    -0.006164423965640782,
+    0.006164423965640874
+   ],
+   "direction_label": "DIRECTION_UNRESOLVED",
+   "direction_reading": "the interval is compatible with zero",
+   "beyond_sesoi": false,
+   "levels": [
+    "L3c"
+   ],
+   "markers": [],
+   "statuses": [],
+   "structural_zero": false,
+   "allowance": [
+    0.0,
+    0.0
+   ],
+   "compression": {
+    "positive_arm": 0.6999999999999998,
+    "negative_arm": 0.6999999999999997,
+    "positive_direction_compressed": false,
+    "negative_direction_compressed": false
+   },
+   "counterfactual_lifted_veto": {
+    "levels": [
+     "L3c"
+    ],
+    "markers": [],
+    "direction": "DIRECTION_UNRESOLVED"
+   },
+   "l3_statements": [
+    {
+     "claim_level": "L3c",
+     "emitted": true,
+     "direction": {
+      "direction": "DIRECTION_UNRESOLVED",
+      "structural_zero": false,
+      "beyond_sesoi": false,
+      "reading": "the interval is compatible with zero"
+     },
+     "markers": [],
+     "identification_status": [
+      "A_GENERAL_NOT_EXCLUDED",
+      "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+      "L3C_STRONG_CONCLUSION_WITHHELD",
+      "NEAR_FORM_ARM_NOT_AVAILABLE",
+      "REFERENCE_POOL_SAME_FORM"
+     ],
+     "l3c_scope": "same_form_only",
+     "l3c_scope_sentence": "no excess relative to same-form exact-count companions; this is not the refutation verdict, which requires the near-form arm (\u00a734 D18)",
+     "structural_zero_sentence": null,
+     "reason": null
+    }
+   ]
+  },
+  {
+   "case": "near_zero_pos",
+   "meaning": "Delta_R = +0.02",
+   "P(B|B+A)": 0.7,
+   "P(B|B+R_j)": [
+    0.72,
+    0.72,
+    0.72
+   ],
+   "expected_delta_r": 0.02000000000000013,
+   "estimator_mean_of_block_vector": 0.02000000000000022,
+   "estimate": 0.02000000000000022,
+   "decision_interval": [
+    0.013835576034359389,
+    0.02616442396564105
+   ],
+   "direction_label": "A_HARMS_MORE",
+   "direction_reading": "A costs B more than the comparison companions do",
+   "beyond_sesoi": false,
+   "levels": [
+    "L3c"
+   ],
+   "markers": [],
+   "statuses": [],
+   "structural_zero": false,
+   "allowance": [
+    0.0,
+    0.0
+   ],
+   "compression": {
+    "positive_arm": 0.7200000000000001,
+    "negative_arm": 0.6999999999999997,
+    "positive_direction_compressed": false,
+    "negative_direction_compressed": false
+   },
+   "counterfactual_lifted_veto": {
+    "levels": [
+     "L3c"
+    ],
+    "markers": [],
+    "direction": "A_HARMS_MORE"
+   },
+   "l3_statements": [
+    {
+     "claim_level": "L3c",
+     "emitted": true,
+     "direction": {
+      "direction": "A_HARMS_MORE",
+      "structural_zero": false,
+      "beyond_sesoi": false,
+      "reading": "A costs B more than the comparison companions do"
+     },
+     "markers": [],
+     "identification_status": [
+      "A_GENERAL_NOT_EXCLUDED",
+      "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+      "L3C_STRONG_CONCLUSION_WITHHELD",
+      "NEAR_FORM_ARM_NOT_AVAILABLE",
+      "REFERENCE_POOL_SAME_FORM"
+     ],
+     "l3c_scope": "same_form_only",
+     "l3c_scope_sentence": "no excess relative to same-form exact-count companions; this is not the refutation verdict, which requires the near-form arm (\u00a734 D18)",
+     "structural_zero_sentence": null,
+     "reason": null
+    }
+   ]
+  },
+  {
+   "case": "near_zero_neg",
+   "meaning": "Delta_R = -0.02",
+   "P(B|B+A)": 0.72,
+   "P(B|B+R_j)": [
+    0.7,
+    0.7,
+    0.7
+   ],
+   "expected_delta_r": -0.02000000000000013,
+   "estimator_mean_of_block_vector": -0.020000000000000195,
+   "estimate": -0.020000000000000195,
+   "decision_interval": [
+    -0.026164423965641025,
+    -0.013835576034359365
+   ],
+   "direction_label": "A_COMPARATIVELY_BETTER",
+   "direction_reading": "the comparison companions cost B more than A does; A produces comparatively better delivery of B",
+   "beyond_sesoi": false,
+   "levels": [
+    "L3c"
+   ],
+   "markers": [],
+   "statuses": [],
+   "structural_zero": false,
+   "allowance": [
+    0.0,
+    0.0
+   ],
+   "compression": {
+    "positive_arm": 0.6999999999999998,
+    "negative_arm": 0.7200000000000001,
+    "positive_direction_compressed": false,
+    "negative_direction_compressed": false
+   },
+   "counterfactual_lifted_veto": {
+    "levels": [
+     "L3c"
+    ],
+    "markers": [],
+    "direction": "A_COMPARATIVELY_BETTER"
+   },
+   "l3_statements": [
+    {
+     "claim_level": "L3c",
+     "emitted": true,
+     "direction": {
+      "direction": "A_COMPARATIVELY_BETTER",
+      "structural_zero": false,
+      "beyond_sesoi": false,
+      "reading": "the comparison companions cost B more than A does; A produces comparatively better delivery of B"
+     },
+     "markers": [],
+     "identification_status": [
+      "A_GENERAL_NOT_EXCLUDED",
+      "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+      "L3C_STRONG_CONCLUSION_WITHHELD",
+      "NEAR_FORM_ARM_NOT_AVAILABLE",
+      "REFERENCE_POOL_SAME_FORM"
+     ],
+     "l3c_scope": "same_form_only",
+     "l3c_scope_sentence": "no excess relative to same-form exact-count companions; this is not the refutation verdict, which requires the near-form arm (\u00a734 D18)",
+     "structural_zero_sentence": null,
+     "reason": null
+    }
+   ]
+  },
+  {
+   "case": "shared_ceiling",
+   "meaning": "structural zero at 1",
+   "P(B|B+A)": 1.0,
+   "P(B|B+R_j)": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "expected_delta_r": 0.0,
+   "estimator_mean_of_block_vector": 0.0,
+   "estimate": 0.0,
+   "decision_interval": [
+    -0.009904714246279589,
+    0.009904714246279589
+   ],
+   "direction_label": "DIRECTION_UNRESOLVED",
+   "direction_reading": "a structural zero has no direction",
+   "beyond_sesoi": false,
+   "levels": [
+    "L3c"
+   ],
+   "markers": [
+    "STRUCTURAL_ZERO"
+   ],
+   "statuses": [
+    "COMPOSED_CONTRAST_STRUCTURAL_ZERO",
+    "COMPOSED_ARM_AT_BOUNDARY",
+    "COMPOSED_CONTRAST_RANGE_COMPRESSED"
+   ],
+   "structural_zero": true,
+   "allowance": [
+    0.009904714246279589,
+    0.009904714246279589
+   ],
+   "compression": {
+    "positive_arm": 1.0,
+    "negative_arm": 1.0,
+    "positive_direction_compressed": true,
+    "negative_direction_compressed": true
+   },
+   "counterfactual_lifted_veto": {
+    "levels": [
+     "L3c"
+    ],
+    "markers": [],
+    "direction": "DIRECTION_UNRESOLVED"
+   },
+   "l3_statements": [
+    {
+     "claim_level": "L3c",
+     "emitted": true,
+     "direction": {
+      "direction": "DIRECTION_UNRESOLVED",
+      "structural_zero": true,
+      "beyond_sesoi": false,
+      "reading": "a structural zero has no direction"
+     },
+     "markers": [
+      "STRUCTURAL_ZERO"
+     ],
+     "identification_status": [
+      "A_GENERAL_NOT_EXCLUDED",
+      "COMPOSED_ARM_AT_BOUNDARY",
+      "COMPOSED_CONTRAST_RANGE_COMPRESSED",
+      "COMPOSED_CONTRAST_STRUCTURAL_ZERO",
+      "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+      "L3C_STRONG_CONCLUSION_WITHHELD",
+      "NEAR_FORM_ARM_NOT_AVAILABLE",
+      "REFERENCE_POOL_SAME_FORM"
+     ],
+     "l3c_scope": "same_form_only",
+     "l3c_scope_sentence": "no excess relative to same-form exact-count companions; this is not the refutation verdict, which requires the near-form arm (\u00a734 D18)",
+     "structural_zero_sentence": "every composed cell this contrast differences sat at the same exact boundary in every block: the bound is the Wilson allowance at the registered block count, not observed variation, and the composed set did not discriminate between A and its companions on the registered task distribution; the excess is bounded, not measured",
+     "reason": null
+    }
+   ]
+  },
+  {
+   "case": "shared_floor",
+   "meaning": "structural zero at 0",
+   "P(B|B+A)": 0.0,
+   "P(B|B+R_j)": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "expected_delta_r": 0.0,
+   "estimator_mean_of_block_vector": 0.0,
+   "estimate": 0.0,
+   "decision_interval": [
+    -0.009904714246279589,
+    0.009904714246279589
+   ],
+   "direction_label": "DIRECTION_UNRESOLVED",
+   "direction_reading": "a structural zero has no direction",
+   "beyond_sesoi": false,
+   "levels": [
+    "L3c"
+   ],
+   "markers": [
+    "STRUCTURAL_ZERO"
+   ],
+   "statuses": [
+    "COMPOSED_CONTRAST_STRUCTURAL_ZERO",
+    "COMPOSED_ARM_AT_BOUNDARY",
+    "COMPOSED_CONTRAST_RANGE_COMPRESSED"
+   ],
+   "structural_zero": true,
+   "allowance": [
+    0.009904714246279589,
+    0.009904714246279589
+   ],
+   "compression": {
+    "positive_arm": 0.0,
+    "negative_arm": 0.0,
+    "positive_direction_compressed": true,
+    "negative_direction_compressed": true
+   },
+   "counterfactual_lifted_veto": {
+    "levels": [
+     "L3c"
+    ],
+    "markers": [],
+    "direction": "DIRECTION_UNRESOLVED"
+   },
+   "l3_statements": [
+    {
+     "claim_level": "L3c",
+     "emitted": true,
+     "direction": {
+      "direction": "DIRECTION_UNRESOLVED",
+      "structural_zero": true,
+      "beyond_sesoi": false,
+      "reading": "a structural zero has no direction"
+     },
+     "markers": [
+      "STRUCTURAL_ZERO"
+     ],
+     "identification_status": [
+      "A_GENERAL_NOT_EXCLUDED",
+      "COMPOSED_ARM_AT_BOUNDARY",
+      "COMPOSED_CONTRAST_RANGE_COMPRESSED",
+      "COMPOSED_CONTRAST_STRUCTURAL_ZERO",
+      "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+      "L3C_STRONG_CONCLUSION_WITHHELD",
+      "NEAR_FORM_ARM_NOT_AVAILABLE",
+      "REFERENCE_POOL_SAME_FORM"
+     ],
+     "l3c_scope": "same_form_only",
+     "l3c_scope_sentence": "no excess relative to same-form exact-count companions; this is not the refutation verdict, which requires the near-form arm (\u00a734 D18)",
+     "structural_zero_sentence": "every composed cell this contrast differences sat at the same exact boundary in every block: the bound is the Wilson allowance at the registered block count, not observed variation, and the composed set did not discriminate between A and its companions on the registered task distribution; the excess is bounded, not measured",
+     "reason": null
+    }
+   ]
+  },
+  {
+   "case": "A_ceiling_only",
+   "meaning": "A exact ceiling, refs 0.95: Delta_R = -0.05, A better",
+   "P(B|B+A)": 1.0,
+   "P(B|B+R_j)": [
+    0.95,
+    0.95,
+    0.95
+   ],
+   "expected_delta_r": -0.050000000000000155,
+   "estimator_mean_of_block_vector": -0.050000000000000135,
+   "estimate": -0.050000000000000135,
+   "decision_interval": [
+    -0.05399523413150647,
+    -0.03610005162221421
+   ],
+   "direction_label": "A_COMPARATIVELY_BETTER",
+   "direction_reading": "the comparison companions cost B more than A does; A produces comparatively better delivery of B",
+   "beyond_sesoi": false,
+   "levels": [
+    "L3c"
+   ],
+   "markers": [],
+   "statuses": [
+    "COMPOSED_ARM_AT_BOUNDARY",
+    "COMPOSED_CONTRAST_RANGE_COMPRESSED"
+   ],
+   "structural_zero": false,
+   "allowance": [
+    0.0,
+    0.009904714246279589
+   ],
+   "compression": {
+    "positive_arm": 0.9499999999999997,
+    "negative_arm": 1.0,
+    "positive_direction_compressed": true,
+    "negative_direction_compressed": true
+   },
+   "counterfactual_lifted_veto": {
+    "levels": [
+     "L3c"
+    ],
+    "markers": [],
+    "direction": "A_COMPARATIVELY_BETTER"
+   },
+   "l3_statements": [
+    {
+     "claim_level": "L3c",
+     "emitted": true,
+     "direction": {
+      "direction": "A_COMPARATIVELY_BETTER",
+      "structural_zero": false,
+      "beyond_sesoi": false,
+      "reading": "the comparison companions cost B more than A does; A produces comparatively better delivery of B"
+     },
+     "markers": [],
+     "identification_status": [
+      "A_GENERAL_NOT_EXCLUDED",
+      "COMPOSED_ARM_AT_BOUNDARY",
+      "COMPOSED_CONTRAST_RANGE_COMPRESSED",
+      "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+      "L3C_STRONG_CONCLUSION_WITHHELD",
+      "NEAR_FORM_ARM_NOT_AVAILABLE",
+      "REFERENCE_POOL_SAME_FORM"
+     ],
+     "l3c_scope": "same_form_only",
+     "l3c_scope_sentence": "no excess relative to same-form exact-count companions; this is not the refutation verdict, which requires the near-form arm (\u00a734 D18)",
+     "structural_zero_sentence": null,
+     "reason": null
+    }
+   ]
+  },
+  {
+   "case": "R_ceiling_only",
+   "meaning": "refs exact ceiling, A 0.95: Delta_R = +0.05, A harms more",
+   "P(B|B+A)": 0.95,
+   "P(B|B+R_j)": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "expected_delta_r": 0.050000000000000044,
+   "estimator_mean_of_block_vector": 0.05000000000000023,
+   "estimate": 0.05000000000000024,
+   "decision_interval": [
+    0.03405724009026057,
+    0.056038045663460316
+   ],
+   "direction_label": "A_HARMS_MORE",
+   "direction_reading": "A costs B more than the comparison companions do",
+   "beyond_sesoi": false,
+   "levels": [
+    "L3c"
+   ],
+   "markers": [],
+   "statuses": [
+    "COMPOSED_ARM_AT_BOUNDARY",
+    "COMPOSED_CONTRAST_RANGE_COMPRESSED"
+   ],
+   "structural_zero": false,
+   "allowance": [
+    0.009904714246279589,
+    0.0
+   ],
+   "compression": {
+    "positive_arm": 1.0,
+    "negative_arm": 0.9499999999999997,
+    "positive_direction_compressed": true,
+    "negative_direction_compressed": true
+   },
+   "counterfactual_lifted_veto": {
+    "levels": [
+     "L3c"
+    ],
+    "markers": [],
+    "direction": "A_HARMS_MORE"
+   },
+   "l3_statements": [
+    {
+     "claim_level": "L3c",
+     "emitted": true,
+     "direction": {
+      "direction": "A_HARMS_MORE",
+      "structural_zero": false,
+      "beyond_sesoi": false,
+      "reading": "A costs B more than the comparison companions do"
+     },
+     "markers": [],
+     "identification_status": [
+      "COMPOSED_ARM_AT_BOUNDARY",
+      "COMPOSED_CONTRAST_RANGE_COMPRESSED",
+      "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+      "L3C_STRONG_CONCLUSION_WITHHELD",
+      "NEAR_FORM_ARM_NOT_AVAILABLE",
+      "REFERENCE_POOL_SAME_FORM"
+     ],
+     "l3c_scope": "same_form_only",
+     "l3c_scope_sentence": "no excess relative to same-form exact-count companions; this is not the refutation verdict, which requires the near-form arm (\u00a734 D18)",
+     "structural_zero_sentence": null,
+     "reason": null
+    }
+   ]
+  },
+  {
+   "case": "A_floor_only",
+   "meaning": "A exact floor, refs 0.05: Delta_R = +0.05",
+   "P(B|B+A)": 0.0,
+   "P(B|B+R_j)": [
+    0.05,
+    0.05,
+    0.05
+   ],
+   "expected_delta_r": 0.05000000000000001,
+   "estimator_mean_of_block_vector": 0.05399463794849538,
+   "estimate": 0.05399463794849538,
+   "decision_interval": [
+    0.040493524838370216,
+    0.05759103681234095
+   ],
+   "direction_label": "A_HARMS_MORE",
+   "direction_reading": "A costs B more than the comparison companions do",
+   "beyond_sesoi": false,
+   "levels": [
+    "L3c"
+   ],
+   "markers": [],
+   "statuses": [
+    "COMPOSED_ARM_AT_BOUNDARY",
+    "COMPOSED_CONTRAST_RANGE_COMPRESSED"
+   ],
+   "structural_zero": false,
+   "allowance": [
+    0.009904714246279589,
+    0.0
+   ],
+   "compression": {
+    "positive_arm": 0.05399463794849537,
+    "negative_arm": 0.0,
+    "positive_direction_compressed": true,
+    "negative_direction_compressed": true
+   },
+   "counterfactual_lifted_veto": {
+    "levels": [
+     "L3c"
+    ],
+    "markers": [],
+    "direction": "A_HARMS_MORE"
+   },
+   "l3_statements": [
+    {
+     "claim_level": "L3c",
+     "emitted": true,
+     "direction": {
+      "direction": "A_HARMS_MORE",
+      "structural_zero": false,
+      "beyond_sesoi": false,
+      "reading": "A costs B more than the comparison companions do"
+     },
+     "markers": [],
+     "identification_status": [
+      "COMPOSED_ARM_AT_BOUNDARY",
+      "COMPOSED_CONTRAST_RANGE_COMPRESSED",
+      "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+      "L3C_STRONG_CONCLUSION_WITHHELD",
+      "NEAR_FORM_ARM_NOT_AVAILABLE",
+      "REFERENCE_POOL_SAME_FORM"
+     ],
+     "l3c_scope": "same_form_only",
+     "l3c_scope_sentence": "no excess relative to same-form exact-count companions; this is not the refutation verdict, which requires the near-form arm (\u00a734 D18)",
+     "structural_zero_sentence": null,
+     "reason": null
+    }
+   ]
+  }
+ ]
+}

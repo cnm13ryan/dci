@@ -1,0 +1,194 @@
+{
+ "closed_on": "2026-08-24",
+ "closure": "NO_REPLICATION_REACHED_CONFIRMATORY_GENERATION",
+ "confirmatory_generation_reached": false,
+ "final_report_reachable": false,
+ "manifest_hash": "af5fa4bcfd125f936cade49cf45304737c6367b6bd7106a6ec372a6735340c98",
+ "masking_opened": false,
+ "producing_commit": "5ed18543db89c3c5275d1303865a450c599bb18b",
+ "replications": {
+  "gemma-3n-e2b-it": {
+   "admitted_arms": [
+    "base",
+    "class"
+   ],
+   "behavioural_rows": 114792,
+   "d6_irreversible": true,
+   "d6_non_identification": true,
+   "derived_cell_count": 8,
+   "identification_statuses": [
+    "COMPANION_CLASS_NOT_MATCHED",
+    "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+    "EXCESS_NOT_IDENTIFIED",
+    "NEAR_FORM_ARM_NOT_AVAILABLE",
+    "REFERENCE_POOL_SAME_FORM",
+    "REFERENCE_ROLE_NOT_MATCHED",
+    "REFERENCE_SUPPORT_NOT_IDENTIFIED"
+   ],
+   "n_estimands_not_identified": 48,
+   "registered_terminal_report_written": false,
+   "scientific_terminal_reason": "PREFREEZE_AUDIT recorded FAIL on the mandatory support_satisfied check; the record is write-once and GATE_5_FREEZE refuses, so no later stage is reachable",
+   "scientifically_terminal": true,
+   "stage_outcomes": {
+    "GATE_0_APPARATUS": "PASS",
+    "GATE_1_MEASUREMENT": "PASS",
+    "GATE_2_5_CANDIDATE_QUALIFICATION": "PASS",
+    "GATE_2_FOCAL_CALIBRATION": "PASS",
+    "GATE_3A_REFERENCE_CALIBRATION": "PASS",
+    "GATE_3B_REFERENCE_SELECTION": "PASS",
+    "GATE_3C_IDENTIFICATION": "PASS",
+    "GATE_4_COMPOSED_HEADROOM": "PASS",
+    "PREFREEZE_AUDIT": "FAIL",
+    "PROTOCOL_REGISTERED": "PASS",
+    "QUALIFIED": "PASS",
+    "REGIME_SCREEN": "PASS"
+   },
+   "terminal_observed": null,
+   "terminal_status_recorded": null,
+   "v5_e32_affected": true
+  },
+  "gemma-3n-e4b-it": {
+   "admitted_arms": [
+    "base",
+    "class"
+   ],
+   "behavioural_rows": 116400,
+   "d6_irreversible": true,
+   "d6_non_identification": true,
+   "derived_cell_count": 8,
+   "identification_statuses": [
+    "COMPANION_CLASS_NOT_MATCHED",
+    "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+    "EXCESS_NOT_IDENTIFIED",
+    "NEAR_FORM_ARM_NOT_AVAILABLE",
+    "REFERENCE_POOL_SAME_FORM",
+    "REFERENCE_SUPPORT_NOT_IDENTIFIED"
+   ],
+   "n_estimands_not_identified": 48,
+   "registered_terminal_report_written": true,
+   "scientific_terminal_reason": "COMPOSED_HEADROOM_FAILURE at GATE_4 (\u00a713.14)",
+   "scientifically_terminal": true,
+   "stage_outcomes": {
+    "GATE_0_APPARATUS": "PASS",
+    "GATE_1_MEASUREMENT": "PASS",
+    "GATE_2_5_CANDIDATE_QUALIFICATION": "PASS",
+    "GATE_2_FOCAL_CALIBRATION": "PASS",
+    "GATE_3A_REFERENCE_CALIBRATION": "PASS",
+    "GATE_3B_REFERENCE_SELECTION": "PASS",
+    "GATE_3C_IDENTIFICATION": "PASS",
+    "PROTOCOL_REGISTERED": "PASS",
+    "QUALIFIED": "PASS",
+    "REGIME_SCREEN": "PASS"
+   },
+   "terminal_observed": [
+    {
+     "cell": "solo:CL",
+     "compliance": 0.9583333333333334,
+     "slot": "CL"
+    },
+    {
+     "cell": "pair:B+CL",
+     "compliance": 0.9791666666666666,
+     "slot": "B"
+    }
+   ],
+   "terminal_status_recorded": "COMPOSED_HEADROOM_FAILURE",
+   "v5_e32_affected": false
+  },
+  "qwen3-4b": {
+   "admitted_arms": [
+    "base"
+   ],
+   "behavioural_rows": 114648,
+   "d6_irreversible": true,
+   "d6_non_identification": true,
+   "derived_cell_count": 5,
+   "identification_statuses": [
+    "CLASS_ARM_NOT_AVAILABLE",
+    "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+    "EXCESS_NOT_IDENTIFIED",
+    "NEAR_FORM_ARM_NOT_AVAILABLE",
+    "REFERENCE_POOL_SAME_FORM",
+    "REFERENCE_ROLE_NOT_MATCHED",
+    "REFERENCE_SUPPORT_NOT_IDENTIFIED"
+   ],
+   "n_estimands_not_identified": 48,
+   "registered_terminal_report_written": false,
+   "scientific_terminal_reason": "PREFREEZE_AUDIT recorded FAIL on the mandatory support_satisfied check; the record is write-once and GATE_5_FREEZE refuses, so no later stage is reachable",
+   "scientifically_terminal": true,
+   "stage_outcomes": {
+    "GATE_0_APPARATUS": "PASS",
+    "GATE_1_MEASUREMENT": "PASS",
+    "GATE_2_5_CANDIDATE_QUALIFICATION": "PASS",
+    "GATE_2_FOCAL_CALIBRATION": "PASS",
+    "GATE_3A_REFERENCE_CALIBRATION": "PASS",
+    "GATE_3B_REFERENCE_SELECTION": "PASS",
+    "GATE_3C_IDENTIFICATION": "PASS",
+    "GATE_4_COMPOSED_HEADROOM": "PASS",
+    "PREFREEZE_AUDIT": "FAIL",
+    "PROTOCOL_REGISTERED": "PASS",
+    "QUALIFIED": "PASS",
+    "REGIME_SCREEN": "PASS"
+   },
+   "terminal_observed": null,
+   "terminal_status_recorded": null,
+   "v5_e32_affected": true
+  },
+  "qwen3-4b-instruct-2507": {
+   "admitted_arms": [
+    "base",
+    "core"
+   ],
+   "behavioural_rows": 113472,
+   "d6_irreversible": false,
+   "d6_non_identification": false,
+   "derived_cell_count": 26,
+   "identification_statuses": [
+    "CLASS_ARM_NOT_AVAILABLE",
+    "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+    "NEAR_FORM_ARM_NOT_AVAILABLE",
+    "REFERENCE_POOL_SAME_FORM"
+   ],
+   "n_estimands_not_identified": 0,
+   "registered_terminal_report_written": true,
+   "scientific_terminal_reason": "COMPOSED_HEADROOM_FAILURE at GATE_4 (\u00a713.14)",
+   "scientifically_terminal": true,
+   "stage_outcomes": {
+    "GATE_0_APPARATUS": "PASS",
+    "GATE_1_MEASUREMENT": "PASS",
+    "GATE_2_5_CANDIDATE_QUALIFICATION": "PASS",
+    "GATE_2_FOCAL_CALIBRATION": "PASS",
+    "GATE_3A_REFERENCE_CALIBRATION": "PASS",
+    "GATE_3B_REFERENCE_SELECTION": "PASS",
+    "GATE_3C_IDENTIFICATION": "PASS",
+    "PROTOCOL_REGISTERED": "PASS",
+    "QUALIFIED": "PASS",
+    "REGIME_SCREEN": "PASS"
+   },
+   "terminal_observed": [
+    {
+     "cell": "pair:B+R1",
+     "compliance": 0.9895833333333334,
+     "slot": "B"
+    },
+    {
+     "cell": "pair:R1+B",
+     "compliance": 0.9583333333333334,
+     "slot": "B"
+    }
+   ],
+   "terminal_status_recorded": "COMPOSED_HEADROOM_FAILURE",
+   "v5_e32_affected": false
+  }
+ },
+ "study_id": "dci1v5",
+ "total_behavioural_rows": 459312,
+ "unmasking_performed": false,
+ "v5_e32": {
+  "defect": "PREFREEZE_AUDIT_FAILURE is a registered \u00a728 terminal status that run/prefreeze_run.py recorded as a payload field instead of raising",
+  "effect": "the two replications blocked at PREFREEZE_AUDIT carry terminal_status=None and have no \u00a728.3 terminal report, though they are scientifically terminal",
+  "evidence_mutated": false,
+  "fixed_for_future_executions_at": "see amendment register A8",
+  "scientific_verdict_affected": false
+ }
+}

@@ -1,0 +1,160 @@
+{
+  "adversarial_corpus": {
+    "coverage": {
+      "adjacent-punctuation": 276,
+      "apostrophised-form": 15,
+      "capitalisation-of-target": 47,
+      "combining-marks": 5,
+      "concatenated-copies": 15,
+      "digits-adjacent-to-words": 7,
+      "empty-output": 7,
+      "hyphenation": 11,
+      "markdown-emphasis": 14,
+      "non-breaking-and-soft-hyphen": 17,
+      "non-latin-script": 46,
+      "repeated-words": 59,
+      "sentence-boundary-punctuation": 16,
+      "single-token-output": 21,
+      "target-inside-longer-word": 15,
+      "unicode-lookalikes": 12,
+      "unicode-punctuation": 13,
+      "zero-width-characters": 19
+    },
+    "incidence_over_the_corpus": {
+      "adjacent-punctuation": {
+        "count": 276,
+        "rate": 0.7419354838709677
+      },
+      "apostrophised-form": {
+        "count": 15,
+        "rate": 0.04032258064516129
+      },
+      "capitalisation-of-target": {
+        "count": 47,
+        "rate": 0.12634408602150538
+      },
+      "combining-marks": {
+        "count": 5,
+        "rate": 0.013440860215053764
+      },
+      "concatenated-copies": {
+        "count": 15,
+        "rate": 0.04032258064516129
+      },
+      "digits-adjacent-to-words": {
+        "count": 7,
+        "rate": 0.01881720430107527
+      },
+      "empty-output": {
+        "count": 7,
+        "rate": 0.01881720430107527
+      },
+      "hyphenation": {
+        "count": 11,
+        "rate": 0.02956989247311828
+      },
+      "markdown-emphasis": {
+        "count": 14,
+        "rate": 0.03763440860215054
+      },
+      "non-breaking-and-soft-hyphen": {
+        "count": 17,
+        "rate": 0.0456989247311828
+      },
+      "non-latin-script": {
+        "count": 46,
+        "rate": 0.12365591397849462
+      },
+      "repeated-words": {
+        "count": 59,
+        "rate": 0.1586021505376344
+      },
+      "sentence-boundary-punctuation": {
+        "count": 16,
+        "rate": 0.043010752688172046
+      },
+      "single-token-output": {
+        "count": 21,
+        "rate": 0.056451612903225805
+      },
+      "target-inside-longer-word": {
+        "count": 15,
+        "rate": 0.04032258064516129
+      },
+      "unicode-lookalikes": {
+        "count": 12,
+        "rate": 0.03225806451612903
+      },
+      "unicode-punctuation": {
+        "count": 13,
+        "rate": 0.03494623655913978
+      },
+      "zero-width-characters": {
+        "count": 19,
+        "rate": 0.051075268817204304
+      }
+    },
+    "size": 372
+  },
+  "boundary_suites": {
+    "agreement": {
+      "A": 1.0,
+      "B": 1.0,
+      "RF1": 1.0,
+      "RF2": 1.0,
+      "RF3": 1.0,
+      "RF4": 1.0,
+      "RF5": 1.0,
+      "RF6": 1.0,
+      "RF7": 1.0,
+      "RF8": 1.0
+    },
+    "coverage": {
+      "focal_cases": 45,
+      "focal_coverage_categories": 22,
+      "target_cases": 48,
+      "target_coverage_categories": 14
+    },
+    "failures": [],
+    "focal_and_family_cases": 45,
+    "suite_hash": "c996a52ecbff834e04268d9b34001910cb246f59e65a4e9c208796f59550d44c",
+    "target_cases": 48
+  },
+  "check": "C1",
+  "independent_reimplementation": {
+    "agreement": {
+      "A@3": 1.0,
+      "B@8": 1.0,
+      "RF1@2": 1.0,
+      "RF2@2": 1.0,
+      "RF3@2": 1.0,
+      "RF4@2": 1.0,
+      "RF5@2": 1.0,
+      "RF6@2": 1.0,
+      "RF7@2": 1.0,
+      "RF8@2": 1.0
+    },
+    "responses": 138,
+    "source_material": "the registered prose of v4r2 \u00a77.1, \u00a77.2, \u00a77.4, \u00a79.2 and \u00a79.3 only; the reimplementation imports nothing from dci1v4.verifiers"
+  },
+  "instruments_covered": [
+    "A@3",
+    "B@8",
+    "RF1@2",
+    "RF2@2",
+    "RF3@2",
+    "RF4@2",
+    "RF5@2",
+    "RF6@2",
+    "RF7@2",
+    "RF8@2"
+  ],
+  "note": "realised per-cell-type incidence in genuine generations is reported by analysis.diagnostics at Gate 2 and Gate 4; the detectors and the targeted corpus are complete here",
+  "status": "COMPLETE",
+  "three_process_determinism": {
+    "agreement": 1.0,
+    "instruments": 10,
+    "processes": 3,
+    "responses": 45
+  }
+}

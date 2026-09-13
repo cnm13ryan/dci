@@ -1,0 +1,3658 @@
+{
+ "artifact": "\u00a710.4 autorater pathway, development phase, A and B classes",
+ "canonical_verifier_hash": "f5d4f7e74e757769ec43d7007b0121687fa4b5b388184e5ef32b171ea7580ee4",
+ "classification": "Gate 1 input evidence. Gate 1 is NOT approved. The single-shot freeze and the one-shot calibration are deliberately NOT claimed.",
+ "conditions": {
+  "carried-high": {
+   "condition": "carried-high",
+   "config": {
+    "backend": "vllm-subprocess; dci1/environments/backend/.venv, pinned vLLM 0.15.1+rocm720",
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "decoding": {
+     "chat_template_kwargs": {
+      "reasoning_effort": "high"
+     },
+     "max_new_tokens": 2048,
+     "policy": "greedy",
+     "skip_special_tokens": false
+    },
+    "execution_concurrency": 1,
+    "execution_mode": "serialised",
+    "judge_model_id": "openai/gpt-oss-20b",
+    "judge_model_key": "gpt-oss-20b",
+    "judge_revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+    "label_mapping": {
+     "SATISFIES": "pass",
+     "VIOLATES": "fail"
+    },
+    "output_cap": 2048,
+    "parser_version": "gate1-parse/2.0.0",
+    "prompt_hash": "2d4dab45ab1f8a513cbfaeb8c34c4c03df3fe423d49c902af22e33add160adb5",
+    "prompt_version": "gate1-judge/2.0.0"
+   },
+   "coverage": 0.4791666666666667,
+   "items": 48,
+   "run_dir": "reports/gate1_v4/judge_runs/carried-high-rep0/87763084451f-02e9a20fabed",
+   "seconds": 3933.4,
+   "seconds_per_item": 81.94,
+   "status_counts": {
+    "invalid_output": 25,
+    "valid": 23
+   },
+   "truncated": 25,
+   "truncation_rate": 0.5208333333333334
+  },
+  "carried-medium": {
+   "condition": "carried-medium",
+   "config": {
+    "backend": "vllm-subprocess; dci1/environments/backend/.venv, pinned vLLM 0.15.1+rocm720",
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "decoding": {
+     "chat_template_kwargs": {
+      "reasoning_effort": "medium"
+     },
+     "max_new_tokens": 2048,
+     "policy": "greedy",
+     "skip_special_tokens": false
+    },
+    "execution_concurrency": 1,
+    "execution_mode": "serialised",
+    "judge_model_id": "openai/gpt-oss-20b",
+    "judge_model_key": "gpt-oss-20b",
+    "judge_revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+    "label_mapping": {
+     "SATISFIES": "pass",
+     "VIOLATES": "fail"
+    },
+    "output_cap": 2048,
+    "parser_version": "gate1-parse/2.0.0",
+    "prompt_hash": "2d4dab45ab1f8a513cbfaeb8c34c4c03df3fe423d49c902af22e33add160adb5",
+    "prompt_version": "gate1-judge/2.0.0"
+   },
+   "coverage": 0.9375,
+   "items": 48,
+   "run_dir": "reports/gate1_v4/judge_runs/carried-medium-rep0/2e284c67ee3f-02e9a20fabed",
+   "seconds": 1521.9,
+   "seconds_per_item": 31.71,
+   "status_counts": {
+    "invalid_output": 3,
+    "valid": 45
+   },
+   "truncated": 2,
+   "truncation_rate": 0.041666666666666664
+  },
+  "v4prompt-high": {
+   "condition": "v4prompt-high",
+   "config": {
+    "backend": "vllm-subprocess; dci1/environments/backend/.venv, pinned vLLM 0.15.1+rocm720",
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "decoding": {
+     "chat_template_kwargs": {
+      "reasoning_effort": "high"
+     },
+     "max_new_tokens": 2048,
+     "policy": "greedy",
+     "skip_special_tokens": false
+    },
+    "execution_concurrency": 1,
+    "execution_mode": "serialised",
+    "judge_model_id": "openai/gpt-oss-20b",
+    "judge_model_key": "gpt-oss-20b",
+    "judge_revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+    "label_mapping": {
+     "SATISFIES": "pass",
+     "VIOLATES": "fail"
+    },
+    "output_cap": 2048,
+    "parser_version": "gate1-parse/2.0.0",
+    "prompt_hash": "f46eb07eab8819386ab35b818d71753a28fb5a935947a2eb20e07223fd322ede",
+    "prompt_version": "gate1-judge-v4/1.0.0"
+   },
+   "coverage": 0.875,
+   "items": 48,
+   "run_dir": "reports/gate1_v4/judge_runs/v4prompt-high-rep0/61d9d0f3d42d-02e9a20fabed",
+   "seconds": 2553.9,
+   "seconds_per_item": 53.21,
+   "status_counts": {
+    "invalid_output": 6,
+    "valid": 42
+   },
+   "truncated": 6,
+   "truncation_rate": 0.125
+  },
+  "v4prompt-medium": {
+   "condition": "v4prompt-medium",
+   "config": {
+    "backend": "vllm-subprocess; dci1/environments/backend/.venv, pinned vLLM 0.15.1+rocm720",
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "decoding": {
+     "chat_template_kwargs": {
+      "reasoning_effort": "medium"
+     },
+     "max_new_tokens": 2048,
+     "policy": "greedy",
+     "skip_special_tokens": false
+    },
+    "execution_concurrency": 1,
+    "execution_mode": "serialised",
+    "judge_model_id": "openai/gpt-oss-20b",
+    "judge_model_key": "gpt-oss-20b",
+    "judge_revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+    "label_mapping": {
+     "SATISFIES": "pass",
+     "VIOLATES": "fail"
+    },
+    "output_cap": 2048,
+    "parser_version": "gate1-parse/2.0.0",
+    "prompt_hash": "f46eb07eab8819386ab35b818d71753a28fb5a935947a2eb20e07223fd322ede",
+    "prompt_version": "gate1-judge-v4/1.0.0"
+   },
+   "coverage": 1.0,
+   "items": 48,
+   "run_dir": "reports/gate1_v4/judge_runs/v4prompt-medium-rep0/df3d3e4eb9bd-02e9a20fabed",
+   "seconds": 1245.2,
+   "seconds_per_item": 25.94,
+   "status_counts": {
+    "valid": 48
+   },
+   "truncated": 0,
+   "truncation_rate": 0.0
+  }
+ },
+ "criterion_4_annotation_set": {
+  "by_stratum": {
+   "A:fail:margin_larger": 7,
+   "A:fail:margin_one": 3,
+   "B:fail:margin_one": 1
+  },
+  "conditions_still_alive": [
+   "carried-medium",
+   "v4prompt-high",
+   "v4prompt-medium"
+  ],
+  "discordant_items": [
+   "gemma-3n-e2b-it:ladder:A:1:art-and-design-47",
+   "gemma-3n-e2b-it:ladder:A:1:everyday-science-42",
+   "gemma-3n-e2b-it:ladder:A:1:health-and-the-body-15",
+   "gemma-3n-e2b-it:ladder:A:2:art-and-design-47",
+   "gemma-3n-e2b-it:ladder:A:2:everyday-science-34",
+   "gemma-3n-e2b-it:ladder:A:2:everyday-science-42",
+   "gemma-3n-e2b-it:ladder:A:2:technology-51",
+   "gemma-3n-e2b-it:ladder:A:3:language-and-writing-22",
+   "gemma-3n-e2b-it:ladder:A:4:food-24",
+   "gemma-3n-e2b-it:ladder:A:4:health-and-the-body-15",
+   "gemma-3n-e2b-it:ladder:B:9:history-20"
+  ],
+  "estimated_minutes": [
+   11,
+   22
+  ],
+  "invariant": "these are author labels: diagnostic evidence and \u00a710.4 hierarchy input, never independent validation",
+  "matched_control": 11,
+  "n_discordant": 11,
+  "rule": "\u00a710.4's fourth criterion needs only enough paired items to separate the surviving conditions. Conditions that never disagree cannot be separated by any number of labels, so only the discordant items carry information; an equal number of concordant controls is added so the sample is not conditioned on disagreement.",
+  "total_to_label": 22
+ },
+ "judge_rows": {
+  "carried-high": [
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:2:art-and-design-47",
+    "justification": null,
+    "label": null,
+    "margin": 2,
+    "prompt_hash": "7263cd1204699bea3ad7b0ded5f6b9ba0232c1f88415360bd73c772bd8528c87",
+    "status": "invalid_output",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:art-and-design-08",
+    "justification": "The word \"however\" is missing.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "e11c5ec2fcc252cd67b3bd427b5f40a986b895c7750e6c72c452d3d0fd5ba940",
+    "status": "valid",
+    "stratum": "A:fail:margin_one",
+    "tokens": 732,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:geography-31",
+    "justification": "however, the text contains the word once.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "718ea70f3ab03f493bb54d1e651dee0e0d46142b45d3234d0a9229cdb3e6e940",
+    "status": "valid",
+    "stratum": "A:pass",
+    "tokens": 1265,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:7:music-38",
+    "justification": null,
+    "label": null,
+    "margin": 3,
+    "prompt_hash": "996f587e9b03c2a0d501b31c92e17760f7eb476a827f212e1a2f892477a44365",
+    "status": "invalid_output",
+    "stratum": "B:fail:margin_larger",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:9:history-20",
+    "justification": null,
+    "label": null,
+    "margin": 1,
+    "prompt_hash": "5ce8c2038adea075fbe20902d9a3c154a6e2debaf173ea11072bd5a7bafa5349",
+    "status": "invalid_output",
+    "stratum": "B:fail:margin_one",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:10:art-and-design-08",
+    "justification": null,
+    "label": null,
+    "margin": 0,
+    "prompt_hash": "a14b0ff89ab8f8d9897dbd75fa8fd64c1ae45a88d265fd0be734c5352a0b3414",
+    "status": "invalid_output",
+    "stratum": "B:pass",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:2:everyday-science-34",
+    "justification": null,
+    "label": null,
+    "margin": 2,
+    "prompt_hash": "eea33ed00b5ea003e8d4aed0eb87069010524317fd6180e0592f7974be1b8c57",
+    "status": "invalid_output",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:art-and-design-47",
+    "justification": null,
+    "label": null,
+    "margin": 1,
+    "prompt_hash": "7d7c53d066d30c7e3e04f6237c49ca75f942c944316c55502b23c2c10070a870",
+    "status": "invalid_output",
+    "stratum": "A:fail:margin_one",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:history-20",
+    "justification": null,
+    "label": null,
+    "margin": 0,
+    "prompt_hash": "efa174ff08e092fd0b0ba905b6b81b41f4135ee4a5c72d80678340091e5063c3",
+    "status": "invalid_output",
+    "stratum": "A:pass",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:8:geography-31",
+    "justification": "Floodplains is 11 letters.",
+    "label": "fail",
+    "margin": 3,
+    "prompt_hash": "68a19ef58db187763f9b5cc9f6a5b440be65bb63a5259d3cf9a30e8008db5e5b",
+    "status": "valid",
+    "stratum": "B:fail:margin_larger",
+    "tokens": 478,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "B",
+    "item_id": "gemma-3n-e4b-it:ladder:B:7:food-43",
+    "justification": null,
+    "label": null,
+    "margin": 1,
+    "prompt_hash": "2b9585a1648aafee632dc41fed073167286ae7a1c07a110e3b9cb788c963f30d",
+    "status": "invalid_output",
+    "stratum": "B:fail:margin_one",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:10:everyday-science-34",
+    "justification": null,
+    "label": null,
+    "margin": 0,
+    "prompt_hash": "ae81b324c1a7e0d5d39482146638ea8056a8153f3e29a66e9381996644bcfc4f",
+    "status": "invalid_output",
+    "stratum": "B:pass",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:2:everyday-science-42",
+    "justification": null,
+    "label": null,
+    "margin": 2,
+    "prompt_hash": "3e025a0e1eccd232571e340efb5e7d0d18e2732431567a610236745d750302d9",
+    "status": "invalid_output",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:everyday-science-42",
+    "justification": null,
+    "label": null,
+    "margin": 1,
+    "prompt_hash": "e37da5574b8b5175cf5cc29f43c26fdfd496bada97968f82e64d728458465d9e",
+    "status": "invalid_output",
+    "stratum": "A:fail:margin_one",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:music-38",
+    "justification": "One occurrence of \"however\".",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "c4e1182baf4479d526dd5c43389e628378bd55a8c72c53208688f78e281f6560",
+    "status": "valid",
+    "stratum": "A:pass",
+    "tokens": 171,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:8:technology-31",
+    "justification": "Contains words longer than 8 letters.",
+    "label": "fail",
+    "margin": 3,
+    "prompt_hash": "25fb3a455c463c2bd956a869d98328db34052546431e38179b9dbc2158be7873",
+    "status": "valid",
+    "stratum": "B:fail:margin_larger",
+    "tokens": 760,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "B",
+    "item_id": "gemma-3n-e4b-it:ladder:B:7:health-and-the-body-15",
+    "justification": "Hormones is 8 letters.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "9a9dcf7d640df605a66c27a95d0dab27247abfdb286e96230b3e621e7306d996",
+    "status": "valid",
+    "stratum": "B:fail:margin_one",
+    "tokens": 1034,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:10:food-24",
+    "justification": "All words <=10 letters.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "6ecf9423cfe608f6a0e34adf1aabe756af432e2f1986939dc68d17d9d408f624",
+    "status": "valid",
+    "stratum": "B:pass",
+    "tokens": 310,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:2:technology-51",
+    "justification": null,
+    "label": null,
+    "margin": 2,
+    "prompt_hash": "d529ca784bc60335459026f3c58f97098218caac232167f0461b8d85022c627a",
+    "status": "invalid_output",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:geography-27",
+    "justification": "The word however is not present.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "aae427d52e4e1228912a3cee07a02efcc4969d5bf60dd0dc6607bc0bc1dd7408",
+    "status": "valid",
+    "stratum": "A:fail:margin_one",
+    "tokens": 303,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:work-and-organisations-25",
+    "justification": null,
+    "label": null,
+    "margin": 0,
+    "prompt_hash": "9327f6ccd7099e0b50424dcb9b1bee2997cb8d8c3b7d1aa31cad7e9ded334628",
+    "status": "invalid_output",
+    "stratum": "A:pass",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:9:everyday-science-34",
+    "justification": "Condensation is 12 letters.",
+    "label": "fail",
+    "margin": 3,
+    "prompt_hash": "9fe583c02962cbdff39d09c29163f83bb6ed1199d343e15a03911df035f0c46d",
+    "status": "valid",
+    "stratum": "B:fail:margin_larger",
+    "tokens": 442,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "B",
+    "item_id": "gemma-3n-e4b-it:ladder:B:8:geography-27",
+    "justification": "Word 'limestone' is 9 letters.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "8af1593613b98f325bdb56703a306b1f3f031d851ffa9b4dc00db8c8e91c58f3",
+    "status": "valid",
+    "stratum": "B:fail:margin_one",
+    "tokens": 469,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:10:food-43",
+    "justification": "All words <=10 letters.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "3c8c7b956bc5907a05712e43d055f452e0b8390a13d1485815941e5656da63b9",
+    "status": "valid",
+    "stratum": "B:pass",
+    "tokens": 446,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:3:language-and-writing-22",
+    "justification": null,
+    "label": null,
+    "margin": 3,
+    "prompt_hash": "01dddf3347d4043f2b0138741d071eee3c9d5d87e09a433b1392245d62e59dd5",
+    "status": "invalid_output",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:health-and-the-body-15",
+    "justification": null,
+    "label": null,
+    "margin": 1,
+    "prompt_hash": "7e1d5c253b4d920937d2da09deb24a45b704f4c90d8284fd7c116befb0308dc3",
+    "status": "invalid_output",
+    "stratum": "A:fail:margin_one",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:2:food-43",
+    "justification": "Word appears twice.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "48be436b739b58869582498cc1de6c7b4341e3db00b6293f7a228b963765ad73",
+    "status": "valid",
+    "stratum": "A:pass",
+    "tokens": 290,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:9:language-and-writing-22",
+    "justification": "Expectation has 13 letters.",
+    "label": "fail",
+    "margin": 2,
+    "prompt_hash": "6edd3cceba3d42229103fbe235d99c5d61ddd6cefd9b7ecb5f677a64b56d679c",
+    "status": "valid",
+    "stratum": "B:fail:margin_larger",
+    "tokens": 1149,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "B",
+    "item_id": "gemma-3n-e4b-it:ladder:B:8:the-natural-world-23",
+    "justification": null,
+    "label": null,
+    "margin": 1,
+    "prompt_hash": "2774310f3881c1c6017b234ca04b5e12a759dcabad67d7c30e974b5bfb8514c1",
+    "status": "invalid_output",
+    "stratum": "B:fail:margin_one",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:10:geography-27",
+    "justification": null,
+    "label": null,
+    "margin": 0,
+    "prompt_hash": "24e9552b73a65006bca85ea2a8c91903467b0e06b9da51640300811e2e21030f",
+    "status": "invalid_output",
+    "stratum": "B:pass",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:4:food-24",
+    "justification": null,
+    "label": null,
+    "margin": 4,
+    "prompt_hash": "f8ddbdd0eea9828f92809150b382e8b44c40bb43d2f961a59c3763d52423dda6",
+    "status": "invalid_output",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:health-and-the-body-26",
+    "justification": "Word 'however' appears 0 times.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "a8438bf16561ffb6904cff1fa07af94500f8c9c580819965970c63f8418d393d",
+    "status": "valid",
+    "stratum": "A:fail:margin_one",
+    "tokens": 333,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:2:history-20",
+    "justification": "The word \u201chowever\u201d appears twice.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "f52ec8d033d929ff44f61f1ec93c8b4c174d728c5a3c46586014d948607c7902",
+    "status": "valid",
+    "stratum": "A:pass",
+    "tokens": 597,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "B",
+    "item_id": "gemma-3n-e4b-it:ladder:B:10:language-and-writing-10",
+    "justification": null,
+    "label": null,
+    "margin": 2,
+    "prompt_hash": "40cb53c4dfe98b313909116c0ca145d83ab12f1a34d9aa84a7bb716598a3d311",
+    "status": "invalid_output",
+    "stratum": "B:fail:margin_larger",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "B",
+    "item_id": "gemma-3n-e4b-it:ladder:B:9:technology-31",
+    "justification": "Word 'interfaces' is 10 letters.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "3f10fa8d7db7f351b77e8387f55c5e6459e99e404109059c923aadb7ce08416d",
+    "status": "valid",
+    "stratum": "B:fail:margin_one",
+    "tokens": 593,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:10:health-and-the-body-15",
+    "justification": null,
+    "label": null,
+    "margin": 0,
+    "prompt_hash": "6f3fdd016ef4e4dfa9fba54f8824f062d86fdcc713ae0f5c762aa91156f08dfc",
+    "status": "invalid_output",
+    "stratum": "B:pass",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:4:health-and-the-body-15",
+    "justification": null,
+    "label": null,
+    "margin": 4,
+    "prompt_hash": "1fa9c79ad4584fd57b9725f88ffc2d6b70490f6af778101d16226a739b6ec7ff",
+    "status": "invalid_output",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:history-34",
+    "justification": "The word \u201chowever\u201d is missing.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "28f91fb59d3f5a754bb1491cee788aebe2e61b3cdeccca53de426455640ecac6",
+    "status": "valid",
+    "stratum": "A:fail:margin_one",
+    "tokens": 306,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:3:food-24",
+    "justification": "The word however appears exactly three times.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "9c6431d1e6f97ce5b5cc76dfe6a694f448706ff35eb967a869e7751392fd596c",
+    "status": "valid",
+    "stratum": "A:pass",
+    "tokens": 443,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "B",
+    "item_id": "gemma-3n-e4b-it:ladder:B:7:geography-31",
+    "justification": "floodlands",
+    "label": "fail",
+    "margin": 3,
+    "prompt_hash": "a75a769bf27ff0e53debe5f38bf03ac734a9152e47852b2d8fd186b488367a91",
+    "status": "valid",
+    "stratum": "B:fail:margin_larger",
+    "tokens": 693,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "B",
+    "item_id": "qwen3-4b-instruct-2507:ladder:B:7:the-natural-world-24",
+    "justification": null,
+    "label": null,
+    "margin": 1,
+    "prompt_hash": "a617abae549e20a83092d59deaf5d4896d0a87c450ea3f6667b0e6ea876a8036",
+    "status": "invalid_output",
+    "stratum": "B:fail:margin_one",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:10:sport-14",
+    "justification": "All words are 10 letters or fewer.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "f22bb7496cbb47353e2d924ae27f70fe5ef913902f2e1139e17442d8db912d09",
+    "status": "valid",
+    "stratum": "B:pass",
+    "tokens": 1373,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:4:language-and-writing-10",
+    "justification": null,
+    "label": null,
+    "margin": 4,
+    "prompt_hash": "db8c175b11d6107131a952f61c634cd2263a0c4b617b5a68cfd7a3f777d2b536",
+    "status": "invalid_output",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:language-and-writing-22",
+    "justification": "Word 'however' appears 0 times.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "dbfabbd9776614e12f48e74279767e8ec5a3d7df08b062c30f8d4fbd5bf4554f",
+    "status": "valid",
+    "stratum": "A:fail:margin_one",
+    "tokens": 322,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:3:history-20",
+    "justification": "The word \"however\" appears exactly three times.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "b5869c16e14d4457dd96eb4786c3f7b9b8464d6dd796f27ad5137cad4dd17e87",
+    "status": "valid",
+    "stratum": "A:pass",
+    "tokens": 739,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "B",
+    "item_id": "gemma-3n-e4b-it:ladder:B:7:history-20",
+    "justification": null,
+    "label": null,
+    "margin": 4,
+    "prompt_hash": "5e07c418cbe17edde84946356a734909c482c54be91e0fe78a7f1f1a960436e7",
+    "status": "invalid_output",
+    "stratum": "B:fail:margin_larger",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "B",
+    "item_id": "qwen3-4b-instruct-2507:ladder:B:8:history-20",
+    "justification": null,
+    "label": null,
+    "margin": 1,
+    "prompt_hash": "1355976efcb98c757e4d749c2309eb7f71eb2438c38a8c7314e9cd67fd94064c",
+    "status": "invalid_output",
+    "stratum": "B:fail:margin_one",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:10:technology-31",
+    "justification": "Text fails rule.",
+    "label": "fail",
+    "margin": 0,
+    "prompt_hash": "de842d7d54adba0a03737448bc5dde3e5a3a34d4b653ffe2954f0efe6912d604",
+    "status": "valid",
+    "stratum": "B:pass",
+    "tokens": 1178,
+    "truncated": false,
+    "verifier_class": "pass"
+   }
+  ],
+  "carried-medium": [
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:2:art-and-design-47",
+    "justification": "however, the text does not contain the word \"however\" twice; however, the rule requires it.",
+    "label": "pass",
+    "margin": 2,
+    "prompt_hash": "7263cd1204699bea3ad7b0ded5f6b9ba0232c1f88415360bd73c772bd8528c87",
+    "status": "valid",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 757,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:art-and-design-08",
+    "justification": "The word \u201chowever\u201d does not appear in the text.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "e11c5ec2fcc252cd67b3bd427b5f40a986b895c7750e6c72c452d3d0fd5ba940",
+    "status": "valid",
+    "stratum": "A:fail:margin_one",
+    "tokens": 124,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:geography-31",
+    "justification": "however the answer contains the word exactly once.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "718ea70f3ab03f493bb54d1e651dee0e0d46142b45d3234d0a9229cdb3e6e940",
+    "status": "valid",
+    "stratum": "A:pass",
+    "tokens": 566,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:7:music-38",
+    "justification": "Word too long.",
+    "label": "fail",
+    "margin": 3,
+    "prompt_hash": "996f587e9b03c2a0d501b31c92e17760f7eb476a827f212e1a2f892477a44365",
+    "status": "valid",
+    "stratum": "B:fail:margin_larger",
+    "tokens": 338,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:9:history-20",
+    "justification": "Text meets rule.",
+    "label": "pass",
+    "margin": 1,
+    "prompt_hash": "5ce8c2038adea075fbe20902d9a3c154a6e2debaf173ea11072bd5a7bafa5349",
+    "status": "valid",
+    "stratum": "B:fail:margin_one",
+    "tokens": 327,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:10:art-and-design-08",
+    "justification": "All words \u226410 letters.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "a14b0ff89ab8f8d9897dbd75fa8fd64c1ae45a88d265fd0be734c5352a0b3414",
+    "status": "valid",
+    "stratum": "B:pass",
+    "tokens": 362,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:2:everyday-science-34",
+    "justification": "however, however, the text is unclear.",
+    "label": "pass",
+    "margin": 2,
+    "prompt_hash": "eea33ed00b5ea003e8d4aed0eb87069010524317fd6180e0592f7974be1b8c57",
+    "status": "valid",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 876,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:art-and-design-47",
+    "justification": "however the answer can include the word once",
+    "label": "pass",
+    "margin": 1,
+    "prompt_hash": "7d7c53d066d30c7e3e04f6237c49ca75f942c944316c55502b23c2c10070a870",
+    "status": "valid",
+    "stratum": "A:fail:margin_one",
+    "tokens": 705,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:history-20",
+    "justification": "however, the answer includes the word exactly once.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "efa174ff08e092fd0b0ba905b6b81b41f4135ee4a5c72d80678340091e5063c3",
+    "status": "valid",
+    "stratum": "A:pass",
+    "tokens": 650,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:8:geography-31",
+    "justification": "Floodplains is 10 letters.",
+    "label": "fail",
+    "margin": 3,
+    "prompt_hash": "68a19ef58db187763f9b5cc9f6a5b440be65bb63a5259d3cf9a30e8008db5e5b",
+    "status": "valid",
+    "stratum": "B:fail:margin_larger",
+    "tokens": 79,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "B",
+    "item_id": "gemma-3n-e4b-it:ladder:B:7:food-43",
+    "justification": null,
+    "label": null,
+    "margin": 1,
+    "prompt_hash": "2b9585a1648aafee632dc41fed073167286ae7a1c07a110e3b9cb788c963f30d",
+    "status": "invalid_output",
+    "stratum": "B:fail:margin_one",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:10:everyday-science-34",
+    "justification": "All words are short.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "ae81b324c1a7e0d5d39482146638ea8056a8153f3e29a66e9381996644bcfc4f",
+    "status": "valid",
+    "stratum": "B:pass",
+    "tokens": 402,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:2:everyday-science-42",
+    "justification": "Include the rule twice. Include it again.",
+    "label": "pass",
+    "margin": 2,
+    "prompt_hash": "3e025a0e1eccd232571e340efb5e7d0d18e2732431567a610236745d750302d9",
+    "status": "valid",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 569,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:everyday-science-42",
+    "justification": "however, the text is correct.",
+    "label": "pass",
+    "margin": 1,
+    "prompt_hash": "e37da5574b8b5175cf5cc29f43c26fdfd496bada97968f82e64d728458465d9e",
+    "status": "valid",
+    "stratum": "A:fail:margin_one",
+    "tokens": 791,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:music-38",
+    "justification": "The word \"however\" appears exactly once.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "c4e1182baf4479d526dd5c43389e628378bd55a8c72c53208688f78e281f6560",
+    "status": "valid",
+    "stratum": "A:pass",
+    "tokens": 110,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:8:technology-31",
+    "justification": "The paragraph contains words like \u201cinterfaces,\u201d \u201cspecialized,\u201d \u201cbeginners,\u201d and \u201cunderstand\u201d that exceed eight letters.",
+    "label": "fail",
+    "margin": 3,
+    "prompt_hash": "25fb3a455c463c2bd956a869d98328db34052546431e38179b9dbc2158be7873",
+    "status": "valid",
+    "stratum": "B:fail:margin_larger",
+    "tokens": 569,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "B",
+    "item_id": "gemma-3n-e4b-it:ladder:B:7:health-and-the-body-15",
+    "justification": "The words \u201cHormones\u201d and \u201cHelpful\u201d each have 8 letters.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "9a9dcf7d640df605a66c27a95d0dab27247abfdb286e96230b3e621e7306d996",
+    "status": "valid",
+    "stratum": "B:fail:margin_one",
+    "tokens": 414,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:10:food-24",
+    "justification": "All words are 10 letters or fewer.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "6ecf9423cfe608f6a0e34adf1aabe756af432e2f1986939dc68d17d9d408f624",
+    "status": "valid",
+    "stratum": "B:pass",
+    "tokens": 148,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:2:technology-51",
+    "justification": "however, however, the answer meets the requirement.",
+    "label": "pass",
+    "margin": 2,
+    "prompt_hash": "d529ca784bc60335459026f3c58f97098218caac232167f0461b8d85022c627a",
+    "status": "valid",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 623,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:geography-27",
+    "justification": "No occurrence of however.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "aae427d52e4e1228912a3cee07a02efcc4969d5bf60dd0dc6607bc0bc1dd7408",
+    "status": "valid",
+    "stratum": "A:fail:margin_one",
+    "tokens": 247,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:work-and-organisations-25",
+    "justification": "however the text contains the word once.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "9327f6ccd7099e0b50424dcb9b1bee2997cb8d8c3b7d1aa31cad7e9ded334628",
+    "status": "valid",
+    "stratum": "A:pass",
+    "tokens": 952,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:9:everyday-science-34",
+    "justification": "Condensation is 13 letters long.",
+    "label": "fail",
+    "margin": 3,
+    "prompt_hash": "9fe583c02962cbdff39d09c29163f83bb6ed1199d343e15a03911df035f0c46d",
+    "status": "valid",
+    "stratum": "B:fail:margin_larger",
+    "tokens": 130,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "B",
+    "item_id": "gemma-3n-e4b-it:ladder:B:8:geography-27",
+    "justification": "Word 'limestone' has 9 letters.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "8af1593613b98f325bdb56703a306b1f3f031d851ffa9b4dc00db8c8e91c58f3",
+    "status": "valid",
+    "stratum": "B:fail:margin_one",
+    "tokens": 262,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:10:food-43",
+    "justification": "All words are 10 letters or fewer.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "3c8c7b956bc5907a05712e43d055f452e0b8390a13d1485815941e5656da63b9",
+    "status": "valid",
+    "stratum": "B:pass",
+    "tokens": 204,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:3:language-and-writing-22",
+    "justification": "however, however, however, the text meets the criteria.",
+    "label": "pass",
+    "margin": 3,
+    "prompt_hash": "01dddf3347d4043f2b0138741d071eee3c9d5d87e09a433b1392245d62e59dd5",
+    "status": "valid",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 616,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:health-and-the-body-15",
+    "justification": "however the answer contains the word once.",
+    "label": "pass",
+    "margin": 1,
+    "prompt_hash": "7e1d5c253b4d920937d2da09deb24a45b704f4c90d8284fd7c116befb0308dc3",
+    "status": "valid",
+    "stratum": "A:fail:margin_one",
+    "tokens": 668,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:2:food-43",
+    "justification": "Two occurrences.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "48be436b739b58869582498cc1de6c7b4341e3db00b6293f7a228b963765ad73",
+    "status": "valid",
+    "stratum": "A:pass",
+    "tokens": 128,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:9:language-and-writing-22",
+    "justification": "The word \u201cExpectation\u201d has 11 letters.",
+    "label": "fail",
+    "margin": 2,
+    "prompt_hash": "6edd3cceba3d42229103fbe235d99c5d61ddd6cefd9b7ecb5f677a64b56d679c",
+    "status": "valid",
+    "stratum": "B:fail:margin_larger",
+    "tokens": 606,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "B",
+    "item_id": "gemma-3n-e4b-it:ladder:B:8:the-natural-world-23",
+    "justification": "Word >8 letters",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "2774310f3881c1c6017b234ca04b5e12a759dcabad67d7c30e974b5bfb8514c1",
+    "status": "valid",
+    "stratum": "B:fail:margin_one",
+    "tokens": 706,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:10:geography-27",
+    "justification": "All words \u226410 letters",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "24e9552b73a65006bca85ea2a8c91903467b0e06b9da51640300811e2e21030f",
+    "status": "valid",
+    "stratum": "B:pass",
+    "tokens": 115,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:4:food-24",
+    "justification": "The answer includes however, however, however, however.",
+    "label": "pass",
+    "margin": 4,
+    "prompt_hash": "f8ddbdd0eea9828f92809150b382e8b44c40bb43d2f961a59c3763d52423dda6",
+    "status": "valid",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 480,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:health-and-the-body-26",
+    "justification": "The word \"however\" does not appear in the text.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "a8438bf16561ffb6904cff1fa07af94500f8c9c580819965970c63f8418d393d",
+    "status": "valid",
+    "stratum": "A:fail:margin_one",
+    "tokens": 246,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:2:history-20",
+    "justification": "The word \u201chowever\u201d appears exactly twice in the text.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "f52ec8d033d929ff44f61f1ec93c8b4c174d728c5a3c46586014d948607c7902",
+    "status": "valid",
+    "stratum": "A:pass",
+    "tokens": 153,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "B",
+    "item_id": "gemma-3n-e4b-it:ladder:B:10:language-and-writing-10",
+    "justification": "punctuation is 11 letters.",
+    "label": "fail",
+    "margin": 2,
+    "prompt_hash": "40cb53c4dfe98b313909116c0ca145d83ab12f1a34d9aa84a7bb716598a3d311",
+    "status": "valid",
+    "stratum": "B:fail:margin_larger",
+    "tokens": 728,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "B",
+    "item_id": "gemma-3n-e4b-it:ladder:B:9:technology-31",
+    "justification": "interfaces is 10 letters",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "3f10fa8d7db7f351b77e8387f55c5e6459e99e404109059c923aadb7ce08416d",
+    "status": "valid",
+    "stratum": "B:fail:margin_one",
+    "tokens": 489,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:10:health-and-the-body-15",
+    "justification": "All words are 10 letters or fewer.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "6f3fdd016ef4e4dfa9fba54f8824f062d86fdcc713ae0f5c762aa91156f08dfc",
+    "status": "valid",
+    "stratum": "B:pass",
+    "tokens": 173,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:4:health-and-the-body-15",
+    "justification": "however, however, however, however, the text satisfies the rule.",
+    "label": "pass",
+    "margin": 4,
+    "prompt_hash": "1fa9c79ad4584fd57b9725f88ffc2d6b70490f6af778101d16226a739b6ec7ff",
+    "status": "valid",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 1145,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:history-34",
+    "justification": "The word \u201chowever\u201d does not appear.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "28f91fb59d3f5a754bb1491cee788aebe2e61b3cdeccca53de426455640ecac6",
+    "status": "valid",
+    "stratum": "A:fail:margin_one",
+    "tokens": 227,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:3:food-24",
+    "justification": "The word \u201chowever\u201d appears exactly three times.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "9c6431d1e6f97ce5b5cc76dfe6a694f448706ff35eb967a869e7751392fd596c",
+    "status": "valid",
+    "stratum": "A:pass",
+    "tokens": 115,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "B",
+    "item_id": "gemma-3n-e4b-it:ladder:B:7:geography-31",
+    "justification": "Word 'floodlands' exceeds 7 letters.",
+    "label": "fail",
+    "margin": 3,
+    "prompt_hash": "a75a769bf27ff0e53debe5f38bf03ac734a9152e47852b2d8fd186b488367a91",
+    "status": "valid",
+    "stratum": "B:fail:margin_larger",
+    "tokens": 464,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "B",
+    "item_id": "qwen3-4b-instruct-2507:ladder:B:7:the-natural-world-24",
+    "justification": null,
+    "label": null,
+    "margin": 1,
+    "prompt_hash": "a617abae549e20a83092d59deaf5d4896d0a87c450ea3f6667b0e6ea876a8036",
+    "status": "invalid_output",
+    "stratum": "B:fail:margin_one",
+    "tokens": 829,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:10:sport-14",
+    "justification": "All words are 10 letters or fewer.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "f22bb7496cbb47353e2d924ae27f70fe5ef913902f2e1139e17442d8db912d09",
+    "status": "valid",
+    "stratum": "B:pass",
+    "tokens": 512,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:4:language-and-writing-10",
+    "justification": "The text, however, however, however, however, does not mention the word 'however'.",
+    "label": "fail",
+    "margin": 4,
+    "prompt_hash": "db8c175b11d6107131a952f61c634cd2263a0c4b617b5a68cfd7a3f777d2b536",
+    "status": "valid",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 551,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:language-and-writing-22",
+    "justification": "Word \"however\" does not appear.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "dbfabbd9776614e12f48e74279767e8ec5a3d7df08b062c30f8d4fbd5bf4554f",
+    "status": "valid",
+    "stratum": "A:fail:margin_one",
+    "tokens": 192,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:3:history-20",
+    "justification": "The word \"however\" appears exactly three times.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "b5869c16e14d4457dd96eb4786c3f7b9b8464d6dd796f27ad5137cad4dd17e87",
+    "status": "valid",
+    "stratum": "A:pass",
+    "tokens": 119,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "B",
+    "item_id": "gemma-3n-e4b-it:ladder:B:7:history-20",
+    "justification": "The text contains words such as \u201cquarantines,\u201d \u201csickness,\u201d and \u201ctownfolk\u201d that exceed seven letters.",
+    "label": "fail",
+    "margin": 4,
+    "prompt_hash": "5e07c418cbe17edde84946356a734909c482c54be91e0fe78a7f1f1a960436e7",
+    "status": "valid",
+    "stratum": "B:fail:margin_larger",
+    "tokens": 339,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "B",
+    "item_id": "qwen3-4b-instruct-2507:ladder:B:8:history-20",
+    "justification": null,
+    "label": null,
+    "margin": 1,
+    "prompt_hash": "1355976efcb98c757e4d749c2309eb7f71eb2438c38a8c7314e9cd67fd94064c",
+    "status": "invalid_output",
+    "stratum": "B:fail:margin_one",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "2e284c67ee3fb763ea533b5d0440fa47b7899f1ee8e089a12520306b7d1066ff",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:10:technology-31",
+    "justification": "No word >10",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "de842d7d54adba0a03737448bc5dde3e5a3a34d4b653ffe2954f0efe6912d604",
+    "status": "valid",
+    "stratum": "B:pass",
+    "tokens": 349,
+    "truncated": false,
+    "verifier_class": "pass"
+   }
+  ],
+  "v4prompt-high": [
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:2:art-and-design-47",
+    "justification": "The word \"however\" appears 0 times.",
+    "label": "fail",
+    "margin": 2,
+    "prompt_hash": "2f4f069614f559bdecd645e66668a50f23c2325133858f3da943f3b2410c8bae",
+    "status": "valid",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 577,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:art-and-design-08",
+    "justification": "The word \"however\" does not appear in the text.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "fc1403e84cc95e12bc14a48636fe160ce7c03b9fef82de9f57f23b4325677c56",
+    "status": "valid",
+    "stratum": "A:fail:margin_one",
+    "tokens": 1287,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:geography-31",
+    "justification": "The word 'however' appears once.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "9acddf9add5e3d713d9c98696c6e4a63760648a2d8c417017843124087c15de8",
+    "status": "valid",
+    "stratum": "A:pass",
+    "tokens": 405,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:7:music-38",
+    "justification": "Orchestras >7 letters.",
+    "label": "fail",
+    "margin": 3,
+    "prompt_hash": "949c7a326aecbf9dbe023557c6a4ecb496489dc2a2f637b55df1cb9a331f71b0",
+    "status": "valid",
+    "stratum": "B:fail:margin_larger",
+    "tokens": 741,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:9:history-20",
+    "justification": "Quarantine has 10 letters.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "6b451cd1c7a3ef294d7e9a7dc27e37ee9b1ca3ffeac921cf371afb4ee4350d26",
+    "status": "valid",
+    "stratum": "B:fail:margin_one",
+    "tokens": 822,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:10:art-and-design-08",
+    "justification": "All words <=10 letters.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "6a6c0d91364e155206a34734f341ee1011c081f3f74252b5c892bdd2d33e5e8a",
+    "status": "valid",
+    "stratum": "B:pass",
+    "tokens": 448,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:2:everyday-science-34",
+    "justification": "No \u201chowever\u201d present.",
+    "label": "fail",
+    "margin": 2,
+    "prompt_hash": "10077e4e3d74d00e21d2bfa81a39f43cb1c79fc727fdb89b8ab92b14f4925e77",
+    "status": "valid",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 475,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:art-and-design-47",
+    "justification": "No \u201chowever\u201d present.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "0a454ff0ed116395a14b3eacd3dbdf589310ed850c2a4acf9589e0428127f9f9",
+    "status": "valid",
+    "stratum": "A:fail:margin_one",
+    "tokens": 435,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:history-20",
+    "justification": null,
+    "label": null,
+    "margin": 0,
+    "prompt_hash": "d42797b34a440519b65294b851bb7a75f3100539794437cbe908ff45f98fe31d",
+    "status": "invalid_output",
+    "stratum": "A:pass",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:8:geography-31",
+    "justification": "Floodplains is 10 letters.",
+    "label": "fail",
+    "margin": 3,
+    "prompt_hash": "91a2f231cf2a5dd5dc2c2e684db4c7f66c5370c008ea9e0e5852cd9f74cdf8dc",
+    "status": "valid",
+    "stratum": "B:fail:margin_larger",
+    "tokens": 409,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "B",
+    "item_id": "gemma-3n-e4b-it:ladder:B:7:food-43",
+    "justification": "Hormones and Ethylene exceed 7 letters.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "9408a5efa8ff8b9ae4419813c436ca26608d3eaf172d4ca22bdb03a45a53061c",
+    "status": "valid",
+    "stratum": "B:fail:margin_one",
+    "tokens": 1400,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:10:everyday-science-34",
+    "justification": "All words <=10 letters.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "13613d76a1e0467851aee6ddf8f469312231ce206dea2ef3026f47fb990457d7",
+    "status": "valid",
+    "stratum": "B:pass",
+    "tokens": 323,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:2:everyday-science-42",
+    "justification": "The word 'however' does not appear in the text.",
+    "label": "fail",
+    "margin": 2,
+    "prompt_hash": "e5f68dce389c258d12c99516cfa2f7f8f2f6cc56869450c7db82bb9a224255a5",
+    "status": "valid",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 985,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:everyday-science-42",
+    "justification": "No \u201chowever\u201d present.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "acd67f14d154e7a1537b5a6eafb2aefc9a649f49cead8305d568331188047aa2",
+    "status": "valid",
+    "stratum": "A:fail:margin_one",
+    "tokens": 391,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:music-38",
+    "justification": null,
+    "label": null,
+    "margin": 0,
+    "prompt_hash": "113ac8f04adb613f85d01b3c77e271a598597840df46f1ccbac0a236e8aa7c96",
+    "status": "invalid_output",
+    "stratum": "A:pass",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:8:technology-31",
+    "justification": "Contains words longer than 8 letters.",
+    "label": "fail",
+    "margin": 3,
+    "prompt_hash": "3fe2246dd21febf0e89f283431ac86158ef4e4538949d927e5730ac76bbd262a",
+    "status": "valid",
+    "stratum": "B:fail:margin_larger",
+    "tokens": 753,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "B",
+    "item_id": "gemma-3n-e4b-it:ladder:B:7:health-and-the-body-15",
+    "justification": null,
+    "label": null,
+    "margin": 1,
+    "prompt_hash": "de66c12dc4598676a08d89515b83423d2a7209238abff8ed22c04620b69072fe",
+    "status": "invalid_output",
+    "stratum": "B:fail:margin_one",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:10:food-24",
+    "justification": "All words are <=10 letters.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "e6e32e486245a94458d7d2ec3597569966fb832cae637973ca743ffe469148e5",
+    "status": "valid",
+    "stratum": "B:pass",
+    "tokens": 313,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:2:technology-51",
+    "justification": null,
+    "label": null,
+    "margin": 2,
+    "prompt_hash": "75bf7e4f3f691290d56e2075063ea9eec05e5e8e75bb729dc862b901e49c23ab",
+    "status": "invalid_output",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:geography-27",
+    "justification": "The word 'however' is missing.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "c255222b0be1c24cc302dc27daa7126acdab2544706cbb6e1f60f192e4badf44",
+    "status": "valid",
+    "stratum": "A:fail:margin_one",
+    "tokens": 401,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:work-and-organisations-25",
+    "justification": "The word \u201chowever\u201d appears exactly once.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "fe1d838102d369dd434caf4b60324de223138a83ce9466e2b812f94d49973006",
+    "status": "valid",
+    "stratum": "A:pass",
+    "tokens": 1114,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:9:everyday-science-34",
+    "justification": "Condensation has 12 letters.",
+    "label": "fail",
+    "margin": 3,
+    "prompt_hash": "828e859d6906975395644871b1d9ea106bbdac09545db9b7d905b0cebe953dfb",
+    "status": "valid",
+    "stratum": "B:fail:margin_larger",
+    "tokens": 297,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "B",
+    "item_id": "gemma-3n-e4b-it:ladder:B:8:geography-27",
+    "justification": "limestone is 9 letters",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "ca5321f7179ab57a869d076443476a2b8679124ad789da9486b86c922e2e613f",
+    "status": "valid",
+    "stratum": "B:fail:margin_one",
+    "tokens": 923,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:10:food-43",
+    "justification": "All words are 10 letters or fewer.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "58227f6183d795628e49ef065f335f009a256aa26ba16a83effd5dd35fb43620",
+    "status": "valid",
+    "stratum": "B:pass",
+    "tokens": 437,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:3:language-and-writing-22",
+    "justification": "No \u201chowever\u201d present.",
+    "label": "fail",
+    "margin": 3,
+    "prompt_hash": "a2c581e4c303973cfd9c1e108308f1258a2b97d5378399ffc95b6dd2fbc804ba",
+    "status": "valid",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 728,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:health-and-the-body-15",
+    "justification": null,
+    "label": null,
+    "margin": 1,
+    "prompt_hash": "a9a452528e02329201d9f31b7550ee3811969867fd5c3868f5b5889780691c92",
+    "status": "invalid_output",
+    "stratum": "A:fail:margin_one",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:2:food-43",
+    "justification": "The word \"however\" appears exactly twice.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "a8da86824f7945f27e8da14f8bc87f77503891a5c01abd8c4c2b0ca5694336cf",
+    "status": "valid",
+    "stratum": "A:pass",
+    "tokens": 567,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:9:language-and-writing-22",
+    "justification": "Expectation is 11 letters.",
+    "label": "fail",
+    "margin": 2,
+    "prompt_hash": "1373398d1b45a6c60460b7079a3ed2b1ff79362053c111995287a7012c5ed864",
+    "status": "valid",
+    "stratum": "B:fail:margin_larger",
+    "tokens": 1088,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "B",
+    "item_id": "gemma-3n-e4b-it:ladder:B:8:the-natural-world-23",
+    "justification": "Word 'following' has 9 letters.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "e31638bfe8e9ea14e19b417226ca7ee34ee8efbf1d2e57e4ace8edb2b856a0f3",
+    "status": "valid",
+    "stratum": "B:fail:margin_one",
+    "tokens": 715,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:10:geography-27",
+    "justification": "All words are \u226410 letters.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "0aba54432a4dbb15425e4a2cf86908c851910e5fd31d5678753526b1324458f1",
+    "status": "valid",
+    "stratum": "B:pass",
+    "tokens": 249,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:4:food-24",
+    "justification": "The word \u201chowever\u201d does not appear in the text.",
+    "label": "fail",
+    "margin": 4,
+    "prompt_hash": "103502e39a3fe9e1c42e4ab9d83b8b63484b69d17bbccab6fc1096e7d401da6b",
+    "status": "valid",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 637,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:health-and-the-body-26",
+    "justification": "No \"however\" found.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "31b86a8b0d2db896e38f186390b9c22accdad4ec3be165edb5d71a8818e72e0a",
+    "status": "valid",
+    "stratum": "A:fail:margin_one",
+    "tokens": 478,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:2:history-20",
+    "justification": "The word \"however\" appears exactly twice.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "578b45578a2ca6f2c8f378fd53c006786d2e376cb4ae3b82b3caaccb427f798c",
+    "status": "valid",
+    "stratum": "A:pass",
+    "tokens": 673,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "B",
+    "item_id": "gemma-3n-e4b-it:ladder:B:10:language-and-writing-10",
+    "justification": null,
+    "label": null,
+    "margin": 2,
+    "prompt_hash": "8eef024e3fa46faed2c6a81b73a19be66bed3ac9ed57b25e340ff3f035162725",
+    "status": "invalid_output",
+    "stratum": "B:fail:margin_larger",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "B",
+    "item_id": "gemma-3n-e4b-it:ladder:B:9:technology-31",
+    "justification": "\"interfaces\" is 10 letters.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "76b2c4b6ac707499ce86244819dd6fe3ef66bb0a319e2a7b0856ba40250d8a13",
+    "status": "valid",
+    "stratum": "B:fail:margin_one",
+    "tokens": 941,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:10:health-and-the-body-15",
+    "justification": "All words are 10 letters or fewer.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "8acc333e8cb209ac823f9feba1e8d733c80196224b861d6d263b0663a743f4dd",
+    "status": "valid",
+    "stratum": "B:pass",
+    "tokens": 580,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:4:health-and-the-body-15",
+    "justification": "The text contains 0 instances of \u201chowever\u201d, not 4.",
+    "label": "fail",
+    "margin": 4,
+    "prompt_hash": "1f2300225f577ad182894c3db47eeb349d51667e052c59351c6b6d3c769e4b6b",
+    "status": "valid",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 1416,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:history-34",
+    "justification": "The word \"however\" does not appear in the text.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "d11e4fbd309cca980715ee2891770c5b41a666bae07fd4661e14128fea99ac7a",
+    "status": "valid",
+    "stratum": "A:fail:margin_one",
+    "tokens": 362,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:3:food-24",
+    "justification": "The word 'however' appears exactly three times.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "7446f08195ace01e1936a91dea74c672124b4f7139123f57ba177b7c8eabe7c6",
+    "status": "valid",
+    "stratum": "A:pass",
+    "tokens": 1161,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "B",
+    "item_id": "gemma-3n-e4b-it:ladder:B:7:geography-31",
+    "justification": "floodlands too long",
+    "label": "fail",
+    "margin": 3,
+    "prompt_hash": "93bbafa4d3d68f57dbeba9eff6e42c234d7dce83cc1411e44902a5da774fc51d",
+    "status": "valid",
+    "stratum": "B:fail:margin_larger",
+    "tokens": 818,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "B",
+    "item_id": "qwen3-4b-instruct-2507:ladder:B:7:the-natural-world-24",
+    "justification": "Shortens has 8 letters.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "4885b9525ec7ba2f932b5e305ce5ff3861a1e22b922d56b4878fbad540eef9fe",
+    "status": "valid",
+    "stratum": "B:fail:margin_one",
+    "tokens": 386,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:10:sport-14",
+    "justification": "All words are 10 letters or fewer.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "2c9483346cebde1e706fa19334cac78146e8c696adec95237dbf3576732d43c8",
+    "status": "valid",
+    "stratum": "B:pass",
+    "tokens": 1205,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:4:language-and-writing-10",
+    "justification": "The answer does not contain the word \u201chowever\u201d.",
+    "label": "fail",
+    "margin": 4,
+    "prompt_hash": "2c515948e4aec62ad20e5a932804edafc80e41ed12f48792bada209af3f20426",
+    "status": "valid",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 819,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:language-and-writing-22",
+    "justification": "The word \"however\" does not appear in the text.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "8b20fbd286d3d01e1527bf0c9fa73ff26dfd813a8362b66ad9d3fcdfe72328f2",
+    "status": "valid",
+    "stratum": "A:fail:margin_one",
+    "tokens": 396,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:3:history-20",
+    "justification": "The word \"however\" appears exactly three times.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "4707508542c0447ee50ca62c5b887376cb5328077a78f33b06cb775728936e55",
+    "status": "valid",
+    "stratum": "A:pass",
+    "tokens": 600,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "B",
+    "item_id": "gemma-3n-e4b-it:ladder:B:7:history-20",
+    "justification": "Contains words longer than 7 letters.",
+    "label": "fail",
+    "margin": 4,
+    "prompt_hash": "13f8cb105db36d4f601d75589358489dc5b4ba366b549a4ffdcf55631a8575a7",
+    "status": "valid",
+    "stratum": "B:fail:margin_larger",
+    "tokens": 1340,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "B",
+    "item_id": "qwen3-4b-instruct-2507:ladder:B:8:history-20",
+    "justification": "isolating is 9 letters.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "05094e05af37b7cec4fb3e9a3ea562860d86175227923926253f680a17af07e0",
+    "status": "valid",
+    "stratum": "B:fail:margin_one",
+    "tokens": 332,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:10:technology-31",
+    "justification": "All words are 10 letters or fewer.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "72c505c589bfe077d305e64c6de0a02810ba13b986e20c892c19e3883049341e",
+    "status": "valid",
+    "stratum": "B:pass",
+    "tokens": 444,
+    "truncated": false,
+    "verifier_class": "pass"
+   }
+  ],
+  "v4prompt-medium": [
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:2:art-and-design-47",
+    "justification": "The word \u201chowever\u201d does not appear in the text.",
+    "label": "fail",
+    "margin": 2,
+    "prompt_hash": "2f4f069614f559bdecd645e66668a50f23c2325133858f3da943f3b2410c8bae",
+    "status": "valid",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 361,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:art-and-design-08",
+    "justification": "The text contains the word \"however\" zero times, but the rule requires it to appear exactly once.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "fc1403e84cc95e12bc14a48636fe160ce7c03b9fef82de9f57f23b4325677c56",
+    "status": "valid",
+    "stratum": "A:fail:margin_one",
+    "tokens": 202,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:geography-31",
+    "justification": "The text includes the word \u201chowever\u201d exactly once.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "9acddf9add5e3d713d9c98696c6e4a63760648a2d8c417017843124087c15de8",
+    "status": "valid",
+    "stratum": "A:pass",
+    "tokens": 242,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:7:music-38",
+    "justification": "The word \u201cOrchestras\u201d has 9 letters, exceeding the 7\u2011letter limit.",
+    "label": "fail",
+    "margin": 3,
+    "prompt_hash": "949c7a326aecbf9dbe023557c6a4ecb496489dc2a2f637b55df1cb9a331f71b0",
+    "status": "valid",
+    "stratum": "B:fail:margin_larger",
+    "tokens": 253,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:9:history-20",
+    "justification": "The word \u201cQuarantine\u201d has 10 letters, exceeding the 9\u2011letter limit.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "6b451cd1c7a3ef294d7e9a7dc27e37ee9b1ca3ffeac921cf371afb4ee4350d26",
+    "status": "valid",
+    "stratum": "B:fail:margin_one",
+    "tokens": 339,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:10:art-and-design-08",
+    "justification": "All words are 10 letters or fewer.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "6a6c0d91364e155206a34734f341ee1011c081f3f74252b5c892bdd2d33e5e8a",
+    "status": "valid",
+    "stratum": "B:pass",
+    "tokens": 228,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:2:everyday-science-34",
+    "justification": "No \u201chowever\u201d present.",
+    "label": "fail",
+    "margin": 2,
+    "prompt_hash": "10077e4e3d74d00e21d2bfa81a39f43cb1c79fc727fdb89b8ab92b14f4925e77",
+    "status": "valid",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 455,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:art-and-design-47",
+    "justification": "The text contains the word \u201chowever\u201d zero times, but the rule requires it to appear exactly once.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "0a454ff0ed116395a14b3eacd3dbdf589310ed850c2a4acf9589e0428127f9f9",
+    "status": "valid",
+    "stratum": "A:fail:margin_one",
+    "tokens": 305,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:history-20",
+    "justification": "The text contains the word \u201chowever\u201d exactly once, meeting the rule.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "d42797b34a440519b65294b851bb7a75f3100539794437cbe908ff45f98fe31d",
+    "status": "valid",
+    "stratum": "A:pass",
+    "tokens": 305,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:8:geography-31",
+    "justification": "The word \u201cFloodplains\u201d has 10 letters, exceeding the 8\u2011letter limit.",
+    "label": "fail",
+    "margin": 3,
+    "prompt_hash": "91a2f231cf2a5dd5dc2c2e684db4c7f66c5370c008ea9e0e5852cd9f74cdf8dc",
+    "status": "valid",
+    "stratum": "B:fail:margin_larger",
+    "tokens": 302,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "B",
+    "item_id": "gemma-3n-e4b-it:ladder:B:7:food-43",
+    "justification": "The words \u201cHormones\u201d and \u201cEthylene\u201d each have 8 letters, exceeding the 7\u2011letter limit.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "9408a5efa8ff8b9ae4419813c436ca26608d3eaf172d4ca22bdb03a45a53061c",
+    "status": "valid",
+    "stratum": "B:fail:margin_one",
+    "tokens": 277,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:10:everyday-science-34",
+    "justification": "All words are 10 letters or fewer.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "13613d76a1e0467851aee6ddf8f469312231ce206dea2ef3026f47fb990457d7",
+    "status": "valid",
+    "stratum": "B:pass",
+    "tokens": 191,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:2:everyday-science-42",
+    "justification": "The word \u201chowever\u201d appears 0 times, not exactly twice.",
+    "label": "fail",
+    "margin": 2,
+    "prompt_hash": "e5f68dce389c258d12c99516cfa2f7f8f2f6cc56869450c7db82bb9a224255a5",
+    "status": "valid",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 470,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:everyday-science-42",
+    "justification": "No \u201chowever\u201d present.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "acd67f14d154e7a1537b5a6eafb2aefc9a649f49cead8305d568331188047aa2",
+    "status": "valid",
+    "stratum": "A:fail:margin_one",
+    "tokens": 391,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:music-38",
+    "justification": "The text contains the word \u201chowever\u201d exactly once (capitalized as \u201cHowever\u201d), meeting the rule.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "113ac8f04adb613f85d01b3c77e271a598597840df46f1ccbac0a236e8aa7c96",
+    "status": "valid",
+    "stratum": "A:pass",
+    "tokens": 537,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:8:technology-31",
+    "justification": "The text contains words longer than eight letters (e.g., \u201cinterfaces,\u201d \u201cspecialized,\u201d \u201cbeginners,\u201d \u201cunderstand\u201d).",
+    "label": "fail",
+    "margin": 3,
+    "prompt_hash": "3fe2246dd21febf0e89f283431ac86158ef4e4538949d927e5730ac76bbd262a",
+    "status": "valid",
+    "stratum": "B:fail:margin_larger",
+    "tokens": 859,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "B",
+    "item_id": "gemma-3n-e4b-it:ladder:B:7:health-and-the-body-15",
+    "justification": "The word \u201cHormones\u201d has 8 letters, exceeding the 7\u2011letter limit.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "de66c12dc4598676a08d89515b83423d2a7209238abff8ed22c04620b69072fe",
+    "status": "valid",
+    "stratum": "B:fail:margin_one",
+    "tokens": 609,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:10:food-24",
+    "justification": "All words are 10 letters or fewer.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "e6e32e486245a94458d7d2ec3597569966fb832cae637973ca743ffe469148e5",
+    "status": "valid",
+    "stratum": "B:pass",
+    "tokens": 212,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:2:technology-51",
+    "justification": "The text contains zero instances of the word \u201chowever,\u201d whereas the rule requires exactly two.",
+    "label": "fail",
+    "margin": 2,
+    "prompt_hash": "75bf7e4f3f691290d56e2075063ea9eec05e5e8e75bb729dc862b901e49c23ab",
+    "status": "valid",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 231,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:geography-27",
+    "justification": "The text contains the word \u201chowever\u201d zero times, but the rule requires it to appear exactly once.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "c255222b0be1c24cc302dc27daa7126acdab2544706cbb6e1f60f192e4badf44",
+    "status": "valid",
+    "stratum": "A:fail:margin_one",
+    "tokens": 265,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:work-and-organisations-25",
+    "justification": "The word \u201chowever\u201d appears exactly once in the text.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "fe1d838102d369dd434caf4b60324de223138a83ce9466e2b812f94d49973006",
+    "status": "valid",
+    "stratum": "A:pass",
+    "tokens": 334,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:9:everyday-science-34",
+    "justification": "Condensation is 12 letters.",
+    "label": "fail",
+    "margin": 3,
+    "prompt_hash": "828e859d6906975395644871b1d9ea106bbdac09545db9b7d905b0cebe953dfb",
+    "status": "valid",
+    "stratum": "B:fail:margin_larger",
+    "tokens": 286,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "B",
+    "item_id": "gemma-3n-e4b-it:ladder:B:8:geography-27",
+    "justification": "limestone has 9 letters.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "ca5321f7179ab57a869d076443476a2b8679124ad789da9486b86c922e2e613f",
+    "status": "valid",
+    "stratum": "B:fail:margin_one",
+    "tokens": 436,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:10:food-43",
+    "justification": "All words are 10 letters or fewer.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "58227f6183d795628e49ef065f335f009a256aa26ba16a83effd5dd35fb43620",
+    "status": "valid",
+    "stratum": "B:pass",
+    "tokens": 306,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:3:language-and-writing-22",
+    "justification": "No \u201chowever\u201d appears in the text.",
+    "label": "fail",
+    "margin": 3,
+    "prompt_hash": "a2c581e4c303973cfd9c1e108308f1258a2b97d5378399ffc95b6dd2fbc804ba",
+    "status": "valid",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 482,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:health-and-the-body-15",
+    "justification": "The text contains no instance of the word \u201chowever,\u201d violating the rule that it must appear exactly once.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "a9a452528e02329201d9f31b7550ee3811969867fd5c3868f5b5889780691c92",
+    "status": "valid",
+    "stratum": "A:fail:margin_one",
+    "tokens": 348,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:2:food-43",
+    "justification": "The word \u201chowever\u201d appears exactly twice.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "a8da86824f7945f27e8da14f8bc87f77503891a5c01abd8c4c2b0ca5694336cf",
+    "status": "valid",
+    "stratum": "A:pass",
+    "tokens": 477,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:9:language-and-writing-22",
+    "justification": "The word \u201cExpectation\u201d exceeds nine letters, breaking the rule.",
+    "label": "fail",
+    "margin": 2,
+    "prompt_hash": "1373398d1b45a6c60460b7079a3ed2b1ff79362053c111995287a7012c5ed864",
+    "status": "valid",
+    "stratum": "B:fail:margin_larger",
+    "tokens": 889,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "B",
+    "item_id": "gemma-3n-e4b-it:ladder:B:8:the-natural-world-23",
+    "justification": "The word \u201cfollowing\u201d has 9 letters, exceeding the 8\u2011letter limit.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "e31638bfe8e9ea14e19b417226ca7ee34ee8efbf1d2e57e4ace8edb2b856a0f3",
+    "status": "valid",
+    "stratum": "B:fail:margin_one",
+    "tokens": 337,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:10:geography-27",
+    "justification": "All words are 10 letters or fewer.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "0aba54432a4dbb15425e4a2cf86908c851910e5fd31d5678753526b1324458f1",
+    "status": "valid",
+    "stratum": "B:pass",
+    "tokens": 167,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:4:food-24",
+    "justification": "Zero occurrences of \"however\".",
+    "label": "fail",
+    "margin": 4,
+    "prompt_hash": "103502e39a3fe9e1c42e4ab9d83b8b63484b69d17bbccab6fc1096e7d401da6b",
+    "status": "valid",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 493,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:health-and-the-body-26",
+    "justification": "The word \u201chowever\u201d does not appear at all in the text.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "31b86a8b0d2db896e38f186390b9c22accdad4ec3be165edb5d71a8818e72e0a",
+    "status": "valid",
+    "stratum": "A:fail:margin_one",
+    "tokens": 296,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:2:history-20",
+    "justification": "The word \u201chowever\u201d appears exactly twice in the text.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "578b45578a2ca6f2c8f378fd53c006786d2e376cb4ae3b82b3caaccb427f798c",
+    "status": "valid",
+    "stratum": "A:pass",
+    "tokens": 231,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "B",
+    "item_id": "gemma-3n-e4b-it:ladder:B:10:language-and-writing-10",
+    "justification": "The text contains words such as \u201cpunctuation,\u201d \u201cinteresting,\u201d and \u201calliteration\u201d that exceed ten letters.",
+    "label": "fail",
+    "margin": 2,
+    "prompt_hash": "8eef024e3fa46faed2c6a81b73a19be66bed3ac9ed57b25e340ff3f035162725",
+    "status": "valid",
+    "stratum": "B:fail:margin_larger",
+    "tokens": 1874,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "B",
+    "item_id": "gemma-3n-e4b-it:ladder:B:9:technology-31",
+    "justification": "The word \u201cinterfaces\u201d has 10 letters, exceeding the 9\u2011letter limit.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "76b2c4b6ac707499ce86244819dd6fe3ef66bb0a319e2a7b0856ba40250d8a13",
+    "status": "valid",
+    "stratum": "B:fail:margin_one",
+    "tokens": 617,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:10:health-and-the-body-15",
+    "justification": "All words are 10 letters or fewer.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "8acc333e8cb209ac823f9feba1e8d733c80196224b861d6d263b0663a743f4dd",
+    "status": "valid",
+    "stratum": "B:pass",
+    "tokens": 319,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:4:health-and-the-body-15",
+    "justification": "No \u201chowever\u201d appears in the text.",
+    "label": "fail",
+    "margin": 4,
+    "prompt_hash": "1f2300225f577ad182894c3db47eeb349d51667e052c59351c6b6d3c769e4b6b",
+    "status": "valid",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 708,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:history-34",
+    "justification": "The word \u201chowever\u201d does not appear in the text.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "d11e4fbd309cca980715ee2891770c5b41a666bae07fd4661e14128fea99ac7a",
+    "status": "valid",
+    "stratum": "A:fail:margin_one",
+    "tokens": 277,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:3:food-24",
+    "justification": "The word \u201chowever\u201d appears exactly three times in the text.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "7446f08195ace01e1936a91dea74c672124b4f7139123f57ba177b7c8eabe7c6",
+    "status": "valid",
+    "stratum": "A:pass",
+    "tokens": 544,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "B",
+    "item_id": "gemma-3n-e4b-it:ladder:B:7:geography-31",
+    "justification": "floodlands is 10 letters.",
+    "label": "fail",
+    "margin": 3,
+    "prompt_hash": "93bbafa4d3d68f57dbeba9eff6e42c234d7dce83cc1411e44902a5da774fc51d",
+    "status": "valid",
+    "stratum": "B:fail:margin_larger",
+    "tokens": 580,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "B",
+    "item_id": "qwen3-4b-instruct-2507:ladder:B:7:the-natural-world-24",
+    "justification": "Shortens has 8 letters, exceeding the 7\u2011letter limit.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "4885b9525ec7ba2f932b5e305ce5ff3861a1e22b922d56b4878fbad540eef9fe",
+    "status": "valid",
+    "stratum": "B:fail:margin_one",
+    "tokens": 155,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:10:sport-14",
+    "justification": "All words in the text are 10 letters or fewer.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "2c9483346cebde1e706fa19334cac78146e8c696adec95237dbf3576732d43c8",
+    "status": "valid",
+    "stratum": "B:pass",
+    "tokens": 908,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:4:language-and-writing-10",
+    "justification": "The text contains no instances of the word \u201chowever,\u201d violating the requirement to include it exactly four times.",
+    "label": "fail",
+    "margin": 4,
+    "prompt_hash": "2c515948e4aec62ad20e5a932804edafc80e41ed12f48792bada209af3f20426",
+    "status": "valid",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 584,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:language-and-writing-22",
+    "justification": "The word \u201chowever\u201d does not appear in the text.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "8b20fbd286d3d01e1527bf0c9fa73ff26dfd813a8362b66ad9d3fcdfe72328f2",
+    "status": "valid",
+    "stratum": "A:fail:margin_one",
+    "tokens": 227,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:3:history-20",
+    "justification": "The word \u201chowever\u201d appears exactly three times in the text.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "4707508542c0447ee50ca62c5b887376cb5328077a78f33b06cb775728936e55",
+    "status": "valid",
+    "stratum": "A:pass",
+    "tokens": 453,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "B",
+    "item_id": "gemma-3n-e4b-it:ladder:B:7:history-20",
+    "justification": "The text contains words like \u201cquarantines\u201d and \u201cSickness\u201d that exceed seven letters.",
+    "label": "fail",
+    "margin": 4,
+    "prompt_hash": "13f8cb105db36d4f601d75589358489dc5b4ba366b549a4ffdcf55631a8575a7",
+    "status": "valid",
+    "stratum": "B:fail:margin_larger",
+    "tokens": 367,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "B",
+    "item_id": "qwen3-4b-instruct-2507:ladder:B:8:history-20",
+    "justification": "The word \u201cisolating\u201d has 9 letters, exceeding the 8\u2011letter limit.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "05094e05af37b7cec4fb3e9a3ea562860d86175227923926253f680a17af07e0",
+    "status": "valid",
+    "stratum": "B:fail:margin_one",
+    "tokens": 179,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "df3d3e4eb9bd0007629c705fd3bbf869dfd97de1fde21e72aec8481d6115aa2d",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:10:technology-31",
+    "justification": "All words are 10 letters or fewer.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "72c505c589bfe077d305e64c6de0a02810ba13b986e20c892c19e3883049341e",
+    "status": "valid",
+    "stratum": "B:pass",
+    "tokens": 157,
+    "truncated": false,
+    "verifier_class": "pass"
+   }
+  ]
+ },
+ "judged_subsample": {
+  "derivation": "deterministic round-robin over strata in item-id order across the development half",
+  "hash": "02e9a20fabed41b2d59014092e5626bcab287c772252fddce7c9834f125e5e32",
+  "n": 48,
+  "strata": {
+   "A:fail:margin_larger": 8,
+   "A:fail:margin_one": 8,
+   "A:pass": 8,
+   "B:fail:margin_larger": 8,
+   "B:fail:margin_one": 8,
+   "B:pass": 8
+  },
+  "stratum_balanced": true
+ },
+ "not_claimed": {
+  "autorater_calibration": "one-shot; not claimed",
+  "autorater_freeze": "single-shot; not claimed",
+  "held_out_half": "derived and hashed, never judged; it stays untouched for the real one-shot calibration",
+  "reason": "both bind the canonical verifier hash, and Amendment C would change it by changing FOCAL_GRID, which is inside the \u00a710.6 semantic module set. Spending a one-shot on a hash that is likely to be superseded would require an explicit invalidation to recover."
+ },
+ "paired_comparisons": {
+  "carried-high vs carried-medium": {
+   "confusion_matrix": {
+    "fail|fail": 13,
+    "fail|pass": 1,
+    "pass|pass": 9
+   },
+   "coverage": {
+    "a": 0.4791666666666667,
+    "b": 0.4791666666666667
+   },
+   "discordant_items": [
+    {
+     "a": "fail",
+     "b": "pass",
+     "item_id": "gemma-3n-e2b-it:ladder:B:10:technology-31",
+     "reference": "pass"
+    }
+   ],
+   "items_compared": 23,
+   "per_class_agreement": {
+    "a": {
+     "fail": 1.0,
+     "pass": 0.9
+    },
+    "b": {
+     "fail": 1.0,
+     "pass": 1.0
+    }
+   },
+   "selection_hierarchy": [
+    "valid deterministic execution",
+    "adequate output cap and absence of problematic truncation",
+    "valid parsing and coverage",
+    "agreement with human labels",
+    "the lower-cost setting when performance is practically indistinguishable"
+   ]
+  },
+  "carried-high vs v4prompt-high": {
+   "confusion_matrix": {
+    "fail|fail": 12,
+    "fail|pass": 1,
+    "pass|pass": 8
+   },
+   "coverage": {
+    "a": 0.4375,
+    "b": 0.4375
+   },
+   "discordant_items": [
+    {
+     "a": "fail",
+     "b": "pass",
+     "item_id": "gemma-3n-e2b-it:ladder:B:10:technology-31",
+     "reference": "pass"
+    }
+   ],
+   "items_compared": 21,
+   "per_class_agreement": {
+    "a": {
+     "fail": 1.0,
+     "pass": 0.8888888888888888
+    },
+    "b": {
+     "fail": 1.0,
+     "pass": 1.0
+    }
+   },
+   "selection_hierarchy": [
+    "valid deterministic execution",
+    "adequate output cap and absence of problematic truncation",
+    "valid parsing and coverage",
+    "agreement with human labels",
+    "the lower-cost setting when performance is practically indistinguishable"
+   ]
+  },
+  "carried-high vs v4prompt-medium": {
+   "confusion_matrix": {
+    "fail|fail": 13,
+    "fail|pass": 1,
+    "pass|pass": 9
+   },
+   "coverage": {
+    "a": 0.4791666666666667,
+    "b": 0.4791666666666667
+   },
+   "discordant_items": [
+    {
+     "a": "fail",
+     "b": "pass",
+     "item_id": "gemma-3n-e2b-it:ladder:B:10:technology-31",
+     "reference": "pass"
+    }
+   ],
+   "items_compared": 23,
+   "per_class_agreement": {
+    "a": {
+     "fail": 1.0,
+     "pass": 0.9
+    },
+    "b": {
+     "fail": 1.0,
+     "pass": 1.0
+    }
+   },
+   "selection_hierarchy": [
+    "valid deterministic execution",
+    "adequate output cap and absence of problematic truncation",
+    "valid parsing and coverage",
+    "agreement with human labels",
+    "the lower-cost setting when performance is practically indistinguishable"
+   ]
+  },
+  "carried-medium vs v4prompt-high": {
+   "confusion_matrix": {
+    "fail|fail": 16,
+    "pass|fail": 9,
+    "pass|pass": 14
+   },
+   "coverage": {
+    "a": 0.8125,
+    "b": 0.8125
+   },
+   "discordant_items": [
+    {
+     "a": "pass",
+     "b": "fail",
+     "item_id": "gemma-3n-e2b-it:ladder:A:2:art-and-design-47",
+     "reference": "fail"
+    },
+    {
+     "a": "pass",
+     "b": "fail",
+     "item_id": "gemma-3n-e2b-it:ladder:B:9:history-20",
+     "reference": "fail"
+    },
+    {
+     "a": "pass",
+     "b": "fail",
+     "item_id": "gemma-3n-e2b-it:ladder:A:2:everyday-science-34",
+     "reference": "fail"
+    },
+    {
+     "a": "pass",
+     "b": "fail",
+     "item_id": "gemma-3n-e2b-it:ladder:A:1:art-and-design-47",
+     "reference": "fail"
+    },
+    {
+     "a": "pass",
+     "b": "fail",
+     "item_id": "gemma-3n-e2b-it:ladder:A:2:everyday-science-42",
+     "reference": "fail"
+    },
+    {
+     "a": "pass",
+     "b": "fail",
+     "item_id": "gemma-3n-e2b-it:ladder:A:1:everyday-science-42",
+     "reference": "fail"
+    },
+    {
+     "a": "pass",
+     "b": "fail",
+     "item_id": "gemma-3n-e2b-it:ladder:A:3:language-and-writing-22",
+     "reference": "fail"
+    },
+    {
+     "a": "pass",
+     "b": "fail",
+     "item_id": "gemma-3n-e2b-it:ladder:A:4:food-24",
+     "reference": "fail"
+    },
+    {
+     "a": "pass",
+     "b": "fail",
+     "item_id": "gemma-3n-e2b-it:ladder:A:4:health-and-the-body-15",
+     "reference": "fail"
+    }
+   ],
+   "items_compared": 39,
+   "per_class_agreement": {
+    "a": {
+     "fail": 0.64,
+     "pass": 1.0
+    },
+    "b": {
+     "fail": 1.0,
+     "pass": 1.0
+    }
+   },
+   "selection_hierarchy": [
+    "valid deterministic execution",
+    "adequate output cap and absence of problematic truncation",
+    "valid parsing and coverage",
+    "agreement with human labels",
+    "the lower-cost setting when performance is practically indistinguishable"
+   ]
+  },
+  "carried-medium vs v4prompt-medium": {
+   "confusion_matrix": {
+    "fail|fail": 18,
+    "pass|fail": 11,
+    "pass|pass": 16
+   },
+   "coverage": {
+    "a": 0.9375,
+    "b": 0.9375
+   },
+   "discordant_items": [
+    {
+     "a": "pass",
+     "b": "fail",
+     "item_id": "gemma-3n-e2b-it:ladder:A:2:art-and-design-47",
+     "reference": "fail"
+    },
+    {
+     "a": "pass",
+     "b": "fail",
+     "item_id": "gemma-3n-e2b-it:ladder:B:9:history-20",
+     "reference": "fail"
+    },
+    {
+     "a": "pass",
+     "b": "fail",
+     "item_id": "gemma-3n-e2b-it:ladder:A:2:everyday-science-34",
+     "reference": "fail"
+    },
+    {
+     "a": "pass",
+     "b": "fail",
+     "item_id": "gemma-3n-e2b-it:ladder:A:1:art-and-design-47",
+     "reference": "fail"
+    },
+    {
+     "a": "pass",
+     "b": "fail",
+     "item_id": "gemma-3n-e2b-it:ladder:A:2:everyday-science-42",
+     "reference": "fail"
+    },
+    {
+     "a": "pass",
+     "b": "fail",
+     "item_id": "gemma-3n-e2b-it:ladder:A:1:everyday-science-42",
+     "reference": "fail"
+    },
+    {
+     "a": "pass",
+     "b": "fail",
+     "item_id": "gemma-3n-e2b-it:ladder:A:2:technology-51",
+     "reference": "fail"
+    },
+    {
+     "a": "pass",
+     "b": "fail",
+     "item_id": "gemma-3n-e2b-it:ladder:A:3:language-and-writing-22",
+     "reference": "fail"
+    },
+    {
+     "a": "pass",
+     "b": "fail",
+     "item_id": "gemma-3n-e2b-it:ladder:A:1:health-and-the-body-15",
+     "reference": "fail"
+    },
+    {
+     "a": "pass",
+     "b": "fail",
+     "item_id": "gemma-3n-e2b-it:ladder:A:4:food-24",
+     "reference": "fail"
+    },
+    {
+     "a": "pass",
+     "b": "fail",
+     "item_id": "gemma-3n-e2b-it:ladder:A:4:health-and-the-body-15",
+     "reference": "fail"
+    }
+   ],
+   "items_compared": 45,
+   "per_class_agreement": {
+    "a": {
+     "fail": 0.6206896551724138,
+     "pass": 1.0
+    },
+    "b": {
+     "fail": 1.0,
+     "pass": 1.0
+    }
+   },
+   "selection_hierarchy": [
+    "valid deterministic execution",
+    "adequate output cap and absence of problematic truncation",
+    "valid parsing and coverage",
+    "agreement with human labels",
+    "the lower-cost setting when performance is practically indistinguishable"
+   ]
+  },
+  "v4prompt-high vs v4prompt-medium": {
+   "confusion_matrix": {
+    "fail|fail": 28,
+    "pass|pass": 14
+   },
+   "coverage": {
+    "a": 0.875,
+    "b": 0.875
+   },
+   "discordant_items": [],
+   "items_compared": 42,
+   "per_class_agreement": {
+    "a": {
+     "fail": 1.0,
+     "pass": 1.0
+    },
+    "b": {
+     "fail": 1.0,
+     "pass": 1.0
+    }
+   },
+   "selection_hierarchy": [
+    "valid deterministic execution",
+    "adequate output cap and absence of problematic truncation",
+    "valid parsing and coverage",
+    "agreement with human labels",
+    "the lower-cost setting when performance is practically indistinguishable"
+   ]
+  }
+ },
+ "pool": {
+  "calibration": 577,
+  "development": 575,
+  "disjoint": true,
+  "instruments": {
+   "A": 768,
+   "B": 384
+  },
+  "items": 1152,
+  "source": "the registered \u00a712.2 dense ladder screen, read only",
+  "split_hash": "7db4c260b3e2b3a2aa0427bac8777c51579b67fe0572ffd94aa69306b5bc9584",
+  "strata": {
+   "A:fail:margin_larger": {
+    "calibration": 91,
+    "development": 91,
+    "n": 182
+   },
+   "A:fail:margin_one": {
+    "calibration": 98,
+    "development": 98,
+    "n": 196
+   },
+   "A:pass": {
+    "calibration": 195,
+    "development": 195,
+    "n": 390
+   },
+   "B:fail:margin_larger": {
+    "calibration": 27,
+    "development": 26,
+    "n": 53
+   },
+   "B:fail:margin_one": {
+    "calibration": 20,
+    "development": 19,
+    "n": 39
+   },
+   "B:pass": {
+    "calibration": 146,
+    "development": 146,
+    "n": 292
+   }
+  }
+ },
+ "prompts": {
+  "gate1-judge-v4/1.0.0": {
+   "hash": "f46eb07eab8819386ab35b818d71753a28fb5a935947a2eb20e07223fd322ede",
+   "version": "gate1-judge-v4/1.0.0"
+  },
+  "gate1-judge/2.0.0": {
+   "hash": "2d4dab45ab1f8a513cbfaeb8c34c4c03df3fe423d49c902af22e33add160adb5",
+   "version": "gate1-judge/2.0.0"
+  }
+ },
+ "repeatability": {
+  "carried-high": {
+   "exactly_repeatable": true,
+   "items": 16,
+   "pairwise_agreement": [
+    1.0
+   ],
+   "runs": 2,
+   "second_run": {
+    "coverage": 0.3125,
+    "run_dir": "reports/gate1_v4/judge_runs/carried-high-rep1/87763084451f-8dffcb5a1892",
+    "seconds": 1550.2,
+    "status_counts": {
+     "invalid_output": 11,
+     "valid": 5
+    },
+    "truncation_rate": 0.6875
+   }
+  },
+  "carried-medium": {
+   "exactly_repeatable": true,
+   "items": 16,
+   "pairwise_agreement": [
+    1.0
+   ],
+   "runs": 2,
+   "second_run": {
+    "coverage": 0.9375,
+    "run_dir": "reports/gate1_v4/judge_runs/carried-medium-rep1/2e284c67ee3f-8dffcb5a1892",
+    "seconds": 591.5,
+    "status_counts": {
+     "invalid_output": 1,
+     "valid": 15
+    },
+    "truncation_rate": 0.0625
+   }
+  },
+  "v4prompt-high": {
+   "exactly_repeatable": true,
+   "items": 16,
+   "pairwise_agreement": [
+    1.0
+   ],
+   "runs": 2,
+   "second_run": {
+    "coverage": 0.875,
+    "run_dir": "reports/gate1_v4/judge_runs/v4prompt-high-rep1/61d9d0f3d42d-8dffcb5a1892",
+    "seconds": 848.2,
+    "status_counts": {
+     "invalid_output": 2,
+     "valid": 14
+    },
+    "truncation_rate": 0.125
+   }
+  },
+  "v4prompt-medium": {
+   "exactly_repeatable": true,
+   "items": 16,
+   "pairwise_agreement": [
+    1.0
+   ],
+   "runs": 2,
+   "second_run": {
+    "coverage": 1.0,
+    "run_dir": "reports/gate1_v4/judge_runs/v4prompt-medium-rep1/df3d3e4eb9bd-8dffcb5a1892",
+    "seconds": 372.9,
+    "status_counts": {
+     "valid": 16
+    },
+    "truncation_rate": 0.0
+   }
+  }
+ },
+ "selection": {
+  "agreed_by_both_readings": [
+   "v4prompt-medium"
+  ],
+  "hierarchy": [
+   "valid deterministic execution",
+   "adequate output cap and absence of problematic truncation",
+   "valid parsing and coverage",
+   "agreement with human labels",
+   "the lower-cost setting when performance is practically indistinguishable"
+  ],
+  "human_criterion_outstanding": true,
+  "note": "agreement with the deterministic VERIFIER is reported for every condition but is not a selection criterion: \u00a710.4's fourth criterion is agreement with HUMAN labels. Selecting the judge that best matches the verifier would make the held-out evaluation circular.",
+  "reading_note": "criterion 2 says 'absence of PROBLEMATIC truncation' and criterion 3 'VALID parsing and coverage'. Those are threshold words and no threshold is registered. The ranking reading takes the best value at each criterion; the threshold reading eliminates only what is distinguishably worse at 95%. Both are reported because they do not agree on whether criterion 4 is reached.",
+  "readings": {
+   "ranking": {
+    "decided_at": "adequate output cap and absence of problematic truncation",
+    "human_criterion_outstanding": false,
+    "steps": [
+     {
+      "criterion": "valid deterministic execution",
+      "decided": false,
+      "surviving": [
+       "carried-high",
+       "carried-medium",
+       "v4prompt-high",
+       "v4prompt-medium"
+      ],
+      "values": {
+       "carried-high": true,
+       "carried-medium": true,
+       "v4prompt-high": true,
+       "v4prompt-medium": true
+      }
+     },
+     {
+      "criterion": "adequate output cap and absence of problematic truncation",
+      "decided": true,
+      "surviving": [
+       "v4prompt-medium"
+      ],
+      "values": {
+       "carried-high": "25/48",
+       "carried-medium": "2/48",
+       "v4prompt-high": "6/48",
+       "v4prompt-medium": "0/48"
+      }
+     }
+    ],
+    "surviving": [
+     "v4prompt-medium"
+    ]
+   },
+   "threshold": {
+    "decided_at": null,
+    "human_criterion_outstanding": true,
+    "steps": [
+     {
+      "criterion": "valid deterministic execution",
+      "decided": false,
+      "surviving": [
+       "carried-high",
+       "carried-medium",
+       "v4prompt-high",
+       "v4prompt-medium"
+      ],
+      "values": {
+       "carried-high": true,
+       "carried-medium": true,
+       "v4prompt-high": true,
+       "v4prompt-medium": true
+      }
+     },
+     {
+      "criterion": "adequate output cap and absence of problematic truncation",
+      "decided": false,
+      "surviving": [
+       "carried-medium",
+       "v4prompt-high",
+       "v4prompt-medium"
+      ],
+      "values": {
+       "carried-high": "25/48",
+       "carried-medium": "2/48",
+       "v4prompt-high": "6/48",
+       "v4prompt-medium": "0/48"
+      }
+     },
+     {
+      "criterion": "valid parsing and coverage",
+      "decided": false,
+      "surviving": [
+       "carried-medium",
+       "v4prompt-high",
+       "v4prompt-medium"
+      ],
+      "values": {
+       "carried-medium": "45/48",
+       "v4prompt-high": "42/48",
+       "v4prompt-medium": "48/48"
+      }
+     },
+     {
+      "criterion": "agreement with human labels",
+      "decided": false,
+      "note": "OUTSTANDING. No annotator independent of the design and analysis team exists, so \u00a710.3's criterion cannot be met; author labels are diagnostic evidence and \u00a710.4 hierarchy input, never independent validation.",
+      "surviving": [
+       "carried-medium",
+       "v4prompt-high",
+       "v4prompt-medium"
+      ],
+      "values": null
+     }
+    ],
+    "surviving": [
+     "carried-medium",
+     "v4prompt-high",
+     "v4prompt-medium"
+    ]
+   }
+  },
+  "steps": [
+   {
+    "criterion": "valid deterministic execution",
+    "decided": false,
+    "surviving": [
+     "carried-high",
+     "carried-medium",
+     "v4prompt-high",
+     "v4prompt-medium"
+    ],
+    "values": {
+     "carried-high": true,
+     "carried-medium": true,
+     "v4prompt-high": true,
+     "v4prompt-medium": true
+    }
+   },
+   {
+    "criterion": "adequate output cap and absence of problematic truncation",
+    "decided": true,
+    "surviving": [
+     "v4prompt-medium"
+    ],
+    "values": {
+     "carried-high": "25/48",
+     "carried-medium": "2/48",
+     "v4prompt-high": "6/48",
+     "v4prompt-medium": "0/48"
+    }
+   }
+  ],
+  "surviving_after_criteria_1_to_3": [
+   "v4prompt-medium"
+  ],
+  "verifier_agreement_by_condition": {
+   "carried-high": {
+    "A:fail:margin_one": {
+     "agreement": 1.0,
+     "n": 5
+    },
+    "A:pass": {
+     "agreement": 1.0,
+     "n": 6
+    },
+    "B:fail:margin_larger": {
+     "agreement": 1.0,
+     "n": 5
+    },
+    "B:fail:margin_one": {
+     "agreement": 1.0,
+     "n": 3
+    },
+    "B:pass": {
+     "agreement": 0.75,
+     "n": 4
+    },
+    "overall": {
+     "agreement": 0.9565217391304348,
+     "n": 23
+    }
+   },
+   "carried-medium": {
+    "A:fail:margin_larger": {
+     "agreement": 0.125,
+     "n": 8
+    },
+    "A:fail:margin_one": {
+     "agreement": 0.625,
+     "n": 8
+    },
+    "A:pass": {
+     "agreement": 1.0,
+     "n": 8
+    },
+    "B:fail:margin_larger": {
+     "agreement": 1.0,
+     "n": 8
+    },
+    "B:fail:margin_one": {
+     "agreement": 0.8,
+     "n": 5
+    },
+    "B:pass": {
+     "agreement": 1.0,
+     "n": 8
+    },
+    "overall": {
+     "agreement": 0.7555555555555555,
+     "n": 45
+    }
+   },
+   "v4prompt-high": {
+    "A:fail:margin_larger": {
+     "agreement": 1.0,
+     "n": 7
+    },
+    "A:fail:margin_one": {
+     "agreement": 1.0,
+     "n": 7
+    },
+    "A:pass": {
+     "agreement": 1.0,
+     "n": 6
+    },
+    "B:fail:margin_larger": {
+     "agreement": 1.0,
+     "n": 7
+    },
+    "B:fail:margin_one": {
+     "agreement": 1.0,
+     "n": 7
+    },
+    "B:pass": {
+     "agreement": 1.0,
+     "n": 8
+    },
+    "overall": {
+     "agreement": 1.0,
+     "n": 42
+    }
+   },
+   "v4prompt-medium": {
+    "A:fail:margin_larger": {
+     "agreement": 1.0,
+     "n": 8
+    },
+    "A:fail:margin_one": {
+     "agreement": 1.0,
+     "n": 8
+    },
+    "A:pass": {
+     "agreement": 1.0,
+     "n": 8
+    },
+    "B:fail:margin_larger": {
+     "agreement": 1.0,
+     "n": 8
+    },
+    "B:fail:margin_one": {
+     "agreement": 1.0,
+     "n": 8
+    },
+    "B:pass": {
+     "agreement": 1.0,
+     "n": 8
+    },
+    "overall": {
+     "agreement": 1.0,
+     "n": 48
+    }
+   }
+  }
+ },
+ "sidecars": {
+  "_crossdevice_v4prompt-high": {
+   "agreement": 1.0,
+   "compared_against": "v4prompt-high replicate 0",
+   "condition": "v4prompt-high",
+   "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+   "counted_in_selection": false,
+   "coverage": 0.875,
+   "device": 0,
+   "device_is_inert": true,
+   "items": 16,
+   "items_compared": 16,
+   "labels_identical": 16,
+   "note": "serialised at concurrency one, same pinned judge revision, same hashed configuration, different GPU. Not a condition and never part of the selection; it tests whether the device is inert.",
+   "same_config_hash": true,
+   "sidecar": "cross-device determinism",
+   "truncation_rate": 0.125
+  }
+ }
+}

@@ -1,0 +1,9 @@
+{
+  "check": "C4",
+  "decision": "a NEW v4 sealed set is required; the v3 set is not reused",
+  "reason": "the v4 instrument population is five primary instruments \u2014 the exact-count rule, the word-length rule and three admitted family verifiers \u2014 and the v3 sealed set was composed for the exact-count rule alone, so it cannot exercise the word-length or family verifiers at all",
+  "status": "COMPLETE",
+  "v3_seal_record_present": false,
+  "v3_set": "stays sealed either way; nothing in dci1v4 can open it",
+  "v4_seal": "sealed at Gate 1 by dci1v4.stages.gate1.seal_final_check_set, opened at most once after every autorater choice is frozen, never for tuning, never rerun"
+}

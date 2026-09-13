@@ -1,0 +1,1815 @@
+{
+ "contract": {
+  "clean": true,
+  "defects": [],
+  "n_checked_against_payloads": 74,
+  "n_fields": 74
+ },
+ "criteria": {
+  "CHANCE_BASIS": {
+   "aggregation": "any_supported_frame",
+   "by_frame": {
+    "0": {
+     "gate2_cell": "unconstrained",
+     "gate2_per_split": {
+      "calibration_a": {
+       "draws_per_topic": 8.0,
+       "n_rows": 384,
+       "n_topics": 48
+      },
+      "calibration_b": {
+       "draws_per_topic": 8.0,
+       "n_rows": 384,
+       "n_topics": 48
+      },
+      "pooled": {
+       "draws_per_topic": 8.0,
+       "n_rows": 768,
+       "n_topics": 96
+      }
+     },
+     "iota_a": 0.6744791666666666,
+     "iota_a_all_absent_v7_basis": 0.6631862579993263,
+     "iota_a_basis_discrepancy": 0.01129290866734034,
+     "kappa_a": 0.0,
+     "kappa_a_all_frames_blocks": 0.0,
+     "n_candidates": 71,
+     "n_candidates_with_nonzero_chance": 4,
+     "n_withheld_degenerate": {
+      "calibration_a": 0,
+      "calibration_b": 0,
+      "pooled": 0
+     },
+     "passed": true
+    },
+    "1": {
+     "gate2_cell": "unconstrained",
+     "gate2_per_split": {
+      "calibration_a": {
+       "draws_per_topic": 8.0,
+       "n_rows": 384,
+       "n_topics": 48
+      },
+      "calibration_b": {
+       "draws_per_topic": 8.0,
+       "n_rows": 384,
+       "n_topics": 48
+      },
+      "pooled": {
+       "draws_per_topic": 8.0,
+       "n_rows": 768,
+       "n_topics": 96
+      }
+     },
+     "iota_a": 0.7239583333333334,
+     "iota_a_all_absent_v7_basis": 0.7170503837170504,
+     "iota_a_basis_discrepancy": 0.006907949616282938,
+     "kappa_a": 0.0,
+     "kappa_a_all_frames_blocks": 0.0,
+     "n_candidates": 72,
+     "n_candidates_with_nonzero_chance": 5,
+     "n_withheld_degenerate": {
+      "calibration_a": 0,
+      "calibration_b": 0,
+      "pooled": 0
+     },
+     "passed": true
+    },
+    "2": {
+     "gate2_cell": "unconstrained",
+     "gate2_per_split": {
+      "calibration_a": {
+       "draws_per_topic": 8.0,
+       "n_rows": 384,
+       "n_topics": 48
+      },
+      "calibration_b": {
+       "draws_per_topic": 8.0,
+       "n_rows": 384,
+       "n_topics": 48
+      },
+      "pooled": {
+       "draws_per_topic": 8.0,
+       "n_rows": 768,
+       "n_topics": 96
+      }
+     },
+     "iota_a": 0.671875,
+     "iota_a_all_absent_v7_basis": 0.6606060606060606,
+     "iota_a_basis_discrepancy": 0.011268939393939359,
+     "kappa_a": 0.0,
+     "kappa_a_all_frames_blocks": 0.0,
+     "n_candidates": 72,
+     "n_candidates_with_nonzero_chance": 5,
+     "n_withheld_degenerate": {
+      "calibration_a": 0,
+      "calibration_b": 0,
+      "pooled": 0
+     },
+     "passed": true
+    },
+    "3": {
+     "gate2_cell": "unconstrained",
+     "gate2_per_split": {
+      "calibration_a": {
+       "draws_per_topic": 8.0,
+       "n_rows": 384,
+       "n_topics": 48
+      },
+      "calibration_b": {
+       "draws_per_topic": 8.0,
+       "n_rows": 384,
+       "n_topics": 48
+      },
+      "pooled": {
+       "draws_per_topic": 8.0,
+       "n_rows": 768,
+       "n_topics": 96
+      }
+     },
+     "iota_a": 0.7239583333333334,
+     "iota_a_all_absent_v7_basis": 0.7157224270868254,
+     "iota_a_basis_discrepancy": 0.00823590624650794,
+     "kappa_a": 0.0,
+     "kappa_a_all_frames_blocks": 0.0,
+     "n_candidates": 72,
+     "n_candidates_with_nonzero_chance": 5,
+     "n_withheld_degenerate": {
+      "calibration_a": 0,
+      "calibration_b": 0,
+      "pooled": 0
+     },
+     "passed": true
+    }
+   },
+   "frames_failing": [],
+   "frames_passing": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "passed": true,
+   "passed_on_every_supported_frame": true,
+   "rule": "chance measured on the unconstrained cell in the screen and, per frame, in every calibration split on the frame's own blocks; iota_A(f) on the same basis; the column is not identically zero",
+   "screen_cell": "unconstrained"
+  },
+  "LADDER_COVERAGE": {
+   "aggregation": "any_supported_frame",
+   "ambiguous_at_max": {
+    "0": [
+     "CL8",
+     "MK3"
+    ],
+    "1": [
+     "CL8",
+     "RF5"
+    ],
+    "2": [
+     "CL8"
+    ],
+    "3": [
+     "CL8",
+     "RF8",
+     "XC1"
+    ]
+   },
+   "by_frame": {
+    "0": {
+     "families_carrying_both_extremes": [
+      "MK1",
+      "MK2",
+      "MK6",
+      "MK7",
+      "MK8",
+      "RF8",
+      "XC1",
+      "XC3"
+     ],
+     "families_reaching_both_offsets_at_screen": [
+      "MK1",
+      "MK2",
+      "MK6",
+      "MK7",
+      "MK8",
+      "RF8",
+      "XC1",
+      "XC3"
+     ],
+     "n_spectrum_valid_above": 29,
+     "n_spectrum_valid_below": 28,
+     "passed": true,
+     "screen_and_second_pass_ok": true,
+     "spectrum_families_forwarded": [
+      "MK1",
+      "MK8",
+      "RF8",
+      "XC1",
+      "XC3",
+      "MK6",
+      "MK2",
+      "MK7"
+     ],
+     "spectrum_pool_ok": true,
+     "spectrum_valid_families_above": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "RF8",
+      "XC1",
+      "XC2",
+      "XC3"
+     ],
+     "spectrum_valid_families_below": [
+      "MK1",
+      "MK2",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "RF8",
+      "XC1",
+      "XC2",
+      "XC3"
+     ]
+    },
+    "1": {
+     "families_carrying_both_extremes": [
+      "MK1",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK8",
+      "XC1",
+      "XC2",
+      "XC3"
+     ],
+     "families_reaching_both_offsets_at_screen": [
+      "MK1",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK8",
+      "XC1",
+      "XC2",
+      "XC3"
+     ],
+     "n_spectrum_valid_above": 25,
+     "n_spectrum_valid_below": 34,
+     "passed": true,
+     "screen_and_second_pass_ok": true,
+     "spectrum_families_forwarded": [
+      "MK3",
+      "XC1",
+      "XC2",
+      "XC3",
+      "MK1",
+      "MK8",
+      "MK5",
+      "MK4"
+     ],
+     "spectrum_pool_ok": true,
+     "spectrum_valid_families_above": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "RF5",
+      "RF8",
+      "XC1",
+      "XC2",
+      "XC3"
+     ],
+     "spectrum_valid_families_below": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK7",
+      "MK8",
+      "RF5",
+      "RF8",
+      "XC1",
+      "XC2",
+      "XC3"
+     ]
+    },
+    "2": {
+     "families_carrying_both_extremes": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK5",
+      "MK8",
+      "RF8",
+      "XC1",
+      "XC2"
+     ],
+     "families_reaching_both_offsets_at_screen": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK5",
+      "MK8",
+      "RF8",
+      "XC1",
+      "XC2"
+     ],
+     "n_spectrum_valid_above": 24,
+     "n_spectrum_valid_below": 32,
+     "passed": true,
+     "screen_and_second_pass_ok": true,
+     "spectrum_families_forwarded": [
+      "MK2",
+      "MK3",
+      "MK5",
+      "MK8",
+      "RF8",
+      "XC1",
+      "XC2",
+      "MK1"
+     ],
+     "spectrum_pool_ok": true,
+     "spectrum_valid_families_above": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK8",
+      "RF8",
+      "XC1",
+      "XC2",
+      "XC3"
+     ],
+     "spectrum_valid_families_below": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "RF8",
+      "XC1",
+      "XC2",
+      "XC3"
+     ]
+    },
+    "3": {
+     "families_carrying_both_extremes": [
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK8",
+      "XC2",
+      "XC3"
+     ],
+     "families_reaching_both_offsets_at_screen": [
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK8",
+      "XC2",
+      "XC3"
+     ],
+     "n_spectrum_valid_above": 25,
+     "n_spectrum_valid_below": 34,
+     "passed": true,
+     "screen_and_second_pass_ok": true,
+     "spectrum_families_forwarded": [
+      "MK3",
+      "XC2",
+      "MK8",
+      "XC3",
+      "MK5",
+      "MK2",
+      "MK6",
+      "MK4"
+     ],
+     "spectrum_pool_ok": true,
+     "spectrum_valid_families_above": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "RF5",
+      "RF8",
+      "XC1",
+      "XC2",
+      "XC3"
+     ],
+     "spectrum_valid_families_below": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "RF5",
+      "RF8",
+      "XC1",
+      "XC2",
+      "XC3"
+     ]
+    }
+   },
+   "extension_measured": [],
+   "frames_failing": [],
+   "frames_passing": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "max_batches": 3,
+   "passed": true,
+   "passed_on_every_supported_frame": true,
+   "retention_policy": "frame_aware",
+   "rule": "batches <= 3; per frame, >= 2 forwarded spectrum families reaching both offsets at the screen against the frame's own iota_A(f); per frame, a spectrum-valid pool >= 2/2 points from >= 2 families per side",
+   "screen_and_second_pass_ok_by_frame": {
+    "0": true,
+    "1": true,
+    "2": true,
+    "3": true
+   },
+   "second_pass_batches": 3
+  },
+  "REFERENCE_SURVIVAL": {
+   "aggregation": "any_supported_frame",
+   "by_frame": {
+    "0": {
+     "backups": [
+      "XC3",
+      "MK2"
+     ],
+     "core_identified": true,
+     "core_references": [
+      {
+       "family": "XC2",
+       "iota": 0.6819571865443425,
+       "severity": 6
+      },
+      {
+       "family": "MK1",
+       "iota": 0.6536458333333334,
+       "severity": 4
+      },
+      {
+       "family": "MK6",
+       "iota": 0.6510416666666666,
+       "severity": 4
+      }
+     ],
+     "coverage_identified": true,
+     "coverage_reasons": [],
+     "local_supported": true,
+     "local_unsupported_reason": null,
+     "local_valid_families": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "XC1",
+      "XC2",
+      "XC3"
+     ],
+     "n_backups": 2,
+     "n_blocks_projected": 384,
+     "n_local_valid_families": 11,
+     "n_spectrum_references": 8,
+     "passed": true,
+     "projected_se_beta": 0.016615632887648224,
+     "projected_se_beta_at_full_allocation": 0.016615632887648224,
+     "selected_families": [
+      "MK6",
+      "MK8",
+      "MK7",
+      "MK1"
+     ],
+     "state": "LOCAL_AND_SPECTRUM"
+    },
+    "1": {
+     "backups": [
+      "MK8",
+      "MK7"
+     ],
+     "core_identified": true,
+     "core_references": [
+      {
+       "family": "XC1",
+       "iota": 0.7239583333333334,
+       "severity": 3
+      },
+      {
+       "family": "MK2",
+       "iota": 0.7265625,
+       "severity": 3
+      },
+      {
+       "family": "MK6",
+       "iota": 0.7291666666666666,
+       "severity": 3
+      }
+     ],
+     "coverage_identified": true,
+     "coverage_reasons": [],
+     "local_supported": true,
+     "local_unsupported_reason": null,
+     "local_valid_families": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "XC1",
+      "XC2",
+      "XC3"
+     ],
+     "n_backups": 2,
+     "n_blocks_projected": 384,
+     "n_local_valid_families": 11,
+     "n_spectrum_references": 8,
+     "passed": true,
+     "projected_se_beta": 0.015453066714926026,
+     "projected_se_beta_at_full_allocation": 0.015453066714926026,
+     "selected_families": [
+      "XC2",
+      "MK3",
+      "XC1",
+      "MK5"
+     ],
+     "state": "LOCAL_AND_SPECTRUM"
+    },
+    "2": {
+     "backups": [
+      "XC2",
+      "XC3"
+     ],
+     "core_identified": true,
+     "core_references": [
+      {
+       "family": "MK4",
+       "iota": 0.671875,
+       "severity": 4
+      },
+      {
+       "family": "MK3",
+       "iota": 0.6692708333333334,
+       "severity": 4
+      },
+      {
+       "family": "MK7",
+       "iota": 0.6640625,
+       "severity": 4
+      }
+     ],
+     "coverage_identified": true,
+     "coverage_reasons": [],
+     "local_supported": true,
+     "local_unsupported_reason": null,
+     "local_valid_families": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "XC1",
+      "XC2",
+      "XC3"
+     ],
+     "n_backups": 2,
+     "n_blocks_projected": 384,
+     "n_local_valid_families": 11,
+     "n_spectrum_references": 8,
+     "passed": true,
+     "projected_se_beta": 0.017677304301547507,
+     "projected_se_beta_at_full_allocation": 0.017677304301547507,
+     "selected_families": [
+      "MK5",
+      "XC1",
+      "MK1",
+      "MK2"
+     ],
+     "state": "LOCAL_AND_SPECTRUM"
+    },
+    "3": {
+     "backups": [
+      "MK7",
+      "MK6"
+     ],
+     "core_identified": true,
+     "core_references": [
+      {
+       "family": "XC3",
+       "iota": 0.7239583333333334,
+       "severity": 5
+      },
+      {
+       "family": "MK2",
+       "iota": 0.7265625,
+       "severity": 3
+      },
+      {
+       "family": "MK5",
+       "iota": 0.7291666666666666,
+       "severity": 3
+      }
+     ],
+     "coverage_identified": true,
+     "coverage_reasons": [],
+     "local_supported": true,
+     "local_unsupported_reason": null,
+     "local_valid_families": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "XC1",
+      "XC2",
+      "XC3"
+     ],
+     "n_backups": 2,
+     "n_blocks_projected": 384,
+     "n_local_valid_families": 11,
+     "n_spectrum_references": 8,
+     "passed": true,
+     "projected_se_beta": 0.015217791313520506,
+     "projected_se_beta_at_full_allocation": 0.015217791313520506,
+     "selected_families": [
+      "MK8",
+      "MK2",
+      "MK5",
+      "MK6"
+     ],
+     "state": "LOCAL_AND_SPECTRUM"
+    }
+   },
+   "frames_failing": [],
+   "frames_passing": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "max_se_beta": 0.05,
+   "min_backups": 2,
+   "min_local_families": 5,
+   "n_blocks_per_frame": 384,
+   "passed": true,
+   "passed_on_every_supported_frame": true,
+   "rule": ">= 5 LOCAL-valid families, three core references by \u00a713.8, selected coverage identified with the projected SE(beta) <= 0.05 at the frame's 384 blocks, >= 2 admissible backups --- per frame. LOCAL *inclusion* (dci1/docs/V8_FRAME_CONDITIONING.md \u00a74d) is the LOCAL arm's three requirements alone, without the coverage gate: see `local_supported` here and `local_eligibility` on the record"
+  },
+  "WORDING_DIAGNOSTIC": {
+   "frame_conditioning": "frame_is_experimental_condition",
+   "frame_reliability_descriptive": {
+    "descriptive_only": true,
+    "screen": {
+     "by_frame": {
+      "0": {
+       "by_family": {
+        "A": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK1": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK2": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK3": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK4": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK5": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK6": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK7": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK8": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        }
+       },
+       "marker_absent": 0,
+       "n_rows": 1728,
+       "share": 0.0
+      },
+      "1": {
+       "by_family": {
+        "A": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK1": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK2": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK3": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK4": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK5": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK6": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK7": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK8": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        }
+       },
+       "marker_absent": 0,
+       "n_rows": 1728,
+       "share": 0.0
+      },
+      "2": {
+       "by_family": {
+        "A": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK1": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK2": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK3": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK4": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK5": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK6": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK7": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK8": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        }
+       },
+       "marker_absent": 0,
+       "n_rows": 1728,
+       "share": 0.0
+      },
+      "3": {
+       "by_family": {
+        "A": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK1": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK2": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK3": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK4": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK5": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK6": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK7": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK8": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        }
+       },
+       "marker_absent": 0,
+       "n_rows": 1728,
+       "share": 0.0
+      }
+     },
+     "families": [
+      "A",
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8"
+     ],
+     "pooled": {
+      "marker_absent": 0,
+      "n_rows": 6912,
+      "share": 0.0
+     },
+     "statistic": "share of A and MK1-8 load-1 rows whose marker statistic is 0, per wording index"
+    },
+    "second_pass": {
+     "by_frame": {
+      "0": {
+       "by_family": {
+        "A": {
+         "marker_absent": 0,
+         "n_rows": 576,
+         "share": 0.0
+        },
+        "MK1": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK2": {
+         "marker_absent": 0,
+         "n_rows": 576,
+         "share": 0.0
+        },
+        "MK3": {
+         "marker_absent": 0,
+         "n_rows": 384,
+         "share": 0.0
+        },
+        "MK5": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK7": {
+         "marker_absent": 0,
+         "n_rows": 480,
+         "share": 0.0
+        },
+        "MK8": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        }
+       },
+       "marker_absent": 0,
+       "n_rows": 2592,
+       "share": 0.0
+      },
+      "1": {
+       "by_family": {
+        "A": {
+         "marker_absent": 0,
+         "n_rows": 576,
+         "share": 0.0
+        },
+        "MK1": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK2": {
+         "marker_absent": 0,
+         "n_rows": 576,
+         "share": 0.0
+        },
+        "MK3": {
+         "marker_absent": 0,
+         "n_rows": 384,
+         "share": 0.0
+        },
+        "MK5": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK7": {
+         "marker_absent": 0,
+         "n_rows": 480,
+         "share": 0.0
+        },
+        "MK8": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        }
+       },
+       "marker_absent": 0,
+       "n_rows": 2592,
+       "share": 0.0
+      },
+      "2": {
+       "by_family": {
+        "A": {
+         "marker_absent": 0,
+         "n_rows": 576,
+         "share": 0.0
+        },
+        "MK1": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK2": {
+         "marker_absent": 0,
+         "n_rows": 576,
+         "share": 0.0
+        },
+        "MK3": {
+         "marker_absent": 0,
+         "n_rows": 384,
+         "share": 0.0
+        },
+        "MK5": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK7": {
+         "marker_absent": 0,
+         "n_rows": 480,
+         "share": 0.0
+        },
+        "MK8": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        }
+       },
+       "marker_absent": 0,
+       "n_rows": 2592,
+       "share": 0.0
+      },
+      "3": {
+       "by_family": {
+        "A": {
+         "marker_absent": 0,
+         "n_rows": 576,
+         "share": 0.0
+        },
+        "MK1": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK2": {
+         "marker_absent": 0,
+         "n_rows": 576,
+         "share": 0.0
+        },
+        "MK3": {
+         "marker_absent": 0,
+         "n_rows": 384,
+         "share": 0.0
+        },
+        "MK5": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        },
+        "MK7": {
+         "marker_absent": 0,
+         "n_rows": 480,
+         "share": 0.0
+        },
+        "MK8": {
+         "marker_absent": 0,
+         "n_rows": 192,
+         "share": 0.0
+        }
+       },
+       "marker_absent": 0,
+       "n_rows": 2592,
+       "share": 0.0
+      }
+     },
+     "families": [
+      "A",
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK5",
+      "MK7",
+      "MK8"
+     ],
+     "pooled": {
+      "marker_absent": 0,
+      "n_rows": 10368,
+      "share": 0.0
+     },
+     "statistic": "share of A and MK1-8 load-1 rows whose marker statistic is 0, per wording index (second pass)"
+    }
+   },
+   "frame_states": {
+    "0": {
+     "local_identified": true,
+     "local_supported": true,
+     "local_unsupported_reason": null,
+     "meets_min_backups": true,
+     "meets_min_local_families": true,
+     "n_backups": 2,
+     "n_local_valid_families": 11,
+     "operating_point": "SUPPORTED",
+     "spectrum_identified": true,
+     "state": "LOCAL_AND_SPECTRUM"
+    },
+    "1": {
+     "local_identified": true,
+     "local_supported": true,
+     "local_unsupported_reason": null,
+     "meets_min_backups": true,
+     "meets_min_local_families": true,
+     "n_backups": 2,
+     "n_local_valid_families": 11,
+     "operating_point": "SUPPORTED",
+     "spectrum_identified": true,
+     "state": "LOCAL_AND_SPECTRUM"
+    },
+    "2": {
+     "local_identified": true,
+     "local_supported": true,
+     "local_unsupported_reason": null,
+     "meets_min_backups": true,
+     "meets_min_local_families": true,
+     "n_backups": 2,
+     "n_local_valid_families": 11,
+     "operating_point": "SUPPORTED",
+     "spectrum_identified": true,
+     "state": "LOCAL_AND_SPECTRUM"
+    },
+    "3": {
+     "local_identified": true,
+     "local_supported": true,
+     "local_unsupported_reason": null,
+     "meets_min_backups": true,
+     "meets_min_local_families": true,
+     "n_backups": 2,
+     "n_local_valid_families": 11,
+     "operating_point": "SUPPORTED",
+     "spectrum_identified": true,
+     "state": "LOCAL_AND_SPECTRUM"
+    }
+   },
+   "frames_measured_separately": true,
+   "judgment": "DESCRIPTIVE_ONLY",
+   "ladders_per_frame": {
+    "calibration": {
+     "0": {
+      "classes": {
+       "FLAT_LADDER": [
+        "RF5"
+       ],
+       "NON_MONOTONIC_LADDER": [
+        "RF8"
+       ],
+       "STRONG_LADDER": [
+        "MK1",
+        "MK2",
+        "MK3",
+        "MK4",
+        "MK5",
+        "MK6",
+        "MK7",
+        "MK8",
+        "XC1",
+        "XC3"
+       ],
+       "USABLE_NOISY_LADDER": [
+        "XC2"
+       ]
+      },
+      "n_families": 13
+     },
+     "1": {
+      "classes": {
+       "FLAT_LADDER": [],
+       "NON_MONOTONIC_LADDER": [
+        "RF5",
+        "RF8"
+       ],
+       "STRONG_LADDER": [
+        "MK1",
+        "MK2",
+        "MK3",
+        "MK4",
+        "MK5",
+        "MK6",
+        "MK7",
+        "MK8",
+        "XC1",
+        "XC2",
+        "XC3"
+       ],
+       "USABLE_NOISY_LADDER": []
+      },
+      "n_families": 13
+     },
+     "2": {
+      "classes": {
+       "FLAT_LADDER": [
+        "RF5"
+       ],
+       "NON_MONOTONIC_LADDER": [
+        "RF8"
+       ],
+       "STRONG_LADDER": [
+        "MK1",
+        "MK2",
+        "MK3",
+        "MK4",
+        "MK5",
+        "MK6",
+        "MK7",
+        "MK8",
+        "XC1",
+        "XC2",
+        "XC3"
+       ],
+       "USABLE_NOISY_LADDER": []
+      },
+      "n_families": 13
+     },
+     "3": {
+      "classes": {
+       "FLAT_LADDER": [],
+       "NON_MONOTONIC_LADDER": [
+        "RF5",
+        "RF8"
+       ],
+       "STRONG_LADDER": [
+        "MK2",
+        "MK3",
+        "MK4",
+        "MK5",
+        "MK6",
+        "MK8",
+        "XC1",
+        "XC2",
+        "XC3"
+       ],
+       "USABLE_NOISY_LADDER": [
+        "MK1",
+        "MK7"
+       ]
+      },
+      "n_families": 13
+     }
+    },
+    "screen": {
+     "0": {
+      "classes": {
+       "FLAT_LADDER": [
+        "CL7",
+        "CL8"
+       ],
+       "NON_MONOTONIC_LADDER": [
+        "RF5",
+        "RF8"
+       ],
+       "STRONG_LADDER": [
+        "MK1",
+        "MK3",
+        "MK4",
+        "MK5",
+        "MK6",
+        "MK7",
+        "MK8",
+        "XC1",
+        "XC3"
+       ],
+       "USABLE_NOISY_LADDER": [
+        "MK2",
+        "XC2"
+       ]
+      },
+      "n_families": 17
+     },
+     "1": {
+      "classes": {
+       "FLAT_LADDER": [
+        "CL7"
+       ],
+       "NON_MONOTONIC_LADDER": [
+        "MK1",
+        "MK8",
+        "RF5",
+        "RF8"
+       ],
+       "STRONG_LADDER": [
+        "MK3",
+        "MK4",
+        "MK5",
+        "MK6",
+        "MK7",
+        "XC1",
+        "XC3"
+       ],
+       "USABLE_NOISY_LADDER": [
+        "CL8",
+        "MK2",
+        "XC2"
+       ]
+      },
+      "n_families": 17
+     },
+     "2": {
+      "classes": {
+       "FLAT_LADDER": [
+        "CL7",
+        "CL8"
+       ],
+       "NON_MONOTONIC_LADDER": [
+        "MK5",
+        "MK6",
+        "RF5",
+        "RF8"
+       ],
+       "STRONG_LADDER": [
+        "MK1",
+        "MK2",
+        "MK3",
+        "MK4",
+        "MK7",
+        "MK8",
+        "XC1",
+        "XC2",
+        "XC3"
+       ],
+       "USABLE_NOISY_LADDER": []
+      },
+      "n_families": 17
+     },
+     "3": {
+      "classes": {
+       "FLAT_LADDER": [
+        "CL7",
+        "CL8"
+       ],
+       "NON_MONOTONIC_LADDER": [
+        "RF5",
+        "RF8"
+       ],
+       "STRONG_LADDER": [
+        "MK2",
+        "MK3",
+        "MK4",
+        "MK6",
+        "MK8",
+        "XC1",
+        "XC2",
+        "XC3"
+       ],
+       "USABLE_NOISY_LADDER": [
+        "MK1",
+        "MK5",
+        "MK7"
+       ]
+      },
+      "n_families": 17
+     }
+    }
+   },
+   "operating_points_by_frame": {
+    "0": {
+     "iota_a": 0.6744791666666666,
+     "m_star": 8,
+     "n_star": 3,
+     "status": "SUPPORTED",
+     "unsupported_reason": null
+    },
+    "1": {
+     "iota_a": 0.7239583333333334,
+     "m_star": 8,
+     "n_star": 2,
+     "status": "SUPPORTED",
+     "unsupported_reason": null
+    },
+    "2": {
+     "iota_a": 0.671875,
+     "m_star": 10,
+     "n_star": 3,
+     "status": "SUPPORTED",
+     "unsupported_reason": null
+    },
+    "3": {
+     "iota_a": 0.7239583333333334,
+     "m_star": 10,
+     "n_star": 2,
+     "status": "SUPPORTED",
+     "unsupported_reason": null
+    }
+   },
+   "passed": null,
+   "reference_bound": 0.2,
+   "rule": "no pass/fail rule: the per-frame tables are on the Gate-1 and Gate-2 records; the wording policy is decided (the frame is part of the experimental condition, dci1/docs/V8_FRAME_CONDITIONING.md) and the cross-frame comparison is the secondary analysis",
+   "sensitive_rungs_touching_reference_set_by_frame": {
+    "0": {
+     "UNRESOLVED": [],
+     "WORDING_SENSITIVE": []
+    },
+    "1": {
+     "UNRESOLVED": [],
+     "WORDING_SENSITIVE": []
+    },
+    "2": {
+     "UNRESOLVED": [],
+     "WORDING_SENSITIVE": []
+    },
+    "3": {
+     "UNRESOLVED": [],
+     "WORDING_SENSITIVE": []
+    }
+   },
+   "stability_across_fresh_topics": {
+    "calibration_splits": {
+     "n_compared": 400,
+     "n_inside_bound": 399,
+     "reference_bound": 0.2,
+     "share_inside_bound": 0.9975
+    },
+    "screen_vs_second_pass": {
+     "n_compared": 400,
+     "n_inside_bound": 346,
+     "share_inside_bound": 0.865
+    }
+   },
+   "survival_by_frame": {
+    "0": {
+     "core_identified": true,
+     "coverage_identified": true,
+     "n_local_valid_families": 11,
+     "spectrum_pool_ok": true
+    },
+    "1": {
+     "core_identified": true,
+     "coverage_identified": true,
+     "n_local_valid_families": 11,
+     "spectrum_pool_ok": true
+    },
+    "2": {
+     "core_identified": true,
+     "coverage_identified": true,
+     "n_local_valid_families": 11,
+     "spectrum_pool_ok": true
+    },
+    "3": {
+     "core_identified": true,
+     "coverage_identified": true,
+     "n_local_valid_families": 11,
+     "spectrum_pool_ok": true
+    }
+   },
+   "wording_dependence": {
+    "calibration": {
+     "n_rungs_compared": 104,
+     "n_rungs_with_all_frames": 92,
+     "reading": "\u03c4\u00b2 is the between-frame variance of \u03b9 net of sampling variance, per rung, summarised over rungs; the classes are descriptive (module note) and select nothing",
+     "rungs_by_class": {
+      "CONSISTENT": [
+       "A:1",
+       "A:2",
+       "A:3",
+       "A:4",
+       "A:5",
+       "A:6",
+       "A:7",
+       "A:8",
+       "B:10",
+       "B:11",
+       "B:12",
+       "B:13",
+       "B:14",
+       "B:7",
+       "B:8",
+       "B:9",
+       "MK1:1",
+       "MK1:2",
+       "MK1:3",
+       "MK1:4",
+       "MK1:5",
+       "MK1:6",
+       "MK1:8",
+       "MK2:1",
+       "MK2:2",
+       "MK2:3",
+       "MK2:4",
+       "MK2:5",
+       "MK2:6",
+       "MK2:8",
+       "MK3:1",
+       "MK3:2",
+       "MK3:3",
+       "MK3:4",
+       "MK3:5",
+       "MK3:6",
+       "MK3:8",
+       "MK4:1",
+       "MK4:2",
+       "MK4:3",
+       "MK4:4",
+       "MK4:5",
+       "MK4:6",
+       "MK4:8",
+       "MK5:1",
+       "MK5:2",
+       "MK5:3",
+       "MK5:4",
+       "MK5:5",
+       "MK5:6",
+       "MK5:8",
+       "MK6:1",
+       "MK6:2",
+       "MK6:3",
+       "MK6:4",
+       "MK6:5",
+       "MK6:6",
+       "MK6:8",
+       "MK7:1",
+       "MK7:10",
+       "MK7:2",
+       "MK7:3",
+       "MK7:4",
+       "MK7:5",
+       "MK7:6",
+       "MK8:1",
+       "MK8:2",
+       "MK8:3",
+       "MK8:4",
+       "MK8:5",
+       "MK8:6",
+       "MK8:8",
+       "RF5:0",
+       "RF5:1",
+       "RF5:2",
+       "RF5:3",
+       "RF8:0",
+       "RF8:1",
+       "RF8:2",
+       "RF8:3",
+       "RF8:4",
+       "RF8:5",
+       "RF8:8",
+       "XC1:1",
+       "XC1:2",
+       "XC1:3",
+       "XC1:4",
+       "XC1:5",
+       "XC1:6",
+       "XC1:8",
+       "XC2:10",
+       "XC2:12",
+       "XC2:16",
+       "XC2:2",
+       "XC2:4",
+       "XC2:6",
+       "XC2:8",
+       "XC3:10",
+       "XC3:3",
+       "XC3:4",
+       "XC3:5",
+       "XC3:6",
+       "XC3:7",
+       "XC3:8"
+      ],
+      "UNRESOLVED": [],
+      "WORDING_SENSITIVE": []
+     },
+     "share_by_class": {
+      "CONSISTENT": 1.0,
+      "UNRESOLVED": 0.0,
+      "WORDING_SENSITIVE": 0.0
+     },
+     "spread_median": 0.02083333333333337,
+     "spread_q90": 0.03385416666666663,
+     "tau2_mean": 6.011169955261709e-06,
+     "tau2_median": 0.0,
+     "tau_median": 0.0
+    },
+    "screen": {
+     "n_rungs_compared": 129,
+     "n_rungs_with_all_frames": 129,
+     "reading": "\u03c4\u00b2 is the between-frame variance of \u03b9 net of sampling variance, per rung, summarised over rungs; the classes are descriptive (module note) and select nothing",
+     "rungs_by_class": {
+      "CONSISTENT": [
+       "A:1",
+       "A:2",
+       "A:4",
+       "A:6",
+       "A:7",
+       "B:10",
+       "B:11",
+       "B:12",
+       "B:7",
+       "B:9",
+       "CL7:100",
+       "CL7:130",
+       "CL7:45",
+       "CL7:60",
+       "CL7:80",
+       "CL8:14",
+       "CL8:25",
+       "MK1:1",
+       "MK1:2",
+       "MK1:3",
+       "MK1:5",
+       "MK1:6",
+       "MK2:2",
+       "MK2:3",
+       "MK2:4",
+       "MK2:8",
+       "MK3:1",
+       "MK3:3",
+       "MK3:6",
+       "MK3:7",
+       "MK4:1",
+       "MK4:2",
+       "MK4:4",
+       "MK4:5",
+       "MK4:7",
+       "MK4:8",
+       "MK5:1",
+       "MK5:3",
+       "MK5:4",
+       "MK6:1",
+       "MK6:3",
+       "MK6:5",
+       "MK7:2",
+       "MK7:3",
+       "MK8:3",
+       "MK8:4",
+       "MK8:6",
+       "RF5:0",
+       "RF5:1",
+       "RF5:2",
+       "RF8:2",
+       "RF8:4",
+       "XC1:1",
+       "XC1:2",
+       "XC1:3",
+       "XC1:6",
+       "XC1:7",
+       "XC2:14",
+       "XC2:2",
+       "XC2:4",
+       "XC2:6",
+       "XC3:3",
+       "XC3:4",
+       "XC3:5",
+       "XC3:7",
+       "XC3:9"
+      ],
+      "UNRESOLVED": [
+       "A:3",
+       "A:8",
+       "B:13",
+       "B:14",
+       "B:8",
+       "MK1:8",
+       "MK2:1",
+       "MK2:6",
+       "MK2:7",
+       "MK3:5",
+       "MK3:8",
+       "MK4:6",
+       "MK5:5",
+       "MK5:6",
+       "MK5:7",
+       "MK5:8",
+       "MK6:2",
+       "MK6:4",
+       "MK6:6",
+       "MK6:7",
+       "MK6:8",
+       "MK7:4",
+       "MK7:5",
+       "MK7:6",
+       "MK7:7",
+       "MK7:8",
+       "MK8:1",
+       "MK8:5",
+       "RF5:3",
+       "RF5:4",
+       "RF5:5",
+       "RF5:6",
+       "RF5:7",
+       "RF8:3",
+       "RF8:5",
+       "RF8:7",
+       "RF8:8",
+       "XC1:4",
+       "XC1:8",
+       "XC2:10",
+       "XC2:16",
+       "XC3:10",
+       "XC3:6"
+      ],
+      "WORDING_SENSITIVE": [
+       "A:5",
+       "CL8:19",
+       "MK1:4",
+       "MK1:7",
+       "MK2:5",
+       "MK3:2",
+       "MK3:4",
+       "MK4:3",
+       "MK5:2",
+       "MK7:1",
+       "MK8:2",
+       "MK8:7",
+       "MK8:8",
+       "RF8:0",
+       "RF8:1",
+       "RF8:6",
+       "XC1:5",
+       "XC2:12",
+       "XC2:8",
+       "XC3:8"
+      ]
+     },
+     "share_by_class": {
+      "CONSISTENT": 0.5116279069767442,
+      "UNRESOLVED": 0.3333333333333333,
+      "WORDING_SENSITIVE": 0.15503875968992248
+     },
+     "spread_median": 0.16666666666666674,
+     "spread_q90": 0.33333333333333326,
+     "tau2_mean": 0.0023341796882446206,
+     "tau2_median": 0.0,
+     "tau_median": 0.0
+    }
+   },
+   "wording_policy": {
+    "decided": "2026-08-30 (researcher): the frame is part of the experimental condition; no frame retained or discarded on the diagnostic",
+    "evidence_admissible": "solo, pre-screen and calibration only",
+    "options": [
+     "retain_all_frames",
+     "retain_specified_subset",
+     "model_frame_variation"
+    ],
+    "policy": "model_frame_variation",
+    "status": "DECIDED"
+   },
+   "wording_sensitive_rungs_by_frame": {
+    "0": {
+     "UNRESOLVED": [],
+     "WORDING_SENSITIVE": []
+    },
+    "1": {
+     "UNRESOLVED": [],
+     "WORDING_SENSITIVE": []
+    },
+    "2": {
+     "UNRESOLVED": [],
+     "WORDING_SENSITIVE": []
+    },
+    "3": {
+     "UNRESOLVED": [],
+     "WORDING_SENSITIVE": []
+    }
+   }
+  }
+ },
+ "generations": {
+  "calibration_blocks_per_run": 384,
+  "calibration_candidates": 110208,
+  "calibration_comparator": 18816,
+  "calibration_extension": 0,
+  "calibration_grids": 27648,
+  "calibration_passes": 4,
+  "cap_selection": 216,
+  "gate0": 240,
+  "screen": 15840,
+  "screen_passes": 4,
+  "second_pass": 22944,
+  "total": 195912
+ },
+ "stages": [
+  "PILOT_REGISTERED",
+  "QUALIFIED",
+  "GATE_0_APPARATUS",
+  "REGIME_SCREEN",
+  "SECOND_PASS_SCREEN",
+  "GATE_1_INSTRUMENT",
+  "GATE_2_CALIBRATION",
+  "GATE_3_REFERENCES",
+  "PILOT_REPORT"
+ ]
+}

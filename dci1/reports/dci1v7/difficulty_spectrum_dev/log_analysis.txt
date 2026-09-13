@@ -1,0 +1,5 @@
+gemma-3n-e2b-it: iota_A=0.6166 C4 groups=2/6 conditions={'C1': True, 'C2': True, 'C3': True, 'C4': False, 'C5': True, 'C6': True, 'C7': True, 'C8': False} join_mismatches=0
+gemma-3n-e4b-it: iota_A=0.7252 C4 groups=4/6 conditions={'C1': True, 'C2': True, 'C3': True, 'C4': False, 'C5': True, 'C6': True, 'C7': True, 'C8': False} join_mismatches=0
+qwen3-4b: iota_A=0.6827 C4 groups=5/6 conditions={'C1': True, 'C2': True, 'C3': True, 'C4': False, 'C5': True, 'C6': True, 'C7': True, 'C8': True} join_mismatches=0
+qwen3-4b-instruct-2507: iota_A=0.5399 C4 groups=4/6 conditions={'C1': True, 'C2': True, 'C3': True, 'C4': False, 'C5': True, 'C6': True, 'C7': True, 'C8': False} join_mismatches=0
+written: reports/dci1v7/difficulty_spectrum_dev

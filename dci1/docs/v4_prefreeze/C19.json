@@ -1,0 +1,14 @@
+{
+  "check": "C19",
+  "memo_date": "14 August 2026",
+  "memo_path": "/home/cnm13ryan/git/dci/user-notes/dci-construct-pass2.md",
+  "memo_sha256": "195c2454e14c51750c89ec1326071776b3e691ac839f734b642dc8d7a99cedbc",
+  "note": "both thresholds were fixed in the memo before any data addressing them existed in this constraint vocabulary and were transcribed into the pilot protocol before the pilot generated anything; the provenance is recorded in dci1v4.stages.freeze.THRESHOLD_PROVENANCE",
+  "pilot_protocol_present": true,
+  "pilot_protocol_sha256": "229eeae86137879f77df47f04eeef7f67985670f3f56255a32263f6a1537a9cc",
+  "preregistration_date": "19 August 2026",
+  "quoted_lines": [
+    "| **1** | **The focal-with-a-non-target companion cell.** Generate B+R and B+S without the sentence-count instruction, beside the existing B-alone and B-with-A cells. | H1: the target specifically degrades the focal. H2: any composition degrades it. | D(B\u2190A) \u2212 D(B\u2190R) > 0.25 supports H1 and licenses a pairwise construct. < 0.10 supports H2 and **refutes the pairwise framing entirely**, redirecting the programme to a load-and-capacity account. | ~800 generations |"
+  ],
+  "status": "COMPLETE"
+}

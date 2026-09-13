@@ -1,0 +1,5907 @@
+{
+ "artifact_type": "v4r3-defect-sensitivity",
+ "attribution": {
+  "chance": {
+   "denominator_swap": {
+    "concentrated_in_one_family": false,
+    "families_total": 30,
+    "families_with_any_change": 14,
+    "top": [
+     {
+      "change_rate": 0.657051282051282,
+      "changed": 14760,
+      "family": "CR11",
+      "share_of_all_changes": 0.2029647149418333,
+      "verdicts": 22464
+     },
+     {
+      "change_rate": 0.5861378205128205,
+      "changed": 8778,
+      "family": "CR10",
+      "share_of_all_changes": 0.12070625120321224,
+      "verdicts": 14976
+     },
+     {
+      "change_rate": 0.5683159722222222,
+      "changed": 6547,
+      "family": "CR9",
+      "share_of_all_changes": 0.09002777701383351,
+      "verdicts": 11520
+     },
+     {
+      "change_rate": 0.3876915708812261,
+      "changed": 6476,
+      "family": "CP7",
+      "share_of_all_changes": 0.08905145623057671,
+      "verdicts": 16704
+     },
+     {
+      "change_rate": 0.5900036549707602,
+      "changed": 6457,
+      "family": "CR7",
+      "share_of_all_changes": 0.08879018728857842,
+      "verdicts": 10944
+     }
+    ]
+   },
+   "inequality_flip": {
+    "concentrated_in_one_family": false,
+    "families_total": 30,
+    "families_with_any_change": 29,
+    "top": [
+     {
+      "change_rate": 1.0,
+      "changed": 28224,
+      "family": "RF11",
+      "share_of_all_changes": 0.08876699920743751,
+      "verdicts": 28224
+     },
+     {
+      "change_rate": 1.0,
+      "changed": 22464,
+      "family": "CR11",
+      "share_of_all_changes": 0.07065128508347067,
+      "verdicts": 22464
+     },
+     {
+      "change_rate": 1.0,
+      "changed": 17856,
+      "family": "CP4",
+      "share_of_all_changes": 0.056158713784297196,
+      "verdicts": 17856
+     },
+     {
+      "change_rate": 1.0,
+      "changed": 17856,
+      "family": "RF10",
+      "share_of_all_changes": 0.056158713784297196,
+      "verdicts": 17856
+     },
+     {
+      "change_rate": 1.0,
+      "changed": 16704,
+      "family": "CP7",
+      "share_of_all_changes": 0.05253557095950383,
+      "verdicts": 16704
+     }
+    ]
+   },
+   "numerator_swap": {
+    "concentrated_in_one_family": false,
+    "families_total": 30,
+    "families_with_any_change": 30,
+    "top": [
+     {
+      "change_rate": 0.44598023504273504,
+      "changed": 6679,
+      "family": "CR10",
+      "share_of_all_changes": 0.06862150804985051,
+      "verdicts": 14976
+     },
+     {
+      "change_rate": 0.36027105734767023,
+      "changed": 6433,
+      "family": "RF10",
+      "share_of_all_changes": 0.06609405019983355,
+      "verdicts": 17856
+     },
+     {
+      "change_rate": 0.39849950396825395,
+      "changed": 6427,
+      "family": "CL8",
+      "share_of_all_changes": 0.06603240488641851,
+      "verdicts": 16128
+     },
+     {
+      "change_rate": 0.21145124716553287,
+      "changed": 5968,
+      "family": "RF11",
+      "share_of_all_changes": 0.06131653841016737,
+      "verdicts": 28224
+     },
+     {
+      "change_rate": 0.4857638888888889,
+      "changed": 5596,
+      "family": "CR9",
+      "share_of_all_changes": 0.05749452897843441,
+      "verdicts": 11520
+     }
+    ]
+   },
+   "off_by_one": {
+    "concentrated_in_one_family": false,
+    "families_total": 30,
+    "families_with_any_change": 30,
+    "top": [
+     {
+      "change_rate": 0.10451388888888889,
+      "changed": 602,
+      "family": "CX2",
+      "share_of_all_changes": 0.04099421178072864,
+      "verdicts": 5760
+     },
+     {
+      "change_rate": 0.12760416666666666,
+      "changed": 588,
+      "family": "CX1",
+      "share_of_all_changes": 0.04004085801838611,
+      "verdicts": 4608
+     },
+     {
+      "change_rate": 0.07142857142857142,
+      "changed": 576,
+      "family": "CR12",
+      "share_of_all_changes": 0.03922369765066394,
+      "verdicts": 8064
+     },
+     {
+      "change_rate": 0.0625,
+      "changed": 576,
+      "family": "CR6",
+      "share_of_all_changes": 0.03922369765066394,
+      "verdicts": 9216
+     },
+     {
+      "change_rate": 0.08333333333333333,
+      "changed": 576,
+      "family": "RF12",
+      "share_of_all_changes": 0.03922369765066394,
+      "verdicts": 6912
+     }
+    ]
+   },
+   "segmentation_drift": {
+    "concentrated_in_one_family": true,
+    "families_total": 30,
+    "families_with_any_change": 1,
+    "top": [
+     {
+      "change_rate": 0.3712022569444444,
+      "changed": 3421,
+      "family": "CR6",
+      "share_of_all_changes": 1.0,
+      "verdicts": 9216
+     }
+    ]
+   },
+   "vacuity_ignored": {
+    "concentrated_in_one_family": false,
+    "families_total": 30,
+    "families_with_any_change": 0,
+    "top": []
+   }
+  },
+  "stated": {
+   "denominator_swap": {
+    "concentrated_in_one_family": false,
+    "families_total": 30,
+    "families_with_any_change": 14,
+    "top": [
+     {
+      "change_rate": 0.7578125,
+      "changed": 582,
+      "family": "CR12",
+      "share_of_all_changes": 0.09575518262586377,
+      "verdicts": 768
+     },
+     {
+      "change_rate": 0.7526041666666666,
+      "changed": 578,
+      "family": "CR10",
+      "share_of_all_changes": 0.09509707140506746,
+      "verdicts": 768
+     },
+     {
+      "change_rate": 0.7473958333333334,
+      "changed": 574,
+      "family": "CR11",
+      "share_of_all_changes": 0.09443896018427114,
+      "verdicts": 768
+     },
+     {
+      "change_rate": 0.6302083333333334,
+      "changed": 484,
+      "family": "CR9",
+      "share_of_all_changes": 0.07963145771635406,
+      "verdicts": 768
+     },
+     {
+      "change_rate": 0.6002604166666666,
+      "changed": 461,
+      "family": "CP7",
+      "share_of_all_changes": 0.07584731819677526,
+      "verdicts": 768
+     }
+    ]
+   },
+   "inequality_flip": {
+    "concentrated_in_one_family": false,
+    "families_total": 30,
+    "families_with_any_change": 30,
+    "top": [
+     {
+      "change_rate": 1.0,
+      "changed": 2976,
+      "family": "RF7",
+      "share_of_all_changes": 0.11196388261851016,
+      "verdicts": 2976
+     },
+     {
+      "change_rate": 1.0,
+      "changed": 1824,
+      "family": "RF5",
+      "share_of_all_changes": 0.06862302483069978,
+      "verdicts": 1824
+     },
+     {
+      "change_rate": 1.0,
+      "changed": 1440,
+      "family": "RF1",
+      "share_of_all_changes": 0.05417607223476298,
+      "verdicts": 1440
+     },
+     {
+      "change_rate": 1.0,
+      "changed": 1248,
+      "family": "RF6",
+      "share_of_all_changes": 0.04695259593679458,
+      "verdicts": 1248
+     },
+     {
+      "change_rate": 1.0,
+      "changed": 960,
+      "family": "CL7",
+      "share_of_all_changes": 0.03611738148984198,
+      "verdicts": 960
+     }
+    ]
+   },
+   "numerator_swap": {
+    "concentrated_in_one_family": false,
+    "families_total": 30,
+    "families_with_any_change": 29,
+    "top": [
+     {
+      "change_rate": 0.48819444444444443,
+      "changed": 703,
+      "family": "RF1",
+      "share_of_all_changes": 0.07707488214011622,
+      "verdicts": 1440
+     },
+     {
+      "change_rate": 0.7005208333333334,
+      "changed": 538,
+      "family": "CX1",
+      "share_of_all_changes": 0.05898476044293389,
+      "verdicts": 768
+     },
+     {
+      "change_rate": 0.17775537634408603,
+      "changed": 529,
+      "family": "RF7",
+      "share_of_all_changes": 0.05799802653217849,
+      "verdicts": 2976
+     },
+     {
+      "change_rate": 0.5659722222222222,
+      "changed": 489,
+      "family": "RF3",
+      "share_of_all_changes": 0.05361254248437671,
+      "verdicts": 864
+     },
+     {
+      "change_rate": 0.56640625,
+      "changed": 435,
+      "family": "CR10",
+      "share_of_all_changes": 0.047692139019844315,
+      "verdicts": 768
+     }
+    ]
+   },
+   "off_by_one": {
+    "concentrated_in_one_family": false,
+    "families_total": 30,
+    "families_with_any_change": 30,
+    "top": [
+     {
+      "change_rate": 0.82421875,
+      "changed": 633,
+      "family": "CX1",
+      "share_of_all_changes": 0.20419354838709677,
+      "verdicts": 768
+     },
+     {
+      "change_rate": 0.6223958333333334,
+      "changed": 478,
+      "family": "RF12",
+      "share_of_all_changes": 0.15419354838709678,
+      "verdicts": 768
+     },
+     {
+      "change_rate": 0.5950520833333334,
+      "changed": 457,
+      "family": "CX2",
+      "share_of_all_changes": 0.1474193548387097,
+      "verdicts": 768
+     },
+     {
+      "change_rate": 0.12291666666666666,
+      "changed": 177,
+      "family": "RF1",
+      "share_of_all_changes": 0.05709677419354839,
+      "verdicts": 1440
+     },
+     {
+      "change_rate": 0.11939102564102565,
+      "changed": 149,
+      "family": "RF6",
+      "share_of_all_changes": 0.04806451612903226,
+      "verdicts": 1248
+     }
+    ]
+   },
+   "segmentation_drift": {
+    "concentrated_in_one_family": true,
+    "families_total": 30,
+    "families_with_any_change": 1,
+    "top": [
+     {
+      "change_rate": 0.53125,
+      "changed": 408,
+      "family": "CR6",
+      "share_of_all_changes": 1.0,
+      "verdicts": 768
+     }
+    ]
+   },
+   "vacuity_ignored": {
+    "concentrated_in_one_family": false,
+    "families_total": 30,
+    "families_with_any_change": 0,
+    "top": []
+   }
+  }
+ },
+ "bands": {
+  "consequential_at_or_above": 0.1,
+  "detectable_at_or_above": 0.01,
+  "provenance": "diagnostic bands, NOT registered criteria. The upper line is \u00a711.8's smallest effect of interest, which is the registered scale on which a change in compliance matters."
+ },
+ "capital_word_note": "Every segmentation-drift change in this corpus is CR6, whose numerator is `capital_word`. That is not the U+0130 effect \u00a77.3's correction is scoped to: a fold-then-segment word list is lower-cased, so a case test over it reads zero for every answer. The drift does not misread `capital_word` subtly --- it destroys it. On the other fourteen numerators fold-then-segment changes no verdict at all in 30,720 responses, which is the registered scope claim holding empirically. `capital_word` is also the one numerator new in v4r3 with no carry-over evidence, which \u00a710.2 already requires to earn its own; this is a second reason it should.",
+ "chance": {
+  "by_family": {
+   "denominator_swap": {
+    "CL7": {
+     "canonical_pass_rate": 0.27021329365079366,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.27021329365079366,
+     "rate_shift": 0.0,
+     "verdicts": 16128
+    },
+    "CL8": {
+     "canonical_pass_rate": 0.21961805555555555,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.21961805555555555,
+     "rate_shift": 0.0,
+     "verdicts": 16128
+    },
+    "CP4": {
+     "canonical_pass_rate": 0.2857862903225806,
+     "change_rate": 0.2774417562724014,
+     "changed": 4954,
+     "defect_pass_rate": 0.008344534050179212,
+     "rate_shift": -0.2774417562724014,
+     "verdicts": 17856
+    },
+    "CP7": {
+     "canonical_pass_rate": 0.3876915708812261,
+     "change_rate": 0.3876915708812261,
+     "changed": 6476,
+     "defect_pass_rate": 0.0,
+     "rate_shift": -0.3876915708812261,
+     "verdicts": 16704
+    },
+    "CR1": {
+     "canonical_pass_rate": 0.7689732142857143,
+     "change_rate": 0.22259424603174602,
+     "changed": 1795,
+     "defect_pass_rate": 0.9915674603174603,
+     "rate_shift": 0.22259424603174605,
+     "verdicts": 8064
+    },
+    "CR10": {
+     "canonical_pass_rate": 0.3305956196581197,
+     "change_rate": 0.5861378205128205,
+     "changed": 8778,
+     "defect_pass_rate": 0.9167334401709402,
+     "rate_shift": 0.5861378205128205,
+     "verdicts": 14976
+    },
+    "CR11": {
+     "canonical_pass_rate": 0.2668269230769231,
+     "change_rate": 0.657051282051282,
+     "changed": 14760,
+     "defect_pass_rate": 0.9238782051282052,
+     "rate_shift": 0.6570512820512822,
+     "verdicts": 22464
+    },
+    "CR12": {
+     "canonical_pass_rate": 0.5974702380952381,
+     "change_rate": 0.38504464285714285,
+     "changed": 3105,
+     "defect_pass_rate": 0.9825148809523809,
+     "rate_shift": 0.3850446428571428,
+     "verdicts": 8064
+    },
+    "CR2": {
+     "canonical_pass_rate": 0.6418650793650794,
+     "change_rate": 0.33816964285714285,
+     "changed": 2727,
+     "defect_pass_rate": 0.9800347222222222,
+     "rate_shift": 0.3381696428571428,
+     "verdicts": 8064
+    },
+    "CR3": {
+     "canonical_pass_rate": 0.7911706349206349,
+     "change_rate": 0.19977678571428573,
+     "changed": 1611,
+     "defect_pass_rate": 0.9909474206349206,
+     "rate_shift": 0.1997767857142857,
+     "verdicts": 8064
+    },
+    "CR4": {
+     "canonical_pass_rate": 0.5365497076023392,
+     "change_rate": 0.4498355263157895,
+     "changed": 4923,
+     "defect_pass_rate": 0.9863852339181286,
+     "rate_shift": 0.4498355263157894,
+     "verdicts": 10944
+    },
+    "CR5": {
+     "canonical_pass_rate": 0.42485119047619047,
+     "change_rate": 0.5202132936507936,
+     "changed": 4195,
+     "defect_pass_rate": 0.9450644841269841,
+     "rate_shift": 0.5202132936507936,
+     "verdicts": 8064
+    },
+    "CR6": {
+     "canonical_pass_rate": 0.6287977430555556,
+     "change_rate": 0.3515625,
+     "changed": 3240,
+     "defect_pass_rate": 0.9803602430555556,
+     "rate_shift": 0.3515625,
+     "verdicts": 9216
+    },
+    "CR7": {
+     "canonical_pass_rate": 0.40999634502923976,
+     "change_rate": 0.5900036549707602,
+     "changed": 6457,
+     "defect_pass_rate": 1.0,
+     "rate_shift": 0.5900036549707602,
+     "verdicts": 10944
+    },
+    "CR8": {
+     "canonical_pass_rate": 0.5782490079365079,
+     "change_rate": 0.39112103174603174,
+     "changed": 3154,
+     "defect_pass_rate": 0.9693700396825397,
+     "rate_shift": 0.39112103174603174,
+     "verdicts": 8064
+    },
+    "CR9": {
+     "canonical_pass_rate": 0.35477430555555556,
+     "change_rate": 0.5683159722222222,
+     "changed": 6547,
+     "defect_pass_rate": 0.9230902777777777,
+     "rate_shift": 0.5683159722222222,
+     "verdicts": 11520
+    },
+    "CX1": {
+     "canonical_pass_rate": 0.0026041666666666665,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.0026041666666666665,
+     "rate_shift": 0.0,
+     "verdicts": 4608
+    },
+    "CX2": {
+     "canonical_pass_rate": 0.0045138888888888885,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.0045138888888888885,
+     "rate_shift": 0.0,
+     "verdicts": 5760
+    },
+    "RF1": {
+     "canonical_pass_rate": 0.6062885802469136,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.6062885802469136,
+     "rate_shift": 0.0,
+     "verdicts": 5184
+    },
+    "RF10": {
+     "canonical_pass_rate": 0.44438844086021506,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.44438844086021506,
+     "rate_shift": 0.0,
+     "verdicts": 17856
+    },
+    "RF11": {
+     "canonical_pass_rate": 0.4036281179138322,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.4036281179138322,
+     "rate_shift": 0.0,
+     "verdicts": 28224
+    },
+    "RF12": {
+     "canonical_pass_rate": 0.58984375,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.58984375,
+     "rate_shift": 0.0,
+     "verdicts": 6912
+    },
+    "RF2": {
+     "canonical_pass_rate": 0.42592592592592593,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.42592592592592593,
+     "rate_shift": 0.0,
+     "verdicts": 5184
+    },
+    "RF3": {
+     "canonical_pass_rate": 0.6350308641975309,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.6350308641975309,
+     "rate_shift": 0.0,
+     "verdicts": 5184
+    },
+    "RF4": {
+     "canonical_pass_rate": 0.07862103174603174,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.07862103174603174,
+     "rate_shift": 0.0,
+     "verdicts": 4032
+    },
+    "RF5": {
+     "canonical_pass_rate": 0.37566773504273504,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.37566773504273504,
+     "rate_shift": 0.0,
+     "verdicts": 7488
+    },
+    "RF6": {
+     "canonical_pass_rate": 0.5197649572649573,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.5197649572649573,
+     "rate_shift": 0.0,
+     "verdicts": 7488
+    },
+    "RF7": {
+     "canonical_pass_rate": 0.0010416666666666667,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.0010416666666666667,
+     "rate_shift": 0.0,
+     "verdicts": 14400
+    },
+    "RF8": {
+     "canonical_pass_rate": 0.34953703703703703,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.34953703703703703,
+     "rate_shift": 0.0,
+     "verdicts": 5184
+    },
+    "RF9": {
+     "canonical_pass_rate": 0.5158179012345679,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.5158179012345679,
+     "rate_shift": 0.0,
+     "verdicts": 15552
+    }
+   },
+   "inequality_flip": {
+    "CL7": {
+     "canonical_pass_rate": 0.27021329365079366,
+     "change_rate": 1.0,
+     "changed": 16128,
+     "defect_pass_rate": 0.7297867063492064,
+     "rate_shift": 0.45957341269841273,
+     "verdicts": 16128
+    },
+    "CL8": {
+     "canonical_pass_rate": 0.21961805555555555,
+     "change_rate": 1.0,
+     "changed": 16128,
+     "defect_pass_rate": 0.7803819444444444,
+     "rate_shift": 0.5607638888888888,
+     "verdicts": 16128
+    },
+    "CP4": {
+     "canonical_pass_rate": 0.2857862903225806,
+     "change_rate": 1.0,
+     "changed": 17856,
+     "defect_pass_rate": 0.7142137096774194,
+     "rate_shift": 0.42842741935483875,
+     "verdicts": 17856
+    },
+    "CP7": {
+     "canonical_pass_rate": 0.3876915708812261,
+     "change_rate": 1.0,
+     "changed": 16704,
+     "defect_pass_rate": 0.6123084291187739,
+     "rate_shift": 0.22461685823754785,
+     "verdicts": 16704
+    },
+    "CR1": {
+     "canonical_pass_rate": 0.7689732142857143,
+     "change_rate": 1.0,
+     "changed": 8064,
+     "defect_pass_rate": 0.23102678571428573,
+     "rate_shift": -0.5379464285714286,
+     "verdicts": 8064
+    },
+    "CR10": {
+     "canonical_pass_rate": 0.3305956196581197,
+     "change_rate": 1.0,
+     "changed": 14976,
+     "defect_pass_rate": 0.6694043803418803,
+     "rate_shift": 0.33880876068376065,
+     "verdicts": 14976
+    },
+    "CR11": {
+     "canonical_pass_rate": 0.2668269230769231,
+     "change_rate": 1.0,
+     "changed": 22464,
+     "defect_pass_rate": 0.7331730769230769,
+     "rate_shift": 0.4663461538461538,
+     "verdicts": 22464
+    },
+    "CR12": {
+     "canonical_pass_rate": 0.5974702380952381,
+     "change_rate": 1.0,
+     "changed": 8064,
+     "defect_pass_rate": 0.4025297619047619,
+     "rate_shift": -0.19494047619047622,
+     "verdicts": 8064
+    },
+    "CR2": {
+     "canonical_pass_rate": 0.6418650793650794,
+     "change_rate": 1.0,
+     "changed": 8064,
+     "defect_pass_rate": 0.35813492063492064,
+     "rate_shift": -0.2837301587301588,
+     "verdicts": 8064
+    },
+    "CR3": {
+     "canonical_pass_rate": 0.7911706349206349,
+     "change_rate": 1.0,
+     "changed": 8064,
+     "defect_pass_rate": 0.2088293650793651,
+     "rate_shift": -0.5823412698412698,
+     "verdicts": 8064
+    },
+    "CR4": {
+     "canonical_pass_rate": 0.5365497076023392,
+     "change_rate": 1.0,
+     "changed": 10944,
+     "defect_pass_rate": 0.46345029239766083,
+     "rate_shift": -0.07309941520467839,
+     "verdicts": 10944
+    },
+    "CR5": {
+     "canonical_pass_rate": 0.42485119047619047,
+     "change_rate": 1.0,
+     "changed": 8064,
+     "defect_pass_rate": 0.5751488095238095,
+     "rate_shift": 0.15029761904761907,
+     "verdicts": 8064
+    },
+    "CR6": {
+     "canonical_pass_rate": 0.6287977430555556,
+     "change_rate": 1.0,
+     "changed": 9216,
+     "defect_pass_rate": 0.3712022569444444,
+     "rate_shift": -0.25759548611111116,
+     "verdicts": 9216
+    },
+    "CR7": {
+     "canonical_pass_rate": 0.40999634502923976,
+     "change_rate": 1.0,
+     "changed": 10944,
+     "defect_pass_rate": 0.5900036549707602,
+     "rate_shift": 0.18000730994152048,
+     "verdicts": 10944
+    },
+    "CR8": {
+     "canonical_pass_rate": 0.5782490079365079,
+     "change_rate": 1.0,
+     "changed": 8064,
+     "defect_pass_rate": 0.42175099206349204,
+     "rate_shift": -0.15649801587301587,
+     "verdicts": 8064
+    },
+    "CR9": {
+     "canonical_pass_rate": 0.35477430555555556,
+     "change_rate": 1.0,
+     "changed": 11520,
+     "defect_pass_rate": 0.6452256944444444,
+     "rate_shift": 0.2904513888888889,
+     "verdicts": 11520
+    },
+    "CX1": {
+     "canonical_pass_rate": 0.0026041666666666665,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.0026041666666666665,
+     "rate_shift": 0.0,
+     "verdicts": 4608
+    },
+    "CX2": {
+     "canonical_pass_rate": 0.0045138888888888885,
+     "change_rate": 0.0006944444444444445,
+     "changed": 4,
+     "defect_pass_rate": 0.005208333333333333,
+     "rate_shift": 0.0006944444444444446,
+     "verdicts": 5760
+    },
+    "RF1": {
+     "canonical_pass_rate": 0.6062885802469136,
+     "change_rate": 1.0,
+     "changed": 5184,
+     "defect_pass_rate": 0.39371141975308643,
+     "rate_shift": -0.21257716049382713,
+     "verdicts": 5184
+    },
+    "RF10": {
+     "canonical_pass_rate": 0.44438844086021506,
+     "change_rate": 1.0,
+     "changed": 17856,
+     "defect_pass_rate": 0.555611559139785,
+     "rate_shift": 0.11122311827956993,
+     "verdicts": 17856
+    },
+    "RF11": {
+     "canonical_pass_rate": 0.4036281179138322,
+     "change_rate": 1.0,
+     "changed": 28224,
+     "defect_pass_rate": 0.5963718820861678,
+     "rate_shift": 0.19274376417233557,
+     "verdicts": 28224
+    },
+    "RF12": {
+     "canonical_pass_rate": 0.58984375,
+     "change_rate": 1.0,
+     "changed": 6912,
+     "defect_pass_rate": 0.41015625,
+     "rate_shift": -0.1796875,
+     "verdicts": 6912
+    },
+    "RF2": {
+     "canonical_pass_rate": 0.42592592592592593,
+     "change_rate": 1.0,
+     "changed": 5184,
+     "defect_pass_rate": 0.5740740740740741,
+     "rate_shift": 0.14814814814814814,
+     "verdicts": 5184
+    },
+    "RF3": {
+     "canonical_pass_rate": 0.6350308641975309,
+     "change_rate": 1.0,
+     "changed": 5184,
+     "defect_pass_rate": 0.36496913580246915,
+     "rate_shift": -0.2700617283950617,
+     "verdicts": 5184
+    },
+    "RF4": {
+     "canonical_pass_rate": 0.07862103174603174,
+     "change_rate": 1.0,
+     "changed": 4032,
+     "defect_pass_rate": 0.9213789682539683,
+     "rate_shift": 0.8427579365079365,
+     "verdicts": 4032
+    },
+    "RF5": {
+     "canonical_pass_rate": 0.37566773504273504,
+     "change_rate": 1.0,
+     "changed": 7488,
+     "defect_pass_rate": 0.6243322649572649,
+     "rate_shift": 0.24866452991452986,
+     "verdicts": 7488
+    },
+    "RF6": {
+     "canonical_pass_rate": 0.5197649572649573,
+     "change_rate": 1.0,
+     "changed": 7488,
+     "defect_pass_rate": 0.48023504273504275,
+     "rate_shift": -0.039529914529914556,
+     "verdicts": 7488
+    },
+    "RF7": {
+     "canonical_pass_rate": 0.0010416666666666667,
+     "change_rate": 1.0,
+     "changed": 14400,
+     "defect_pass_rate": 0.9989583333333333,
+     "rate_shift": 0.9979166666666666,
+     "verdicts": 14400
+    },
+    "RF8": {
+     "canonical_pass_rate": 0.34953703703703703,
+     "change_rate": 1.0,
+     "changed": 5184,
+     "defect_pass_rate": 0.6504629629629629,
+     "rate_shift": 0.3009259259259259,
+     "verdicts": 5184
+    },
+    "RF9": {
+     "canonical_pass_rate": 0.5158179012345679,
+     "change_rate": 1.0,
+     "changed": 15552,
+     "defect_pass_rate": 0.4841820987654321,
+     "rate_shift": -0.03163580246913583,
+     "verdicts": 15552
+    }
+   },
+   "numerator_swap": {
+    "CL7": {
+     "canonical_pass_rate": 0.27021329365079366,
+     "change_rate": 0.07824900793650794,
+     "changed": 1262,
+     "defect_pass_rate": 0.1939484126984127,
+     "rate_shift": -0.07626488095238096,
+     "verdicts": 16128
+    },
+    "CL8": {
+     "canonical_pass_rate": 0.21961805555555555,
+     "change_rate": 0.39849950396825395,
+     "changed": 6427,
+     "defect_pass_rate": 0.6147693452380952,
+     "rate_shift": 0.39515128968253965,
+     "verdicts": 16128
+    },
+    "CP4": {
+     "canonical_pass_rate": 0.2857862903225806,
+     "change_rate": 0.2319668458781362,
+     "changed": 4142,
+     "defect_pass_rate": 0.06759632616487456,
+     "rate_shift": -0.21818996415770608,
+     "verdicts": 17856
+    },
+    "CP7": {
+     "canonical_pass_rate": 0.3876915708812261,
+     "change_rate": 0.195522030651341,
+     "changed": 3266,
+     "defect_pass_rate": 0.19659961685823754,
+     "rate_shift": -0.19109195402298854,
+     "verdicts": 16704
+    },
+    "CR1": {
+     "canonical_pass_rate": 0.7689732142857143,
+     "change_rate": 0.6063988095238095,
+     "changed": 4890,
+     "defect_pass_rate": 0.1657986111111111,
+     "rate_shift": -0.6031746031746033,
+     "verdicts": 8064
+    },
+    "CR10": {
+     "canonical_pass_rate": 0.3305956196581197,
+     "change_rate": 0.44598023504273504,
+     "changed": 6679,
+     "defect_pass_rate": 0.7727029914529915,
+     "rate_shift": 0.4421073717948718,
+     "verdicts": 14976
+    },
+    "CR11": {
+     "canonical_pass_rate": 0.2668269230769231,
+     "change_rate": 0.2215099715099715,
+     "changed": 4976,
+     "defect_pass_rate": 0.048165954415954414,
+     "rate_shift": -0.21866096866096865,
+     "verdicts": 22464
+    },
+    "CR12": {
+     "canonical_pass_rate": 0.5974702380952381,
+     "change_rate": 0.21180555555555555,
+     "changed": 1708,
+     "defect_pass_rate": 0.42485119047619047,
+     "rate_shift": -0.17261904761904767,
+     "verdicts": 8064
+    },
+    "CR2": {
+     "canonical_pass_rate": 0.6418650793650794,
+     "change_rate": 0.2074652777777778,
+     "changed": 1673,
+     "defect_pass_rate": 0.5782490079365079,
+     "rate_shift": -0.06361607142857151,
+     "verdicts": 8064
+    },
+    "CR3": {
+     "canonical_pass_rate": 0.7911706349206349,
+     "change_rate": 0.4990079365079365,
+     "changed": 4024,
+     "defect_pass_rate": 0.32217261904761907,
+     "rate_shift": -0.4689980158730158,
+     "verdicts": 8064
+    },
+    "CR4": {
+     "canonical_pass_rate": 0.5365497076023392,
+     "change_rate": 0.3765533625730994,
+     "changed": 4121,
+     "defect_pass_rate": 0.8909904970760234,
+     "rate_shift": 0.3544407894736842,
+     "verdicts": 10944
+    },
+    "CR5": {
+     "canonical_pass_rate": 0.42485119047619047,
+     "change_rate": 0.574156746031746,
+     "changed": 4630,
+     "defect_pass_rate": 0.9990079365079365,
+     "rate_shift": 0.574156746031746,
+     "verdicts": 8064
+    },
+    "CR6": {
+     "canonical_pass_rate": 0.6287977430555556,
+     "change_rate": 0.0008680555555555555,
+     "changed": 8,
+     "defect_pass_rate": 0.6279296875,
+     "rate_shift": -0.0008680555555555802,
+     "verdicts": 9216
+    },
+    "CR7": {
+     "canonical_pass_rate": 0.40999634502923976,
+     "change_rate": 0.29870248538011696,
+     "changed": 3269,
+     "defect_pass_rate": 0.7015716374269005,
+     "rate_shift": 0.2915752923976608,
+     "verdicts": 10944
+    },
+    "CR8": {
+     "canonical_pass_rate": 0.5782490079365079,
+     "change_rate": 0.5502232142857143,
+     "changed": 4437,
+     "defect_pass_rate": 0.03521825396825397,
+     "rate_shift": -0.543030753968254,
+     "verdicts": 8064
+    },
+    "CR9": {
+     "canonical_pass_rate": 0.35477430555555556,
+     "change_rate": 0.4857638888888889,
+     "changed": 5596,
+     "defect_pass_rate": 0.83828125,
+     "rate_shift": 0.4835069444444444,
+     "verdicts": 11520
+    },
+    "CX1": {
+     "canonical_pass_rate": 0.0026041666666666665,
+     "change_rate": 0.022352430555555556,
+     "changed": 103,
+     "defect_pass_rate": 0.019748263888888888,
+     "rate_shift": 0.01714409722222222,
+     "verdicts": 4608
+    },
+    "CX2": {
+     "canonical_pass_rate": 0.0045138888888888885,
+     "change_rate": 0.0859375,
+     "changed": 495,
+     "defect_pass_rate": 0.08142361111111111,
+     "rate_shift": 0.07690972222222223,
+     "verdicts": 5760
+    },
+    "RF1": {
+     "canonical_pass_rate": 0.6062885802469136,
+     "change_rate": 0.5669367283950617,
+     "changed": 2939,
+     "defect_pass_rate": 0.04359567901234568,
+     "rate_shift": -0.5626929012345678,
+     "verdicts": 5184
+    },
+    "RF10": {
+     "canonical_pass_rate": 0.44438844086021506,
+     "change_rate": 0.36027105734767023,
+     "changed": 6433,
+     "defect_pass_rate": 0.8016353046594982,
+     "rate_shift": 0.3572468637992831,
+     "verdicts": 17856
+    },
+    "RF11": {
+     "canonical_pass_rate": 0.4036281179138322,
+     "change_rate": 0.21145124716553287,
+     "changed": 5968,
+     "defect_pass_rate": 0.19749149659863946,
+     "rate_shift": -0.20613662131519273,
+     "verdicts": 28224
+    },
+    "RF12": {
+     "canonical_pass_rate": 0.58984375,
+     "change_rate": 0.2277199074074074,
+     "changed": 1574,
+     "defect_pass_rate": 0.40697337962962965,
+     "rate_shift": -0.18287037037037035,
+     "verdicts": 6912
+    },
+    "RF2": {
+     "canonical_pass_rate": 0.42592592592592593,
+     "change_rate": 0.26350308641975306,
+     "changed": 1366,
+     "defect_pass_rate": 0.34953703703703703,
+     "rate_shift": -0.0763888888888889,
+     "verdicts": 5184
+    },
+    "RF3": {
+     "canonical_pass_rate": 0.6350308641975309,
+     "change_rate": 0.529320987654321,
+     "changed": 2744,
+     "defect_pass_rate": 0.13464506172839505,
+     "rate_shift": -0.5003858024691358,
+     "verdicts": 5184
+    },
+    "RF4": {
+     "canonical_pass_rate": 0.07862103174603174,
+     "change_rate": 0.49528769841269843,
+     "changed": 1997,
+     "defect_pass_rate": 0.5500992063492064,
+     "rate_shift": 0.47147817460317465,
+     "verdicts": 4032
+    },
+    "RF5": {
+     "canonical_pass_rate": 0.37566773504273504,
+     "change_rate": 0.6203258547008547,
+     "changed": 4645,
+     "defect_pass_rate": 0.9959935897435898,
+     "rate_shift": 0.6203258547008548,
+     "verdicts": 7488
+    },
+    "RF6": {
+     "canonical_pass_rate": 0.5197649572649573,
+     "change_rate": 0.0010683760683760685,
+     "changed": 8,
+     "defect_pass_rate": 0.5208333333333334,
+     "rate_shift": 0.0010683760683760646,
+     "verdicts": 7488
+    },
+    "RF7": {
+     "canonical_pass_rate": 0.0010416666666666667,
+     "change_rate": 0.04416666666666667,
+     "changed": 636,
+     "defect_pass_rate": 0.04479166666666667,
+     "rate_shift": 0.04375,
+     "verdicts": 14400
+    },
+    "RF8": {
+     "canonical_pass_rate": 0.34953703703703703,
+     "change_rate": 0.3489583333333333,
+     "changed": 1809,
+     "defect_pass_rate": 0.0021219135802469135,
+     "rate_shift": -0.3474151234567901,
+     "verdicts": 5184
+    },
+    "RF9": {
+     "canonical_pass_rate": 0.5158179012345679,
+     "change_rate": 0.3540380658436214,
+     "changed": 5506,
+     "defect_pass_rate": 0.8683127572016461,
+     "rate_shift": 0.3524948559670782,
+     "verdicts": 15552
+    }
+   },
+   "off_by_one": {
+    "CL7": {
+     "canonical_pass_rate": 0.27021329365079366,
+     "change_rate": 0.005766369047619048,
+     "changed": 93,
+     "defect_pass_rate": 0.2644469246031746,
+     "rate_shift": -0.005766369047619069,
+     "verdicts": 16128
+    },
+    "CL8": {
+     "canonical_pass_rate": 0.21961805555555555,
+     "change_rate": 0.035032242063492064,
+     "changed": 565,
+     "defect_pass_rate": 0.1845858134920635,
+     "rate_shift": -0.035032242063492064,
+     "verdicts": 16128
+    },
+    "CP4": {
+     "canonical_pass_rate": 0.2857862903225806,
+     "change_rate": 0.032034050179211467,
+     "changed": 572,
+     "defect_pass_rate": 0.25375224014336917,
+     "rate_shift": -0.03203405017921146,
+     "verdicts": 17856
+    },
+    "CP7": {
+     "canonical_pass_rate": 0.3876915708812261,
+     "change_rate": 0.017600574712643677,
+     "changed": 294,
+     "defect_pass_rate": 0.3700909961685824,
+     "rate_shift": -0.017600574712643702,
+     "verdicts": 16704
+    },
+    "CR1": {
+     "canonical_pass_rate": 0.7689732142857143,
+     "change_rate": 0.06808035714285714,
+     "changed": 549,
+     "defect_pass_rate": 0.7008928571428571,
+     "rate_shift": -0.0680803571428572,
+     "verdicts": 8064
+    },
+    "CR10": {
+     "canonical_pass_rate": 0.3305956196581197,
+     "change_rate": 0.03732638888888889,
+     "changed": 559,
+     "defect_pass_rate": 0.2932692307692308,
+     "rate_shift": -0.037326388888888895,
+     "verdicts": 14976
+    },
+    "CR11": {
+     "canonical_pass_rate": 0.2668269230769231,
+     "change_rate": 0.024350071225071226,
+     "changed": 547,
+     "defect_pass_rate": 0.24247685185185186,
+     "rate_shift": -0.024350071225071213,
+     "verdicts": 22464
+    },
+    "CR12": {
+     "canonical_pass_rate": 0.5974702380952381,
+     "change_rate": 0.07142857142857142,
+     "changed": 576,
+     "defect_pass_rate": 0.5260416666666666,
+     "rate_shift": -0.07142857142857151,
+     "verdicts": 8064
+    },
+    "CR2": {
+     "canonical_pass_rate": 0.6418650793650794,
+     "change_rate": 0.07080853174603174,
+     "changed": 571,
+     "defect_pass_rate": 0.5710565476190477,
+     "rate_shift": -0.07080853174603174,
+     "verdicts": 8064
+    },
+    "CR3": {
+     "canonical_pass_rate": 0.7911706349206349,
+     "change_rate": 0.06287202380952381,
+     "changed": 507,
+     "defect_pass_rate": 0.7282986111111112,
+     "rate_shift": -0.06287202380952372,
+     "verdicts": 8064
+    },
+    "CR4": {
+     "canonical_pass_rate": 0.5365497076023392,
+     "change_rate": 0.052083333333333336,
+     "changed": 570,
+     "defect_pass_rate": 0.48446637426900585,
+     "rate_shift": -0.05208333333333337,
+     "verdicts": 10944
+    },
+    "CR5": {
+     "canonical_pass_rate": 0.42485119047619047,
+     "change_rate": 0.06808035714285714,
+     "changed": 549,
+     "defect_pass_rate": 0.3567708333333333,
+     "rate_shift": -0.06808035714285715,
+     "verdicts": 8064
+    },
+    "CR6": {
+     "canonical_pass_rate": 0.6287977430555556,
+     "change_rate": 0.0625,
+     "changed": 576,
+     "defect_pass_rate": 0.5662977430555556,
+     "rate_shift": -0.0625,
+     "verdicts": 9216
+    },
+    "CR7": {
+     "canonical_pass_rate": 0.40999634502923976,
+     "change_rate": 0.026589912280701754,
+     "changed": 291,
+     "defect_pass_rate": 0.38340643274853803,
+     "rate_shift": -0.026589912280701733,
+     "verdicts": 10944
+    },
+    "CR8": {
+     "canonical_pass_rate": 0.5782490079365079,
+     "change_rate": 0.06932043650793651,
+     "changed": 559,
+     "defect_pass_rate": 0.5089285714285714,
+     "rate_shift": -0.06932043650793651,
+     "verdicts": 8064
+    },
+    "CR9": {
+     "canonical_pass_rate": 0.35477430555555556,
+     "change_rate": 0.04565972222222222,
+     "changed": 526,
+     "defect_pass_rate": 0.30911458333333336,
+     "rate_shift": -0.0456597222222222,
+     "verdicts": 11520
+    },
+    "CX1": {
+     "canonical_pass_rate": 0.0026041666666666665,
+     "change_rate": 0.12760416666666666,
+     "changed": 588,
+     "defect_pass_rate": 0.125,
+     "rate_shift": 0.12239583333333333,
+     "verdicts": 4608
+    },
+    "CX2": {
+     "canonical_pass_rate": 0.0045138888888888885,
+     "change_rate": 0.10451388888888889,
+     "changed": 602,
+     "defect_pass_rate": 0.1,
+     "rate_shift": 0.09548611111111112,
+     "verdicts": 5760
+    },
+    "RF1": {
+     "canonical_pass_rate": 0.6062885802469136,
+     "change_rate": 0.10821759259259259,
+     "changed": 561,
+     "defect_pass_rate": 0.498070987654321,
+     "rate_shift": -0.10821759259259256,
+     "verdicts": 5184
+    },
+    "RF10": {
+     "canonical_pass_rate": 0.44438844086021506,
+     "change_rate": 0.03220206093189964,
+     "changed": 575,
+     "defect_pass_rate": 0.4121863799283154,
+     "rate_shift": -0.032202060931899645,
+     "verdicts": 17856
+    },
+    "RF11": {
+     "canonical_pass_rate": 0.4036281179138322,
+     "change_rate": 0.020337301587301588,
+     "changed": 574,
+     "defect_pass_rate": 0.3832908163265306,
+     "rate_shift": -0.02033730158730157,
+     "verdicts": 28224
+    },
+    "RF12": {
+     "canonical_pass_rate": 0.58984375,
+     "change_rate": 0.08333333333333333,
+     "changed": 576,
+     "defect_pass_rate": 0.5065104166666666,
+     "rate_shift": -0.08333333333333337,
+     "verdicts": 6912
+    },
+    "RF2": {
+     "canonical_pass_rate": 0.42592592592592593,
+     "change_rate": 0.09683641975308642,
+     "changed": 502,
+     "defect_pass_rate": 0.3290895061728395,
+     "rate_shift": -0.09683641975308643,
+     "verdicts": 5184
+    },
+    "RF3": {
+     "canonical_pass_rate": 0.6350308641975309,
+     "change_rate": 0.10513117283950617,
+     "changed": 545,
+     "defect_pass_rate": 0.5298996913580247,
+     "rate_shift": -0.10513117283950613,
+     "verdicts": 5184
+    },
+    "RF4": {
+     "canonical_pass_rate": 0.07862103174603174,
+     "change_rate": 0.03125,
+     "changed": 126,
+     "defect_pass_rate": 0.047371031746031744,
+     "rate_shift": -0.03125,
+     "verdicts": 4032
+    },
+    "RF5": {
+     "canonical_pass_rate": 0.37566773504273504,
+     "change_rate": 0.07318376068376069,
+     "changed": 548,
+     "defect_pass_rate": 0.30248397435897434,
+     "rate_shift": -0.0731837606837607,
+     "verdicts": 7488
+    },
+    "RF6": {
+     "canonical_pass_rate": 0.5197649572649573,
+     "change_rate": 0.07625534188034189,
+     "changed": 571,
+     "defect_pass_rate": 0.44350961538461536,
+     "rate_shift": -0.07625534188034194,
+     "verdicts": 7488
+    },
+    "RF7": {
+     "canonical_pass_rate": 0.0010416666666666667,
+     "change_rate": 0.00034722222222222224,
+     "changed": 5,
+     "defect_pass_rate": 0.0006944444444444445,
+     "rate_shift": -0.0003472222222222222,
+     "verdicts": 14400
+    },
+    "RF8": {
+     "canonical_pass_rate": 0.34953703703703703,
+     "change_rate": 0.08449074074074074,
+     "changed": 438,
+     "defect_pass_rate": 0.2650462962962963,
+     "rate_shift": -0.08449074074074076,
+     "verdicts": 5184
+    },
+    "RF9": {
+     "canonical_pass_rate": 0.5158179012345679,
+     "change_rate": 0.03665123456790124,
+     "changed": 570,
+     "defect_pass_rate": 0.4791666666666667,
+     "rate_shift": -0.03665123456790126,
+     "verdicts": 15552
+    }
+   },
+   "segmentation_drift": {
+    "CL7": {
+     "canonical_pass_rate": 0.27021329365079366,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.27021329365079366,
+     "rate_shift": 0.0,
+     "verdicts": 16128
+    },
+    "CL8": {
+     "canonical_pass_rate": 0.21961805555555555,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.21961805555555555,
+     "rate_shift": 0.0,
+     "verdicts": 16128
+    },
+    "CP4": {
+     "canonical_pass_rate": 0.2857862903225806,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.2857862903225806,
+     "rate_shift": 0.0,
+     "verdicts": 17856
+    },
+    "CP7": {
+     "canonical_pass_rate": 0.3876915708812261,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.3876915708812261,
+     "rate_shift": 0.0,
+     "verdicts": 16704
+    },
+    "CR1": {
+     "canonical_pass_rate": 0.7689732142857143,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.7689732142857143,
+     "rate_shift": 0.0,
+     "verdicts": 8064
+    },
+    "CR10": {
+     "canonical_pass_rate": 0.3305956196581197,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.3305956196581197,
+     "rate_shift": 0.0,
+     "verdicts": 14976
+    },
+    "CR11": {
+     "canonical_pass_rate": 0.2668269230769231,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.2668269230769231,
+     "rate_shift": 0.0,
+     "verdicts": 22464
+    },
+    "CR12": {
+     "canonical_pass_rate": 0.5974702380952381,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.5974702380952381,
+     "rate_shift": 0.0,
+     "verdicts": 8064
+    },
+    "CR2": {
+     "canonical_pass_rate": 0.6418650793650794,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.6418650793650794,
+     "rate_shift": 0.0,
+     "verdicts": 8064
+    },
+    "CR3": {
+     "canonical_pass_rate": 0.7911706349206349,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.7911706349206349,
+     "rate_shift": 0.0,
+     "verdicts": 8064
+    },
+    "CR4": {
+     "canonical_pass_rate": 0.5365497076023392,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.5365497076023392,
+     "rate_shift": 0.0,
+     "verdicts": 10944
+    },
+    "CR5": {
+     "canonical_pass_rate": 0.42485119047619047,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.42485119047619047,
+     "rate_shift": 0.0,
+     "verdicts": 8064
+    },
+    "CR6": {
+     "canonical_pass_rate": 0.6287977430555556,
+     "change_rate": 0.3712022569444444,
+     "changed": 3421,
+     "defect_pass_rate": 1.0,
+     "rate_shift": 0.3712022569444444,
+     "verdicts": 9216
+    },
+    "CR7": {
+     "canonical_pass_rate": 0.40999634502923976,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.40999634502923976,
+     "rate_shift": 0.0,
+     "verdicts": 10944
+    },
+    "CR8": {
+     "canonical_pass_rate": 0.5782490079365079,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.5782490079365079,
+     "rate_shift": 0.0,
+     "verdicts": 8064
+    },
+    "CR9": {
+     "canonical_pass_rate": 0.35477430555555556,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.35477430555555556,
+     "rate_shift": 0.0,
+     "verdicts": 11520
+    },
+    "CX1": {
+     "canonical_pass_rate": 0.0026041666666666665,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.0026041666666666665,
+     "rate_shift": 0.0,
+     "verdicts": 4608
+    },
+    "CX2": {
+     "canonical_pass_rate": 0.0045138888888888885,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.0045138888888888885,
+     "rate_shift": 0.0,
+     "verdicts": 5760
+    },
+    "RF1": {
+     "canonical_pass_rate": 0.6062885802469136,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.6062885802469136,
+     "rate_shift": 0.0,
+     "verdicts": 5184
+    },
+    "RF10": {
+     "canonical_pass_rate": 0.44438844086021506,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.44438844086021506,
+     "rate_shift": 0.0,
+     "verdicts": 17856
+    },
+    "RF11": {
+     "canonical_pass_rate": 0.4036281179138322,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.4036281179138322,
+     "rate_shift": 0.0,
+     "verdicts": 28224
+    },
+    "RF12": {
+     "canonical_pass_rate": 0.58984375,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.58984375,
+     "rate_shift": 0.0,
+     "verdicts": 6912
+    },
+    "RF2": {
+     "canonical_pass_rate": 0.42592592592592593,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.42592592592592593,
+     "rate_shift": 0.0,
+     "verdicts": 5184
+    },
+    "RF3": {
+     "canonical_pass_rate": 0.6350308641975309,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.6350308641975309,
+     "rate_shift": 0.0,
+     "verdicts": 5184
+    },
+    "RF4": {
+     "canonical_pass_rate": 0.07862103174603174,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.07862103174603174,
+     "rate_shift": 0.0,
+     "verdicts": 4032
+    },
+    "RF5": {
+     "canonical_pass_rate": 0.37566773504273504,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.37566773504273504,
+     "rate_shift": 0.0,
+     "verdicts": 7488
+    },
+    "RF6": {
+     "canonical_pass_rate": 0.5197649572649573,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.5197649572649573,
+     "rate_shift": 0.0,
+     "verdicts": 7488
+    },
+    "RF7": {
+     "canonical_pass_rate": 0.0010416666666666667,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.0010416666666666667,
+     "rate_shift": 0.0,
+     "verdicts": 14400
+    },
+    "RF8": {
+     "canonical_pass_rate": 0.34953703703703703,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.34953703703703703,
+     "rate_shift": 0.0,
+     "verdicts": 5184
+    },
+    "RF9": {
+     "canonical_pass_rate": 0.5158179012345679,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.5158179012345679,
+     "rate_shift": 0.0,
+     "verdicts": 15552
+    }
+   },
+   "vacuity_ignored": {
+    "CL7": {
+     "canonical_pass_rate": 0.27021329365079366,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.27021329365079366,
+     "rate_shift": 0.0,
+     "verdicts": 16128
+    },
+    "CL8": {
+     "canonical_pass_rate": 0.21961805555555555,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.21961805555555555,
+     "rate_shift": 0.0,
+     "verdicts": 16128
+    },
+    "CP4": {
+     "canonical_pass_rate": 0.2857862903225806,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.2857862903225806,
+     "rate_shift": 0.0,
+     "verdicts": 17856
+    },
+    "CP7": {
+     "canonical_pass_rate": 0.3876915708812261,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.3876915708812261,
+     "rate_shift": 0.0,
+     "verdicts": 16704
+    },
+    "CR1": {
+     "canonical_pass_rate": 0.7689732142857143,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.7689732142857143,
+     "rate_shift": 0.0,
+     "verdicts": 8064
+    },
+    "CR10": {
+     "canonical_pass_rate": 0.3305956196581197,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.3305956196581197,
+     "rate_shift": 0.0,
+     "verdicts": 14976
+    },
+    "CR11": {
+     "canonical_pass_rate": 0.2668269230769231,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.2668269230769231,
+     "rate_shift": 0.0,
+     "verdicts": 22464
+    },
+    "CR12": {
+     "canonical_pass_rate": 0.5974702380952381,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.5974702380952381,
+     "rate_shift": 0.0,
+     "verdicts": 8064
+    },
+    "CR2": {
+     "canonical_pass_rate": 0.6418650793650794,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.6418650793650794,
+     "rate_shift": 0.0,
+     "verdicts": 8064
+    },
+    "CR3": {
+     "canonical_pass_rate": 0.7911706349206349,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.7911706349206349,
+     "rate_shift": 0.0,
+     "verdicts": 8064
+    },
+    "CR4": {
+     "canonical_pass_rate": 0.5365497076023392,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.5365497076023392,
+     "rate_shift": 0.0,
+     "verdicts": 10944
+    },
+    "CR5": {
+     "canonical_pass_rate": 0.42485119047619047,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.42485119047619047,
+     "rate_shift": 0.0,
+     "verdicts": 8064
+    },
+    "CR6": {
+     "canonical_pass_rate": 0.6287977430555556,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.6287977430555556,
+     "rate_shift": 0.0,
+     "verdicts": 9216
+    },
+    "CR7": {
+     "canonical_pass_rate": 0.40999634502923976,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.40999634502923976,
+     "rate_shift": 0.0,
+     "verdicts": 10944
+    },
+    "CR8": {
+     "canonical_pass_rate": 0.5782490079365079,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.5782490079365079,
+     "rate_shift": 0.0,
+     "verdicts": 8064
+    },
+    "CR9": {
+     "canonical_pass_rate": 0.35477430555555556,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.35477430555555556,
+     "rate_shift": 0.0,
+     "verdicts": 11520
+    },
+    "CX1": {
+     "canonical_pass_rate": 0.0026041666666666665,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.0026041666666666665,
+     "rate_shift": 0.0,
+     "verdicts": 4608
+    },
+    "CX2": {
+     "canonical_pass_rate": 0.0045138888888888885,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.0045138888888888885,
+     "rate_shift": 0.0,
+     "verdicts": 5760
+    },
+    "RF1": {
+     "canonical_pass_rate": 0.6062885802469136,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.6062885802469136,
+     "rate_shift": 0.0,
+     "verdicts": 5184
+    },
+    "RF10": {
+     "canonical_pass_rate": 0.44438844086021506,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.44438844086021506,
+     "rate_shift": 0.0,
+     "verdicts": 17856
+    },
+    "RF11": {
+     "canonical_pass_rate": 0.4036281179138322,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.4036281179138322,
+     "rate_shift": 0.0,
+     "verdicts": 28224
+    },
+    "RF12": {
+     "canonical_pass_rate": 0.58984375,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.58984375,
+     "rate_shift": 0.0,
+     "verdicts": 6912
+    },
+    "RF2": {
+     "canonical_pass_rate": 0.42592592592592593,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.42592592592592593,
+     "rate_shift": 0.0,
+     "verdicts": 5184
+    },
+    "RF3": {
+     "canonical_pass_rate": 0.6350308641975309,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.6350308641975309,
+     "rate_shift": 0.0,
+     "verdicts": 5184
+    },
+    "RF4": {
+     "canonical_pass_rate": 0.07862103174603174,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.07862103174603174,
+     "rate_shift": 0.0,
+     "verdicts": 4032
+    },
+    "RF5": {
+     "canonical_pass_rate": 0.37566773504273504,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.37566773504273504,
+     "rate_shift": 0.0,
+     "verdicts": 7488
+    },
+    "RF6": {
+     "canonical_pass_rate": 0.5197649572649573,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.5197649572649573,
+     "rate_shift": 0.0,
+     "verdicts": 7488
+    },
+    "RF7": {
+     "canonical_pass_rate": 0.0010416666666666667,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.0010416666666666667,
+     "rate_shift": 0.0,
+     "verdicts": 14400
+    },
+    "RF8": {
+     "canonical_pass_rate": 0.34953703703703703,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.34953703703703703,
+     "rate_shift": 0.0,
+     "verdicts": 5184
+    },
+    "RF9": {
+     "canonical_pass_rate": 0.5158179012345679,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.5158179012345679,
+     "rate_shift": 0.0,
+     "verdicts": 15552
+    }
+   }
+  },
+  "by_feature_group": {
+   "denominator_swap": {
+    "b_initial": {
+     "canonical_pass_rate": 0.7053140096618358,
+     "change_rate": 0.1354921497584541,
+     "changed": 1795,
+     "defect_pass_rate": 0.8408061594202898,
+     "rate_shift": 0.13549214975845403,
+     "verdicts": 13248
+    },
+    "capital": {
+     "canonical_pass_rate": 0.5799209770114943,
+     "change_rate": 0.1939655172413793,
+     "changed": 3240,
+     "defect_pass_rate": 0.7738864942528736,
+     "rate_shift": 0.19396551724137934,
+     "verdicts": 16704
+    },
+    "comma": {
+     "canonical_pass_rate": 0.4011702674897119,
+     "change_rate": 0.26974022633744854,
+     "changed": 4195,
+     "defect_pass_rate": 0.6709104938271605,
+     "rate_shift": 0.2697402263374486,
+     "verdicts": 15552
+    },
+    "doubled_letter": {
+     "canonical_pass_rate": 0.3439327485380117,
+     "change_rate": 0.3008345516569201,
+     "changed": 9877,
+     "defect_pass_rate": 0.3429885477582846,
+     "rate_shift": -0.0009442007797271224,
+     "verdicts": 32832
+    },
+    "ing_final": {
+     "canonical_pass_rate": 0.5573671497584541,
+     "change_rate": 0.20584239130434784,
+     "changed": 2727,
+     "defect_pass_rate": 0.7632095410628019,
+     "rate_shift": 0.20584239130434778,
+     "verdicts": 13248
+    },
+    "letter_a": {
+     "canonical_pass_rate": 0.2636138613861386,
+     "change_rate": 0.22230816831683167,
+     "changed": 12933,
+     "defect_pass_rate": 0.2632872662266227,
+     "rate_shift": -0.0003265951595159411,
+     "verdicts": 58176
+    },
+    "marker": {
+     "canonical_pass_rate": 0.0026041666666666665,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.0026041666666666665,
+     "rate_shift": 0.0,
+     "verdicts": 4608
+    },
+    "one_letter": {
+     "canonical_pass_rate": 0.730072463768116,
+     "change_rate": 0.12160326086956522,
+     "changed": 1611,
+     "defect_pass_rate": 0.8516757246376812,
+     "rate_shift": 0.12160326086956519,
+     "verdicts": 13248
+    },
+    "s_final": {
+     "canonical_pass_rate": 0.3924829434697856,
+     "change_rate": 0.2673611111111111,
+     "changed": 8778,
+     "defect_pass_rate": 0.6598440545808967,
+     "rate_shift": 0.2673611111111111,
+     "verdicts": 32832
+    },
+    "semicolon": {
+     "canonical_pass_rate": 0.0045138888888888885,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.0045138888888888885,
+     "rate_shift": 0.0,
+     "verdicts": 5760
+    },
+    "sentence": {
+     "canonical_pass_rate": 0.5939503205128205,
+     "change_rate": 0.20733173076923078,
+     "changed": 3105,
+     "defect_pass_rate": 0.8012820512820513,
+     "rate_shift": 0.20733173076923084,
+     "verdicts": 14976
+    },
+    "t_initial": {
+     "canonical_pass_rate": 0.44728871158392436,
+     "change_rate": 0.24183658392434987,
+     "changed": 6547,
+     "defect_pass_rate": 0.6891252955082743,
+     "rate_shift": 0.24183658392434992,
+     "verdicts": 27072
+    },
+    "vowel_initial": {
+     "canonical_pass_rate": 0.34300031565656564,
+     "change_rate": 0.2911931818181818,
+     "changed": 14760,
+     "defect_pass_rate": 0.6341934974747475,
+     "rate_shift": 0.2911931818181819,
+     "verdicts": 50688
+    },
+    "y_final": {
+     "canonical_pass_rate": 0.34099264705882354,
+     "change_rate": 0.1073665577342048,
+     "changed": 3154,
+     "defect_pass_rate": 0.4483592047930283,
+     "rate_shift": 0.10736655773420478,
+     "verdicts": 29376
+    }
+   },
+   "inequality_flip": {
+    "b_initial": {
+     "canonical_pass_rate": 0.7053140096618358,
+     "change_rate": 1.0,
+     "changed": 13248,
+     "defect_pass_rate": 0.2946859903381642,
+     "rate_shift": -0.41062801932367154,
+     "verdicts": 13248
+    },
+    "capital": {
+     "canonical_pass_rate": 0.5799209770114943,
+     "change_rate": 1.0,
+     "changed": 16704,
+     "defect_pass_rate": 0.42007902298850575,
+     "rate_shift": -0.1598419540229885,
+     "verdicts": 16704
+    },
+    "comma": {
+     "canonical_pass_rate": 0.4011702674897119,
+     "change_rate": 1.0,
+     "changed": 15552,
+     "defect_pass_rate": 0.598829732510288,
+     "rate_shift": 0.19765946502057613,
+     "verdicts": 15552
+    },
+    "doubled_letter": {
+     "canonical_pass_rate": 0.3439327485380117,
+     "change_rate": 1.0,
+     "changed": 32832,
+     "defect_pass_rate": 0.6560672514619883,
+     "rate_shift": 0.3121345029239766,
+     "verdicts": 32832
+    },
+    "ing_final": {
+     "canonical_pass_rate": 0.5573671497584541,
+     "change_rate": 1.0,
+     "changed": 13248,
+     "defect_pass_rate": 0.4426328502415459,
+     "rate_shift": -0.11473429951690822,
+     "verdicts": 13248
+    },
+    "letter_a": {
+     "canonical_pass_rate": 0.2636138613861386,
+     "change_rate": 1.0,
+     "changed": 58176,
+     "defect_pass_rate": 0.7363861386138614,
+     "rate_shift": 0.47277227722772275,
+     "verdicts": 58176
+    },
+    "marker": {
+     "canonical_pass_rate": 0.0026041666666666665,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.0026041666666666665,
+     "rate_shift": 0.0,
+     "verdicts": 4608
+    },
+    "one_letter": {
+     "canonical_pass_rate": 0.730072463768116,
+     "change_rate": 1.0,
+     "changed": 13248,
+     "defect_pass_rate": 0.26992753623188404,
+     "rate_shift": -0.46014492753623193,
+     "verdicts": 13248
+    },
+    "s_final": {
+     "canonical_pass_rate": 0.3924829434697856,
+     "change_rate": 1.0,
+     "changed": 32832,
+     "defect_pass_rate": 0.6075170565302144,
+     "rate_shift": 0.2150341130604288,
+     "verdicts": 32832
+    },
+    "semicolon": {
+     "canonical_pass_rate": 0.0045138888888888885,
+     "change_rate": 0.0006944444444444445,
+     "changed": 4,
+     "defect_pass_rate": 0.005208333333333333,
+     "rate_shift": 0.0006944444444444446,
+     "verdicts": 5760
+    },
+    "sentence": {
+     "canonical_pass_rate": 0.5939503205128205,
+     "change_rate": 1.0,
+     "changed": 14976,
+     "defect_pass_rate": 0.40604967948717946,
+     "rate_shift": -0.18790064102564102,
+     "verdicts": 14976
+    },
+    "t_initial": {
+     "canonical_pass_rate": 0.44728871158392436,
+     "change_rate": 1.0,
+     "changed": 27072,
+     "defect_pass_rate": 0.5527112884160756,
+     "rate_shift": 0.10542257683215128,
+     "verdicts": 27072
+    },
+    "vowel_initial": {
+     "canonical_pass_rate": 0.34300031565656564,
+     "change_rate": 1.0,
+     "changed": 50688,
+     "defect_pass_rate": 0.6569996843434344,
+     "rate_shift": 0.31399936868686873,
+     "verdicts": 50688
+    },
+    "y_final": {
+     "canonical_pass_rate": 0.34099264705882354,
+     "change_rate": 1.0,
+     "changed": 29376,
+     "defect_pass_rate": 0.6590073529411765,
+     "rate_shift": 0.318014705882353,
+     "verdicts": 29376
+    }
+   },
+   "numerator_swap": {
+    "b_initial": {
+     "canonical_pass_rate": 0.7053140096618358,
+     "change_rate": 0.5909571256038647,
+     "changed": 7829,
+     "defect_pass_rate": 0.11798007246376811,
+     "rate_shift": -0.5873339371980677,
+     "verdicts": 13248
+    },
+    "capital": {
+     "canonical_pass_rate": 0.5799209770114943,
+     "change_rate": 0.0009578544061302681,
+     "changed": 16,
+     "defect_pass_rate": 0.5799209770114943,
+     "rate_shift": 0.0,
+     "verdicts": 16704
+    },
+    "comma": {
+     "canonical_pass_rate": 0.4011702674897119,
+     "change_rate": 0.5963863168724279,
+     "changed": 9275,
+     "defect_pass_rate": 0.9975565843621399,
+     "rate_shift": 0.5963863168724279,
+     "verdicts": 15552
+    },
+    "doubled_letter": {
+     "canonical_pass_rate": 0.3439327485380117,
+     "change_rate": 0.3125,
+     "changed": 10260,
+     "defect_pass_rate": 0.40131578947368424,
+     "rate_shift": 0.057383040935672536,
+     "verdicts": 32832
+    },
+    "ing_final": {
+     "canonical_pass_rate": 0.5573671497584541,
+     "change_rate": 0.229393115942029,
+     "changed": 3039,
+     "defect_pass_rate": 0.4887530193236715,
+     "rate_shift": -0.06861413043478265,
+     "verdicts": 13248
+    },
+    "letter_a": {
+     "canonical_pass_rate": 0.2636138613861386,
+     "change_rate": 0.14495668316831684,
+     "changed": 8433,
+     "defect_pass_rate": 0.25328314081408143,
+     "rate_shift": -0.010330720572057195,
+     "verdicts": 58176
+    },
+    "marker": {
+     "canonical_pass_rate": 0.0026041666666666665,
+     "change_rate": 0.022352430555555556,
+     "changed": 103,
+     "defect_pass_rate": 0.019748263888888888,
+     "rate_shift": 0.01714409722222222,
+     "verdicts": 4608
+    },
+    "one_letter": {
+     "canonical_pass_rate": 0.730072463768116,
+     "change_rate": 0.5108695652173914,
+     "changed": 6768,
+     "defect_pass_rate": 0.24879227053140096,
+     "rate_shift": -0.481280193236715,
+     "verdicts": 13248
+    },
+    "s_final": {
+     "canonical_pass_rate": 0.3924829434697856,
+     "change_rate": 0.3993664717348928,
+     "changed": 13112,
+     "defect_pass_rate": 0.7884381091617934,
+     "rate_shift": 0.3959551656920078,
+     "verdicts": 32832
+    },
+    "semicolon": {
+     "canonical_pass_rate": 0.0045138888888888885,
+     "change_rate": 0.0859375,
+     "changed": 495,
+     "defect_pass_rate": 0.08142361111111111,
+     "rate_shift": 0.07690972222222223,
+     "verdicts": 5760
+    },
+    "sentence": {
+     "canonical_pass_rate": 0.5939503205128205,
+     "change_rate": 0.21915064102564102,
+     "changed": 3282,
+     "defect_pass_rate": 0.41659989316239315,
+     "rate_shift": -0.17735042735042733,
+     "verdicts": 14976
+    },
+    "t_initial": {
+     "canonical_pass_rate": 0.44728871158392436,
+     "change_rate": 0.41009160756501184,
+     "changed": 11102,
+     "defect_pass_rate": 0.8555333924349882,
+     "rate_shift": 0.4082446808510638,
+     "verdicts": 27072
+    },
+    "vowel_initial": {
+     "canonical_pass_rate": 0.34300031565656564,
+     "change_rate": 0.2159090909090909,
+     "changed": 10944,
+     "defect_pass_rate": 0.13131313131313133,
+     "rate_shift": -0.2116871843434343,
+     "verdicts": 50688
+    },
+    "y_final": {
+     "canonical_pass_rate": 0.34099264705882354,
+     "change_rate": 0.43140659041394336,
+     "changed": 12673,
+     "defect_pass_rate": 0.34756263616557737,
+     "rate_shift": 0.006569989106753826,
+     "verdicts": 29376
+    }
+   },
+   "off_by_one": {
+    "b_initial": {
+     "canonical_pass_rate": 0.7053140096618358,
+     "change_rate": 0.08378623188405797,
+     "changed": 1110,
+     "defect_pass_rate": 0.6215277777777778,
+     "rate_shift": -0.08378623188405798,
+     "verdicts": 13248
+    },
+    "capital": {
+     "canonical_pass_rate": 0.5799209770114943,
+     "change_rate": 0.0686661877394636,
+     "changed": 1147,
+     "defect_pass_rate": 0.5112547892720306,
+     "rate_shift": -0.06866618773946365,
+     "verdicts": 16704
+    },
+    "comma": {
+     "canonical_pass_rate": 0.4011702674897119,
+     "change_rate": 0.07053755144032922,
+     "changed": 1097,
+     "defect_pass_rate": 0.3306327160493827,
+     "rate_shift": -0.0705375514403292,
+     "verdicts": 15552
+    },
+    "doubled_letter": {
+     "canonical_pass_rate": 0.3439327485380117,
+     "change_rate": 0.03862085769980507,
+     "changed": 1268,
+     "defect_pass_rate": 0.30531189083820665,
+     "rate_shift": -0.038620857699805056,
+     "verdicts": 32832
+    },
+    "ing_final": {
+     "canonical_pass_rate": 0.5573671497584541,
+     "change_rate": 0.0809933574879227,
+     "changed": 1073,
+     "defect_pass_rate": 0.4763737922705314,
+     "rate_shift": -0.08099335748792275,
+     "verdicts": 13248
+    },
+    "letter_a": {
+     "canonical_pass_rate": 0.2636138613861386,
+     "change_rate": 0.011740236523652366,
+     "changed": 683,
+     "defect_pass_rate": 0.25187362486248627,
+     "rate_shift": -0.011740236523652359,
+     "verdicts": 58176
+    },
+    "marker": {
+     "canonical_pass_rate": 0.0026041666666666665,
+     "change_rate": 0.12760416666666666,
+     "changed": 588,
+     "defect_pass_rate": 0.125,
+     "rate_shift": 0.12239583333333333,
+     "verdicts": 4608
+    },
+    "one_letter": {
+     "canonical_pass_rate": 0.730072463768116,
+     "change_rate": 0.07940821256038648,
+     "changed": 1052,
+     "defect_pass_rate": 0.6506642512077294,
+     "rate_shift": -0.07940821256038655,
+     "verdicts": 13248
+    },
+    "s_final": {
+     "canonical_pass_rate": 0.3924829434697856,
+     "change_rate": 0.03453947368421053,
+     "changed": 1134,
+     "defect_pass_rate": 0.35794346978557506,
+     "rate_shift": -0.03453947368421051,
+     "verdicts": 32832
+    },
+    "semicolon": {
+     "canonical_pass_rate": 0.0045138888888888885,
+     "change_rate": 0.10451388888888889,
+     "changed": 602,
+     "defect_pass_rate": 0.1,
+     "rate_shift": 0.09548611111111112,
+     "verdicts": 5760
+    },
+    "sentence": {
+     "canonical_pass_rate": 0.5939503205128205,
+     "change_rate": 0.07692307692307693,
+     "changed": 1152,
+     "defect_pass_rate": 0.5170272435897436,
+     "rate_shift": -0.07692307692307687,
+     "verdicts": 14976
+    },
+    "t_initial": {
+     "canonical_pass_rate": 0.44728871158392436,
+     "change_rate": 0.040484633569739956,
+     "changed": 1096,
+     "defect_pass_rate": 0.4068040780141844,
+     "rate_shift": -0.04048463356973997,
+     "verdicts": 27072
+    },
+    "vowel_initial": {
+     "canonical_pass_rate": 0.34300031565656564,
+     "change_rate": 0.022115688131313132,
+     "changed": 1121,
+     "defect_pass_rate": 0.32088462752525254,
+     "rate_shift": -0.022115688131313094,
+     "verdicts": 50688
+    },
+    "y_final": {
+     "canonical_pass_rate": 0.34099264705882354,
+     "change_rate": 0.05317265795206972,
+     "changed": 1562,
+     "defect_pass_rate": 0.2878199891067538,
+     "rate_shift": -0.05317265795206971,
+     "verdicts": 29376
+    }
+   },
+   "segmentation_drift": {
+    "b_initial": {
+     "canonical_pass_rate": 0.7053140096618358,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.7053140096618358,
+     "rate_shift": 0.0,
+     "verdicts": 13248
+    },
+    "capital": {
+     "canonical_pass_rate": 0.5799209770114943,
+     "change_rate": 0.20480124521072796,
+     "changed": 3421,
+     "defect_pass_rate": 0.7847222222222222,
+     "rate_shift": 0.20480124521072796,
+     "verdicts": 16704
+    },
+    "comma": {
+     "canonical_pass_rate": 0.4011702674897119,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.4011702674897119,
+     "rate_shift": 0.0,
+     "verdicts": 15552
+    },
+    "doubled_letter": {
+     "canonical_pass_rate": 0.3439327485380117,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.3439327485380117,
+     "rate_shift": 0.0,
+     "verdicts": 32832
+    },
+    "ing_final": {
+     "canonical_pass_rate": 0.5573671497584541,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.5573671497584541,
+     "rate_shift": 0.0,
+     "verdicts": 13248
+    },
+    "letter_a": {
+     "canonical_pass_rate": 0.2636138613861386,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.2636138613861386,
+     "rate_shift": 0.0,
+     "verdicts": 58176
+    },
+    "marker": {
+     "canonical_pass_rate": 0.0026041666666666665,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.0026041666666666665,
+     "rate_shift": 0.0,
+     "verdicts": 4608
+    },
+    "one_letter": {
+     "canonical_pass_rate": 0.730072463768116,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.730072463768116,
+     "rate_shift": 0.0,
+     "verdicts": 13248
+    },
+    "s_final": {
+     "canonical_pass_rate": 0.3924829434697856,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.3924829434697856,
+     "rate_shift": 0.0,
+     "verdicts": 32832
+    },
+    "semicolon": {
+     "canonical_pass_rate": 0.0045138888888888885,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.0045138888888888885,
+     "rate_shift": 0.0,
+     "verdicts": 5760
+    },
+    "sentence": {
+     "canonical_pass_rate": 0.5939503205128205,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.5939503205128205,
+     "rate_shift": 0.0,
+     "verdicts": 14976
+    },
+    "t_initial": {
+     "canonical_pass_rate": 0.44728871158392436,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.44728871158392436,
+     "rate_shift": 0.0,
+     "verdicts": 27072
+    },
+    "vowel_initial": {
+     "canonical_pass_rate": 0.34300031565656564,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.34300031565656564,
+     "rate_shift": 0.0,
+     "verdicts": 50688
+    },
+    "y_final": {
+     "canonical_pass_rate": 0.34099264705882354,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.34099264705882354,
+     "rate_shift": 0.0,
+     "verdicts": 29376
+    }
+   },
+   "vacuity_ignored": {
+    "b_initial": {
+     "canonical_pass_rate": 0.7053140096618358,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.7053140096618358,
+     "rate_shift": 0.0,
+     "verdicts": 13248
+    },
+    "capital": {
+     "canonical_pass_rate": 0.5799209770114943,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.5799209770114943,
+     "rate_shift": 0.0,
+     "verdicts": 16704
+    },
+    "comma": {
+     "canonical_pass_rate": 0.4011702674897119,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.4011702674897119,
+     "rate_shift": 0.0,
+     "verdicts": 15552
+    },
+    "doubled_letter": {
+     "canonical_pass_rate": 0.3439327485380117,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.3439327485380117,
+     "rate_shift": 0.0,
+     "verdicts": 32832
+    },
+    "ing_final": {
+     "canonical_pass_rate": 0.5573671497584541,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.5573671497584541,
+     "rate_shift": 0.0,
+     "verdicts": 13248
+    },
+    "letter_a": {
+     "canonical_pass_rate": 0.2636138613861386,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.2636138613861386,
+     "rate_shift": 0.0,
+     "verdicts": 58176
+    },
+    "marker": {
+     "canonical_pass_rate": 0.0026041666666666665,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.0026041666666666665,
+     "rate_shift": 0.0,
+     "verdicts": 4608
+    },
+    "one_letter": {
+     "canonical_pass_rate": 0.730072463768116,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.730072463768116,
+     "rate_shift": 0.0,
+     "verdicts": 13248
+    },
+    "s_final": {
+     "canonical_pass_rate": 0.3924829434697856,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.3924829434697856,
+     "rate_shift": 0.0,
+     "verdicts": 32832
+    },
+    "semicolon": {
+     "canonical_pass_rate": 0.0045138888888888885,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.0045138888888888885,
+     "rate_shift": 0.0,
+     "verdicts": 5760
+    },
+    "sentence": {
+     "canonical_pass_rate": 0.5939503205128205,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.5939503205128205,
+     "rate_shift": 0.0,
+     "verdicts": 14976
+    },
+    "t_initial": {
+     "canonical_pass_rate": 0.44728871158392436,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.44728871158392436,
+     "rate_shift": 0.0,
+     "verdicts": 27072
+    },
+    "vowel_initial": {
+     "canonical_pass_rate": 0.34300031565656564,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.34300031565656564,
+     "rate_shift": 0.0,
+     "verdicts": 50688
+    },
+    "y_final": {
+     "canonical_pass_rate": 0.34099264705882354,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.34099264705882354,
+     "rate_shift": 0.0,
+     "verdicts": 29376
+    }
+   }
+  },
+  "by_model": {
+   "denominator_swap": {
+    "gemma-3n-e2b-it": {
+     "canonical_pass_rate": 0.37446393762183233,
+     "change_rate": 0.22328216374269005,
+     "changed": 18327,
+     "defect_pass_rate": 0.5280336257309941,
+     "rate_shift": 0.15356968810916177,
+     "verdicts": 82080
+    },
+    "gemma-3n-e4b-it": {
+     "canonical_pass_rate": 0.3773879142300195,
+     "change_rate": 0.22474415204678364,
+     "changed": 18447,
+     "defect_pass_rate": 0.5306652046783625,
+     "rate_shift": 0.15327729044834304,
+     "verdicts": 82080
+    },
+    "qwen3-4b": {
+     "canonical_pass_rate": 0.41515594541910333,
+     "change_rate": 0.2169956140350877,
+     "changed": 17811,
+     "defect_pass_rate": 0.5648269980506823,
+     "rate_shift": 0.14967105263157893,
+     "verdicts": 82080
+    },
+    "qwen3-4b-instruct-2507": {
+     "canonical_pass_rate": 0.42028508771929823,
+     "change_rate": 0.22096734892787526,
+     "changed": 18137,
+     "defect_pass_rate": 0.5712475633528266,
+     "rate_shift": 0.15096247563352833,
+     "verdicts": 82080
+    }
+   },
+   "inequality_flip": {
+    "gemma-3n-e2b-it": {
+     "canonical_pass_rate": 0.37446393762183233,
+     "change_rate": 0.968421052631579,
+     "changed": 79488,
+     "defect_pass_rate": 0.5941520467836258,
+     "rate_shift": 0.21968810916179343,
+     "verdicts": 82080
+    },
+    "gemma-3n-e4b-it": {
+     "canonical_pass_rate": 0.3773879142300195,
+     "change_rate": 0.9684697855750487,
+     "changed": 79492,
+     "defect_pass_rate": 0.5914717348927875,
+     "rate_shift": 0.214083820662768,
+     "verdicts": 82080
+    },
+    "qwen3-4b": {
+     "canonical_pass_rate": 0.41515594541910333,
+     "change_rate": 0.968421052631579,
+     "changed": 79488,
+     "defect_pass_rate": 0.5535575048732944,
+     "rate_shift": 0.13840155945419103,
+     "verdicts": 82080
+    },
+    "qwen3-4b-instruct-2507": {
+     "canonical_pass_rate": 0.42028508771929823,
+     "change_rate": 0.968421052631579,
+     "changed": 79488,
+     "defect_pass_rate": 0.5481846978557505,
+     "rate_shift": 0.1278996101364523,
+     "verdicts": 82080
+    }
+   },
+   "numerator_swap": {
+    "gemma-3n-e2b-it": {
+     "canonical_pass_rate": 0.37446393762183233,
+     "change_rate": 0.2911671539961014,
+     "changed": 23899,
+     "defect_pass_rate": 0.40625,
+     "rate_shift": 0.03178606237816767,
+     "verdicts": 82080
+    },
+    "gemma-3n-e4b-it": {
+     "canonical_pass_rate": 0.3773879142300195,
+     "change_rate": 0.2961744639376218,
+     "changed": 24310,
+     "defect_pass_rate": 0.40419103313840155,
+     "rate_shift": 0.02680311890838205,
+     "verdicts": 82080
+    },
+    "qwen3-4b": {
+     "canonical_pass_rate": 0.41515594541910333,
+     "change_rate": 0.30040204678362575,
+     "changed": 24657,
+     "defect_pass_rate": 0.4306164717348928,
+     "rate_shift": 0.01546052631578948,
+     "verdicts": 82080
+    },
+    "qwen3-4b-instruct-2507": {
+     "canonical_pass_rate": 0.42028508771929823,
+     "change_rate": 0.298062865497076,
+     "changed": 24465,
+     "defect_pass_rate": 0.4299707602339181,
+     "rate_shift": 0.00968567251461988,
+     "verdicts": 82080
+    }
+   },
+   "off_by_one": {
+    "gemma-3n-e2b-it": {
+     "canonical_pass_rate": 0.37446393762183233,
+     "change_rate": 0.04433479532163743,
+     "changed": 3639,
+     "defect_pass_rate": 0.33714668615984406,
+     "rate_shift": -0.03731725146198828,
+     "verdicts": 82080
+    },
+    "gemma-3n-e4b-it": {
+     "canonical_pass_rate": 0.3773879142300195,
+     "change_rate": 0.044310428849902536,
+     "changed": 3637,
+     "defect_pass_rate": 0.3400950292397661,
+     "rate_shift": -0.037292884990253405,
+     "verdicts": 82080
+    },
+    "qwen3-4b": {
+     "canonical_pass_rate": 0.41515594541910333,
+     "change_rate": 0.04523635477582846,
+     "changed": 3713,
+     "defect_pass_rate": 0.376937134502924,
+     "rate_shift": -0.03821881091617935,
+     "verdicts": 82080
+    },
+    "qwen3-4b-instruct-2507": {
+     "canonical_pass_rate": 0.42028508771929823,
+     "change_rate": 0.04502923976608187,
+     "changed": 3696,
+     "defect_pass_rate": 0.3822733918128655,
+     "rate_shift": -0.03801169590643272,
+     "verdicts": 82080
+    }
+   },
+   "segmentation_drift": {
+    "gemma-3n-e2b-it": {
+     "canonical_pass_rate": 0.37446393762183233,
+     "change_rate": 0.010380116959064328,
+     "changed": 852,
+     "defect_pass_rate": 0.3848440545808967,
+     "rate_shift": 0.010380116959064378,
+     "verdicts": 82080
+    },
+    "gemma-3n-e4b-it": {
+     "canonical_pass_rate": 0.3773879142300195,
+     "change_rate": 0.010635964912280702,
+     "changed": 873,
+     "defect_pass_rate": 0.3880238791423002,
+     "rate_shift": 0.010635964912280693,
+     "verdicts": 82080
+    },
+    "qwen3-4b": {
+     "canonical_pass_rate": 0.41515594541910333,
+     "change_rate": 0.010806530214424952,
+     "changed": 887,
+     "defect_pass_rate": 0.4259624756335283,
+     "rate_shift": 0.010806530214424959,
+     "verdicts": 82080
+    },
+    "qwen3-4b-instruct-2507": {
+     "canonical_pass_rate": 0.42028508771929823,
+     "change_rate": 0.009856237816764132,
+     "changed": 809,
+     "defect_pass_rate": 0.4301413255360624,
+     "rate_shift": 0.009856237816764146,
+     "verdicts": 82080
+    }
+   },
+   "vacuity_ignored": {
+    "gemma-3n-e2b-it": {
+     "canonical_pass_rate": 0.37446393762183233,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.37446393762183233,
+     "rate_shift": 0.0,
+     "verdicts": 82080
+    },
+    "gemma-3n-e4b-it": {
+     "canonical_pass_rate": 0.3773879142300195,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.3773879142300195,
+     "rate_shift": 0.0,
+     "verdicts": 82080
+    },
+    "qwen3-4b": {
+     "canonical_pass_rate": 0.41515594541910333,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.41515594541910333,
+     "rate_shift": 0.0,
+     "verdicts": 82080
+    },
+    "qwen3-4b-instruct-2507": {
+     "canonical_pass_rate": 0.42028508771929823,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.42028508771929823,
+     "rate_shift": 0.0,
+     "verdicts": 82080
+    }
+   }
+  },
+  "by_predicate_form": {
+   "denominator_swap": {
+    "count_budget": {
+     "canonical_pass_rate": 0.39871870109546165,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.39871870109546165,
+     "rate_shift": 0.0,
+     "verdicts": 122688
+    },
+    "count_lower_bound": {
+     "canonical_pass_rate": 0.2449156746031746,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.2449156746031746,
+     "rate_shift": 0.0,
+     "verdicts": 32256
+    },
+    "exact_count": {
+     "canonical_pass_rate": 0.0036651234567901233,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.0036651234567901233,
+     "rate_shift": 0.0,
+     "verdicts": 10368
+    },
+    "rate_budget": {
+     "canonical_pass_rate": 0.48151781265570504,
+     "change_rate": 0.4771736422521176,
+     "changed": 61292,
+     "defect_pass_rate": 0.9586914549078226,
+     "rate_shift": 0.47717364225211756,
+     "verdicts": 128448
+    },
+    "rate_lower_bound": {
+     "canonical_pass_rate": 0.33504050925925927,
+     "change_rate": 0.3307291666666667,
+     "changed": 11430,
+     "defect_pass_rate": 0.004311342592592592,
+     "rate_shift": -0.3307291666666667,
+     "verdicts": 34560
+    }
+   },
+   "inequality_flip": {
+    "count_budget": {
+     "canonical_pass_rate": 0.39871870109546165,
+     "change_rate": 1.0,
+     "changed": 122688,
+     "defect_pass_rate": 0.6012812989045383,
+     "rate_shift": 0.20256259780907665,
+     "verdicts": 122688
+    },
+    "count_lower_bound": {
+     "canonical_pass_rate": 0.2449156746031746,
+     "change_rate": 1.0,
+     "changed": 32256,
+     "defect_pass_rate": 0.7550843253968254,
+     "rate_shift": 0.5101686507936507,
+     "verdicts": 32256
+    },
+    "exact_count": {
+     "canonical_pass_rate": 0.0036651234567901233,
+     "change_rate": 0.00038580246913580245,
+     "changed": 4,
+     "defect_pass_rate": 0.004050925925925926,
+     "rate_shift": 0.00038580246913580245,
+     "verdicts": 10368
+    },
+    "rate_budget": {
+     "canonical_pass_rate": 0.48151781265570504,
+     "change_rate": 1.0,
+     "changed": 128448,
+     "defect_pass_rate": 0.518482187344295,
+     "rate_shift": 0.03696437468858993,
+     "verdicts": 128448
+    },
+    "rate_lower_bound": {
+     "canonical_pass_rate": 0.33504050925925927,
+     "change_rate": 1.0,
+     "changed": 34560,
+     "defect_pass_rate": 0.6649594907407408,
+     "rate_shift": 0.3299189814814815,
+     "verdicts": 34560
+    }
+   },
+   "numerator_swap": {
+    "count_budget": {
+     "canonical_pass_rate": 0.39871870109546165,
+     "change_rate": 0.29037069640062596,
+     "changed": 35625,
+     "defect_pass_rate": 0.4334001695357329,
+     "rate_shift": 0.03468146844027126,
+     "verdicts": 122688
+    },
+    "count_lower_bound": {
+     "canonical_pass_rate": 0.2449156746031746,
+     "change_rate": 0.23837425595238096,
+     "changed": 7689,
+     "defect_pass_rate": 0.40435887896825395,
+     "rate_shift": 0.15944320436507936,
+     "verdicts": 32256
+    },
+    "exact_count": {
+     "canonical_pass_rate": 0.0036651234567901233,
+     "change_rate": 0.05767746913580247,
+     "changed": 598,
+     "defect_pass_rate": 0.05401234567901234,
+     "rate_shift": 0.05034722222222222,
+     "verdicts": 10368
+    },
+    "rate_budget": {
+     "canonical_pass_rate": 0.48151781265570504,
+     "change_rate": 0.35820721225710017,
+     "changed": 46011,
+     "defect_pass_rate": 0.512978014449427,
+     "rate_shift": 0.031460201793722,
+     "verdicts": 128448
+    },
+    "rate_lower_bound": {
+     "canonical_pass_rate": 0.33504050925925927,
+     "change_rate": 0.21435185185185185,
+     "changed": 7408,
+     "defect_pass_rate": 0.12994791666666666,
+     "rate_shift": -0.2050925925925926,
+     "verdicts": 34560
+    }
+   },
+   "off_by_one": {
+    "count_budget": {
+     "canonical_pass_rate": 0.39871870109546165,
+     "change_rate": 0.04557087897756912,
+     "changed": 5591,
+     "defect_pass_rate": 0.35314782211789253,
+     "rate_shift": -0.04557087897756912,
+     "verdicts": 122688
+    },
+    "count_lower_bound": {
+     "canonical_pass_rate": 0.2449156746031746,
+     "change_rate": 0.020399305555555556,
+     "changed": 658,
+     "defect_pass_rate": 0.22451636904761904,
+     "rate_shift": -0.020399305555555552,
+     "verdicts": 32256
+    },
+    "exact_count": {
+     "canonical_pass_rate": 0.0036651234567901233,
+     "change_rate": 0.11477623456790123,
+     "changed": 1190,
+     "defect_pass_rate": 0.1111111111111111,
+     "rate_shift": 0.10744598765432098,
+     "verdicts": 10368
+    },
+    "rate_budget": {
+     "canonical_pass_rate": 0.48151781265570504,
+     "change_rate": 0.04966990533134031,
+     "changed": 6380,
+     "defect_pass_rate": 0.43184790732436473,
+     "rate_shift": -0.0496699053313403,
+     "verdicts": 128448
+    },
+    "rate_lower_bound": {
+     "canonical_pass_rate": 0.33504050925925927,
+     "change_rate": 0.02505787037037037,
+     "changed": 866,
+     "defect_pass_rate": 0.3099826388888889,
+     "rate_shift": -0.025057870370370383,
+     "verdicts": 34560
+    }
+   },
+   "segmentation_drift": {
+    "count_budget": {
+     "canonical_pass_rate": 0.39871870109546165,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.39871870109546165,
+     "rate_shift": 0.0,
+     "verdicts": 122688
+    },
+    "count_lower_bound": {
+     "canonical_pass_rate": 0.2449156746031746,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.2449156746031746,
+     "rate_shift": 0.0,
+     "verdicts": 32256
+    },
+    "exact_count": {
+     "canonical_pass_rate": 0.0036651234567901233,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.0036651234567901233,
+     "rate_shift": 0.0,
+     "verdicts": 10368
+    },
+    "rate_budget": {
+     "canonical_pass_rate": 0.48151781265570504,
+     "change_rate": 0.026633345789735925,
+     "changed": 3421,
+     "defect_pass_rate": 0.508151158445441,
+     "rate_shift": 0.026633345789735974,
+     "verdicts": 128448
+    },
+    "rate_lower_bound": {
+     "canonical_pass_rate": 0.33504050925925927,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.33504050925925927,
+     "rate_shift": 0.0,
+     "verdicts": 34560
+    }
+   },
+   "vacuity_ignored": {
+    "count_budget": {
+     "canonical_pass_rate": 0.39871870109546165,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.39871870109546165,
+     "rate_shift": 0.0,
+     "verdicts": 122688
+    },
+    "count_lower_bound": {
+     "canonical_pass_rate": 0.2449156746031746,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.2449156746031746,
+     "rate_shift": 0.0,
+     "verdicts": 32256
+    },
+    "exact_count": {
+     "canonical_pass_rate": 0.0036651234567901233,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.0036651234567901233,
+     "rate_shift": 0.0,
+     "verdicts": 10368
+    },
+    "rate_budget": {
+     "canonical_pass_rate": 0.48151781265570504,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.48151781265570504,
+     "rate_shift": 0.0,
+     "verdicts": 128448
+    },
+    "rate_lower_bound": {
+     "canonical_pass_rate": 0.33504050925925927,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.33504050925925927,
+     "rate_shift": 0.0,
+     "verdicts": 34560
+    }
+   }
+  },
+  "overall": {
+   "denominator_swap": {
+    "canonical_pass_rate": 0.39682322124756336,
+    "change_rate": 0.22149731968810915,
+    "changed": 72722,
+    "defect_pass_rate": 0.5486933479532163,
+    "rate_shift": 0.15187012670565297,
+    "verdicts": 328320
+   },
+   "inequality_flip": {
+    "canonical_pass_rate": 0.39682322124756336,
+    "change_rate": 0.9684332358674463,
+    "changed": 317956,
+    "defect_pass_rate": 0.5718414961013645,
+    "rate_shift": 0.17501827485380111,
+    "verdicts": 328320
+   },
+   "numerator_swap": {
+    "canonical_pass_rate": 0.39682322124756336,
+    "change_rate": 0.29645163255360624,
+    "changed": 97331,
+    "defect_pass_rate": 0.41775706627680315,
+    "rate_shift": 0.020933845029239784,
+    "verdicts": 328320
+   },
+   "off_by_one": {
+    "canonical_pass_rate": 0.39682322124756336,
+    "change_rate": 0.044727704678362575,
+    "changed": 14685,
+    "defect_pass_rate": 0.3591130604288499,
+    "rate_shift": -0.03771016081871348,
+    "verdicts": 328320
+   },
+   "segmentation_drift": {
+    "canonical_pass_rate": 0.39682322124756336,
+    "change_rate": 0.010419712475633528,
+    "changed": 3421,
+    "defect_pass_rate": 0.40724293372319686,
+    "rate_shift": 0.010419712475633502,
+    "verdicts": 328320
+   },
+   "vacuity_ignored": {
+    "canonical_pass_rate": 0.39682322124756336,
+    "change_rate": 0.0,
+    "changed": 0,
+    "defect_pass_rate": 0.39682322124756336,
+    "rate_shift": 0.0,
+    "verdicts": 328320
+   }
+  },
+  "population": "chance (declared instruments on unconstrained responses)",
+  "responses": 576
+ },
+ "classification": "DCI-1 PROTOCOL v4 REVISION 3 (ADOPTED, NOT FROZEN)",
+ "computes_no_composed_estimand": true,
+ "defect_kinds": [
+  "numerator_swap",
+  "denominator_swap",
+  "inequality_flip",
+  "off_by_one",
+  "segmentation_drift",
+  "vacuity_ignored"
+ ],
+ "numerator_swap_map": {
+  "b_initial": "t_initial",
+  "capital_char": "capital_word",
+  "capital_word": "capital_char",
+  "comma": "semicolon",
+  "doubled_letter": "one_letter",
+  "ing_final": "y_final",
+  "letter_a": "vowel_initial",
+  "marker_thus": "t_initial",
+  "one_letter": "doubled_letter",
+  "s_final": "y_final",
+  "semicolon": "comma",
+  "sentence": "comma",
+  "t_initial": "b_initial",
+  "vowel_initial": "letter_a",
+  "y_final": "s_final"
+ },
+ "provenance": {
+  "evidence_root": "evidence/dci1v4r3",
+  "fast_path_check": {
+   "agreement": 1.0,
+   "comparisons": 21600,
+   "texts": 40
+  },
+  "generated_at": "2026-08-21T16:09:46+00:00",
+  "producing_commit": "552273660677e34883dd6e8ff963e1f4a3d28071",
+  "rows_read": 30720,
+  "sources": [
+   {
+    "path": "evidence/dci1v4r3/gemma-3n-e2b-it/GATE_0_APPARATUS/backend_runs/pilot/scored.jsonl",
+    "rows": 2256
+   },
+   {
+    "path": "evidence/dci1v4r3/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/cap1024/scored.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1v4r3/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/cap512/scored.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1v4r3/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/cap768/scored.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1v4r3/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/ladder/scored.jsonl",
+    "rows": 6840
+   },
+   {
+    "path": "evidence/dci1v4r3/gemma-3n-e4b-it/GATE_0_APPARATUS/backend_runs/pilot/scored.jsonl",
+    "rows": 2256
+   },
+   {
+    "path": "evidence/dci1v4r3/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/cap1024/scored.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1v4r3/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/cap512/scored.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1v4r3/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/cap768/scored.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1v4r3/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/ladder/scored.jsonl",
+    "rows": 6840
+   },
+   {
+    "path": "evidence/dci1v4r3/qwen3-4b/GATE_0_APPARATUS/backend_runs/pilot/scored.jsonl",
+    "rows": 2256
+   },
+   {
+    "path": "evidence/dci1v4r3/qwen3-4b/REGIME_SCREEN/backend_runs/cap1024/scored.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1v4r3/qwen3-4b/REGIME_SCREEN/backend_runs/cap512/scored.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1v4r3/qwen3-4b/REGIME_SCREEN/backend_runs/cap768/scored.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1v4r3/qwen3-4b/REGIME_SCREEN/backend_runs/ladder/scored.jsonl",
+    "rows": 6840
+   },
+   {
+    "path": "evidence/dci1v4r3/qwen3-4b-instruct-2507/GATE_0_APPARATUS/backend_runs/pilot/scored.jsonl",
+    "rows": 2256
+   },
+   {
+    "path": "evidence/dci1v4r3/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/cap1024/scored.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1v4r3/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/cap512/scored.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1v4r3/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/cap768/scored.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1v4r3/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/ladder/scored.jsonl",
+    "rows": 6840
+   }
+  ],
+  "verifier_source_hash": "41edc84c8c1381c698aa3ea62265ef11ff1162993fa2f68d1245dbce10096074"
+ },
+ "purpose": "Gate 1 measurement robustness. Read-only. It rescores stored responses under the six registered alternative readings and changes nothing.",
+ "reads": "load 0 and load 1 rows only; no composed cell enters",
+ "report_hash": "bc6d9b8514439ea160f293b3418af668fd7f7eea9c0041c4064212a4a37b550f",
+ "stated": {
+  "by_family": {
+   "denominator_swap": {
+    "CL7": {
+     "canonical_pass_rate": 0.6364583333333333,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.6364583333333333,
+     "rate_shift": 0.0,
+     "verdicts": 960
+    },
+    "CL8": {
+     "canonical_pass_rate": 0.7083333333333334,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.7083333333333334,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CP4": {
+     "canonical_pass_rate": 0.3971354166666667,
+     "change_rate": 0.3971354166666667,
+     "changed": 305,
+     "defect_pass_rate": 0.0,
+     "rate_shift": -0.3971354166666667,
+     "verdicts": 768
+    },
+    "CP7": {
+     "canonical_pass_rate": 0.6002604166666666,
+     "change_rate": 0.6002604166666666,
+     "changed": 461,
+     "defect_pass_rate": 0.0,
+     "rate_shift": -0.6002604166666666,
+     "verdicts": 768
+    },
+    "CR1": {
+     "canonical_pass_rate": 0.4401041666666667,
+     "change_rate": 0.4934895833333333,
+     "changed": 379,
+     "defect_pass_rate": 0.93359375,
+     "rate_shift": 0.4934895833333333,
+     "verdicts": 768
+    },
+    "CR10": {
+     "canonical_pass_rate": 0.12369791666666667,
+     "change_rate": 0.7526041666666666,
+     "changed": 578,
+     "defect_pass_rate": 0.8763020833333334,
+     "rate_shift": 0.7526041666666667,
+     "verdicts": 768
+    },
+    "CR11": {
+     "canonical_pass_rate": 0.18229166666666666,
+     "change_rate": 0.7473958333333334,
+     "changed": 574,
+     "defect_pass_rate": 0.9296875,
+     "rate_shift": 0.7473958333333334,
+     "verdicts": 768
+    },
+    "CR12": {
+     "canonical_pass_rate": 0.15494791666666666,
+     "change_rate": 0.7578125,
+     "changed": 582,
+     "defect_pass_rate": 0.9127604166666666,
+     "rate_shift": 0.7578125,
+     "verdicts": 768
+    },
+    "CR2": {
+     "canonical_pass_rate": 0.4153645833333333,
+     "change_rate": 0.546875,
+     "changed": 420,
+     "defect_pass_rate": 0.9622395833333334,
+     "rate_shift": 0.546875,
+     "verdicts": 768
+    },
+    "CR3": {
+     "canonical_pass_rate": 0.6380208333333334,
+     "change_rate": 0.3385416666666667,
+     "changed": 260,
+     "defect_pass_rate": 0.9765625,
+     "rate_shift": 0.33854166666666663,
+     "verdicts": 768
+    },
+    "CR4": {
+     "canonical_pass_rate": 0.4635416666666667,
+     "change_rate": 0.5325520833333334,
+     "changed": 409,
+     "defect_pass_rate": 0.99609375,
+     "rate_shift": 0.5325520833333333,
+     "verdicts": 768
+    },
+    "CR5": {
+     "canonical_pass_rate": 0.5572916666666666,
+     "change_rate": 0.4127604166666667,
+     "changed": 317,
+     "defect_pass_rate": 0.9700520833333334,
+     "rate_shift": 0.41276041666666674,
+     "verdicts": 768
+    },
+    "CR6": {
+     "canonical_pass_rate": 0.46875,
+     "change_rate": 0.53125,
+     "changed": 408,
+     "defect_pass_rate": 1.0,
+     "rate_shift": 0.53125,
+     "verdicts": 768
+    },
+    "CR7": {
+     "canonical_pass_rate": 0.4244791666666667,
+     "change_rate": 0.5755208333333334,
+     "changed": 442,
+     "defect_pass_rate": 1.0,
+     "rate_shift": 0.5755208333333333,
+     "verdicts": 768
+    },
+    "CR8": {
+     "canonical_pass_rate": 0.3411458333333333,
+     "change_rate": 0.59765625,
+     "changed": 459,
+     "defect_pass_rate": 0.9388020833333334,
+     "rate_shift": 0.59765625,
+     "verdicts": 768
+    },
+    "CR9": {
+     "canonical_pass_rate": 0.1875,
+     "change_rate": 0.6302083333333334,
+     "changed": 484,
+     "defect_pass_rate": 0.8177083333333334,
+     "rate_shift": 0.6302083333333334,
+     "verdicts": 768
+    },
+    "CX1": {
+     "canonical_pass_rate": 0.7018229166666666,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.7018229166666666,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CX2": {
+     "canonical_pass_rate": 0.2955729166666667,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.2955729166666667,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "RF1": {
+     "canonical_pass_rate": 0.56875,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.56875,
+     "rate_shift": 0.0,
+     "verdicts": 1440
+    },
+    "RF10": {
+     "canonical_pass_rate": 0.22265625,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.22265625,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "RF11": {
+     "canonical_pass_rate": 0.3854166666666667,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.3854166666666667,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "RF12": {
+     "canonical_pass_rate": 0.7057291666666666,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.7057291666666666,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "RF2": {
+     "canonical_pass_rate": 0.44907407407407407,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.44907407407407407,
+     "rate_shift": 0.0,
+     "verdicts": 864
+    },
+    "RF3": {
+     "canonical_pass_rate": 0.71875,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.71875,
+     "rate_shift": 0.0,
+     "verdicts": 864
+    },
+    "RF4": {
+     "canonical_pass_rate": 0.10863095238095238,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.10863095238095238,
+     "rate_shift": 0.0,
+     "verdicts": 672
+    },
+    "RF5": {
+     "canonical_pass_rate": 0.9747807017543859,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.9747807017543859,
+     "rate_shift": 0.0,
+     "verdicts": 1824
+    },
+    "RF6": {
+     "canonical_pass_rate": 0.4863782051282051,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.4863782051282051,
+     "rate_shift": 0.0,
+     "verdicts": 1248
+    },
+    "RF7": {
+     "canonical_pass_rate": 0.11256720430107527,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.11256720430107527,
+     "rate_shift": 0.0,
+     "verdicts": 2976
+    },
+    "RF8": {
+     "canonical_pass_rate": 0.4513888888888889,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.4513888888888889,
+     "rate_shift": 0.0,
+     "verdicts": 864
+    },
+    "RF9": {
+     "canonical_pass_rate": 0.4609375,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.4609375,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    }
+   },
+   "inequality_flip": {
+    "CL7": {
+     "canonical_pass_rate": 0.6364583333333333,
+     "change_rate": 1.0,
+     "changed": 960,
+     "defect_pass_rate": 0.36354166666666665,
+     "rate_shift": -0.2729166666666667,
+     "verdicts": 960
+    },
+    "CL8": {
+     "canonical_pass_rate": 0.7083333333333334,
+     "change_rate": 1.0,
+     "changed": 768,
+     "defect_pass_rate": 0.2916666666666667,
+     "rate_shift": -0.4166666666666667,
+     "verdicts": 768
+    },
+    "CP4": {
+     "canonical_pass_rate": 0.3971354166666667,
+     "change_rate": 1.0,
+     "changed": 768,
+     "defect_pass_rate": 0.6028645833333334,
+     "rate_shift": 0.20572916666666669,
+     "verdicts": 768
+    },
+    "CP7": {
+     "canonical_pass_rate": 0.6002604166666666,
+     "change_rate": 1.0,
+     "changed": 768,
+     "defect_pass_rate": 0.3997395833333333,
+     "rate_shift": -0.20052083333333331,
+     "verdicts": 768
+    },
+    "CR1": {
+     "canonical_pass_rate": 0.4401041666666667,
+     "change_rate": 1.0,
+     "changed": 768,
+     "defect_pass_rate": 0.5598958333333334,
+     "rate_shift": 0.11979166666666669,
+     "verdicts": 768
+    },
+    "CR10": {
+     "canonical_pass_rate": 0.12369791666666667,
+     "change_rate": 1.0,
+     "changed": 768,
+     "defect_pass_rate": 0.8763020833333334,
+     "rate_shift": 0.7526041666666667,
+     "verdicts": 768
+    },
+    "CR11": {
+     "canonical_pass_rate": 0.18229166666666666,
+     "change_rate": 1.0,
+     "changed": 768,
+     "defect_pass_rate": 0.8177083333333334,
+     "rate_shift": 0.6354166666666667,
+     "verdicts": 768
+    },
+    "CR12": {
+     "canonical_pass_rate": 0.15494791666666666,
+     "change_rate": 1.0,
+     "changed": 768,
+     "defect_pass_rate": 0.8450520833333334,
+     "rate_shift": 0.6901041666666667,
+     "verdicts": 768
+    },
+    "CR2": {
+     "canonical_pass_rate": 0.4153645833333333,
+     "change_rate": 1.0,
+     "changed": 768,
+     "defect_pass_rate": 0.5846354166666666,
+     "rate_shift": 0.16927083333333331,
+     "verdicts": 768
+    },
+    "CR3": {
+     "canonical_pass_rate": 0.6380208333333334,
+     "change_rate": 1.0,
+     "changed": 768,
+     "defect_pass_rate": 0.3619791666666667,
+     "rate_shift": -0.2760416666666667,
+     "verdicts": 768
+    },
+    "CR4": {
+     "canonical_pass_rate": 0.4635416666666667,
+     "change_rate": 1.0,
+     "changed": 768,
+     "defect_pass_rate": 0.5364583333333334,
+     "rate_shift": 0.07291666666666669,
+     "verdicts": 768
+    },
+    "CR5": {
+     "canonical_pass_rate": 0.5572916666666666,
+     "change_rate": 1.0,
+     "changed": 768,
+     "defect_pass_rate": 0.4427083333333333,
+     "rate_shift": -0.11458333333333331,
+     "verdicts": 768
+    },
+    "CR6": {
+     "canonical_pass_rate": 0.46875,
+     "change_rate": 1.0,
+     "changed": 768,
+     "defect_pass_rate": 0.53125,
+     "rate_shift": 0.0625,
+     "verdicts": 768
+    },
+    "CR7": {
+     "canonical_pass_rate": 0.4244791666666667,
+     "change_rate": 1.0,
+     "changed": 768,
+     "defect_pass_rate": 0.5755208333333334,
+     "rate_shift": 0.15104166666666669,
+     "verdicts": 768
+    },
+    "CR8": {
+     "canonical_pass_rate": 0.3411458333333333,
+     "change_rate": 1.0,
+     "changed": 768,
+     "defect_pass_rate": 0.6588541666666666,
+     "rate_shift": 0.3177083333333333,
+     "verdicts": 768
+    },
+    "CR9": {
+     "canonical_pass_rate": 0.1875,
+     "change_rate": 1.0,
+     "changed": 768,
+     "defect_pass_rate": 0.8125,
+     "rate_shift": 0.625,
+     "verdicts": 768
+    },
+    "CX1": {
+     "canonical_pass_rate": 0.7018229166666666,
+     "change_rate": 0.11848958333333333,
+     "changed": 91,
+     "defect_pass_rate": 0.8203125,
+     "rate_shift": 0.11848958333333337,
+     "verdicts": 768
+    },
+    "CX2": {
+     "canonical_pass_rate": 0.2955729166666667,
+     "change_rate": 0.24088541666666666,
+     "changed": 185,
+     "defect_pass_rate": 0.5364583333333334,
+     "rate_shift": 0.24088541666666669,
+     "verdicts": 768
+    },
+    "RF1": {
+     "canonical_pass_rate": 0.56875,
+     "change_rate": 1.0,
+     "changed": 1440,
+     "defect_pass_rate": 0.43125,
+     "rate_shift": -0.13749999999999996,
+     "verdicts": 1440
+    },
+    "RF10": {
+     "canonical_pass_rate": 0.22265625,
+     "change_rate": 1.0,
+     "changed": 768,
+     "defect_pass_rate": 0.77734375,
+     "rate_shift": 0.5546875,
+     "verdicts": 768
+    },
+    "RF11": {
+     "canonical_pass_rate": 0.3854166666666667,
+     "change_rate": 1.0,
+     "changed": 768,
+     "defect_pass_rate": 0.6145833333333334,
+     "rate_shift": 0.22916666666666669,
+     "verdicts": 768
+    },
+    "RF12": {
+     "canonical_pass_rate": 0.7057291666666666,
+     "change_rate": 1.0,
+     "changed": 768,
+     "defect_pass_rate": 0.2942708333333333,
+     "rate_shift": -0.4114583333333333,
+     "verdicts": 768
+    },
+    "RF2": {
+     "canonical_pass_rate": 0.44907407407407407,
+     "change_rate": 1.0,
+     "changed": 864,
+     "defect_pass_rate": 0.5509259259259259,
+     "rate_shift": 0.10185185185185186,
+     "verdicts": 864
+    },
+    "RF3": {
+     "canonical_pass_rate": 0.71875,
+     "change_rate": 1.0,
+     "changed": 864,
+     "defect_pass_rate": 0.28125,
+     "rate_shift": -0.4375,
+     "verdicts": 864
+    },
+    "RF4": {
+     "canonical_pass_rate": 0.10863095238095238,
+     "change_rate": 1.0,
+     "changed": 672,
+     "defect_pass_rate": 0.8913690476190477,
+     "rate_shift": 0.7827380952380953,
+     "verdicts": 672
+    },
+    "RF5": {
+     "canonical_pass_rate": 0.9747807017543859,
+     "change_rate": 1.0,
+     "changed": 1824,
+     "defect_pass_rate": 0.025219298245614034,
+     "rate_shift": -0.9495614035087718,
+     "verdicts": 1824
+    },
+    "RF6": {
+     "canonical_pass_rate": 0.4863782051282051,
+     "change_rate": 1.0,
+     "changed": 1248,
+     "defect_pass_rate": 0.5136217948717948,
+     "rate_shift": 0.027243589743589702,
+     "verdicts": 1248
+    },
+    "RF7": {
+     "canonical_pass_rate": 0.11256720430107527,
+     "change_rate": 1.0,
+     "changed": 2976,
+     "defect_pass_rate": 0.8874327956989247,
+     "rate_shift": 0.7748655913978495,
+     "verdicts": 2976
+    },
+    "RF8": {
+     "canonical_pass_rate": 0.4513888888888889,
+     "change_rate": 1.0,
+     "changed": 864,
+     "defect_pass_rate": 0.5486111111111112,
+     "rate_shift": 0.09722222222222227,
+     "verdicts": 864
+    },
+    "RF9": {
+     "canonical_pass_rate": 0.4609375,
+     "change_rate": 1.0,
+     "changed": 768,
+     "defect_pass_rate": 0.5390625,
+     "rate_shift": 0.078125,
+     "verdicts": 768
+    }
+   },
+   "numerator_swap": {
+    "CL7": {
+     "canonical_pass_rate": 0.6364583333333333,
+     "change_rate": 0.20520833333333333,
+     "changed": 197,
+     "defect_pass_rate": 0.43125,
+     "rate_shift": -0.20520833333333333,
+     "verdicts": 960
+    },
+    "CL8": {
+     "canonical_pass_rate": 0.7083333333333334,
+     "change_rate": 0.2877604166666667,
+     "changed": 221,
+     "defect_pass_rate": 0.7486979166666666,
+     "rate_shift": 0.04036458333333326,
+     "verdicts": 768
+    },
+    "CP4": {
+     "canonical_pass_rate": 0.3971354166666667,
+     "change_rate": 0.3932291666666667,
+     "changed": 302,
+     "defect_pass_rate": 0.11067708333333333,
+     "rate_shift": -0.28645833333333337,
+     "verdicts": 768
+    },
+    "CP7": {
+     "canonical_pass_rate": 0.6002604166666666,
+     "change_rate": 0.4140625,
+     "changed": 318,
+     "defect_pass_rate": 0.19140625,
+     "rate_shift": -0.40885416666666663,
+     "verdicts": 768
+    },
+    "CR1": {
+     "canonical_pass_rate": 0.4401041666666667,
+     "change_rate": 0.4192708333333333,
+     "changed": 322,
+     "defect_pass_rate": 0.0859375,
+     "rate_shift": -0.3541666666666667,
+     "verdicts": 768
+    },
+    "CR10": {
+     "canonical_pass_rate": 0.12369791666666667,
+     "change_rate": 0.56640625,
+     "changed": 435,
+     "defect_pass_rate": 0.6901041666666666,
+     "rate_shift": 0.56640625,
+     "verdicts": 768
+    },
+    "CR11": {
+     "canonical_pass_rate": 0.18229166666666666,
+     "change_rate": 0.16927083333333334,
+     "changed": 130,
+     "defect_pass_rate": 0.013020833333333334,
+     "rate_shift": -0.16927083333333331,
+     "verdicts": 768
+    },
+    "CR12": {
+     "canonical_pass_rate": 0.15494791666666666,
+     "change_rate": 0.2994791666666667,
+     "changed": 230,
+     "defect_pass_rate": 0.3658854166666667,
+     "rate_shift": 0.21093750000000003,
+     "verdicts": 768
+    },
+    "CR2": {
+     "canonical_pass_rate": 0.4153645833333333,
+     "change_rate": 0.2825520833333333,
+     "changed": 217,
+     "defect_pass_rate": 0.3385416666666667,
+     "rate_shift": -0.07682291666666663,
+     "verdicts": 768
+    },
+    "CR3": {
+     "canonical_pass_rate": 0.6380208333333334,
+     "change_rate": 0.53125,
+     "changed": 408,
+     "defect_pass_rate": 0.13802083333333334,
+     "rate_shift": -0.5,
+     "verdicts": 768
+    },
+    "CR4": {
+     "canonical_pass_rate": 0.4635416666666667,
+     "change_rate": 0.4765625,
+     "changed": 366,
+     "defect_pass_rate": 0.90625,
+     "rate_shift": 0.4427083333333333,
+     "verdicts": 768
+    },
+    "CR5": {
+     "canonical_pass_rate": 0.5572916666666666,
+     "change_rate": 0.44140625,
+     "changed": 339,
+     "defect_pass_rate": 0.99609375,
+     "rate_shift": 0.43880208333333337,
+     "verdicts": 768
+    },
+    "CR6": {
+     "canonical_pass_rate": 0.46875,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.46875,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CR7": {
+     "canonical_pass_rate": 0.4244791666666667,
+     "change_rate": 0.3606770833333333,
+     "changed": 277,
+     "defect_pass_rate": 0.76953125,
+     "rate_shift": 0.3450520833333333,
+     "verdicts": 768
+    },
+    "CR8": {
+     "canonical_pass_rate": 0.3411458333333333,
+     "change_rate": 0.3411458333333333,
+     "changed": 262,
+     "defect_pass_rate": 0.0,
+     "rate_shift": -0.3411458333333333,
+     "verdicts": 768
+    },
+    "CR9": {
+     "canonical_pass_rate": 0.1875,
+     "change_rate": 0.5247395833333334,
+     "changed": 403,
+     "defect_pass_rate": 0.7096354166666666,
+     "rate_shift": 0.5221354166666666,
+     "verdicts": 768
+    },
+    "CX1": {
+     "canonical_pass_rate": 0.7018229166666666,
+     "change_rate": 0.7005208333333334,
+     "changed": 538,
+     "defect_pass_rate": 0.0013020833333333333,
+     "rate_shift": -0.7005208333333333,
+     "verdicts": 768
+    },
+    "CX2": {
+     "canonical_pass_rate": 0.2955729166666667,
+     "change_rate": 0.3359375,
+     "changed": 258,
+     "defect_pass_rate": 0.053385416666666664,
+     "rate_shift": -0.24218750000000003,
+     "verdicts": 768
+    },
+    "RF1": {
+     "canonical_pass_rate": 0.56875,
+     "change_rate": 0.48819444444444443,
+     "changed": 703,
+     "defect_pass_rate": 0.16111111111111112,
+     "rate_shift": -0.4076388888888889,
+     "verdicts": 1440
+    },
+    "RF10": {
+     "canonical_pass_rate": 0.22265625,
+     "change_rate": 0.4609375,
+     "changed": 354,
+     "defect_pass_rate": 0.6809895833333334,
+     "rate_shift": 0.45833333333333337,
+     "verdicts": 768
+    },
+    "RF11": {
+     "canonical_pass_rate": 0.3854166666666667,
+     "change_rate": 0.22395833333333334,
+     "changed": 172,
+     "defect_pass_rate": 0.16927083333333334,
+     "rate_shift": -0.21614583333333334,
+     "verdicts": 768
+    },
+    "RF12": {
+     "canonical_pass_rate": 0.7057291666666666,
+     "change_rate": 0.3828125,
+     "changed": 294,
+     "defect_pass_rate": 0.40625,
+     "rate_shift": -0.29947916666666663,
+     "verdicts": 768
+    },
+    "RF2": {
+     "canonical_pass_rate": 0.44907407407407407,
+     "change_rate": 0.2824074074074074,
+     "changed": 244,
+     "defect_pass_rate": 0.4791666666666667,
+     "rate_shift": 0.030092592592592615,
+     "verdicts": 864
+    },
+    "RF3": {
+     "canonical_pass_rate": 0.71875,
+     "change_rate": 0.5659722222222222,
+     "changed": 489,
+     "defect_pass_rate": 0.20601851851851852,
+     "rate_shift": -0.5127314814814815,
+     "verdicts": 864
+    },
+    "RF4": {
+     "canonical_pass_rate": 0.10863095238095238,
+     "change_rate": 0.5639880952380952,
+     "changed": 379,
+     "defect_pass_rate": 0.6428571428571429,
+     "rate_shift": 0.5342261904761905,
+     "verdicts": 672
+    },
+    "RF5": {
+     "canonical_pass_rate": 0.9747807017543859,
+     "change_rate": 0.025219298245614034,
+     "changed": 46,
+     "defect_pass_rate": 1.0,
+     "rate_shift": 0.025219298245614086,
+     "verdicts": 1824
+    },
+    "RF6": {
+     "canonical_pass_rate": 0.4863782051282051,
+     "change_rate": 0.029647435897435896,
+     "changed": 37,
+     "defect_pass_rate": 0.5160256410256411,
+     "rate_shift": 0.02964743589743596,
+     "verdicts": 1248
+    },
+    "RF7": {
+     "canonical_pass_rate": 0.11256720430107527,
+     "change_rate": 0.17775537634408603,
+     "changed": 529,
+     "defect_pass_rate": 0.2540322580645161,
+     "rate_shift": 0.14146505376344087,
+     "verdicts": 2976
+    },
+    "RF8": {
+     "canonical_pass_rate": 0.4513888888888889,
+     "change_rate": 0.4444444444444444,
+     "changed": 384,
+     "defect_pass_rate": 0.018518518518518517,
+     "rate_shift": -0.43287037037037035,
+     "verdicts": 864
+    },
+    "RF9": {
+     "canonical_pass_rate": 0.4609375,
+     "change_rate": 0.34765625,
+     "changed": 267,
+     "defect_pass_rate": 0.79296875,
+     "rate_shift": 0.33203125,
+     "verdicts": 768
+    }
+   },
+   "off_by_one": {
+    "CL7": {
+     "canonical_pass_rate": 0.6364583333333333,
+     "change_rate": 0.01875,
+     "changed": 18,
+     "defect_pass_rate": 0.6177083333333333,
+     "rate_shift": -0.018750000000000044,
+     "verdicts": 960
+    },
+    "CL8": {
+     "canonical_pass_rate": 0.7083333333333334,
+     "change_rate": 0.029947916666666668,
+     "changed": 23,
+     "defect_pass_rate": 0.6783854166666666,
+     "rate_shift": -0.02994791666666674,
+     "verdicts": 768
+    },
+    "CP4": {
+     "canonical_pass_rate": 0.3971354166666667,
+     "change_rate": 0.037760416666666664,
+     "changed": 29,
+     "defect_pass_rate": 0.359375,
+     "rate_shift": -0.037760416666666685,
+     "verdicts": 768
+    },
+    "CP7": {
+     "canonical_pass_rate": 0.6002604166666666,
+     "change_rate": 0.03125,
+     "changed": 24,
+     "defect_pass_rate": 0.5690104166666666,
+     "rate_shift": -0.03125,
+     "verdicts": 768
+    },
+    "CR1": {
+     "canonical_pass_rate": 0.4401041666666667,
+     "change_rate": 0.07552083333333333,
+     "changed": 58,
+     "defect_pass_rate": 0.3645833333333333,
+     "rate_shift": -0.07552083333333337,
+     "verdicts": 768
+    },
+    "CR10": {
+     "canonical_pass_rate": 0.12369791666666667,
+     "change_rate": 0.029947916666666668,
+     "changed": 23,
+     "defect_pass_rate": 0.09375,
+     "rate_shift": -0.02994791666666667,
+     "verdicts": 768
+    },
+    "CR11": {
+     "canonical_pass_rate": 0.18229166666666666,
+     "change_rate": 0.029947916666666668,
+     "changed": 23,
+     "defect_pass_rate": 0.15234375,
+     "rate_shift": -0.029947916666666657,
+     "verdicts": 768
+    },
+    "CR12": {
+     "canonical_pass_rate": 0.15494791666666666,
+     "change_rate": 0.037760416666666664,
+     "changed": 29,
+     "defect_pass_rate": 0.1171875,
+     "rate_shift": -0.03776041666666666,
+     "verdicts": 768
+    },
+    "CR2": {
+     "canonical_pass_rate": 0.4153645833333333,
+     "change_rate": 0.08723958333333333,
+     "changed": 67,
+     "defect_pass_rate": 0.328125,
+     "rate_shift": -0.08723958333333331,
+     "verdicts": 768
+    },
+    "CR3": {
+     "canonical_pass_rate": 0.6380208333333334,
+     "change_rate": 0.078125,
+     "changed": 60,
+     "defect_pass_rate": 0.5598958333333334,
+     "rate_shift": -0.078125,
+     "verdicts": 768
+    },
+    "CR4": {
+     "canonical_pass_rate": 0.4635416666666667,
+     "change_rate": 0.041666666666666664,
+     "changed": 32,
+     "defect_pass_rate": 0.421875,
+     "rate_shift": -0.041666666666666685,
+     "verdicts": 768
+    },
+    "CR5": {
+     "canonical_pass_rate": 0.5572916666666666,
+     "change_rate": 0.057291666666666664,
+     "changed": 44,
+     "defect_pass_rate": 0.5,
+     "rate_shift": -0.05729166666666663,
+     "verdicts": 768
+    },
+    "CR6": {
+     "canonical_pass_rate": 0.46875,
+     "change_rate": 0.11588541666666667,
+     "changed": 89,
+     "defect_pass_rate": 0.3528645833333333,
+     "rate_shift": -0.11588541666666669,
+     "verdicts": 768
+    },
+    "CR7": {
+     "canonical_pass_rate": 0.4244791666666667,
+     "change_rate": 0.020833333333333332,
+     "changed": 16,
+     "defect_pass_rate": 0.4036458333333333,
+     "rate_shift": -0.02083333333333337,
+     "verdicts": 768
+    },
+    "CR8": {
+     "canonical_pass_rate": 0.3411458333333333,
+     "change_rate": 0.0703125,
+     "changed": 54,
+     "defect_pass_rate": 0.2708333333333333,
+     "rate_shift": -0.0703125,
+     "verdicts": 768
+    },
+    "CR9": {
+     "canonical_pass_rate": 0.1875,
+     "change_rate": 0.037760416666666664,
+     "changed": 29,
+     "defect_pass_rate": 0.14973958333333334,
+     "rate_shift": -0.03776041666666666,
+     "verdicts": 768
+    },
+    "CX1": {
+     "canonical_pass_rate": 0.7018229166666666,
+     "change_rate": 0.82421875,
+     "changed": 633,
+     "defect_pass_rate": 0.12239583333333333,
+     "rate_shift": -0.5794270833333333,
+     "verdicts": 768
+    },
+    "CX2": {
+     "canonical_pass_rate": 0.2955729166666667,
+     "change_rate": 0.5950520833333334,
+     "changed": 457,
+     "defect_pass_rate": 0.2994791666666667,
+     "rate_shift": 0.00390625,
+     "verdicts": 768
+    },
+    "RF1": {
+     "canonical_pass_rate": 0.56875,
+     "change_rate": 0.12291666666666666,
+     "changed": 177,
+     "defect_pass_rate": 0.44583333333333336,
+     "rate_shift": -0.12291666666666662,
+     "verdicts": 1440
+    },
+    "RF10": {
+     "canonical_pass_rate": 0.22265625,
+     "change_rate": 0.033854166666666664,
+     "changed": 26,
+     "defect_pass_rate": 0.18880208333333334,
+     "rate_shift": -0.03385416666666666,
+     "verdicts": 768
+    },
+    "RF11": {
+     "canonical_pass_rate": 0.3854166666666667,
+     "change_rate": 0.020833333333333332,
+     "changed": 16,
+     "defect_pass_rate": 0.3645833333333333,
+     "rate_shift": -0.02083333333333337,
+     "verdicts": 768
+    },
+    "RF12": {
+     "canonical_pass_rate": 0.7057291666666666,
+     "change_rate": 0.6223958333333334,
+     "changed": 478,
+     "defect_pass_rate": 0.08333333333333333,
+     "rate_shift": -0.6223958333333333,
+     "verdicts": 768
+    },
+    "RF2": {
+     "canonical_pass_rate": 0.44907407407407407,
+     "change_rate": 0.09953703703703703,
+     "changed": 86,
+     "defect_pass_rate": 0.34953703703703703,
+     "rate_shift": -0.09953703703703703,
+     "verdicts": 864
+    },
+    "RF3": {
+     "canonical_pass_rate": 0.71875,
+     "change_rate": 0.10069444444444445,
+     "changed": 87,
+     "defect_pass_rate": 0.6180555555555556,
+     "rate_shift": -0.10069444444444442,
+     "verdicts": 864
+    },
+    "RF4": {
+     "canonical_pass_rate": 0.10863095238095238,
+     "change_rate": 0.044642857142857144,
+     "changed": 30,
+     "defect_pass_rate": 0.06398809523809523,
+     "rate_shift": -0.04464285714285715,
+     "verdicts": 672
+    },
+    "RF5": {
+     "canonical_pass_rate": 0.9747807017543859,
+     "change_rate": 0.07017543859649122,
+     "changed": 128,
+     "defect_pass_rate": 0.9046052631578947,
+     "rate_shift": -0.07017543859649122,
+     "verdicts": 1824
+    },
+    "RF6": {
+     "canonical_pass_rate": 0.4863782051282051,
+     "change_rate": 0.11939102564102565,
+     "changed": 149,
+     "defect_pass_rate": 0.36698717948717946,
+     "rate_shift": -0.11939102564102566,
+     "verdicts": 1248
+    },
+    "RF7": {
+     "canonical_pass_rate": 0.11256720430107527,
+     "change_rate": 0.024193548387096774,
+     "changed": 72,
+     "defect_pass_rate": 0.0883736559139785,
+     "rate_shift": -0.024193548387096767,
+     "verdicts": 2976
+    },
+    "RF8": {
+     "canonical_pass_rate": 0.4513888888888889,
+     "change_rate": 0.10069444444444445,
+     "changed": 87,
+     "defect_pass_rate": 0.3506944444444444,
+     "rate_shift": -0.10069444444444448,
+     "verdicts": 864
+    },
+    "RF9": {
+     "canonical_pass_rate": 0.4609375,
+     "change_rate": 0.07291666666666667,
+     "changed": 56,
+     "defect_pass_rate": 0.3880208333333333,
+     "rate_shift": -0.07291666666666669,
+     "verdicts": 768
+    }
+   },
+   "segmentation_drift": {
+    "CL7": {
+     "canonical_pass_rate": 0.6364583333333333,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.6364583333333333,
+     "rate_shift": 0.0,
+     "verdicts": 960
+    },
+    "CL8": {
+     "canonical_pass_rate": 0.7083333333333334,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.7083333333333334,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CP4": {
+     "canonical_pass_rate": 0.3971354166666667,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.3971354166666667,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CP7": {
+     "canonical_pass_rate": 0.6002604166666666,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.6002604166666666,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CR1": {
+     "canonical_pass_rate": 0.4401041666666667,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.4401041666666667,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CR10": {
+     "canonical_pass_rate": 0.12369791666666667,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.12369791666666667,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CR11": {
+     "canonical_pass_rate": 0.18229166666666666,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.18229166666666666,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CR12": {
+     "canonical_pass_rate": 0.15494791666666666,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.15494791666666666,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CR2": {
+     "canonical_pass_rate": 0.4153645833333333,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.4153645833333333,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CR3": {
+     "canonical_pass_rate": 0.6380208333333334,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.6380208333333334,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CR4": {
+     "canonical_pass_rate": 0.4635416666666667,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.4635416666666667,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CR5": {
+     "canonical_pass_rate": 0.5572916666666666,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.5572916666666666,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CR6": {
+     "canonical_pass_rate": 0.46875,
+     "change_rate": 0.53125,
+     "changed": 408,
+     "defect_pass_rate": 1.0,
+     "rate_shift": 0.53125,
+     "verdicts": 768
+    },
+    "CR7": {
+     "canonical_pass_rate": 0.4244791666666667,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.4244791666666667,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CR8": {
+     "canonical_pass_rate": 0.3411458333333333,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.3411458333333333,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CR9": {
+     "canonical_pass_rate": 0.1875,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.1875,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CX1": {
+     "canonical_pass_rate": 0.7018229166666666,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.7018229166666666,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CX2": {
+     "canonical_pass_rate": 0.2955729166666667,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.2955729166666667,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "RF1": {
+     "canonical_pass_rate": 0.56875,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.56875,
+     "rate_shift": 0.0,
+     "verdicts": 1440
+    },
+    "RF10": {
+     "canonical_pass_rate": 0.22265625,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.22265625,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "RF11": {
+     "canonical_pass_rate": 0.3854166666666667,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.3854166666666667,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "RF12": {
+     "canonical_pass_rate": 0.7057291666666666,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.7057291666666666,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "RF2": {
+     "canonical_pass_rate": 0.44907407407407407,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.44907407407407407,
+     "rate_shift": 0.0,
+     "verdicts": 864
+    },
+    "RF3": {
+     "canonical_pass_rate": 0.71875,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.71875,
+     "rate_shift": 0.0,
+     "verdicts": 864
+    },
+    "RF4": {
+     "canonical_pass_rate": 0.10863095238095238,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.10863095238095238,
+     "rate_shift": 0.0,
+     "verdicts": 672
+    },
+    "RF5": {
+     "canonical_pass_rate": 0.9747807017543859,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.9747807017543859,
+     "rate_shift": 0.0,
+     "verdicts": 1824
+    },
+    "RF6": {
+     "canonical_pass_rate": 0.4863782051282051,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.4863782051282051,
+     "rate_shift": 0.0,
+     "verdicts": 1248
+    },
+    "RF7": {
+     "canonical_pass_rate": 0.11256720430107527,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.11256720430107527,
+     "rate_shift": 0.0,
+     "verdicts": 2976
+    },
+    "RF8": {
+     "canonical_pass_rate": 0.4513888888888889,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.4513888888888889,
+     "rate_shift": 0.0,
+     "verdicts": 864
+    },
+    "RF9": {
+     "canonical_pass_rate": 0.4609375,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.4609375,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    }
+   },
+   "vacuity_ignored": {
+    "CL7": {
+     "canonical_pass_rate": 0.6364583333333333,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.6364583333333333,
+     "rate_shift": 0.0,
+     "verdicts": 960
+    },
+    "CL8": {
+     "canonical_pass_rate": 0.7083333333333334,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.7083333333333334,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CP4": {
+     "canonical_pass_rate": 0.3971354166666667,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.3971354166666667,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CP7": {
+     "canonical_pass_rate": 0.6002604166666666,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.6002604166666666,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CR1": {
+     "canonical_pass_rate": 0.4401041666666667,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.4401041666666667,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CR10": {
+     "canonical_pass_rate": 0.12369791666666667,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.12369791666666667,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CR11": {
+     "canonical_pass_rate": 0.18229166666666666,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.18229166666666666,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CR12": {
+     "canonical_pass_rate": 0.15494791666666666,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.15494791666666666,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CR2": {
+     "canonical_pass_rate": 0.4153645833333333,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.4153645833333333,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CR3": {
+     "canonical_pass_rate": 0.6380208333333334,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.6380208333333334,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CR4": {
+     "canonical_pass_rate": 0.4635416666666667,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.4635416666666667,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CR5": {
+     "canonical_pass_rate": 0.5572916666666666,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.5572916666666666,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CR6": {
+     "canonical_pass_rate": 0.46875,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.46875,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CR7": {
+     "canonical_pass_rate": 0.4244791666666667,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.4244791666666667,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CR8": {
+     "canonical_pass_rate": 0.3411458333333333,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.3411458333333333,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CR9": {
+     "canonical_pass_rate": 0.1875,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.1875,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CX1": {
+     "canonical_pass_rate": 0.7018229166666666,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.7018229166666666,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "CX2": {
+     "canonical_pass_rate": 0.2955729166666667,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.2955729166666667,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "RF1": {
+     "canonical_pass_rate": 0.56875,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.56875,
+     "rate_shift": 0.0,
+     "verdicts": 1440
+    },
+    "RF10": {
+     "canonical_pass_rate": 0.22265625,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.22265625,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "RF11": {
+     "canonical_pass_rate": 0.3854166666666667,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.3854166666666667,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "RF12": {
+     "canonical_pass_rate": 0.7057291666666666,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.7057291666666666,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "RF2": {
+     "canonical_pass_rate": 0.44907407407407407,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.44907407407407407,
+     "rate_shift": 0.0,
+     "verdicts": 864
+    },
+    "RF3": {
+     "canonical_pass_rate": 0.71875,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.71875,
+     "rate_shift": 0.0,
+     "verdicts": 864
+    },
+    "RF4": {
+     "canonical_pass_rate": 0.10863095238095238,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.10863095238095238,
+     "rate_shift": 0.0,
+     "verdicts": 672
+    },
+    "RF5": {
+     "canonical_pass_rate": 0.9747807017543859,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.9747807017543859,
+     "rate_shift": 0.0,
+     "verdicts": 1824
+    },
+    "RF6": {
+     "canonical_pass_rate": 0.4863782051282051,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.4863782051282051,
+     "rate_shift": 0.0,
+     "verdicts": 1248
+    },
+    "RF7": {
+     "canonical_pass_rate": 0.11256720430107527,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.11256720430107527,
+     "rate_shift": 0.0,
+     "verdicts": 2976
+    },
+    "RF8": {
+     "canonical_pass_rate": 0.4513888888888889,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.4513888888888889,
+     "rate_shift": 0.0,
+     "verdicts": 864
+    },
+    "RF9": {
+     "canonical_pass_rate": 0.4609375,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.4609375,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    }
+   }
+  },
+  "by_feature_group": {
+   "denominator_swap": {
+    "b_initial": {
+     "canonical_pass_rate": 0.5240036231884058,
+     "change_rate": 0.1716485507246377,
+     "changed": 379,
+     "defect_pass_rate": 0.6956521739130435,
+     "rate_shift": 0.1716485507246377,
+     "verdicts": 2208
+    },
+    "capital": {
+     "canonical_pass_rate": 0.47966269841269843,
+     "change_rate": 0.20238095238095238,
+     "changed": 408,
+     "defect_pass_rate": 0.6820436507936508,
+     "rate_shift": 0.20238095238095238,
+     "verdicts": 2016
+    },
+    "comma": {
+     "canonical_pass_rate": 0.8510802469135802,
+     "change_rate": 0.12229938271604938,
+     "changed": 317,
+     "defect_pass_rate": 0.9733796296296297,
+     "rate_shift": 0.12229938271604945,
+     "verdicts": 2592
+    },
+    "doubled_letter": {
+     "canonical_pass_rate": 0.33242753623188404,
+     "change_rate": 0.3233695652173913,
+     "changed": 714,
+     "defect_pass_rate": 0.3795289855072464,
+     "rate_shift": 0.04710144927536236,
+     "verdicts": 2208
+    },
+    "ing_final": {
+     "canonical_pass_rate": 0.4332107843137255,
+     "change_rate": 0.25735294117647056,
+     "changed": 420,
+     "defect_pass_rate": 0.6905637254901961,
+     "rate_shift": 0.25735294117647056,
+     "verdicts": 1632
+    },
+    "letter_a": {
+     "canonical_pass_rate": 0.316703216374269,
+     "change_rate": 0.1650219298245614,
+     "changed": 903,
+     "defect_pass_rate": 0.3132309941520468,
+     "rate_shift": -0.00347222222222221,
+     "verdicts": 5472
+    },
+    "marker": {
+     "canonical_pass_rate": 0.7018229166666666,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.7018229166666666,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "one_letter": {
+     "canonical_pass_rate": 0.6807598039215687,
+     "change_rate": 0.15931372549019607,
+     "changed": 260,
+     "defect_pass_rate": 0.8400735294117647,
+     "rate_shift": 0.15931372549019607,
+     "verdicts": 1632
+    },
+    "s_final": {
+     "canonical_pass_rate": 0.17317708333333334,
+     "change_rate": 0.3763020833333333,
+     "changed": 578,
+     "defect_pass_rate": 0.5494791666666666,
+     "rate_shift": 0.37630208333333326,
+     "verdicts": 1536
+    },
+    "semicolon": {
+     "canonical_pass_rate": 0.2955729166666667,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.2955729166666667,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "sentence": {
+     "canonical_pass_rate": 0.4303385416666667,
+     "change_rate": 0.37890625,
+     "changed": 582,
+     "defect_pass_rate": 0.8092447916666666,
+     "rate_shift": 0.37890624999999994,
+     "verdicts": 1536
+    },
+    "t_initial": {
+     "canonical_pass_rate": 0.32421875,
+     "change_rate": 0.3151041666666667,
+     "changed": 484,
+     "defect_pass_rate": 0.6393229166666666,
+     "rate_shift": 0.31510416666666663,
+     "verdicts": 1536
+    },
+    "vowel_initial": {
+     "canonical_pass_rate": 0.2838541666666667,
+     "change_rate": 0.3736979166666667,
+     "changed": 574,
+     "defect_pass_rate": 0.6575520833333334,
+     "rate_shift": 0.3736979166666667,
+     "verdicts": 1536
+    },
+    "y_final": {
+     "canonical_pass_rate": 0.49833333333333335,
+     "change_rate": 0.19125,
+     "changed": 459,
+     "defect_pass_rate": 0.6895833333333333,
+     "rate_shift": 0.19124999999999998,
+     "verdicts": 2400
+    }
+   },
+   "inequality_flip": {
+    "b_initial": {
+     "canonical_pass_rate": 0.5240036231884058,
+     "change_rate": 1.0,
+     "changed": 2208,
+     "defect_pass_rate": 0.4759963768115942,
+     "rate_shift": -0.048007246376811585,
+     "verdicts": 2208
+    },
+    "capital": {
+     "canonical_pass_rate": 0.47966269841269843,
+     "change_rate": 1.0,
+     "changed": 2016,
+     "defect_pass_rate": 0.5203373015873016,
+     "rate_shift": 0.0406746031746032,
+     "verdicts": 2016
+    },
+    "comma": {
+     "canonical_pass_rate": 0.8510802469135802,
+     "change_rate": 1.0,
+     "changed": 2592,
+     "defect_pass_rate": 0.14891975308641975,
+     "rate_shift": -0.7021604938271604,
+     "verdicts": 2592
+    },
+    "doubled_letter": {
+     "canonical_pass_rate": 0.33242753623188404,
+     "change_rate": 1.0,
+     "changed": 2208,
+     "defect_pass_rate": 0.667572463768116,
+     "rate_shift": 0.33514492753623193,
+     "verdicts": 2208
+    },
+    "ing_final": {
+     "canonical_pass_rate": 0.4332107843137255,
+     "change_rate": 1.0,
+     "changed": 1632,
+     "defect_pass_rate": 0.5667892156862745,
+     "rate_shift": 0.133578431372549,
+     "verdicts": 1632
+    },
+    "letter_a": {
+     "canonical_pass_rate": 0.316703216374269,
+     "change_rate": 1.0,
+     "changed": 5472,
+     "defect_pass_rate": 0.683296783625731,
+     "rate_shift": 0.36659356725146197,
+     "verdicts": 5472
+    },
+    "marker": {
+     "canonical_pass_rate": 0.7018229166666666,
+     "change_rate": 0.11848958333333333,
+     "changed": 91,
+     "defect_pass_rate": 0.8203125,
+     "rate_shift": 0.11848958333333337,
+     "verdicts": 768
+    },
+    "one_letter": {
+     "canonical_pass_rate": 0.6807598039215687,
+     "change_rate": 1.0,
+     "changed": 1632,
+     "defect_pass_rate": 0.31924019607843135,
+     "rate_shift": -0.3615196078431373,
+     "verdicts": 1632
+    },
+    "s_final": {
+     "canonical_pass_rate": 0.17317708333333334,
+     "change_rate": 1.0,
+     "changed": 1536,
+     "defect_pass_rate": 0.8268229166666666,
+     "rate_shift": 0.6536458333333333,
+     "verdicts": 1536
+    },
+    "semicolon": {
+     "canonical_pass_rate": 0.2955729166666667,
+     "change_rate": 0.24088541666666666,
+     "changed": 185,
+     "defect_pass_rate": 0.5364583333333334,
+     "rate_shift": 0.24088541666666669,
+     "verdicts": 768
+    },
+    "sentence": {
+     "canonical_pass_rate": 0.4303385416666667,
+     "change_rate": 1.0,
+     "changed": 1536,
+     "defect_pass_rate": 0.5696614583333334,
+     "rate_shift": 0.13932291666666669,
+     "verdicts": 1536
+    },
+    "t_initial": {
+     "canonical_pass_rate": 0.32421875,
+     "change_rate": 1.0,
+     "changed": 1536,
+     "defect_pass_rate": 0.67578125,
+     "rate_shift": 0.3515625,
+     "verdicts": 1536
+    },
+    "vowel_initial": {
+     "canonical_pass_rate": 0.2838541666666667,
+     "change_rate": 1.0,
+     "changed": 1536,
+     "defect_pass_rate": 0.7161458333333334,
+     "rate_shift": 0.4322916666666667,
+     "verdicts": 1536
+    },
+    "y_final": {
+     "canonical_pass_rate": 0.49833333333333335,
+     "change_rate": 1.0,
+     "changed": 2400,
+     "defect_pass_rate": 0.5016666666666667,
+     "rate_shift": 0.003333333333333355,
+     "verdicts": 2400
+    }
+   },
+   "numerator_swap": {
+    "b_initial": {
+     "canonical_pass_rate": 0.5240036231884058,
+     "change_rate": 0.4642210144927536,
+     "changed": 1025,
+     "defect_pass_rate": 0.13496376811594202,
+     "rate_shift": -0.38903985507246375,
+     "verdicts": 2208
+    },
+    "capital": {
+     "canonical_pass_rate": 0.47966269841269843,
+     "change_rate": 0.018353174603174604,
+     "changed": 37,
+     "defect_pass_rate": 0.498015873015873,
+     "rate_shift": 0.018353174603174593,
+     "verdicts": 2016
+    },
+    "comma": {
+     "canonical_pass_rate": 0.8510802469135802,
+     "change_rate": 0.14853395061728394,
+     "changed": 385,
+     "defect_pass_rate": 0.9988425925925926,
+     "rate_shift": 0.14776234567901236,
+     "verdicts": 2592
+    },
+    "doubled_letter": {
+     "canonical_pass_rate": 0.33242753623188404,
+     "change_rate": 0.4741847826086957,
+     "changed": 1047,
+     "defect_pass_rate": 0.5493659420289855,
+     "rate_shift": 0.21693840579710144,
+     "verdicts": 2208
+    },
+    "ing_final": {
+     "canonical_pass_rate": 0.4332107843137255,
+     "change_rate": 0.2824754901960784,
+     "changed": 461,
+     "defect_pass_rate": 0.41299019607843135,
+     "rate_shift": -0.020220588235294157,
+     "verdicts": 1632
+    },
+    "letter_a": {
+     "canonical_pass_rate": 0.316703216374269,
+     "change_rate": 0.2414108187134503,
+     "changed": 1321,
+     "defect_pass_rate": 0.34868421052631576,
+     "rate_shift": 0.03198099415204675,
+     "verdicts": 5472
+    },
+    "marker": {
+     "canonical_pass_rate": 0.7018229166666666,
+     "change_rate": 0.7005208333333334,
+     "changed": 538,
+     "defect_pass_rate": 0.0013020833333333333,
+     "rate_shift": -0.7005208333333333,
+     "verdicts": 768
+    },
+    "one_letter": {
+     "canonical_pass_rate": 0.6807598039215687,
+     "change_rate": 0.5496323529411765,
+     "changed": 897,
+     "defect_pass_rate": 0.17401960784313725,
+     "rate_shift": -0.5067401960784315,
+     "verdicts": 1632
+    },
+    "s_final": {
+     "canonical_pass_rate": 0.17317708333333334,
+     "change_rate": 0.513671875,
+     "changed": 789,
+     "defect_pass_rate": 0.685546875,
+     "rate_shift": 0.5123697916666666,
+     "verdicts": 1536
+    },
+    "semicolon": {
+     "canonical_pass_rate": 0.2955729166666667,
+     "change_rate": 0.3359375,
+     "changed": 258,
+     "defect_pass_rate": 0.053385416666666664,
+     "rate_shift": -0.24218750000000003,
+     "verdicts": 768
+    },
+    "sentence": {
+     "canonical_pass_rate": 0.4303385416666667,
+     "change_rate": 0.3411458333333333,
+     "changed": 524,
+     "defect_pass_rate": 0.3860677083333333,
+     "rate_shift": -0.04427083333333337,
+     "verdicts": 1536
+    },
+    "t_initial": {
+     "canonical_pass_rate": 0.32421875,
+     "change_rate": 0.4361979166666667,
+     "changed": 670,
+     "defect_pass_rate": 0.7513020833333334,
+     "rate_shift": 0.42708333333333337,
+     "verdicts": 1536
+    },
+    "vowel_initial": {
+     "canonical_pass_rate": 0.2838541666666667,
+     "change_rate": 0.19661458333333334,
+     "changed": 302,
+     "defect_pass_rate": 0.09114583333333333,
+     "rate_shift": -0.19270833333333337,
+     "verdicts": 1536
+    },
+    "y_final": {
+     "canonical_pass_rate": 0.49833333333333335,
+     "change_rate": 0.36125,
+     "changed": 867,
+     "defect_pass_rate": 0.24625,
+     "rate_shift": -0.2520833333333333,
+     "verdicts": 2400
+    }
+   },
+   "off_by_one": {
+    "b_initial": {
+     "canonical_pass_rate": 0.5240036231884058,
+     "change_rate": 0.10643115942028986,
+     "changed": 235,
+     "defect_pass_rate": 0.41757246376811596,
+     "rate_shift": -0.1064311594202898,
+     "verdicts": 2208
+    },
+    "capital": {
+     "canonical_pass_rate": 0.47966269841269843,
+     "change_rate": 0.11805555555555555,
+     "changed": 238,
+     "defect_pass_rate": 0.36160714285714285,
+     "rate_shift": -0.11805555555555558,
+     "verdicts": 2016
+    },
+    "comma": {
+     "canonical_pass_rate": 0.8510802469135802,
+     "change_rate": 0.06635802469135803,
+     "changed": 172,
+     "defect_pass_rate": 0.7847222222222222,
+     "rate_shift": -0.06635802469135799,
+     "verdicts": 2592
+    },
+    "doubled_letter": {
+     "canonical_pass_rate": 0.33242753623188404,
+     "change_rate": 0.04121376811594203,
+     "changed": 91,
+     "defect_pass_rate": 0.291213768115942,
+     "rate_shift": -0.04121376811594202,
+     "verdicts": 2208
+    },
+    "ing_final": {
+     "canonical_pass_rate": 0.4332107843137255,
+     "change_rate": 0.09375,
+     "changed": 153,
+     "defect_pass_rate": 0.3394607843137255,
+     "rate_shift": -0.09375,
+     "verdicts": 1632
+    },
+    "letter_a": {
+     "canonical_pass_rate": 0.316703216374269,
+     "change_rate": 0.023757309941520467,
+     "changed": 130,
+     "defect_pass_rate": 0.29294590643274854,
+     "rate_shift": -0.023757309941520477,
+     "verdicts": 5472
+    },
+    "marker": {
+     "canonical_pass_rate": 0.7018229166666666,
+     "change_rate": 0.82421875,
+     "changed": 633,
+     "defect_pass_rate": 0.12239583333333333,
+     "rate_shift": -0.5794270833333333,
+     "verdicts": 768
+    },
+    "one_letter": {
+     "canonical_pass_rate": 0.6807598039215687,
+     "change_rate": 0.0900735294117647,
+     "changed": 147,
+     "defect_pass_rate": 0.5906862745098039,
+     "rate_shift": -0.09007352941176472,
+     "verdicts": 1632
+    },
+    "s_final": {
+     "canonical_pass_rate": 0.17317708333333334,
+     "change_rate": 0.031901041666666664,
+     "changed": 49,
+     "defect_pass_rate": 0.14127604166666666,
+     "rate_shift": -0.031901041666666685,
+     "verdicts": 1536
+    },
+    "semicolon": {
+     "canonical_pass_rate": 0.2955729166666667,
+     "change_rate": 0.5950520833333334,
+     "changed": 457,
+     "defect_pass_rate": 0.2994791666666667,
+     "rate_shift": 0.00390625,
+     "verdicts": 768
+    },
+    "sentence": {
+     "canonical_pass_rate": 0.4303385416666667,
+     "change_rate": 0.330078125,
+     "changed": 507,
+     "defect_pass_rate": 0.10026041666666667,
+     "rate_shift": -0.330078125,
+     "verdicts": 1536
+    },
+    "t_initial": {
+     "canonical_pass_rate": 0.32421875,
+     "change_rate": 0.055338541666666664,
+     "changed": 85,
+     "defect_pass_rate": 0.2688802083333333,
+     "rate_shift": -0.055338541666666685,
+     "verdicts": 1536
+    },
+    "vowel_initial": {
+     "canonical_pass_rate": 0.2838541666666667,
+     "change_rate": 0.025390625,
+     "changed": 39,
+     "defect_pass_rate": 0.2584635416666667,
+     "rate_shift": -0.025390625,
+     "verdicts": 1536
+    },
+    "y_final": {
+     "canonical_pass_rate": 0.49833333333333335,
+     "change_rate": 0.06833333333333333,
+     "changed": 164,
+     "defect_pass_rate": 0.43,
+     "rate_shift": -0.06833333333333336,
+     "verdicts": 2400
+    }
+   },
+   "segmentation_drift": {
+    "b_initial": {
+     "canonical_pass_rate": 0.5240036231884058,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.5240036231884058,
+     "rate_shift": 0.0,
+     "verdicts": 2208
+    },
+    "capital": {
+     "canonical_pass_rate": 0.47966269841269843,
+     "change_rate": 0.20238095238095238,
+     "changed": 408,
+     "defect_pass_rate": 0.6820436507936508,
+     "rate_shift": 0.20238095238095238,
+     "verdicts": 2016
+    },
+    "comma": {
+     "canonical_pass_rate": 0.8510802469135802,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.8510802469135802,
+     "rate_shift": 0.0,
+     "verdicts": 2592
+    },
+    "doubled_letter": {
+     "canonical_pass_rate": 0.33242753623188404,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.33242753623188404,
+     "rate_shift": 0.0,
+     "verdicts": 2208
+    },
+    "ing_final": {
+     "canonical_pass_rate": 0.4332107843137255,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.4332107843137255,
+     "rate_shift": 0.0,
+     "verdicts": 1632
+    },
+    "letter_a": {
+     "canonical_pass_rate": 0.316703216374269,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.316703216374269,
+     "rate_shift": 0.0,
+     "verdicts": 5472
+    },
+    "marker": {
+     "canonical_pass_rate": 0.7018229166666666,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.7018229166666666,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "one_letter": {
+     "canonical_pass_rate": 0.6807598039215687,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.6807598039215687,
+     "rate_shift": 0.0,
+     "verdicts": 1632
+    },
+    "s_final": {
+     "canonical_pass_rate": 0.17317708333333334,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.17317708333333334,
+     "rate_shift": 0.0,
+     "verdicts": 1536
+    },
+    "semicolon": {
+     "canonical_pass_rate": 0.2955729166666667,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.2955729166666667,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "sentence": {
+     "canonical_pass_rate": 0.4303385416666667,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.4303385416666667,
+     "rate_shift": 0.0,
+     "verdicts": 1536
+    },
+    "t_initial": {
+     "canonical_pass_rate": 0.32421875,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.32421875,
+     "rate_shift": 0.0,
+     "verdicts": 1536
+    },
+    "vowel_initial": {
+     "canonical_pass_rate": 0.2838541666666667,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.2838541666666667,
+     "rate_shift": 0.0,
+     "verdicts": 1536
+    },
+    "y_final": {
+     "canonical_pass_rate": 0.49833333333333335,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.49833333333333335,
+     "rate_shift": 0.0,
+     "verdicts": 2400
+    }
+   },
+   "vacuity_ignored": {
+    "b_initial": {
+     "canonical_pass_rate": 0.5240036231884058,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.5240036231884058,
+     "rate_shift": 0.0,
+     "verdicts": 2208
+    },
+    "capital": {
+     "canonical_pass_rate": 0.47966269841269843,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.47966269841269843,
+     "rate_shift": 0.0,
+     "verdicts": 2016
+    },
+    "comma": {
+     "canonical_pass_rate": 0.8510802469135802,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.8510802469135802,
+     "rate_shift": 0.0,
+     "verdicts": 2592
+    },
+    "doubled_letter": {
+     "canonical_pass_rate": 0.33242753623188404,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.33242753623188404,
+     "rate_shift": 0.0,
+     "verdicts": 2208
+    },
+    "ing_final": {
+     "canonical_pass_rate": 0.4332107843137255,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.4332107843137255,
+     "rate_shift": 0.0,
+     "verdicts": 1632
+    },
+    "letter_a": {
+     "canonical_pass_rate": 0.316703216374269,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.316703216374269,
+     "rate_shift": 0.0,
+     "verdicts": 5472
+    },
+    "marker": {
+     "canonical_pass_rate": 0.7018229166666666,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.7018229166666666,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "one_letter": {
+     "canonical_pass_rate": 0.6807598039215687,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.6807598039215687,
+     "rate_shift": 0.0,
+     "verdicts": 1632
+    },
+    "s_final": {
+     "canonical_pass_rate": 0.17317708333333334,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.17317708333333334,
+     "rate_shift": 0.0,
+     "verdicts": 1536
+    },
+    "semicolon": {
+     "canonical_pass_rate": 0.2955729166666667,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.2955729166666667,
+     "rate_shift": 0.0,
+     "verdicts": 768
+    },
+    "sentence": {
+     "canonical_pass_rate": 0.4303385416666667,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.4303385416666667,
+     "rate_shift": 0.0,
+     "verdicts": 1536
+    },
+    "t_initial": {
+     "canonical_pass_rate": 0.32421875,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.32421875,
+     "rate_shift": 0.0,
+     "verdicts": 1536
+    },
+    "vowel_initial": {
+     "canonical_pass_rate": 0.2838541666666667,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.2838541666666667,
+     "rate_shift": 0.0,
+     "verdicts": 1536
+    },
+    "y_final": {
+     "canonical_pass_rate": 0.49833333333333335,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.49833333333333335,
+     "rate_shift": 0.0,
+     "verdicts": 2400
+    }
+   }
+  },
+  "by_model": {
+   "denominator_swap": {
+    "gemma-3n-e2b-it": {
+     "canonical_pass_rate": 0.43692528735632186,
+     "change_rate": 0.22341954022988506,
+     "changed": 1555,
+     "defect_pass_rate": 0.6020114942528736,
+     "rate_shift": 0.16508620689655173,
+     "verdicts": 6960
+    },
+    "gemma-3n-e4b-it": {
+     "canonical_pass_rate": 0.4663793103448276,
+     "change_rate": 0.2107758620689655,
+     "changed": 1467,
+     "defect_pass_rate": 0.6162356321839081,
+     "rate_shift": 0.1498563218390805,
+     "verdicts": 6960
+    },
+    "qwen3-4b": {
+     "canonical_pass_rate": 0.44870689655172413,
+     "change_rate": 0.21235632183908046,
+     "changed": 1478,
+     "defect_pass_rate": 0.6185344827586207,
+     "rate_shift": 0.16982758620689653,
+     "verdicts": 6960
+    },
+    "qwen3-4b-instruct-2507": {
+     "canonical_pass_rate": 0.43505747126436783,
+     "change_rate": 0.2267241379310345,
+     "changed": 1578,
+     "defect_pass_rate": 0.603448275862069,
+     "rate_shift": 0.16839080459770112,
+     "verdicts": 6960
+    }
+   },
+   "inequality_flip": {
+    "gemma-3n-e2b-it": {
+     "canonical_pass_rate": 0.43692528735632186,
+     "change_rate": 0.9475574712643678,
+     "changed": 6595,
+     "defect_pass_rate": 0.5528735632183908,
+     "rate_shift": 0.1159482758620689,
+     "verdicts": 6960
+    },
+    "gemma-3n-e4b-it": {
+     "canonical_pass_rate": 0.4663793103448276,
+     "change_rate": 0.9524425287356322,
+     "changed": 6629,
+     "defect_pass_rate": 0.5435344827586207,
+     "rate_shift": 0.0771551724137931,
+     "verdicts": 6960
+    },
+    "qwen3-4b": {
+     "canonical_pass_rate": 0.44870689655172413,
+     "change_rate": 0.9586206896551724,
+     "changed": 6672,
+     "defect_pass_rate": 0.569683908045977,
+     "rate_shift": 0.12097701149425288,
+     "verdicts": 6960
+    },
+    "qwen3-4b-instruct-2507": {
+     "canonical_pass_rate": 0.43505747126436783,
+     "change_rate": 0.9603448275862069,
+     "changed": 6684,
+     "defect_pass_rate": 0.585919540229885,
+     "rate_shift": 0.15086206896551718,
+     "verdicts": 6960
+    }
+   },
+   "numerator_swap": {
+    "gemma-3n-e2b-it": {
+     "canonical_pass_rate": 0.43692528735632186,
+     "change_rate": 0.3028735632183908,
+     "changed": 2108,
+     "defect_pass_rate": 0.38721264367816094,
+     "rate_shift": -0.04971264367816092,
+     "verdicts": 6960
+    },
+    "gemma-3n-e4b-it": {
+     "canonical_pass_rate": 0.4663793103448276,
+     "change_rate": 0.305316091954023,
+     "changed": 2125,
+     "defect_pass_rate": 0.38376436781609197,
+     "rate_shift": -0.08261494252873564,
+     "verdicts": 6960
+    },
+    "qwen3-4b": {
+     "canonical_pass_rate": 0.44870689655172413,
+     "change_rate": 0.3521551724137931,
+     "changed": 2451,
+     "defect_pass_rate": 0.4689655172413793,
+     "rate_shift": 0.02025862068965517,
+     "verdicts": 6960
+    },
+    "qwen3-4b-instruct-2507": {
+     "canonical_pass_rate": 0.43505747126436783,
+     "change_rate": 0.3501436781609195,
+     "changed": 2437,
+     "defect_pass_rate": 0.4185344827586207,
+     "rate_shift": -0.016522988505747127,
+     "verdicts": 6960
+    }
+   },
+   "off_by_one": {
+    "gemma-3n-e2b-it": {
+     "canonical_pass_rate": 0.43692528735632186,
+     "change_rate": 0.09870689655172414,
+     "changed": 687,
+     "defect_pass_rate": 0.3683908045977011,
+     "rate_shift": -0.06853448275862073,
+     "verdicts": 6960
+    },
+    "gemma-3n-e4b-it": {
+     "canonical_pass_rate": 0.4663793103448276,
+     "change_rate": 0.10589080459770114,
+     "changed": 737,
+     "defect_pass_rate": 0.38807471264367815,
+     "rate_shift": -0.07830459770114945,
+     "verdicts": 6960
+    },
+    "qwen3-4b": {
+     "canonical_pass_rate": 0.44870689655172413,
+     "change_rate": 0.12270114942528736,
+     "changed": 854,
+     "defect_pass_rate": 0.34382183908045977,
+     "rate_shift": -0.10488505747126436,
+     "verdicts": 6960
+    },
+    "qwen3-4b-instruct-2507": {
+     "canonical_pass_rate": 0.43505747126436783,
+     "change_rate": 0.11810344827586207,
+     "changed": 822,
+     "defect_pass_rate": 0.33448275862068966,
+     "rate_shift": -0.10057471264367818,
+     "verdicts": 6960
+    }
+   },
+   "segmentation_drift": {
+    "gemma-3n-e2b-it": {
+     "canonical_pass_rate": 0.43692528735632186,
+     "change_rate": 0.011350574712643679,
+     "changed": 79,
+     "defect_pass_rate": 0.4482758620689655,
+     "rate_shift": 0.011350574712643668,
+     "verdicts": 6960
+    },
+    "gemma-3n-e4b-it": {
+     "canonical_pass_rate": 0.4663793103448276,
+     "change_rate": 0.014080459770114942,
+     "changed": 98,
+     "defect_pass_rate": 0.4804597701149425,
+     "rate_shift": 0.014080459770114906,
+     "verdicts": 6960
+    },
+    "qwen3-4b": {
+     "canonical_pass_rate": 0.44870689655172413,
+     "change_rate": 0.017816091954022988,
+     "changed": 124,
+     "defect_pass_rate": 0.46652298850574714,
+     "rate_shift": 0.017816091954023006,
+     "verdicts": 6960
+    },
+    "qwen3-4b-instruct-2507": {
+     "canonical_pass_rate": 0.43505747126436783,
+     "change_rate": 0.015373563218390805,
+     "changed": 107,
+     "defect_pass_rate": 0.4504310344827586,
+     "rate_shift": 0.015373563218390784,
+     "verdicts": 6960
+    }
+   },
+   "vacuity_ignored": {
+    "gemma-3n-e2b-it": {
+     "canonical_pass_rate": 0.43692528735632186,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.43692528735632186,
+     "rate_shift": 0.0,
+     "verdicts": 6960
+    },
+    "gemma-3n-e4b-it": {
+     "canonical_pass_rate": 0.4663793103448276,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.4663793103448276,
+     "rate_shift": 0.0,
+     "verdicts": 6960
+    },
+    "qwen3-4b": {
+     "canonical_pass_rate": 0.44870689655172413,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.44870689655172413,
+     "rate_shift": 0.0,
+     "verdicts": 6960
+    },
+    "qwen3-4b-instruct-2507": {
+     "canonical_pass_rate": 0.43505747126436783,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.43505747126436783,
+     "rate_shift": 0.0,
+     "verdicts": 6960
+    }
+   }
+  },
+  "by_predicate_form": {
+   "denominator_swap": {
+    "count_budget": {
+     "canonical_pass_rate": 0.46108217592592593,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.46108217592592593,
+     "rate_shift": 0.0,
+     "verdicts": 13824
+    },
+    "count_lower_bound": {
+     "canonical_pass_rate": 0.6684027777777778,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.6684027777777778,
+     "rate_shift": 0.0,
+     "verdicts": 1728
+    },
+    "exact_count": {
+     "canonical_pass_rate": 0.4986979166666667,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.4986979166666667,
+     "rate_shift": 0.0,
+     "verdicts": 1536
+    },
+    "rate_budget": {
+     "canonical_pass_rate": 0.3664279513888889,
+     "change_rate": 0.5763888888888888,
+     "changed": 5312,
+     "defect_pass_rate": 0.9428168402777778,
+     "rate_shift": 0.5763888888888888,
+     "verdicts": 9216
+    },
+    "rate_lower_bound": {
+     "canonical_pass_rate": 0.4986979166666667,
+     "change_rate": 0.4986979166666667,
+     "changed": 766,
+     "defect_pass_rate": 0.0,
+     "rate_shift": -0.4986979166666667,
+     "verdicts": 1536
+    }
+   },
+   "inequality_flip": {
+    "count_budget": {
+     "canonical_pass_rate": 0.46108217592592593,
+     "change_rate": 1.0,
+     "changed": 13824,
+     "defect_pass_rate": 0.5389178240740741,
+     "rate_shift": 0.07783564814814814,
+     "verdicts": 13824
+    },
+    "count_lower_bound": {
+     "canonical_pass_rate": 0.6684027777777778,
+     "change_rate": 1.0,
+     "changed": 1728,
+     "defect_pass_rate": 0.3315972222222222,
+     "rate_shift": -0.3368055555555556,
+     "verdicts": 1728
+    },
+    "exact_count": {
+     "canonical_pass_rate": 0.4986979166666667,
+     "change_rate": 0.1796875,
+     "changed": 276,
+     "defect_pass_rate": 0.6783854166666666,
+     "rate_shift": 0.17968749999999994,
+     "verdicts": 1536
+    },
+    "rate_budget": {
+     "canonical_pass_rate": 0.3664279513888889,
+     "change_rate": 1.0,
+     "changed": 9216,
+     "defect_pass_rate": 0.6335720486111112,
+     "rate_shift": 0.26714409722222227,
+     "verdicts": 9216
+    },
+    "rate_lower_bound": {
+     "canonical_pass_rate": 0.4986979166666667,
+     "change_rate": 1.0,
+     "changed": 1536,
+     "defect_pass_rate": 0.5013020833333334,
+     "rate_shift": 0.002604166666666685,
+     "verdicts": 1536
+    }
+   },
+   "numerator_swap": {
+    "count_budget": {
+     "canonical_pass_rate": 0.46108217592592593,
+     "change_rate": 0.28197337962962965,
+     "changed": 3898,
+     "defect_pass_rate": 0.4390914351851852,
+     "rate_shift": -0.021990740740740755,
+     "verdicts": 13824
+    },
+    "count_lower_bound": {
+     "canonical_pass_rate": 0.6684027777777778,
+     "change_rate": 0.24189814814814814,
+     "changed": 418,
+     "defect_pass_rate": 0.5723379629629629,
+     "rate_shift": -0.09606481481481488,
+     "verdicts": 1728
+    },
+    "exact_count": {
+     "canonical_pass_rate": 0.4986979166666667,
+     "change_rate": 0.5182291666666666,
+     "changed": 796,
+     "defect_pass_rate": 0.02734375,
+     "rate_shift": -0.4713541666666667,
+     "verdicts": 1536
+    },
+    "rate_budget": {
+     "canonical_pass_rate": 0.3664279513888889,
+     "change_rate": 0.3677300347222222,
+     "changed": 3389,
+     "defect_pass_rate": 0.4568142361111111,
+     "rate_shift": 0.09038628472222221,
+     "verdicts": 9216
+    },
+    "rate_lower_bound": {
+     "canonical_pass_rate": 0.4986979166666667,
+     "change_rate": 0.4036458333333333,
+     "changed": 620,
+     "defect_pass_rate": 0.15104166666666666,
+     "rate_shift": -0.34765625,
+     "verdicts": 1536
+    }
+   },
+   "off_by_one": {
+    "count_budget": {
+     "canonical_pass_rate": 0.46108217592592593,
+     "change_rate": 0.10069444444444445,
+     "changed": 1392,
+     "defect_pass_rate": 0.36038773148148145,
+     "rate_shift": -0.10069444444444448,
+     "verdicts": 13824
+    },
+    "count_lower_bound": {
+     "canonical_pass_rate": 0.6684027777777778,
+     "change_rate": 0.023726851851851853,
+     "changed": 41,
+     "defect_pass_rate": 0.6446759259259259,
+     "rate_shift": -0.02372685185185186,
+     "verdicts": 1728
+    },
+    "exact_count": {
+     "canonical_pass_rate": 0.4986979166666667,
+     "change_rate": 0.7096354166666666,
+     "changed": 1090,
+     "defect_pass_rate": 0.2109375,
+     "rate_shift": -0.2877604166666667,
+     "verdicts": 1536
+    },
+    "rate_budget": {
+     "canonical_pass_rate": 0.3664279513888889,
+     "change_rate": 0.05685763888888889,
+     "changed": 524,
+     "defect_pass_rate": 0.3095703125,
+     "rate_shift": -0.056857638888888895,
+     "verdicts": 9216
+    },
+    "rate_lower_bound": {
+     "canonical_pass_rate": 0.4986979166666667,
+     "change_rate": 0.034505208333333336,
+     "changed": 53,
+     "defect_pass_rate": 0.4641927083333333,
+     "rate_shift": -0.03450520833333337,
+     "verdicts": 1536
+    }
+   },
+   "segmentation_drift": {
+    "count_budget": {
+     "canonical_pass_rate": 0.46108217592592593,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.46108217592592593,
+     "rate_shift": 0.0,
+     "verdicts": 13824
+    },
+    "count_lower_bound": {
+     "canonical_pass_rate": 0.6684027777777778,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.6684027777777778,
+     "rate_shift": 0.0,
+     "verdicts": 1728
+    },
+    "exact_count": {
+     "canonical_pass_rate": 0.4986979166666667,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.4986979166666667,
+     "rate_shift": 0.0,
+     "verdicts": 1536
+    },
+    "rate_budget": {
+     "canonical_pass_rate": 0.3664279513888889,
+     "change_rate": 0.044270833333333336,
+     "changed": 408,
+     "defect_pass_rate": 0.4106987847222222,
+     "rate_shift": 0.044270833333333315,
+     "verdicts": 9216
+    },
+    "rate_lower_bound": {
+     "canonical_pass_rate": 0.4986979166666667,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.4986979166666667,
+     "rate_shift": 0.0,
+     "verdicts": 1536
+    }
+   },
+   "vacuity_ignored": {
+    "count_budget": {
+     "canonical_pass_rate": 0.46108217592592593,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.46108217592592593,
+     "rate_shift": 0.0,
+     "verdicts": 13824
+    },
+    "count_lower_bound": {
+     "canonical_pass_rate": 0.6684027777777778,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.6684027777777778,
+     "rate_shift": 0.0,
+     "verdicts": 1728
+    },
+    "exact_count": {
+     "canonical_pass_rate": 0.4986979166666667,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.4986979166666667,
+     "rate_shift": 0.0,
+     "verdicts": 1536
+    },
+    "rate_budget": {
+     "canonical_pass_rate": 0.3664279513888889,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.3664279513888889,
+     "rate_shift": 0.0,
+     "verdicts": 9216
+    },
+    "rate_lower_bound": {
+     "canonical_pass_rate": 0.4986979166666667,
+     "change_rate": 0.0,
+     "changed": 0,
+     "defect_pass_rate": 0.4986979166666667,
+     "rate_shift": 0.0,
+     "verdicts": 1536
+    }
+   }
+  },
+  "overall": {
+   "denominator_swap": {
+    "canonical_pass_rate": 0.44676724137931034,
+    "change_rate": 0.2183189655172414,
+    "changed": 6078,
+    "defect_pass_rate": 0.6100574712643678,
+    "rate_shift": 0.16329022988505748,
+    "verdicts": 27840
+   },
+   "inequality_flip": {
+    "canonical_pass_rate": 0.44676724137931034,
+    "change_rate": 0.9547413793103449,
+    "changed": 26580,
+    "defect_pass_rate": 0.5630028735632184,
+    "rate_shift": 0.11623563218390809,
+    "verdicts": 27840
+   },
+   "numerator_swap": {
+    "canonical_pass_rate": 0.44676724137931034,
+    "change_rate": 0.3276221264367816,
+    "changed": 9121,
+    "defect_pass_rate": 0.4146192528735632,
+    "rate_shift": -0.03214798850574713,
+    "verdicts": 27840
+   },
+   "off_by_one": {
+    "canonical_pass_rate": 0.44676724137931034,
+    "change_rate": 0.11135057471264367,
+    "changed": 3100,
+    "defect_pass_rate": 0.3586925287356322,
+    "rate_shift": -0.08807471264367817,
+    "verdicts": 27840
+   },
+   "segmentation_drift": {
+    "canonical_pass_rate": 0.44676724137931034,
+    "change_rate": 0.014655172413793103,
+    "changed": 408,
+    "defect_pass_rate": 0.46142241379310345,
+    "rate_shift": 0.014655172413793105,
+    "verdicts": 27840
+   },
+   "vacuity_ignored": {
+    "canonical_pass_rate": 0.44676724137931034,
+    "change_rate": 0.0,
+    "changed": 0,
+    "defect_pass_rate": 0.44676724137931034,
+    "rate_shift": 0.0,
+    "verdicts": 27840
+   }
+  },
+  "population": "stated (the constraint the prompt stated)",
+  "responses": 30720,
+  "stored_verdict_check": {
+   "agreement": 1.0,
+   "compared": 27840,
+   "disagreements": 0,
+   "meaning": "the verdict stored at generation time against the verdict this hash computes now. A disagreement means the amendment moved a number that had already been measured"
+  }
+ },
+ "verdict_bands": {
+  "chance": {
+   "denominator_swap": {
+    "band": "consequential",
+    "change_rate": 0.22149731968810915,
+    "note": "moves the measured compliance rate by at least the registered smallest effect of interest",
+    "rate_shift": 0.15187012670565297
+   },
+   "inequality_flip": {
+    "band": "consequential",
+    "change_rate": 0.9684332358674463,
+    "note": "moves the measured compliance rate by at least the registered smallest effect of interest",
+    "rate_shift": 0.17501827485380111
+   },
+   "numerator_swap": {
+    "band": "detectable",
+    "change_rate": 0.29645163255360624,
+    "note": "changes verdicts but shifts the measured rate by less than the smallest effect of interest",
+    "rate_shift": 0.020933845029239784
+   },
+   "off_by_one": {
+    "band": "detectable",
+    "change_rate": 0.044727704678362575,
+    "note": "changes verdicts but shifts the measured rate by less than the smallest effect of interest",
+    "rate_shift": 0.03771016081871348
+   },
+   "segmentation_drift": {
+    "band": "detectable",
+    "change_rate": 0.010419712475633528,
+    "note": "changes verdicts but shifts the measured rate by less than the smallest effect of interest",
+    "rate_shift": 0.010419712475633502
+   },
+   "vacuity_ignored": {
+    "band": "invisible",
+    "change_rate": 0.0,
+    "note": "no verdict in this corpus differs under this reading, so no audit over these responses could detect it --- which is what an agreement rate on natural responses cannot tell you",
+    "rate_shift": 0.0
+   }
+  },
+  "stated": {
+   "denominator_swap": {
+    "band": "consequential",
+    "change_rate": 0.2183189655172414,
+    "note": "moves the measured compliance rate by at least the registered smallest effect of interest",
+    "rate_shift": 0.16329022988505748
+   },
+   "inequality_flip": {
+    "band": "consequential",
+    "change_rate": 0.9547413793103449,
+    "note": "moves the measured compliance rate by at least the registered smallest effect of interest",
+    "rate_shift": 0.11623563218390809
+   },
+   "numerator_swap": {
+    "band": "detectable",
+    "change_rate": 0.3276221264367816,
+    "note": "changes verdicts but shifts the measured rate by less than the smallest effect of interest",
+    "rate_shift": 0.03214798850574713
+   },
+   "off_by_one": {
+    "band": "detectable",
+    "change_rate": 0.11135057471264367,
+    "note": "changes verdicts but shifts the measured rate by less than the smallest effect of interest",
+    "rate_shift": 0.08807471264367817
+   },
+   "segmentation_drift": {
+    "band": "detectable",
+    "change_rate": 0.014655172413793103,
+    "note": "changes verdicts but shifts the measured rate by less than the smallest effect of interest",
+    "rate_shift": 0.014655172413793105
+   },
+   "vacuity_ignored": {
+    "band": "invisible",
+    "change_rate": 0.0,
+    "note": "no verdict in this corpus differs under this reading, so no audit over these responses could detect it --- which is what an agreement rate on natural responses cannot tell you",
+    "rate_shift": 0.0
+   }
+  }
+ }
+}

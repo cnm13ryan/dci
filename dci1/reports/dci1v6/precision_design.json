@@ -1,0 +1,1594 @@
+{
+ "_baseline_checks_against_signed_records": 21,
+ "_classification": "DEVELOPMENT_EVIDENCE",
+ "_not_evidence_about": [
+  "Delta_j, Delta_R or Xi",
+  "whether any v5 replication should have passed Gate 4",
+  "anything a v5 terminal status says or does not say"
+ ],
+ "_reads": "signed v5 stage records and the scored rows they were computed from; hash and signature verified on read",
+ "_what": "the precision design behind READINESS R2, R3 and R5",
+ "authored_subsplit": {
+  "_question": "how far apart are the split-derived and the newly authored halves of the calibration set, on the same instrument?",
+  "carried_by_a_pooled_probe": {
+   "factor": 0.5,
+   "sd": 0.014211709619032517,
+   "variance": 0.00020197269029570137,
+   "why": "pooled = (a + b)/2, and the composed set is a-like, so the offset a pooled estimate carries is (b - a)/2"
+  },
+  "max_absolute_a_minus_b": 0.10677083333333326,
+  "mean_a_minus_b": 0.01081730769230768,
+  "mean_absolute_a_minus_b": 0.04647435897435898,
+  "measured_in_stage_under_d20": "\u00a734 D20's calibration_with_measured_transfer branch has the probe measure every cell on BOTH sub-splits, so this quantity is recorded per entry at the moment the margin is applied instead of being assumed from this table",
+  "n_observations": 13,
+  "observations": [
+   {
+    "a_minus_b": -0.08072916666666663,
+    "instrument": "A:6",
+    "model_key": "gemma-3n-e2b-it",
+    "n_a": 96,
+    "n_b": 96,
+    "p_calibration_a": 0.5677083333333334,
+    "p_calibration_b": 0.6484375,
+    "slot": "A",
+    "var_sampling": 0.0017962896335891813
+   },
+   {
+    "a_minus_b": -0.01302083333333337,
+    "instrument": "B:10",
+    "model_key": "gemma-3n-e2b-it",
+    "n_a": 96,
+    "n_b": 96,
+    "p_calibration_a": 0.7994791666666666,
+    "p_calibration_b": 0.8125,
+    "slot": "B",
+    "var_sampling": 0.0016532317936769005
+   },
+   {
+    "a_minus_b": 0.046875,
+    "instrument": "CR5:2",
+    "model_key": "gemma-3n-e2b-it",
+    "n_a": 96,
+    "n_b": 96,
+    "p_calibration_a": 0.6171875,
+    "p_calibration_b": 0.5703125,
+    "slot": "CL",
+    "var_sampling": 0.004600551672149122
+   },
+   {
+    "a_minus_b": 0.0078125,
+    "instrument": "A:6",
+    "model_key": "gemma-3n-e4b-it",
+    "n_a": 96,
+    "n_b": 96,
+    "p_calibration_a": 0.7317708333333334,
+    "p_calibration_b": 0.7239583333333334,
+    "slot": "A",
+    "var_sampling": 0.0017094840780336258
+   },
+   {
+    "a_minus_b": -0.04166666666666674,
+    "instrument": "B:10",
+    "model_key": "gemma-3n-e4b-it",
+    "n_a": 96,
+    "n_b": 96,
+    "p_calibration_a": 0.8463541666666666,
+    "p_calibration_b": 0.8880208333333334,
+    "slot": "B",
+    "var_sampling": 0.001387603938230994
+   },
+   {
+    "a_minus_b": -0.09635416666666674,
+    "instrument": "RF12:7",
+    "model_key": "gemma-3n-e4b-it",
+    "n_a": 96,
+    "n_b": 96,
+    "p_calibration_a": 0.7213541666666666,
+    "p_calibration_b": 0.8177083333333334,
+    "slot": "CL",
+    "var_sampling": 0.002074410064875731
+   },
+   {
+    "a_minus_b": 0.0546875,
+    "instrument": "A:2",
+    "model_key": "qwen3-4b",
+    "n_a": 96,
+    "n_b": 96,
+    "p_calibration_a": 0.7421875,
+    "p_calibration_b": 0.6875,
+    "slot": "A",
+    "var_sampling": 0.002980443050986842
+   },
+   {
+    "a_minus_b": 0.0026041666666667407,
+    "instrument": "B:12",
+    "model_key": "qwen3-4b",
+    "n_a": 96,
+    "n_b": 96,
+    "p_calibration_a": 0.7708333333333334,
+    "p_calibration_b": 0.7682291666666666,
+    "slot": "B",
+    "var_sampling": 0.0023014180144371346
+   },
+   {
+    "a_minus_b": 0.10677083333333326,
+    "instrument": "A:5",
+    "model_key": "qwen3-4b-instruct-2507",
+    "n_a": 96,
+    "n_b": 96,
+    "p_calibration_a": 0.6119791666666666,
+    "p_calibration_b": 0.5052083333333334,
+    "slot": "A",
+    "var_sampling": 0.003177754363121345
+   },
+   {
+    "a_minus_b": 0.005208333333333259,
+    "instrument": "B:11",
+    "model_key": "qwen3-4b-instruct-2507",
+    "n_a": 96,
+    "n_b": 96,
+    "p_calibration_a": 0.7760416666666666,
+    "p_calibration_b": 0.7708333333333334,
+    "slot": "B",
+    "var_sampling": 0.0023183365314327483
+   },
+   {
+    "a_minus_b": 0.04947916666666674,
+    "instrument": "MK3:3",
+    "model_key": "qwen3-4b-instruct-2507",
+    "n_a": 96,
+    "n_b": 96,
+    "p_calibration_a": 0.5598958333333334,
+    "p_calibration_b": 0.5104166666666666,
+    "slot": "R1",
+    "var_sampling": 0.0031066537600511696
+   },
+   {
+    "a_minus_b": 0.0390625,
+    "instrument": "MK8:4",
+    "model_key": "qwen3-4b-instruct-2507",
+    "n_a": 96,
+    "n_b": 96,
+    "p_calibration_a": 0.546875,
+    "p_calibration_b": 0.5078125,
+    "slot": "R2",
+    "var_sampling": 0.0037522700794956143
+   },
+   {
+    "a_minus_b": 0.059895833333333315,
+    "instrument": "MK7:7",
+    "model_key": "qwen3-4b-instruct-2507",
+    "n_a": 96,
+    "n_b": 96,
+    "p_calibration_a": 0.5416666666666666,
+    "p_calibration_b": 0.4817708333333333,
+    "slot": "R3",
+    "var_sampling": 0.0024384794179459065
+   }
+  ],
+  "residual_sd": 0.028423419238065035,
+  "residual_variance": 0.0008078907611828055,
+  "variance_expected_from_sampling": 0.002561302030617409,
+  "variance_observed": 0.0033691927918002144,
+  "why_it_matters": "calibration_a and the composed set come from one seeded per-area shuffle and are exchangeable. calibration_b is authored under \u00a734 D3 and is not. A probe measuring on the pooled 192 predicts a composed value that is calibration_a-like, so it carries HALF of the authored half's instrument-specific offset --- and that half is the entire non-sampling term in the error budget."
+ },
+ "false_termination": {
+  "_question": "how often does a 24-topic verdict fire on a replication whose entries are where v5 measured them?",
+  "extrapolation_warning": "sizes above N_COMPOSED resample the 24 topics that exist; they show the sampling arithmetic, not the topics an enlarged set would contain",
+  "method": "joint topic bootstrap, 10000 resamples, seed 20260825, over each replication's own realised entries",
+  "per_model": {
+   "gemma-3n-e2b-it": {
+    "entries_outside_band_as_measured": 0,
+    "n_entries": 11,
+    "p_some_entry_outside_band": {
+     "192": 0.0008,
+     "24": 0.1207,
+     "48": 0.0436,
+     "96": 0.0073
+    }
+   },
+   "gemma-3n-e4b-it": {
+    "entries_outside_band_as_measured": 2,
+    "n_entries": 11,
+    "p_some_entry_outside_band": {
+     "192": 1.0,
+     "24": 0.9924,
+     "48": 0.9992,
+     "96": 1.0
+    }
+   },
+   "qwen3-4b": {
+    "entries_outside_band_as_measured": 0,
+    "n_entries": 6,
+    "p_some_entry_outside_band": {
+     "192": 0.0007,
+     "24": 0.1898,
+     "48": 0.0744,
+     "96": 0.0167
+    }
+   },
+   "qwen3-4b-instruct-2507": {
+    "entries_outside_band_as_measured": 2,
+    "n_entries": 45,
+    "p_some_entry_outside_band": {
+     "192": 1.0,
+     "24": 0.9998,
+     "48": 1.0,
+     "96": 1.0
+    }
+   }
+  },
+  "reading": "the rate at the realised entry counts (6 to 45). The full five-arm set audits 95 entries and no replication ran it, so that rate is not measurable from v5.",
+  "registered_size": 24,
+  "sizes": [
+   24,
+   48,
+   96,
+   192
+  ]
+ },
+ "gate4_precision": {
+  "_question": "how precise is one \u00a713.14 cell x slot entry?",
+  "draws": 4,
+  "icc_mean": 0.36746249121834934,
+  "icc_median": 0.35043141450464105,
+  "n_entries": 73,
+  "n_entries_upper_region": 22,
+  "n_topics": 24,
+  "per_model": {
+   "gemma-3n-e2b-it": {
+    "entries": [
+     {
+      "cell": "pair:A+B",
+      "icc": 0.2872645802702513,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.28125,
+      "s2_topic": 0.09408967391304347,
+      "se": 0.06261312226450734,
+      "slot": "A"
+     },
+     {
+      "cell": "pair:A+B",
+      "icc": 0.40869565217391307,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.625,
+      "s2_topic": 0.13043478260869565,
+      "se": 0.07372097807744857,
+      "slot": "B"
+     },
+     {
+      "cell": "pair:B+A",
+      "icc": 0.09978575929426592,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.4791666666666667,
+      "s2_topic": 0.08106884057971014,
+      "se": 0.058119431840718494,
+      "slot": "A"
+     },
+     {
+      "cell": "pair:B+A",
+      "icc": 0.34448160535117056,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.8125,
+      "s2_topic": 0.07744565217391304,
+      "se": 0.05680582869664911,
+      "slot": "B"
+     },
+     {
+      "cell": "pair:B+CL",
+      "icc": 0.5143916413886083,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.8958333333333334,
+      "s2_topic": 0.059329710144927536,
+      "se": 0.049719928158019774,
+      "slot": "B"
+     },
+     {
+      "cell": "pair:B+CL",
+      "icc": 0.8069085757872944,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.8020833333333334,
+      "s2_topic": 0.13575634057971014,
+      "se": 0.07520980116195798,
+      "slot": "CL"
+     },
+     {
+      "cell": "pair:CL+B",
+      "icc": 0.5740390674228104,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.71875,
+      "s2_topic": 0.1375679347826087,
+      "se": 0.07570995497692953,
+      "slot": "B"
+     },
+     {
+      "cell": "pair:CL+B",
+      "icc": 0.8155659012598964,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.6041666666666666,
+      "s2_topic": 0.20606884057971014,
+      "se": 0.09266175959273197,
+      "slot": "CL"
+     },
+     {
+      "cell": "solo:A",
+      "icc": 0.10560823142619118,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.5520833333333334,
+      "s2_topic": 0.08140851449275362,
+      "se": 0.05824106315305437,
+      "slot": "A"
+     },
+     {
+      "cell": "solo:B",
+      "icc": 0.530739893211289,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.7916666666666666,
+      "s2_topic": 0.1068840579710145,
+      "se": 0.06673456687099226,
+      "slot": "B"
+     },
+     {
+      "cell": "solo:CL",
+      "icc": 0.8724637681159421,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.625,
+      "s2_topic": 0.21195652173913043,
+      "se": 0.09397617644451403,
+      "slot": "CL"
+     }
+    ],
+    "n_entries": 11
+   },
+   "gemma-3n-e4b-it": {
+    "entries": [
+     {
+      "cell": "pair:A+B",
+      "icc": 0.11224779766979258,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.53125,
+      "s2_topic": 0.08322010869565218,
+      "se": 0.058885520537611855,
+      "slot": "A"
+     },
+     {
+      "cell": "pair:A+B",
+      "icc": 0.28502415458937197,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.75,
+      "s2_topic": 0.08695652173913043,
+      "se": 0.0601929265428846,
+      "slot": "B"
+     },
+     {
+      "cell": "pair:B+A",
+      "icc": 0.2618670421874083,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.59375,
+      "s2_topic": 0.10767663043478261,
+      "se": 0.06698153677033651,
+      "slot": "A"
+     },
+     {
+      "cell": "pair:B+A",
+      "icc": 0.1093544137022396,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.9166666666666666,
+      "s2_topic": 0.025362318840579712,
+      "se": 0.03250789573356225,
+      "slot": "B"
+     },
+     {
+      "cell": "pair:B+CL",
+      "icc": -0.00770891150169654,
+      "in_band": false,
+      "n_topics": 24,
+      "p": 0.9791666666666666,
+      "s2_topic": 0.004981884057971014,
+      "se": 0.014407584891835929,
+      "slot": "B"
+     },
+     {
+      "cell": "pair:B+CL",
+      "icc": -0.04284121675426026,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.052083333333333336,
+      "s2_topic": 0.010756340579710144,
+      "se": 0.02117028241398595,
+      "slot": "CL"
+     },
+     {
+      "cell": "pair:CL+B",
+      "icc": 0.2843077997609167,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.8645833333333334,
+      "s2_topic": 0.05423460144927536,
+      "se": 0.04753709141698168,
+      "slot": "B"
+     },
+     {
+      "cell": "pair:CL+B",
+      "icc": 0.39393939393939403,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.08333333333333333,
+      "s2_topic": 0.041666666666666664,
+      "se": 0.041666666666666664,
+      "slot": "CL"
+     },
+     {
+      "cell": "solo:A",
+      "icc": 0.07984189723320163,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.6875,
+      "s2_topic": 0.06657608695652174,
+      "se": 0.05266881072502403,
+      "slot": "A"
+     },
+     {
+      "cell": "solo:B",
+      "icc": 0.8378085682433499,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.9479166666666666,
+      "s2_topic": 0.043365036231884056,
+      "se": 0.0425073700628707,
+      "slot": "B"
+     },
+     {
+      "cell": "solo:CL",
+      "icc": -0.03087586641461852,
+      "in_band": false,
+      "n_topics": 24,
+      "p": 0.9583333333333334,
+      "s2_topic": 0.009057971014492754,
+      "se": 0.019427183505006537,
+      "slot": "CL"
+     }
+    ],
+    "n_entries": 11
+   },
+   "qwen3-4b": {
+    "entries": [
+     {
+      "cell": "pair:A+B",
+      "icc": 0.4431469979296067,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.21875,
+      "s2_topic": 0.09952445652173914,
+      "se": 0.06439605853678053,
+      "slot": "A"
+     },
+     {
+      "cell": "pair:A+B",
+      "icc": 0.6697000337040785,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.8958333333333334,
+      "s2_topic": 0.07019927536231885,
+      "se": 0.05408298999466732,
+      "slot": "B"
+     },
+     {
+      "cell": "pair:B+A",
+      "icc": 0.42210984060208706,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.3020833333333333,
+      "s2_topic": 0.11945199275362318,
+      "se": 0.0705490351793297,
+      "slot": "A"
+     },
+     {
+      "cell": "pair:B+A",
+      "icc": 0.2814290529154029,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.8958333333333334,
+      "s2_topic": 0.043025362318840576,
+      "se": 0.0423405648279719,
+      "slot": "B"
+     },
+     {
+      "cell": "solo:A",
+      "icc": 0.5939642119238887,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.6979166666666666,
+      "s2_topic": 0.14662590579710144,
+      "se": 0.07816273243397964,
+      "slot": "A"
+     },
+     {
+      "cell": "solo:B",
+      "icc": 0.7006977992485238,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.84375,
+      "s2_topic": 0.10224184782608696,
+      "se": 0.06526926529963106,
+      "slot": "B"
+     }
+    ],
+    "n_entries": 6
+   },
+   "qwen3-4b-instruct-2507": {
+    "entries": [
+     {
+      "cell": "pair:A+B",
+      "icc": 0.39135695310239615,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.6041666666666666,
+      "s2_topic": 0.129981884057971,
+      "se": 0.07359287897445507,
+      "slot": "A"
+     },
+     {
+      "cell": "pair:A+B",
+      "icc": 0.10393374741200796,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.9479166666666666,
+      "s2_topic": 0.016191123188405796,
+      "se": 0.02597364304155737,
+      "slot": "B"
+     },
+     {
+      "cell": "pair:A+R1",
+      "icc": 0.1093544137022399,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.08333333333333333,
+      "s2_topic": 0.025362318840579712,
+      "se": 0.03250789573356225,
+      "slot": "A"
+     },
+     {
+      "cell": "pair:A+R1",
+      "icc": 0.3866423431640822,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.4583333333333333,
+      "s2_topic": 0.13405797101449277,
+      "se": 0.07473786719107343,
+      "slot": "R1"
+     },
+     {
+      "cell": "pair:A+R2",
+      "icc": 0.5105725825611783,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.3645833333333333,
+      "s2_topic": 0.14662590579710144,
+      "se": 0.07816273243397964,
+      "slot": "A"
+     },
+     {
+      "cell": "pair:A+R2",
+      "icc": 0.6651321398124468,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.46875,
+      "s2_topic": 0.18648097826086957,
+      "se": 0.08814783469189454,
+      "slot": "R2"
+     },
+     {
+      "cell": "pair:A+R3",
+      "icc": 0.3243029189630537,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.2604166666666667,
+      "s2_topic": 0.09499547101449275,
+      "se": 0.06291378724575293,
+      "slot": "A"
+     },
+     {
+      "cell": "pair:A+R3",
+      "icc": 0.06859903381642507,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.0625,
+      "s2_topic": 0.017663043478260868,
+      "se": 0.02712858538382597,
+      "slot": "R3"
+     },
+     {
+      "cell": "pair:B+A",
+      "icc": 0.3496706192358367,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.6875,
+      "s2_topic": 0.11005434782608696,
+      "se": 0.06771704236074517,
+      "slot": "A"
+     },
+     {
+      "cell": "pair:B+A",
+      "icc": 0.3794311400449506,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.8854166666666666,
+      "s2_topic": 0.05423460144927536,
+      "se": 0.04753709141698168,
+      "slot": "B"
+     },
+     {
+      "cell": "pair:B+R1",
+      "icc": 0.0035087719298257567,
+      "in_band": false,
+      "n_topics": 24,
+      "p": 0.9895833333333334,
+      "s2_topic": 0.0026041666666666665,
+      "se": 0.010416666666666666,
+      "slot": "B"
+     },
+     {
+      "cell": "pair:B+R1",
+      "icc": 0.3462008569394636,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.13541666666666666,
+      "s2_topic": 0.059669384057971016,
+      "se": 0.049862053063916174,
+      "slot": "R1"
+     },
+     {
+      "cell": "pair:B+R2",
+      "icc": 0.39748367574454474,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.9479166666666666,
+      "s2_topic": 0.0270606884057971,
+      "se": 0.033578693893224605,
+      "slot": "B"
+     },
+     {
+      "cell": "pair:B+R2",
+      "icc": 0.7411654703957321,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.3541666666666667,
+      "s2_topic": 0.18432971014492755,
+      "se": 0.08763791753215032,
+      "slot": "R2"
+     },
+     {
+      "cell": "pair:B+R3",
+      "icc": 0.3159420289855072,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.9375,
+      "s2_topic": 0.028532608695652172,
+      "se": 0.03447983027296065,
+      "slot": "B"
+     },
+     {
+      "cell": "pair:B+R3",
+      "icc": 0.28502415458937197,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.25,
+      "s2_topic": 0.08695652173913043,
+      "se": 0.0601929265428846,
+      "slot": "R3"
+     },
+     {
+      "cell": "pair:R1+A",
+      "icc": -0.04284121675426026,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.052083333333333336,
+      "s2_topic": 0.010756340579710144,
+      "se": 0.02117028241398595,
+      "slot": "A"
+     },
+     {
+      "cell": "pair:R1+A",
+      "icc": 0.14515757994018866,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.4375,
+      "s2_topic": 0.08831521739130435,
+      "se": 0.060661361051642104,
+      "slot": "R1"
+     },
+     {
+      "cell": "pair:R1+B",
+      "icc": -0.03087586641461852,
+      "in_band": false,
+      "n_topics": 24,
+      "p": 0.9583333333333334,
+      "s2_topic": 0.009057971014492754,
+      "se": 0.019427183505006537,
+      "slot": "B"
+     },
+     {
+      "cell": "pair:R1+B",
+      "icc": 0.6827878195733593,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.07291666666666667,
+      "s2_topic": 0.051517210144927536,
+      "se": 0.046330879796365985,
+      "slot": "R1"
+     },
+     {
+      "cell": "pair:R1+R2",
+      "icc": 0.08835056156132463,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.6041666666666666,
+      "s2_topic": 0.0756340579710145,
+      "se": 0.056137501566471626,
+      "slot": "R1"
+     },
+     {
+      "cell": "pair:R1+R2",
+      "icc": 0.5279503105590062,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.4375,
+      "s2_topic": 0.15896739130434784,
+      "se": 0.08138575615147793,
+      "slot": "R2"
+     },
+     {
+      "cell": "pair:R1+R3",
+      "icc": 0.19777347860027827,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.3645833333333333,
+      "s2_topic": 0.09227807971014493,
+      "se": 0.06200741881357992,
+      "slot": "R1"
+     },
+     {
+      "cell": "pair:R1+R3",
+      "icc": 0.039616628282969225,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.07291666666666667,
+      "s2_topic": 0.018908514492753624,
+      "se": 0.028068750783235813,
+      "slot": "R3"
+     },
+     {
+      "cell": "pair:R2+A",
+      "icc": 0.4191808443604284,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.5208333333333334,
+      "s2_topic": 0.1408514492753623,
+      "se": 0.07660816135682562,
+      "slot": "A"
+     },
+     {
+      "cell": "pair:R2+A",
+      "icc": 0.28740245261984393,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.2708333333333333,
+      "s2_topic": 0.09193840579710146,
+      "se": 0.061893189513972866,
+      "slot": "R2"
+     },
+     {
+      "cell": "pair:R2+B",
+      "icc": 0.4699869712965577,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.8645833333333334,
+      "s2_topic": 0.07053894927536232,
+      "se": 0.05421367803860415,
+      "slot": "B"
+     },
+     {
+      "cell": "pair:R2+B",
+      "icc": 0.7979379526910847,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.3854166666666667,
+      "s2_topic": 0.20097373188405798,
+      "se": 0.09150904597453238,
+      "slot": "R2"
+     },
+     {
+      "cell": "pair:R2+R1",
+      "icc": 0.7534910356371965,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.4895833333333333,
+      "s2_topic": 0.2036911231884058,
+      "se": 0.09212562147877344,
+      "slot": "R1"
+     },
+     {
+      "cell": "pair:R2+R1",
+      "icc": 0.3243029189630537,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.2604166666666667,
+      "s2_topic": 0.09499547101449275,
+      "se": 0.06291378724575293,
+      "slot": "R2"
+     },
+     {
+      "cell": "pair:R2+R3",
+      "icc": 0.7598343685300208,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.4166666666666667,
+      "s2_topic": 0.19927536231884058,
+      "se": 0.09112156768086443,
+      "slot": "R2"
+     },
+     {
+      "cell": "pair:R2+R3",
+      "icc": 0.4431469979296067,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.21875,
+      "s2_topic": 0.09952445652173914,
+      "se": 0.06439605853678053,
+      "slot": "R3"
+     },
+     {
+      "cell": "pair:R3+A",
+      "icc": 0.6243177112742332,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.19791666666666666,
+      "s2_topic": 0.11401721014492754,
+      "se": 0.06892544587720838,
+      "slot": "A"
+     },
+     {
+      "cell": "pair:R3+A",
+      "icc": 0.19668737060041405,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.125,
+      "s2_topic": 0.043478260869565216,
+      "se": 0.04256282653793743,
+      "slot": "R3"
+     },
+     {
+      "cell": "pair:R3+B",
+      "icc": 0.39748367574454474,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.9479166666666666,
+      "s2_topic": 0.0270606884057971,
+      "se": 0.033578693893224605,
+      "slot": "B"
+     },
+     {
+      "cell": "pair:R3+B",
+      "icc": 0.2919087015196855,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.40625,
+      "s2_topic": 0.11311141304347826,
+      "se": 0.06865111465575968,
+      "slot": "R3"
+     },
+     {
+      "cell": "pair:R3+R1",
+      "icc": 0.19351864217079706,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.4479166666666667,
+      "s2_topic": 0.09771286231884058,
+      "se": 0.06380728221202517,
+      "slot": "R1"
+     },
+     {
+      "cell": "pair:R3+R1",
+      "icc": 0.16515539021932887,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.11458333333333333,
+      "s2_topic": 0.03793025362318841,
+      "se": 0.039754587588095,
+      "slot": "R3"
+     },
+     {
+      "cell": "pair:R3+R2",
+      "icc": 0.4345120101694702,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.5104166666666666,
+      "s2_topic": 0.14390851449275363,
+      "se": 0.0774350573310612,
+      "slot": "R2"
+     },
+     {
+      "cell": "pair:R3+R2",
+      "icc": 0.35043141450464105,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.19791666666666666,
+      "s2_topic": 0.08140851449275362,
+      "se": 0.05824106315305437,
+      "slot": "R3"
+     },
+     {
+      "cell": "solo:A",
+      "icc": 0.5105725825611783,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.6354166666666666,
+      "s2_topic": 0.14662590579710144,
+      "se": 0.07816273243397964,
+      "slot": "A"
+     },
+     {
+      "cell": "solo:B",
+      "icc": 0.39204756596060947,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.8125,
+      "s2_topic": 0.08288043478260869,
+      "se": 0.058765223127929686,
+      "slot": "B"
+     },
+     {
+      "cell": "solo:R1",
+      "icc": 0.40024032875912025,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.6145833333333334,
+      "s2_topic": 0.1303215579710145,
+      "se": 0.07368897417835953,
+      "slot": "R1"
+     },
+     {
+      "cell": "solo:R2",
+      "icc": 0.6405797101449275,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.5833333333333334,
+      "s2_topic": 0.17753623188405798,
+      "se": 0.08600780775702334,
+      "slot": "R2"
+     },
+     {
+      "cell": "solo:R3",
+      "icc": 0.23182538285513118,
+      "in_band": true,
+      "n_topics": 24,
+      "p": 0.59375,
+      "s2_topic": 0.10224184782608696,
+      "se": 0.06526926529963106,
+      "slot": "R3"
+     }
+    ],
+    "n_entries": 45
+   }
+  },
+  "sampling_unit": "the topic; draws within a topic are correlated and M_CAL of them do not make M_CAL independent observations",
+  "se_max": 0.09397617644451403,
+  "se_mean": 0.05802293001610196,
+  "se_median": 0.060661361051642104,
+  "se_median_upper_region": 0.045022230739926186,
+  "what_icc_says": "rho is the fraction of a topic's compliance that is the topic rather than the draw. At the measured rho the fourth draw buys little and only topics buy precision, which is why every policy below moves N_COMPOSED and none moves M_CAL"
+ },
+ "operating_point_feasibility": {
+  "_not_a_re_verdict": "v5's records, verdicts and terminal statuses stand exactly as signed. This applies a v6 rule to a v5 measurement and says nothing about what v5 should have done",
+  "_question": "applied to the closed v5 solo-B curves, does the derived determinate rule pass at the frozen m*?",
+  "_the_operating_point_is_frozen": "m* is selected once, by \u00a712.3 at GATE_2_FOCAL_CALIBRATION, and GATE_2_75_COMPOSED_PROBE cannot move it (researcher decision, 2026-08-26). So the question this table answers is whether the FROZEN m* passes; `counterfactual_passing_severities` is recorded and read by nothing",
+  "every_frozen_m_star_passes": false,
+  "per_model": {
+   "gemma-3n-e2b-it": {
+    "counterfactual_passing_severities": [
+     7,
+     8,
+     9,
+     10
+    ],
+    "m_star": 10,
+    "m_star_passes": true,
+    "per_severity": {
+     "10": {
+      "compliance": 0.8059895833333334,
+      "half_width": 0.11925689952024562,
+      "half_width_familywise": 0.16052865514536882,
+      "passes": true,
+      "passes_familywise": false,
+      "s2_topic": 0.07898226167102967
+     },
+     "11": {
+      "compliance": 0.8815104166666666,
+      "half_width": 0.10237482081508797,
+      "half_width_familywise": 0.13780412179342505,
+      "passes": false,
+      "passes_familywise": false,
+      "s2_topic": 0.05820346585951135
+     },
+     "12": {
+      "compliance": 0.9440104166666666,
+      "half_width": 0.06751927497270428,
+      "half_width_familywise": 0.09088596510022914,
+      "passes": false,
+      "passes_familywise": false,
+      "s2_topic": 0.025317340205061083
+     },
+     "13": {
+      "compliance": 0.9739583333333334,
+      "half_width": 0.052014835918508626,
+      "half_width_familywise": 0.07001583716494073,
+      "passes": false,
+      "passes_familywise": false,
+      "s2_topic": 0.015025087260034905
+     },
+     "14": {
+      "compliance": 0.984375,
+      "half_width": 0.042910845052966946,
+      "half_width_familywise": 0.057761188452955504,
+      "passes": false,
+      "passes_familywise": false,
+      "s2_topic": 0.010225785340314136
+     },
+     "7": {
+      "compliance": 0.44921875,
+      "half_width": 0.16446949390245028,
+      "half_width_familywise": 0.2213881693622065,
+      "passes": true,
+      "passes_familywise": true,
+      "s2_topic": 0.1502218995418848
+     },
+     "8": {
+      "compliance": 0.5859375,
+      "half_width": 0.1506775692781098,
+      "half_width_familywise": 0.20282321319851035,
+      "passes": true,
+      "passes_familywise": true,
+      "s2_topic": 0.1260839332460733
+     },
+     "9": {
+      "compliance": 0.6848958333333334,
+      "half_width": 0.14339757501099004,
+      "half_width_familywise": 0.1930237995472412,
+      "passes": true,
+      "passes_familywise": true,
+      "s2_topic": 0.1141947534904014
+     }
+    }
+   },
+   "gemma-3n-e4b-it": {
+    "counterfactual_passing_severities": [
+     7,
+     8,
+     9
+    ],
+    "m_star": 10,
+    "m_star_passes": false,
+    "per_severity": {
+     "10": {
+      "compliance": 0.8671875,
+      "half_width": 0.10958660294145363,
+      "half_width_familywise": 0.1475117168307281,
+      "passes": false,
+      "passes_familywise": false,
+      "s2_topic": 0.0666925719895288
+     },
+     "11": {
+      "compliance": 0.9075520833333334,
+      "half_width": 0.09486920509786587,
+      "half_width_familywise": 0.1277010048922594,
+      "passes": false,
+      "passes_familywise": false,
+      "s2_topic": 0.049981934445898775
+     },
+     "12": {
+      "compliance": 0.9296875,
+      "half_width": 0.08506743589069657,
+      "half_width_familywise": 0.11450709464302425,
+      "passes": false,
+      "passes_familywise": false,
+      "s2_topic": 0.040187336387434554
+     },
+     "13": {
+      "compliance": 0.9817708333333334,
+      "half_width": 0.050323524688284306,
+      "half_width_familywise": 0.06773920647680114,
+      "passes": false,
+      "passes_familywise": false,
+      "s2_topic": 0.014063863438045375
+     },
+     "14": {
+      "compliance": 0.98828125,
+      "half_width": 0.04381321261496384,
+      "half_width_familywise": 0.0589758422948456,
+      "passes": false,
+      "passes_familywise": false,
+      "s2_topic": 0.010660381217277488
+     },
+     "7": {
+      "compliance": 0.5169270833333334,
+      "half_width": 0.1624946695925955,
+      "half_width_familywise": 0.2187299089857865,
+      "passes": true,
+      "passes_familywise": true,
+      "s2_topic": 0.146636057482548
+     },
+     "8": {
+      "compliance": 0.6653645833333334,
+      "half_width": 0.1556181383569827,
+      "half_width_familywise": 0.20947358657795265,
+      "passes": true,
+      "passes_familywise": true,
+      "s2_topic": 0.1344878244982548
+     },
+     "9": {
+      "compliance": 0.7291666666666666,
+      "half_width": 0.1383123331963359,
+      "half_width_familywise": 0.18617868590702924,
+      "passes": true,
+      "passes_familywise": true,
+      "s2_topic": 0.106239092495637
+     }
+    }
+   },
+   "qwen3-4b": {
+    "counterfactual_passing_severities": [
+     9,
+     10,
+     11,
+     12
+    ],
+    "m_star": 12,
+    "m_star_passes": true,
+    "per_severity": {
+     "10": {
+      "compliance": 0.4049479166666667,
+      "half_width": 0.1725412655139135,
+      "half_width_familywise": 0.23225337419850012,
+      "passes": true,
+      "passes_familywise": true,
+      "s2_topic": 0.16532879308464224
+     },
+     "11": {
+      "compliance": 0.5872395833333334,
+      "half_width": 0.1616767286787798,
+      "half_width_familywise": 0.21762889969063107,
+      "passes": true,
+      "passes_familywise": true,
+      "s2_topic": 0.14516354439354276
+     },
+     "12": {
+      "compliance": 0.76953125,
+      "half_width": 0.14066970891697375,
+      "half_width_familywise": 0.18935188893032345,
+      "passes": true,
+      "passes_familywise": false,
+      "s2_topic": 0.10989140215968586
+     },
+     "13": {
+      "compliance": 0.9283854166666666,
+      "half_width": 0.07949323322510138,
+      "half_width_familywise": 0.10700380333647963,
+      "passes": false,
+      "passes_familywise": false,
+      "s2_topic": 0.035093190990401396
+     },
+     "14": {
+      "compliance": 0.9739583333333334,
+      "half_width": 0.05086941473761176,
+      "half_width_familywise": 0.06847401507763097,
+      "passes": false,
+      "passes_familywise": false,
+      "s2_topic": 0.0143706369982548
+     },
+     "7": {
+      "compliance": 0.033854166666666664,
+      "half_width": 0.0644425083732231,
+      "half_width_familywise": 0.08674440845740317,
+      "passes": false,
+      "passes_familywise": false,
+      "s2_topic": 0.023062554537521814
+     },
+     "8": {
+      "compliance": 0.10286458333333333,
+      "half_width": 0.09416787961419457,
+      "half_width_familywise": 0.12675696863803987,
+      "passes": false,
+      "passes_familywise": false,
+      "s2_topic": 0.04924567790139616
+     },
+     "9": {
+      "compliance": 0.22526041666666666,
+      "half_width": 0.13712572170677312,
+      "half_width_familywise": 0.18458141860118904,
+      "passes": true,
+      "passes_familywise": false,
+      "s2_topic": 0.10442401559773123
+     }
+    }
+   },
+   "qwen3-4b-instruct-2507": {
+    "counterfactual_passing_severities": [
+     8,
+     9,
+     10,
+     11
+    ],
+    "m_star": 11,
+    "m_star_passes": true,
+    "per_severity": {
+     "10": {
+      "compliance": 0.6770833333333334,
+      "half_width": 0.1638572592426099,
+      "half_width_familywise": 0.22056405598199177,
+      "passes": true,
+      "passes_familywise": true,
+      "s2_topic": 0.14910558464223386
+     },
+     "11": {
+      "compliance": 0.7734375,
+      "half_width": 0.1411890703501065,
+      "half_width_familywise": 0.19005098804098763,
+      "passes": true,
+      "passes_familywise": false,
+      "s2_topic": 0.11070435209424084
+     },
+     "12": {
+      "compliance": 0.8932291666666666,
+      "half_width": 0.10153954859698312,
+      "half_width_familywise": 0.1366797832738755,
+      "passes": false,
+      "passes_familywise": false,
+      "s2_topic": 0.05725758071553229
+     },
+     "13": {
+      "compliance": 0.9557291666666666,
+      "half_width": 0.06778464896266165,
+      "half_width_familywise": 0.0912431782249187,
+      "passes": false,
+      "passes_familywise": false,
+      "s2_topic": 0.025516743019197208
+     },
+     "14": {
+      "compliance": 0.984375,
+      "half_width": 0.035385189327579156,
+      "half_width_familywise": 0.04763109621054854,
+      "passes": false,
+      "passes_familywise": false,
+      "s2_topic": 0.006953534031413613
+     },
+     "7": {
+      "compliance": 0.14973958333333334,
+      "half_width": 0.11795279928213287,
+      "half_width_familywise": 0.1587732392470756,
+      "passes": false,
+      "passes_familywise": false,
+      "s2_topic": 0.0772643297338569
+     },
+     "8": {
+      "compliance": 0.3776041666666667,
+      "half_width": 0.16391343694990798,
+      "half_width_familywise": 0.22063967535360038,
+      "passes": true,
+      "passes_familywise": true,
+      "s2_topic": 0.149207842495637
+     },
+     "9": {
+      "compliance": 0.5013020833333334,
+      "half_width": 0.17249857269020374,
+      "half_width_familywise": 0.23219590648298805,
+      "passes": true,
+      "passes_familywise": true,
+      "s2_topic": 0.1652469868019197
+     }
+    }
+   }
+  },
+  "replications_whose_frozen_m_star_fails": [
+   "gemma-3n-e4b-it"
+  ],
+  "residual_note": "0.0, so this isolates the projection from \u00a734 D23's reading and \u00a734 D26's magnitude. That isolation is deliberate and it is also a LIMIT: this table establishes feasibility at one value only, and the 2026-08-26 red team observed that the value it establishes it at is the one it was used to justify. `reports/dci1v6/residual_sensitivity.json` sweeps the others",
+  "residual_used": 0.0,
+  "swept_elsewhere": "reports/dci1v6/residual_sensitivity.json"
+ },
+ "policies": {
+  "_question": "which composed-set sizes exist, and what does each do to the quantity a margin would have to cover?",
+  "delta_ceiling_from_registered_constants": 0.1499999999999999,
+  "familywise_k": 6,
+  "materialised_sequestered_topics": 0,
+  "residual_used": 0.0,
+  "rows": [
+   {
+    "composed_per_area": 2,
+    "delta_familywise_95_over_6": 0.18938803152384243,
+    "delta_per_entry_95": 0.14069655928608568,
+    "gate4_rows_per_cell": 96,
+    "materialisable_today": true,
+    "n_composed": 24,
+    "n_sequestered_nominal": 96,
+    "sd_of_the_transfer": 0.0717852778907583,
+    "se_of_one_entry": 0.0671708957190408,
+    "topics_that_must_be_authored": 0
+   },
+   {
+    "composed_per_area": 3,
+    "delta_familywise_95_over_6": 0.15937235302605693,
+    "delta_per_entry_95": 0.11839788151169785,
+    "gate4_rows_per_cell": 144,
+    "materialisable_today": false,
+    "n_composed": 36,
+    "n_sequestered_nominal": 84,
+    "sd_of_the_transfer": 0.060408192418638935,
+    "se_of_one_entry": 0.05484480669244964,
+    "topics_that_must_be_authored": 12
+   },
+   {
+    "composed_per_area": 4,
+    "delta_familywise_95_over_6": 0.14200495456622353,
+    "delta_per_entry_95": 0.10549562371120216,
+    "gate4_rows_per_cell": 192,
+    "materialisable_today": false,
+    "n_composed": 48,
+    "n_sequestered_nominal": 72,
+    "sd_of_the_transfer": 0.053825286864114946,
+    "se_of_one_entry": 0.047496995861308185,
+    "topics_that_must_be_authored": 24
+   },
+   {
+    "composed_per_area": 6,
+    "delta_familywise_95_over_6": 0.12219356502552949,
+    "delta_per_entry_95": 0.09077772247623903,
+    "gate4_rows_per_cell": 288,
+    "materialisable_today": false,
+    "n_composed": 72,
+    "n_sequestered_nominal": 48,
+    "sd_of_the_transfer": 0.04631601559634877,
+    "se_of_one_entry": 0.038781134725096485,
+    "topics_that_must_be_authored": 48
+   },
+   {
+    "composed_per_area": 8,
+    "delta_familywise_95_over_6": 0.11096935360627659,
+    "delta_per_entry_95": 0.08243924451286432,
+    "gate4_rows_per_cell": 384,
+    "materialisable_today": false,
+    "n_composed": 96,
+    "n_sequestered_nominal": 24,
+    "sd_of_the_transfer": 0.04206161192916531,
+    "se_of_one_entry": 0.0335854478595204,
+    "topics_that_must_be_authored": 72
+   },
+   {
+    "composed_per_area": 10,
+    "delta_familywise_95_over_6": 0.10365305351740865,
+    "delta_per_entry_95": 0.07700395781113516,
+    "gate4_rows_per_cell": 480,
+    "materialisable_today": false,
+    "n_composed": 120,
+    "n_sequestered_nominal": 0,
+    "sd_of_the_transfer": 0.03928845551169948,
+    "se_of_one_entry": 0.03003973778746497,
+    "topics_that_must_be_authored": 96
+   }
+  ],
+  "s2_calibration_mean": 0.12310980290978656,
+  "s2_composed_mean": 0.10828630156075808,
+  "sequestered_use": "\u00a76.2: a future uncontaminated rerun only. The eighth was never materialised in this repository, so enlarging the composed set from it means authoring topics, which is a governed bank change",
+  "why_k_is_6": "\u00a713.14's verdict is a conjunction over entries, so a margin meant to make a probe pass IMPLY a Gate-4 pass is family-wise over the entries it covers. Six is the base arm's entry count: solo:A, solo:B and both orders of A with B, which are the only Gate-4 entries whose instruments both exist when the probe runs",
+  "why_that_ceiling": "a margin wider than 0.95 - FOCAL_AIM refuses, on its solo B cell alone and before any composition, an operating point sitting exactly where \u00a712.3 aims. A probe that refuses the registered aim is not a feasibility check"
+ },
+ "split_transfer": {
+  "_question": "is the calibration -> composed movement a bias, or the sampling error of a 24-topic verdict?",
+  "caveat": "thirteen observations, all solo cells, on four replications. This bounds the residual; it does not measure a small one precisely.",
+  "design_property": "\u00a76.2 cuts all five sets from ONE seeded per-area shuffle (dci1v4.topics.split.cut_area), so the composed and calibration sets are exchangeable draws from one stratified population. There is no systematic difference between them for a margin to absorb; what a margin would be absorbing is sampling error.",
+  "max_absolute_transfer": 0.18880208333333337,
+  "mean_absolute_transfer": 0.06430288461538462,
+  "mean_transfer": 0.04467147435897435,
+  "mean_transfer_by_model": {
+   "gemma-3n-e2b-it": -0.013020833333333334,
+   "gemma-3n-e4b-it": 0.07638888888888888,
+   "qwen3-4b": 0.028645833333333315,
+   "qwen3-4b-instruct-2507": 0.06666666666666668
+  },
+  "n_observations": 13,
+  "observations": [
+   {
+    "instrument": "A:6",
+    "model_key": "gemma-3n-e2b-it",
+    "n_calibration": 192,
+    "n_composed": 24,
+    "p_calibration": 0.6080729166666666,
+    "p_composed": 0.5520833333333334,
+    "s2_calibration": 0.08740830879144852,
+    "s2_composed": 0.08140851449275362,
+    "slot": "A",
+    "transfer": -0.05598958333333326,
+    "var_sampling": 0.0038472730454868617
+   },
+   {
+    "instrument": "B:10",
+    "model_key": "gemma-3n-e2b-it",
+    "n_calibration": 192,
+    "n_composed": 24,
+    "p_calibration": 0.8059895833333334,
+    "p_composed": 0.7916666666666666,
+    "s2_calibration": 0.07898226167102967,
+    "s2_composed": 0.1068840579710145,
+    "slot": "B",
+    "transfer": -0.01432291666666674,
+    "var_sampling": 0.004864868361662216
+   },
+   {
+    "instrument": "CR5:2",
+    "model_key": "gemma-3n-e2b-it",
+    "n_calibration": 192,
+    "n_composed": 24,
+    "p_calibration": 0.59375,
+    "p_composed": 0.625,
+    "s2_calibration": 0.22022251308900523,
+    "s2_composed": 0.21195652173913043,
+    "slot": "CL",
+    "transfer": 0.03125,
+    "var_sampling": 0.009978513994802336
+   },
+   {
+    "instrument": "A:6",
+    "model_key": "gemma-3n-e4b-it",
+    "n_calibration": 192,
+    "n_composed": 24,
+    "p_calibration": 0.7278645833333334,
+    "p_composed": 0.6875,
+    "s2_calibration": 0.08164096585951135,
+    "s2_composed": 0.06657608695652174,
+    "slot": "A",
+    "transfer": -0.04036458333333337,
+    "var_sampling": 0.0031992169870400274
+   },
+   {
+    "instrument": "B:10",
+    "model_key": "gemma-3n-e4b-it",
+    "n_calibration": 192,
+    "n_composed": 24,
+    "p_calibration": 0.8671875,
+    "p_composed": 0.9479166666666666,
+    "s2_calibration": 0.0666925719895288,
+    "s2_composed": 0.043365036231884056,
+    "slot": "B",
+    "transfer": 0.08072916666666663,
+    "var_sampling": 0.0021542336554406316
+   },
+   {
+    "instrument": "RF12:7",
+    "model_key": "gemma-3n-e4b-it",
+    "n_calibration": 192,
+    "n_composed": 24,
+    "p_calibration": 0.76953125,
+    "p_composed": 0.9583333333333334,
+    "s2_calibration": 0.1013835487565445,
+    "s2_composed": 0.009057971014492754,
+    "slot": "CL",
+    "transfer": 0.18880208333333337,
+    "var_sampling": 0.0009054547753775341
+   },
+   {
+    "instrument": "A:2",
+    "model_key": "qwen3-4b",
+    "n_calibration": 192,
+    "n_composed": 24,
+    "p_calibration": 0.71484375,
+    "p_composed": 0.6979166666666666,
+    "s2_calibration": 0.14306384980366493,
+    "s2_composed": 0.14662590579710144,
+    "slot": "A",
+    "transfer": -0.01692708333333337,
+    "var_sampling": 0.006854536959273315
+   },
+   {
+    "instrument": "B:12",
+    "model_key": "qwen3-4b",
+    "n_calibration": 192,
+    "n_composed": 24,
+    "p_calibration": 0.76953125,
+    "p_composed": 0.84375,
+    "s2_calibration": 0.10989140215968586,
+    "s2_composed": 0.10224184782608696,
+    "slot": "B",
+    "transfer": 0.07421875,
+    "var_sampling": 0.0048324280456686535
+   },
+   {
+    "instrument": "A:5",
+    "model_key": "qwen3-4b-instruct-2507",
+    "n_calibration": 192,
+    "n_composed": 24,
+    "p_calibration": 0.55859375,
+    "p_composed": 0.6354166666666666,
+    "s2_calibration": 0.15459853566753926,
+    "s2_composed": 0.14662590579710144,
+    "slot": "A",
+    "transfer": 0.07682291666666663,
+    "var_sampling": 0.00691461344814766
+   },
+   {
+    "instrument": "B:11",
+    "model_key": "qwen3-4b-instruct-2507",
+    "n_calibration": 192,
+    "n_composed": 24,
+    "p_calibration": 0.7734375,
+    "p_composed": 0.8125,
+    "s2_calibration": 0.11070435209424084,
+    "s2_composed": 0.08288043478260869,
+    "slot": "B",
+    "transfer": 0.0390625,
+    "var_sampling": 0.004029936616432866
+   },
+   {
+    "instrument": "MK3:3",
+    "model_key": "qwen3-4b-instruct-2507",
+    "n_calibration": 192,
+    "n_composed": 24,
+    "p_calibration": 0.53515625,
+    "p_composed": 0.6145833333333334,
+    "s2_calibration": 0.14895390215968587,
+    "s2_composed": 0.1303215579710145,
+    "slot": "R1",
+    "transfer": 0.07942708333333337,
+    "var_sampling": 0.0062058664892073005
+   },
+   {
+    "instrument": "MK8:4",
+    "model_key": "qwen3-4b-instruct-2507",
+    "n_calibration": 192,
+    "n_composed": 24,
+    "p_calibration": 0.52734375,
+    "p_composed": 0.5833333333333334,
+    "s2_calibration": 0.17954945189790575,
+    "s2_composed": 0.17753623188405798,
+    "slot": "R2",
+    "transfer": 0.05598958333333337,
+    "var_sampling": 0.008332496390470675
+   },
+   {
+    "instrument": "MK7:7",
+    "model_key": "qwen3-4b-instruct-2507",
+    "n_calibration": 192,
+    "n_composed": 24,
+    "p_calibration": 0.51171875,
+    "p_composed": 0.59375,
+    "s2_calibration": 0.11733577388743456,
+    "s2_composed": 0.10224184782608696,
+    "slot": "R3",
+    "transfer": 0.08203125,
+    "var_sampling": 0.004871200815084012
+   }
+  ],
+  "residual_point_estimate": -0.000856255469086741,
+  "residual_sd_point_estimate": 0.0,
+  "residual_sd_upper_95": 0.06865377589144063,
+  "residual_upper_95": 0.004713340944152154,
+  "variance_expected_from_sampling": 0.005153126121853391,
+  "variance_observed": 0.00429687065276665,
+  "verdict": "consistent with sampling",
+  "why_by_model": "all instruments of one replication share one composed topic set, so a real set effect would appear as a common per-model shift and not as instrument noise"
+ }
+}

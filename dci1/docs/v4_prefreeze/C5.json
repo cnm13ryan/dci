@@ -1,0 +1,22 @@
+{
+  "canonical_verifier_hash": "f5d4f7e74e757769ec43d7007b0121687fa4b5b388184e5ef32b171ea7580ee4",
+  "changed_verifier_refused_everywhere": true,
+  "check": "C5",
+  "entry_point_count": 11,
+  "entry_points": [
+    "ladder_screen",
+    "solo_calibration",
+    "reference_admission",
+    "composed_headroom",
+    "freeze",
+    "confirmatory_generation",
+    "scoring",
+    "resume_restart",
+    "analysis",
+    "unmasking",
+    "report_generation"
+  ],
+  "regression_tests": "tests_v4/test_t8_verifier_binding.py, five cases",
+  "status": "COMPLETE",
+  "unchanged_verifier_succeeds_everywhere": true
+}

@@ -1,0 +1,19 @@
+model,frame,order,configuration,arm,frozen_delta_r_pp,frozen_joint_lower_pp,frozen_joint_upper_pp,frozen_reading,runner_up_delta_r_pp,runner_up_lower_pp,runner_up_upper_pp,abs_change_pp,sign_change,runner_up_reading_own_interval,stability_status
+qwen3-4b,0,B first,outcome_first,Delta_R[A2],-2.6476,-4.7333,-0.5618,L3c,-2.5174,-4.0148,-1.02,0.1302,False,NO_LEVEL,OPERATING_POINT_UNSTABLE
+qwen3-4b,0,B second,outcome_second,Delta_R[A2],-5.5447,-8.3064,-2.783,L3c,-3.6241,-5.447,-1.8012,1.9206,False,NO_LEVEL,OPERATING_POINT_UNSTABLE
+qwen3-4b,1,B first,outcome_first,Delta_R[A2],-1.2044,-3.409,1.0001,L3c,-1.7904,-3.1033,-0.4774,0.5859,False,NO_LEVEL,OPERATING_POINT_UNSTABLE
+qwen3-4b,1,B second,outcome_second,Delta_R[A2],-2.9297,-5.6706,-0.1888,L3c,-0.5534,-2.4306,1.3238,2.3763,False,NO_LEVEL,OPERATING_POINT_UNSTABLE
+qwen3-4b,2,B first,outcome_first,Delta_R[A2],-0.7595,-2.7108,1.1917,L3c,-0.8572,-2.0616,0.3472,0.0977,False,NO_LEVEL,OPERATING_POINT_UNSTABLE
+qwen3-4b,2,B second,outcome_second,Delta_R[A2],-3.4939,-6.6983,-0.2895,L3c,-5.089,-7.2157,-2.9622,1.5951,False,NO_LEVEL,OPERATING_POINT_UNSTABLE
+qwen3-4b,3,B first,outcome_first,Delta_R[A2],0.0977,-0.9501,1.1454,L3c,-0.0977,-0.7595,0.5642,0.1953,True,NO_LEVEL,OPERATING_POINT_UNSTABLE
+qwen3-4b,3,B second,outcome_second,Delta_R[A2],-1.02,-2.9865,0.9466,L3c,-1.1827,-2.1593,-0.2062,0.1628,False,NO_LEVEL,OPERATING_POINT_UNSTABLE
+gemma-3n-e2b-it,0,B first,outcome_first,Delta_R[A2],-0.434,-2.9707,2.1026,L3c,-1.6059,-3.2118,-0.0,1.1719,False,NO_LEVEL,OPERATING_POINT_UNSTABLE
+gemma-3n-e2b-it,0,B first,outcome_first,Delta_R[B2],-0.434,-2.9707,2.1026,L3c,1.5734,-0.4042,3.5509,2.0074,True,NO_LEVEL,OPERATING_POINT_UNSTABLE
+gemma-3n-e2b-it,0,B second,outcome_second,Delta_R[A2],-11.1871,-14.4291,-7.945,L3c,-6.5647,-8.9143,-4.215,4.6224,False,NO_LEVEL,OPERATING_POINT_UNSTABLE
+gemma-3n-e2b-it,0,B second,outcome_second,Delta_R[B2],-11.1871,-14.4291,-7.945,L3c,1.5842,-0.9226,4.091,12.7713,True,NO_LEVEL,OPERATING_POINT_UNSTABLE
+gemma-3n-e4b-it,0,B first,outcome_first,Delta_R[A2],-2.2135,-4.8361,0.4091,L3c,-3.5482,-5.6703,-1.426,1.3346,False,NO_LEVEL,OPERATING_POINT_UNSTABLE
+gemma-3n-e4b-it,0,B first,outcome_first,Delta_R[B2],-2.2135,-4.8361,0.4091,L3c,-1.0308,-2.4631,0.4015,1.1827,False,NO_LEVEL,OPERATING_POINT_UNSTABLE
+gemma-3n-e4b-it,0,B second,outcome_second,Delta_R[A2],-8.1814,-10.7832,-5.5796,L3c,-8.3442,-10.395,-6.2934,0.1628,False,NO_LEVEL,OPERATING_POINT_UNSTABLE
+gemma-3n-e4b-it,0,B second,outcome_second,Delta_R[B2],-8.1814,-10.7832,-5.5796,L3c,-13.3464,-15.6824,-11.0103,5.1649,False,NO_LEVEL,OPERATING_POINT_UNSTABLE
+gemma-3n-e4b-it,1,B first,outcome_first,Delta_R[A2],2.1484,-0.3664,4.6633,L3c,2.3112,0.6619,3.9605,0.1628,False,NO_LEVEL,OPERATING_POINT_UNSTABLE
+gemma-3n-e4b-it,1,B second,outcome_second,Delta_R[A2],12.6411,9.6232,15.659,INDETERMINATE@0.10,13.52,11.5017,15.5382,0.8789,False,NO_LEVEL,OPERATING_POINT_UNSTABLE

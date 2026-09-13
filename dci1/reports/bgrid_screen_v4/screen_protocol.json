@@ -1,0 +1,207 @@
+{
+ "payload": {
+  "cells": {
+   "a_solo_floored": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "b_solo_current": [
+    11,
+    12
+   ],
+   "b_solo_current_reused": "m = 7 to 10 from the registered \u00a712.2 ladder screen, read only",
+   "b_solo_floored": [
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+   ],
+   "completion_cap": "each model's own \u00a712.1 selected cap",
+   "decoding": "the registered policy, unchanged",
+   "draws_per_cell": 1,
+   "fixture_floored": {
+    "a_severity": 3,
+    "b_severities": [
+     7,
+     8,
+     9,
+     10,
+     11,
+     12
+    ]
+   },
+   "tensor_parallel_size": 1
+  },
+  "classification": "design evidence; non-confirmatory",
+  "decision_rule": {
+   "FAIL": "any model has no in-band rung at m <= 12",
+   "MARGINAL": "every model has an in-band rung and at least one sits within one standard error of a band edge; a fresh-topic confirmation is then required before any grid amendment",
+   "PASS": "every model has at least one m in the screen grid inside the registered focal band under the floored stem, and that rung sits MORE than one standard error from both band edges",
+   "band": [
+    0.6,
+    0.95
+   ],
+   "band_is_registered": true,
+   "fixed_before": "the first generation of this screen",
+   "no_extension_past_12": "the grid is not extended past m = 12 to obtain a pass; a model needing m > 12 is reported as the finding",
+   "standard_error": "topic-clustered bootstrap standard deviation of the compliance estimate, 2000 resamples over the 24 topics"
+  },
+  "grid": {
+   "extension_is_not_registered": true,
+   "monotone_in_m": {
+    "monotone": true,
+    "texts": 20
+   },
+   "registered_focal_grid": [
+    7,
+    8,
+    9,
+    10
+   ],
+   "rule_unchanged": "longest alphabetic run at most m letters; only the severity range is extended, inside this screen only",
+   "scoring_identical_on_registered_rungs": {
+    "agreement": 1.0,
+    "registered_rungs": [
+     7,
+     8,
+     9,
+     10
+    ],
+    "verdicts_checked": 160
+   },
+   "screen_focal_grid": [
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+   ],
+   "screen_only_extension": [
+    11,
+    12
+   ],
+   "wordings_identical_on_registered_rungs": {
+    "extension_at_m11": [
+     "Every word in the answer must have at most 11 letters.",
+     "Use only words of 11 letters or fewer.",
+     "Do not use any word longer than 11 letters.",
+     "No word in your answer may exceed 11 letters."
+    ],
+    "extension_rungs": [
+     11,
+     12
+    ],
+    "registered_rungs_checked": [
+     7,
+     8,
+     9,
+     10
+    ],
+    "wordings_identical": true
+   }
+  },
+  "prior_prediction": {
+   "known_bias": "on gemma-3n-e2b-it the pooled figure ran about 0.09 above the direct measurement, so the prediction is treated as optimistic and the realised gap is reported",
+   "qwen3-4b": [
+    11,
+    12
+   ],
+   "qwen3-4b-instruct-2507": [
+    10,
+    11
+   ],
+   "source": "the FORM x STEM screen's pooled extrapolation"
+  },
+  "producing_commit": "9523917347dcafb1fec3a8263c4b441f0244456a",
+  "question": "Under the current stem, honest B-solo compliance is 0.000 on qwen3-4b and 0.042 on qwen3-4b-instruct-2507; the apparent ~0.75 is carried entirely by sub-twenty-word answers. Under the floored stem both Qwens exhaust the registered focal grid m in {7,8,9,10}. Does an honest focal severity exist at m <= 12 on all four models?",
+  "readouts": [
+   "raw B-solo compliance",
+   "non-vacuous compliance at >= 20 words",
+   "vacuous share of passes",
+   "word-count distribution",
+   "realised max-word-length distribution",
+   "truncation rate",
+   "stem-satisfaction rate",
+   "smallest in-band m, its distance from each band edge, and a topic-clustered standard error on that compliance"
+  ],
+  "registered_values_untouched": {
+   "focal_aim": 0.8,
+   "focal_band": [
+    0.6,
+    0.95
+   ],
+   "focal_grid": [
+    7,
+    8,
+    9,
+    10
+   ],
+   "non_vacuity_min_words": 20,
+   "note": "listed so a later diff proves the screen changed none of them",
+   "reference_caliper": 0.1,
+   "reference_vacuity_max": 0.1,
+   "target_aim": 0.7,
+   "target_band": [
+    0.5,
+    0.85
+   ],
+   "target_grid": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ]
+  },
+  "seeds": {
+   "derivation": "domain, root, stage, model_id, prompt hash, draw",
+   "distinct_from": {
+    "fs_screen_root": 202608200,
+    "v3_roots": "202608170-202608175",
+    "v4_roots": "202608190-202608195"
+   },
+   "domain": "bgrid:gen:v1",
+   "screen_root": 202608210,
+   "stage_label": "bgrid-screen"
+  },
+  "status": "NON-CONFIRMATORY DESIGN SCREEN. Not a registered v4 stage. No Gate 1 dependency. Nothing here may enter a v4 estimator, and evidence/bgrid-screen-v4 is outside the v4 namespace so the positive-admission guard refuses it.",
+  "stem": {
+   "diagnostic_window": [
+    60,
+    120
+   ],
+   "imported_from": "fs_screen_v4.plan",
+   "levels": [
+    "current",
+    "floored"
+   ],
+   "stem_sentence": "Answer in 60 to 120 words."
+  },
+  "study_id": "bgrid-screen-v4",
+  "topics": {
+   "dependency_recorded": true,
+   "set": "the 24 registered pre-screen topics, unchanged",
+   "untouched": [
+    "96 solo calibration",
+    "24 composed validation",
+    "384 confirmatory",
+    "96 sequestered"
+   ],
+   "why": "the registered development sample, already spent for stem-choice purposes by the FORM x STEM screen. This screen measures the B-solo curve and selects no reference family, so it adds no new \u00a713.2 condition 2 contamination beyond what that screen already created."
+  },
+  "verifier_source_hash": "f5d4f7e74e757769ec43d7007b0121687fa4b5b388184e5ef32b171ea7580ee4"
+ },
+ "screen_protocol_hash": "6a63ba782db0de6e1c4d80763065dda7ced1279e3c8ddcc097c7119087f4fff2"
+}

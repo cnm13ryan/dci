@@ -1,0 +1,1041 @@
+{
+  "models": [
+    {
+      "a_anchor_severity": 1,
+      "a_solo_curve": {
+        "1": 0.625,
+        "2": 0.5416666666666666,
+        "3": 0.375,
+        "4": 0.375,
+        "5": 0.375,
+        "6": 0.5,
+        "7": 0.625,
+        "8": 0.625
+      },
+      "anti_productive_rungs": 75,
+      "b_solo_curve": {
+        "7": 0.3333333333333333,
+        "8": 0.5,
+        "9": 0.6666666666666666,
+        "10": 0.6666666666666666,
+        "11": 0.875,
+        "12": 0.9583333333333334
+      },
+      "b_solo_vacuity_max": 0.0,
+      "class_nearest": [
+        [
+          0.015350877192982448,
+          "CL7:80"
+        ],
+        [
+          0.026315789473683515,
+          "CP7:34"
+        ],
+        [
+          0.09774436090225558,
+          "CP4:8"
+        ]
+      ],
+      "coverage": {
+        "C1_bracketed": {
+          "met": true,
+          "observed": {
+            "above": true,
+            "below": true
+          },
+          "rule": "an eligible reference rung strictly below iota_A and one strictly above"
+        },
+        "C2_groups_per_side": {
+          "met": true,
+          "observed": {
+            "above": [
+              "capital",
+              "comma",
+              "one_letter",
+              "y_final"
+            ],
+            "below": [
+              "b_initial",
+              "capital",
+              "comma",
+              "doubled_letter",
+              "ing_final",
+              "letter_a",
+              "one_letter",
+              "y_final"
+            ]
+          },
+          "rule": "at least 3 eligible reference FEATURE GROUPS on each side of iota_A"
+        },
+        "C3_near_density": {
+          "met": true,
+          "observed": {
+            "families": [
+              "b_initial",
+              "capital",
+              "comma",
+              "letter_a",
+              "one_letter",
+              "y_final"
+            ],
+            "rungs": [
+              "RF1:6",
+              "RF3:4",
+              "RF3:5",
+              "RF3:6",
+              "RF3:7",
+              "RF5:12",
+              "RF6:1",
+              "RF7:22",
+              "RF8:6",
+              "CR3:10",
+              "CR5:1",
+              "CR5:2",
+              "CR5:4"
+            ]
+          },
+          "rule": "at least 6 eligible rungs within 0.15 of iota_A, from at least 3 feature groups"
+        },
+        "C4_straddling_families": {
+          "met": true,
+          "observed": {
+            "straddling": [
+              "CR3",
+              "CR5",
+              "RF3",
+              "RF6",
+              "RF8"
+            ],
+            "well_formed": [
+              "CR3",
+              "CR5",
+              "RF3",
+              "RF6",
+              "RF8"
+            ],
+            "well_formed_groups": [
+              "capital",
+              "comma",
+              "one_letter",
+              "y_final"
+            ]
+          },
+          "rule": "at least 4 reference families straddle iota_A with at least 3 eligible rungs spanning 0.40 in iota, from that many distinct feature groups"
+        },
+        "C5_total_points": {
+          "met": true,
+          "observed": {
+            "n": 54
+          },
+          "rule": "at least 12 eligible reference rungs in total"
+        },
+        "C6_shortlist_feasible": {
+          "met": true,
+          "observed": {
+            "families": [
+              "CR3",
+              "CR4",
+              "CR5",
+              "CR6",
+              "CR7",
+              "RF1",
+              "RF2",
+              "RF3",
+              "RF4",
+              "RF5",
+              "RF6",
+              "RF7",
+              "RF8"
+            ],
+            "groups": [
+              "b_initial",
+              "capital",
+              "comma",
+              "doubled_letter",
+              "ing_final",
+              "letter_a",
+              "one_letter",
+              "y_final"
+            ]
+          },
+          "rule": "at least 6 eligible reference families, from at least 4 feature groups, so §12.3's shortlist is not short before it starts"
+        },
+        "C7_class_matched": {
+          "met": true,
+          "observed": {
+            "rungs": [
+              "CL7:80",
+              "CL8:25",
+              "CP4:8",
+              "CP7:34",
+              "CP7:42"
+            ]
+          },
+          "rule": "at least one eligible class rung within 0.15 of iota_A. NOT terminal: an unmatched class companion attaches COMPANION_CLASS_NOT_MATCHED and the study proceeds",
+          "terminal": false
+        }
+      },
+      "coverage_passed": true,
+      "eligible_groups_above": [
+        "capital",
+        "comma",
+        "one_letter",
+        "y_final"
+      ],
+      "eligible_groups_below": [
+        "b_initial",
+        "capital",
+        "comma",
+        "doubled_letter",
+        "ing_final",
+        "letter_a",
+        "one_letter",
+        "y_final"
+      ],
+      "eligible_reference_families": 13,
+      "eligible_reference_rungs": 54,
+      "expansion_rounds": 0,
+      "iota_a_prescreen": 0.5263157894736842,
+      "measured_instances": 204,
+      "model": "gemma-3n-e2b-it",
+      "rows_generated": 4920,
+      "secondary_coordinate": {
+        "a_solo": 0.625,
+        "conditions": {
+          "C1_bracketed": true,
+          "C2_groups_per_side": true,
+          "C3_near_density": true,
+          "C4_straddling_families": true,
+          "C5_total_points": true,
+          "C6_shortlist_feasible": true,
+          "C7_class_matched": true
+        },
+        "coordinate": "raw_solo_compliance",
+        "passed": true,
+        "standing": "registered secondary diagnostic (§13.3, §17.6); the replication's outcome is the one computed on the registered coordinate"
+      },
+      "selected_cap": 512,
+      "shortlist": {
+        "CL7": [
+          60,
+          80
+        ],
+        "CL8": [
+          19,
+          25
+        ],
+        "CP4": [
+          8,
+          10
+        ],
+        "CP7": [
+          34,
+          42
+        ],
+        "CR3": [
+          2,
+          3,
+          4,
+          10
+        ],
+        "CR5": [
+          1,
+          2,
+          4,
+          5
+        ],
+        "RF1": [
+          3,
+          4,
+          5,
+          6
+        ],
+        "RF3": [
+          3,
+          5,
+          7,
+          8
+        ],
+        "RF6": [
+          1,
+          2,
+          7
+        ],
+        "RF8": [
+          5,
+          6,
+          7,
+          8
+        ]
+      },
+      "statuses": []
+    },
+    {
+      "a_anchor_severity": 3,
+      "a_solo_curve": {
+        "1": 0.7916666666666666,
+        "2": 0.8333333333333334,
+        "3": 0.75,
+        "4": 0.7916666666666666,
+        "5": 0.875,
+        "6": 0.7916666666666666,
+        "7": 0.625,
+        "8": 0.5833333333333334
+      },
+      "anti_productive_rungs": 78,
+      "b_solo_curve": {
+        "7": 0.5416666666666666,
+        "8": 0.5833333333333334,
+        "9": 0.75,
+        "10": 0.8333333333333334,
+        "11": 0.9166666666666666,
+        "12": 0.9166666666666666
+      },
+      "b_solo_vacuity_max": 0.0,
+      "class_nearest": [
+        [
+          0.0,
+          "CL8:25"
+        ],
+        [
+          2.220446049250313e-16,
+          "CP4:6"
+        ],
+        [
+          0.04166666666666663,
+          "CL8:24"
+        ]
+      ],
+      "coverage": {
+        "C1_bracketed": {
+          "met": true,
+          "observed": {
+            "above": true,
+            "below": true
+          },
+          "rule": "an eligible reference rung strictly below iota_A and one strictly above"
+        },
+        "C2_groups_per_side": {
+          "met": false,
+          "observed": {
+            "above": [
+              "capital",
+              "comma"
+            ],
+            "below": [
+              "b_initial",
+              "capital",
+              "comma",
+              "doubled_letter",
+              "ing_final",
+              "letter_a",
+              "one_letter",
+              "y_final"
+            ]
+          },
+          "rule": "at least 3 eligible reference FEATURE GROUPS on each side of iota_A"
+        },
+        "C3_near_density": {
+          "met": true,
+          "observed": {
+            "families": [
+              "b_initial",
+              "capital",
+              "comma",
+              "one_letter"
+            ],
+            "rungs": [
+              "RF1:6",
+              "RF3:8",
+              "RF5:9",
+              "RF5:10",
+              "RF5:11",
+              "RF6:1",
+              "RF6:2",
+              "CR3:8",
+              "CR5:5",
+              "CR5:6",
+              "CR5:7"
+            ]
+          },
+          "rule": "at least 6 eligible rungs within 0.15 of iota_A, from at least 3 feature groups"
+        },
+        "C4_straddling_families": {
+          "met": false,
+          "observed": {
+            "straddling": [
+              "CR5",
+              "RF5",
+              "RF6"
+            ],
+            "well_formed": [
+              "CR5"
+            ],
+            "well_formed_groups": [
+              "comma"
+            ]
+          },
+          "rule": "at least 4 reference families straddle iota_A with at least 3 eligible rungs spanning 0.40 in iota, from that many distinct feature groups"
+        },
+        "C5_total_points": {
+          "met": true,
+          "observed": {
+            "n": 59
+          },
+          "rule": "at least 12 eligible reference rungs in total"
+        },
+        "C6_shortlist_feasible": {
+          "met": true,
+          "observed": {
+            "families": [
+              "CR3",
+              "CR4",
+              "CR5",
+              "CR7",
+              "CR8",
+              "RF1",
+              "RF2",
+              "RF3",
+              "RF5",
+              "RF6",
+              "RF7",
+              "RF8"
+            ],
+            "groups": [
+              "b_initial",
+              "capital",
+              "comma",
+              "doubled_letter",
+              "ing_final",
+              "letter_a",
+              "one_letter",
+              "y_final"
+            ]
+          },
+          "rule": "at least 6 eligible reference families, from at least 4 feature groups, so §12.3's shortlist is not short before it starts"
+        },
+        "C7_class_matched": {
+          "met": true,
+          "observed": {
+            "rungs": [
+              "CL7:80",
+              "CL8:25",
+              "CP7:46",
+              "CP7:50",
+              "CL8:26",
+              "CL8:27",
+              "CP4:6",
+              "CL8:23",
+              "CL8:22",
+              "CL8:24",
+              "CL8:21"
+            ]
+          },
+          "rule": "at least one eligible class rung within 0.15 of iota_A. NOT terminal: an unmatched class companion attaches COMPANION_CLASS_NOT_MATCHED and the study proceeds",
+          "terminal": false
+        }
+      },
+      "coverage_passed": false,
+      "eligible_groups_above": [
+        "capital",
+        "comma"
+      ],
+      "eligible_groups_below": [
+        "b_initial",
+        "capital",
+        "comma",
+        "doubled_letter",
+        "ing_final",
+        "letter_a",
+        "one_letter",
+        "y_final"
+      ],
+      "eligible_reference_families": 12,
+      "eligible_reference_rungs": 59,
+      "expansion_rounds": 2,
+      "iota_a_prescreen": 0.75,
+      "measured_instances": 251,
+      "model": "gemma-3n-e4b-it",
+      "rows_generated": 6048,
+      "secondary_coordinate": {
+        "a_solo": 0.75,
+        "conditions": {
+          "C1_bracketed": true,
+          "C2_groups_per_side": true,
+          "C3_near_density": true,
+          "C4_straddling_families": true,
+          "C5_total_points": true,
+          "C6_shortlist_feasible": true,
+          "C7_class_matched": true
+        },
+        "coordinate": "raw_solo_compliance",
+        "passed": true,
+        "standing": "registered secondary diagnostic (§13.3, §17.6); the replication's outcome is the one computed on the registered coordinate"
+      },
+      "selected_cap": 512,
+      "shortlist": {
+        "CL7": [
+          70,
+          80
+        ],
+        "CL8": [
+          25,
+          27
+        ],
+        "CP4": [
+          6,
+          7
+        ],
+        "CP7": [
+          46,
+          50
+        ],
+        "CR3": [
+          8,
+          9
+        ],
+        "CR5": [
+          4,
+          6,
+          7,
+          8
+        ],
+        "RF1": [
+          2,
+          4,
+          6,
+          7
+        ],
+        "RF3": [
+          3,
+          6,
+          7,
+          8
+        ],
+        "RF5": [
+          9,
+          10,
+          11
+        ],
+        "RF6": [
+          1,
+          2
+        ]
+      },
+      "statuses": [
+        "DIFFICULTY_SUPPORT_NOT_IDENTIFIED"
+      ]
+    },
+    {
+      "a_anchor_severity": 2,
+      "a_solo_curve": {
+        "1": 0.9166666666666666,
+        "2": 0.75,
+        "3": 0.5,
+        "4": 0.5416666666666666,
+        "5": 0.5,
+        "6": 0.5,
+        "7": 0.5416666666666666,
+        "8": 0.20833333333333334
+      },
+      "anti_productive_rungs": 84,
+      "b_solo_curve": {
+        "7": 0.0,
+        "8": 0.08333333333333333,
+        "9": 0.2916666666666667,
+        "10": 0.4583333333333333,
+        "11": 0.7083333333333334,
+        "12": 0.875
+      },
+      "b_solo_vacuity_max": 0.0,
+      "class_nearest": [
+        [
+          0.08333333333333348,
+          "CL7:30"
+        ],
+        [
+          0.24999999999999933,
+          "CP7:30"
+        ],
+        [
+          0.3214285714285714,
+          "CP4:8"
+        ]
+      ],
+      "coverage": {
+        "C1_bracketed": {
+          "met": true,
+          "observed": {
+            "above": true,
+            "below": true
+          },
+          "rule": "an eligible reference rung strictly below iota_A and one strictly above"
+        },
+        "C2_groups_per_side": {
+          "met": true,
+          "observed": {
+            "above": [
+              "capital",
+              "comma",
+              "y_final"
+            ],
+            "below": [
+              "capital",
+              "comma",
+              "doubled_letter",
+              "ing_final",
+              "letter_a",
+              "one_letter",
+              "y_final"
+            ]
+          },
+          "rule": "at least 3 eligible reference FEATURE GROUPS on each side of iota_A"
+        },
+        "C3_near_density": {
+          "met": true,
+          "observed": {
+            "families": [
+              "comma",
+              "ing_final",
+              "letter_a",
+              "one_letter",
+              "y_final"
+            ],
+            "rungs": [
+              "RF2:3",
+              "RF2:4",
+              "RF3:2",
+              "RF5:1",
+              "RF5:2",
+              "RF5:3",
+              "RF5:4",
+              "RF8:7",
+              "RF8:8",
+              "CR3:4",
+              "CR5:5",
+              "CR5:6",
+              "CR5:8",
+              "CR5:10",
+              "CR7:48",
+              "CR5:7",
+              "CR5:9"
+            ]
+          },
+          "rule": "at least 6 eligible rungs within 0.15 of iota_A, from at least 3 feature groups"
+        },
+        "C4_straddling_families": {
+          "met": false,
+          "observed": {
+            "straddling": [
+              "CR5",
+              "RF6",
+              "RF8"
+            ],
+            "well_formed": [
+              "CR5",
+              "RF6",
+              "RF8"
+            ],
+            "well_formed_groups": [
+              "capital",
+              "comma",
+              "y_final"
+            ]
+          },
+          "rule": "at least 4 reference families straddle iota_A with at least 3 eligible rungs spanning 0.40 in iota, from that many distinct feature groups"
+        },
+        "C5_total_points": {
+          "met": true,
+          "observed": {
+            "n": 67
+          },
+          "rule": "at least 12 eligible reference rungs in total"
+        },
+        "C6_shortlist_feasible": {
+          "met": true,
+          "observed": {
+            "families": [
+              "CR2",
+              "CR3",
+              "CR4",
+              "CR5",
+              "CR7",
+              "CR8",
+              "RF2",
+              "RF3",
+              "RF4",
+              "RF5",
+              "RF6",
+              "RF7",
+              "RF8"
+            ],
+            "groups": [
+              "capital",
+              "comma",
+              "doubled_letter",
+              "ing_final",
+              "letter_a",
+              "one_letter",
+              "y_final"
+            ]
+          },
+          "rule": "at least 6 eligible reference families, from at least 4 feature groups, so §12.3's shortlist is not short before it starts"
+        },
+        "C7_class_matched": {
+          "met": true,
+          "observed": {
+            "rungs": [
+              "CL7:30"
+            ]
+          },
+          "rule": "at least one eligible class rung within 0.15 of iota_A. NOT terminal: an unmatched class companion attaches COMPANION_CLASS_NOT_MATCHED and the study proceeds",
+          "terminal": false
+        }
+      },
+      "coverage_passed": false,
+      "eligible_groups_above": [
+        "capital",
+        "comma",
+        "y_final"
+      ],
+      "eligible_groups_below": [
+        "capital",
+        "comma",
+        "doubled_letter",
+        "ing_final",
+        "letter_a",
+        "one_letter",
+        "y_final"
+      ],
+      "eligible_reference_families": 13,
+      "eligible_reference_rungs": 67,
+      "expansion_rounds": 2,
+      "iota_a_prescreen": 0.75,
+      "measured_instances": 251,
+      "model": "qwen3-4b",
+      "rows_generated": 6048,
+      "secondary_coordinate": {
+        "a_solo": 0.75,
+        "conditions": {
+          "C1_bracketed": true,
+          "C2_groups_per_side": true,
+          "C3_near_density": true,
+          "C4_straddling_families": true,
+          "C5_total_points": true,
+          "C6_shortlist_feasible": true,
+          "C7_class_matched": true
+        },
+        "coordinate": "raw_solo_compliance",
+        "passed": true,
+        "standing": "registered secondary diagnostic (§13.3, §17.6); the replication's outcome is the one computed on the registered coordinate"
+      },
+      "selected_cap": 512,
+      "shortlist": {
+        "CL7": [
+          30,
+          45
+        ],
+        "CP4": [
+          6,
+          8
+        ],
+        "CP7": [
+          30
+        ],
+        "CR3": [
+          2,
+          4,
+          5
+        ],
+        "CR5": [
+          4,
+          6,
+          7,
+          9
+        ],
+        "CR7": [
+          44,
+          48,
+          50,
+          52
+        ],
+        "RF5": [
+          1,
+          2,
+          3,
+          5
+        ],
+        "RF6": [
+          1,
+          2,
+          3
+        ],
+        "RF8": [
+          5,
+          6,
+          7,
+          8
+        ]
+      },
+      "statuses": [
+        "DIFFICULTY_SUPPORT_NOT_IDENTIFIED"
+      ]
+    },
+    {
+      "a_anchor_severity": 5,
+      "a_solo_curve": {
+        "1": 1.0,
+        "2": 0.9583333333333334,
+        "3": 0.9166666666666666,
+        "4": 0.9583333333333334,
+        "5": 0.5416666666666666,
+        "6": 0.5,
+        "7": 0.4583333333333333,
+        "8": 0.4166666666666667
+      },
+      "anti_productive_rungs": 106,
+      "b_solo_curve": {
+        "7": 0.20833333333333334,
+        "8": 0.2916666666666667,
+        "9": 0.4583333333333333,
+        "10": 0.7083333333333334,
+        "11": 0.75,
+        "12": 0.8333333333333334
+      },
+      "b_solo_vacuity_max": 0.041666666666666664,
+      "class_nearest": [
+        [
+          0.01388888888888884,
+          "CL7:40"
+        ],
+        [
+          0.013888888888889062,
+          "CP7:40"
+        ],
+        [
+          0.019927536231884146,
+          "CL7:45"
+        ]
+      ],
+      "coverage": {
+        "C1_bracketed": {
+          "met": true,
+          "observed": {
+            "above": true,
+            "below": true
+          },
+          "rule": "an eligible reference rung strictly below iota_A and one strictly above"
+        },
+        "C2_groups_per_side": {
+          "met": true,
+          "observed": {
+            "above": [
+              "comma",
+              "letter_a",
+              "one_letter"
+            ],
+            "below": [
+              "capital",
+              "comma",
+              "doubled_letter",
+              "ing_final",
+              "letter_a",
+              "one_letter",
+              "y_final"
+            ]
+          },
+          "rule": "at least 3 eligible reference FEATURE GROUPS on each side of iota_A"
+        },
+        "C3_near_density": {
+          "met": true,
+          "observed": {
+            "families": [
+              "comma",
+              "ing_final",
+              "letter_a",
+              "one_letter"
+            ],
+            "rungs": [
+              "RF2:6",
+              "RF3:5",
+              "RF7:22",
+              "RF7:23",
+              "RF7:24",
+              "CR3:6",
+              "CR5:11"
+            ]
+          },
+          "rule": "at least 6 eligible rungs within 0.15 of iota_A, from at least 3 feature groups"
+        },
+        "C4_straddling_families": {
+          "met": false,
+          "observed": {
+            "straddling": [
+              "CR3",
+              "RF7"
+            ],
+            "well_formed": [
+              "CR3",
+              "RF7"
+            ],
+            "well_formed_groups": [
+              "letter_a",
+              "one_letter"
+            ]
+          },
+          "rule": "at least 4 reference families straddle iota_A with at least 3 eligible rungs spanning 0.40 in iota, from that many distinct feature groups"
+        },
+        "C5_total_points": {
+          "met": true,
+          "observed": {
+            "n": 39
+          },
+          "rule": "at least 12 eligible reference rungs in total"
+        },
+        "C6_shortlist_feasible": {
+          "met": true,
+          "observed": {
+            "families": [
+              "CR2",
+              "CR3",
+              "CR5",
+              "CR7",
+              "RF2",
+              "RF3",
+              "RF4",
+              "RF5",
+              "RF6",
+              "RF7",
+              "RF8"
+            ],
+            "groups": [
+              "capital",
+              "comma",
+              "doubled_letter",
+              "ing_final",
+              "letter_a",
+              "one_letter",
+              "y_final"
+            ]
+          },
+          "rule": "at least 6 eligible reference families, from at least 4 feature groups, so §12.3's shortlist is not short before it starts"
+        },
+        "C7_class_matched": {
+          "met": true,
+          "observed": {
+            "rungs": [
+              "CL7:45",
+              "CL8:3",
+              "CL8:5",
+              "CL8:10",
+              "CP4:10",
+              "CP4:12",
+              "CP7:50",
+              "CL7:35",
+              "CL7:40",
+              "CL8:6",
+              "CL8:8",
+              "CL8:9",
+              "CP7:40"
+            ]
+          },
+          "rule": "at least one eligible class rung within 0.15 of iota_A. NOT terminal: an unmatched class companion attaches COMPANION_CLASS_NOT_MATCHED and the study proceeds",
+          "terminal": false
+        }
+      },
+      "coverage_passed": false,
+      "eligible_groups_above": [
+        "comma",
+        "letter_a",
+        "one_letter"
+      ],
+      "eligible_groups_below": [
+        "capital",
+        "comma",
+        "doubled_letter",
+        "ing_final",
+        "letter_a",
+        "one_letter",
+        "y_final"
+      ],
+      "eligible_reference_families": 11,
+      "eligible_reference_rungs": 39,
+      "expansion_rounds": 2,
+      "iota_a_prescreen": 0.5416666666666666,
+      "measured_instances": 251,
+      "model": "qwen3-4b-instruct-2507",
+      "rows_generated": 6048,
+      "secondary_coordinate": {
+        "a_solo": 0.5416666666666666,
+        "conditions": {
+          "C1_bracketed": true,
+          "C2_groups_per_side": true,
+          "C3_near_density": true,
+          "C4_straddling_families": true,
+          "C5_total_points": true,
+          "C6_shortlist_feasible": true,
+          "C7_class_matched": true
+        },
+        "coordinate": "raw_solo_compliance",
+        "passed": true,
+        "standing": "registered secondary diagnostic (§13.3, §17.6); the replication's outcome is the one computed on the registered coordinate"
+      },
+      "selected_cap": 512,
+      "shortlist": {
+        "CL7": [
+          40,
+          45
+        ],
+        "CL8": [
+          3,
+          10
+        ],
+        "CP4": [
+          10,
+          12
+        ],
+        "CP7": [
+          40,
+          50
+        ],
+        "CR3": [
+          2,
+          3,
+          4,
+          6
+        ],
+        "CR5": [
+          8,
+          11,
+          12,
+          14
+        ],
+        "CR7": [
+          32,
+          40,
+          44,
+          46
+        ],
+        "RF2": [
+          3,
+          6
+        ],
+        "RF3": [
+          4,
+          5
+        ],
+        "RF7": [
+          21,
+          22,
+          23,
+          24
+        ]
+      },
+      "statuses": [
+        "DIFFICULTY_SUPPORT_NOT_IDENTIFIED"
+      ]
+    }
+  ],
+  "stage": "REGIME_SCREEN",
+  "study": "dci1v4r3"
+}

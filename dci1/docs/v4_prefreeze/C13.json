@@ -1,0 +1,31 @@
+{
+  "check": "C13",
+  "models": {
+    "gemma-3n-e2b-it": {
+      "agreement_with_recorded_verdicts": 1.0,
+      "classification": "design evidence; non-confirmatory",
+      "recomputed_cell_rates": {
+        "br:RF1:5": 0.9270833333333334,
+        "br:RF2:5": 0.9791666666666666,
+        "br:RF6:4": 0.59375
+      },
+      "rescored": 576,
+      "rows": 576,
+      "severities_outside_the_v4_ladder": 0
+    },
+    "gemma-3n-e4b-it": {
+      "agreement_with_recorded_verdicts": 1.0,
+      "classification": "design evidence; non-confirmatory",
+      "recomputed_cell_rates": {
+        "br:RF2:2": 0.9895833333333334,
+        "br:RF4:4": 0.7447916666666666,
+        "br:RF6:4": 0.4635416666666667
+      },
+      "rescored": 576,
+      "rows": 576,
+      "severities_outside_the_v4_ladder": 0
+    }
+  },
+  "note": "re-scored from raw text under the current v4 instrument. These rates are the pilot's, are non-confirmatory, and enter no v4 analysis (\u00a714.2, C20)",
+  "status": "COMPLETE"
+}

@@ -1,0 +1,13 @@
+[gpu0] 2026-08-22T00:26:31+01:00 start gate4 gemma-3n-e2b-it
+[gpu1] 2026-08-22T00:26:31+01:00 start gate4 gemma-3n-e4b-it
+[gpu1] 2026-08-22T00:29:35+01:00 done gate4 gemma-3n-e4b-it exit=0
+[gpu1] 2026-08-22T00:29:35+01:00 start gate4 qwen3-4b
+[gpu1] 2026-08-22T00:30:35+01:00 done gate4 qwen3-4b exit=0
+[gpu1] 2026-08-22T00:30:35+01:00 start gate4 qwen3-4b-instruct-2507
+[gpu1] 2026-08-22T00:31:56+01:00 done gate4 qwen3-4b-instruct-2507 exit=1
+[gpu0] 2026-08-22T00:32:35+01:00 done gate4 gemma-3n-e2b-it exit=1
+gemma-3n-e2b-it          exit=1
+gemma-3n-e4b-it          exit=0
+qwen3-4b                 exit=0
+qwen3-4b-instruct-2507   exit=1
+replications that did not return 0: 2

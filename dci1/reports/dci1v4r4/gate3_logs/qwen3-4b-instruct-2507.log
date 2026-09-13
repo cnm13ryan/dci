@@ -1,0 +1,15 @@
+{
+ "model": "qwen3-4b-instruct-2507",
+ "stage": "GATE_3_REFERENCES",
+ "outcome": "PASS",
+ "design": "reduced",
+ "design_variant": "reduced",
+ "class_arm": true,
+ "core_references": [],
+ "spectrum": [],
+ "identification_statuses": [
+  "COMPANION_CLASS_NOT_MATCHED",
+  "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+  "EXCESS_NOT_IDENTIFIED"
+ ]
+}

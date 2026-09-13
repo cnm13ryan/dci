@@ -1,0 +1,100 @@
+{
+  "absent_by_inspection": {
+    "no_confirmatory_manifest": true,
+    "no_freeze_record": true,
+    "no_gate1_measurement_record": true,
+    "no_gate2_regime_record": true,
+    "no_gate3_references_record": true,
+    "no_gate4_composed_record": true,
+    "no_masked_result": true,
+    "no_unmask_record": true,
+    "no_unmasked_result": true
+  },
+  "artifact_type": "v4r3-closure-record",
+  "closed_at_stage": "GATE_1_MEASUREMENT",
+  "closed_on": "2026-08-21",
+  "closure_hash": "930720a0945e06dd960a877cc1cb23ff9af4ef7048e9456525d18958b7f1b264",
+  "criterion_in_force_at_the_time": "§18 stage 4: §10.2 for every verifier in the final instrument population, plus §10.3 or §10.4; verifier hash frozen",
+  "every_downstream_artifact_absent": true,
+  "preserved": {
+    "decisions": "dci1/DECISIONS_V4R3.md",
+    "evidence": "dci1/evidence/dci1v4r3 (gitignored; mirrored under dci1/durable_root/dci1v4r3)",
+    "preregistration": "user-notes/DCI1_preregistration_v4r3.md",
+    "reports": "dci1/reports/dci1v4r3",
+    "rule": "nothing under these paths is modified by the closure or by the revision that follows it",
+    "source": "dci1/src/dci1v4r3, dci1/tests_v4r3"
+  },
+  "producing_commit": "d11e41c7104775890cf7420062c02531ffa33966",
+  "revision": "v4r3",
+  "section_10_4R2": {
+    "artifact": "reports/dci1v4r3/section_10_4R2_outcome.json",
+    "failed": null,
+    "outcome": "FAIL"
+  },
+  "source_hashes": {
+    "dci1/reports/dci1v4r3/gate1_decision.json": "17ef55cd441e0fb1a985b9f22d1efd3295407f669ec4c88b17c6210bffea2509",
+    "dci1/reports/dci1v4r3/gate1_evidence.json": "ba9a8a0e1b1d274e7fdc3f968d259bf03096620ecc7fbaf99dbdf45c3fd3c046",
+    "dci1/reports/dci1v4r3/gate1_outcome.json": "26d2c0308e68730ae5663649a6b976f1db31d580b216461402f4005a63311bd9",
+    "dci1/reports/dci1v4r3/section_10_4R2_outcome.json": "5ed7d5af16dcaebb9d850e9fb8d9a49a1c1585fb8b4d3c29bf750d547bc03d5b",
+    "dci1/reports/dci1v4r3/section_10_4R_outcome.json": "e9cd131a7fb763aa7c0c60daff9c2c590bd9421b8c0911d473cbe334362fc671",
+    "dci1/reports/dci1v4r3/validator_diagnosis.json": "7ff014a267dabbf27cdec28a0a14a5ce66cdaddaec8769fdab4e297225eec87a"
+  },
+  "stage_records": {
+    "gemma-3n-e2b-it": {
+      "furthest": "REGIME_SCREEN",
+      "records": [
+        "QUALIFIED",
+        "GATE_0_APPARATUS",
+        "REGIME_SCREEN"
+      ],
+      "terminal_report": false
+    },
+    "gemma-3n-e4b-it": {
+      "furthest": "REGIME_SCREEN",
+      "records": [
+        "QUALIFIED",
+        "GATE_0_APPARATUS",
+        "REGIME_SCREEN"
+      ],
+      "terminal_report": false
+    },
+    "qwen3-4b": {
+      "furthest": "REGIME_SCREEN",
+      "records": [
+        "QUALIFIED",
+        "GATE_0_APPARATUS",
+        "REGIME_SCREEN"
+      ],
+      "terminal_report": false
+    },
+    "qwen3-4b-instruct-2507": {
+      "furthest": "REGIME_SCREEN",
+      "records": [
+        "QUALIFIED",
+        "GATE_0_APPARATUS",
+        "REGIME_SCREEN"
+      ],
+      "terminal_report": false
+    }
+  },
+  "status": "CLOSED",
+  "superseded_by": {
+    "boundary": "user-notes/DCI1_v4r3_to_v4r4_changelog.md",
+    "prospective": "adopted before Gate 2 and before any confirmatory scientific outcome was observed",
+    "revision": "v4r4",
+    "what_carries": "generations, through the explicit ledger at reports/dci1v4r4/evidence_reuse_ledger.json. No v4r3 stage record satisfies a v4r4 predecessor check"
+  },
+  "terminal_status": "MEASUREMENT_EVIDENCE_INSUFFICIENT",
+  "what_happened": {
+    "after_gate_1": "nothing. No Gate 2, no reference selection, no composed-headroom check, no freeze, no confirmatory generation, no masked or unmasked analysis, and no DCI estimand of any kind",
+    "gate_1": "REFUSED with MEASUREMENT_EVIDENCE_INSUFFICIENT. §18 stage 4 required §10.2 plus §10.3 or §10.4, and neither of the two pathways completed",
+    "section_10_2": "PASSED. Determinism 1.000 over three processes; the frozen boundary suites 1.000 over all 584 registered instruments; the independent reimplementation 1.000 with its segmenter differential; the §24 adversarial corpus, the §7.5 witness and wording suites and the carry-over record all held",
+    "section_10_3": "NOT ESTABLISHED. Independent human validation requires at least one annotator independent of the design and analysis team. None was available and none could be obtained. Author-performed labels are not independent validation and were never counted as such",
+    "section_10_4": "NOT ESTABLISHED. The autorater pathway ran three times --- §10.4, the repaired §10.4-R, and the microcase validator §10.4-R2 --- and the last returned FAIL on its own registered criterion 5, whose stopping rule then ends the pathway"
+  },
+  "what_this_record_does_not_say": [
+    "that v4r3 passed Gate 1. It did not, and no later revision changes that",
+    "that the criterion v4r3 registered was wrong to ask. §10.5's second question --- would an independent human reproduce these verdicts? --- is a real question and v4r4 does not answer it either",
+    "that the reviewer evidence was worthless. It is what showed the architecture was mismatched to a mechanically decidable instrument, and it is preserved and cited for that"
+  ]
+}

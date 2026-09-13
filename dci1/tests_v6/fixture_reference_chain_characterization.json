@@ -1,0 +1,662 @@
+{
+  "_corrected": {
+    "change": "V6-E05",
+    "field": "gate3a.n_stable",
+    "not_a_v5_change": "the four signed v5 records still say n_stable: 0. They say what v5's code computed and are not touched.",
+    "now": 25,
+    "was": 0,
+    "why": "this snapshot was taken before the extraction and it captured a defect as behaviour: `n_stable` counted `v.get(\"stable\")` and `stability.stability_verdict` returns `passed`, so the count was 0 for every replication of v5 and would have been for v6. The certified reference implementation agrees with the correction, which is what separates fixing a fixture from relaxing one. Every other field in this file reproduces unchanged, which is what makes the correction demonstrably isolated."
+  },
+  "_what": "the Gate 3A/3B/3C chain as it behaved BEFORE the reference-feasibility seam was extracted. Produced by the synthetic harness; nothing here is evidence.",
+  "focal_admissible": [
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+  ],
+  "gate2_m_star": 8,
+  "gate3a": {
+    "calibration_b_population": [
+      "MK1:1",
+      "MK1:2",
+      "MK1:3",
+      "MK1:4",
+      "MK1:5",
+      "MK1:6",
+      "MK1:7",
+      "MK1:8",
+      "MK2:1",
+      "MK2:2",
+      "MK2:3",
+      "MK2:4",
+      "MK2:5",
+      "MK2:6",
+      "MK2:7",
+      "MK2:8",
+      "MK3:1",
+      "MK3:2",
+      "MK3:3",
+      "MK3:4",
+      "MK3:5",
+      "MK3:6",
+      "MK3:7",
+      "MK3:8",
+      "MK4:1",
+      "MK4:2",
+      "MK4:3",
+      "MK4:4",
+      "MK4:5",
+      "MK4:6",
+      "MK4:7",
+      "MK4:8",
+      "MK5:1",
+      "MK5:2",
+      "MK5:3",
+      "MK5:4",
+      "MK5:5",
+      "MK5:6",
+      "MK5:7",
+      "MK5:8",
+      "MK6:1",
+      "MK6:2",
+      "MK6:3",
+      "MK6:4",
+      "MK6:5",
+      "MK6:6",
+      "MK6:7",
+      "MK6:8",
+      "MK7:1",
+      "MK7:2",
+      "MK7:3",
+      "MK7:4",
+      "MK7:5",
+      "MK7:6",
+      "MK7:7",
+      "MK7:8",
+      "MK8:1",
+      "MK8:2",
+      "MK8:3",
+      "MK8:4",
+      "MK8:5",
+      "MK8:6",
+      "MK8:7",
+      "MK8:8",
+      "RF1:0",
+      "RF1:1",
+      "RF1:2",
+      "RF1:3",
+      "RF1:4",
+      "RF1:5",
+      "RF1:6",
+      "RF1:7",
+      "RF1:8",
+      "RF5:0",
+      "RF5:1",
+      "RF5:10",
+      "RF5:11",
+      "RF5:12",
+      "RF5:2",
+      "RF5:3",
+      "RF5:4",
+      "RF5:5",
+      "RF5:6",
+      "RF5:7",
+      "RF5:8",
+      "RF5:9",
+      "XC1:1",
+      "XC1:2",
+      "XC1:3",
+      "XC1:4",
+      "XC1:5",
+      "XC1:6",
+      "XC1:7",
+      "XC1:8",
+      "XC2:10",
+      "XC2:12",
+      "XC2:14",
+      "XC2:16",
+      "XC2:2",
+      "XC2:4",
+      "XC2:6",
+      "XC2:8",
+      "XC3:10",
+      "XC3:3",
+      "XC3:4",
+      "XC3:5",
+      "XC3:6",
+      "XC3:7",
+      "XC3:8",
+      "XC3:9"
+    ],
+    "iota_a": 0.7058823529411764,
+    "iota_a_stability_passed": true,
+    "m_star": 8,
+    "n_qualified": 79,
+    "n_rows": {
+      "calibration_a": 110,
+      "calibration_b": 110,
+      "pooled": 110
+    },
+    "n_stable": 25,
+    "qualified_families": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "RF5",
+      "XC1",
+      "XC2",
+      "XC3"
+    ],
+    "qualified_pool": [
+      "MK1:2",
+      "MK1:3",
+      "MK1:4",
+      "MK1:5",
+      "MK1:6",
+      "MK1:7",
+      "MK1:8",
+      "MK2:2",
+      "MK2:3",
+      "MK2:4",
+      "MK2:5",
+      "MK2:6",
+      "MK2:7",
+      "MK2:8",
+      "MK3:2",
+      "MK3:3",
+      "MK3:4",
+      "MK3:5",
+      "MK3:6",
+      "MK3:7",
+      "MK3:8",
+      "MK4:2",
+      "MK4:3",
+      "MK4:4",
+      "MK4:5",
+      "MK4:6",
+      "MK4:7",
+      "MK4:8",
+      "MK5:2",
+      "MK5:3",
+      "MK5:4",
+      "MK5:5",
+      "MK5:6",
+      "MK5:7",
+      "MK5:8",
+      "MK6:2",
+      "MK6:3",
+      "MK6:4",
+      "MK6:5",
+      "MK6:6",
+      "MK6:7",
+      "MK6:8",
+      "MK7:2",
+      "MK7:3",
+      "MK7:4",
+      "MK7:5",
+      "MK7:6",
+      "MK7:7",
+      "MK7:8",
+      "MK8:2",
+      "MK8:3",
+      "MK8:4",
+      "MK8:5",
+      "MK8:6",
+      "MK8:7",
+      "MK8:8",
+      "RF5:1",
+      "RF5:2",
+      "XC1:2",
+      "XC1:3",
+      "XC1:4",
+      "XC1:5",
+      "XC1:6",
+      "XC1:7",
+      "XC1:8",
+      "XC2:10",
+      "XC2:12",
+      "XC2:14",
+      "XC2:16",
+      "XC2:4",
+      "XC2:6",
+      "XC2:8",
+      "XC3:10",
+      "XC3:4",
+      "XC3:5",
+      "XC3:6",
+      "XC3:7",
+      "XC3:8",
+      "XC3:9"
+    ],
+    "solo_compliance_a": 0.7135416666666666,
+    "stability": {
+      "MK1:1": {
+        "stable": null
+      },
+      "MK1:2": {
+        "stable": null
+      },
+      "MK1:3": {
+        "stable": null
+      },
+      "MK1:4": {
+        "stable": null
+      },
+      "MK1:5": {
+        "stable": null
+      },
+      "MK1:6": {
+        "stable": null
+      },
+      "MK1:7": {
+        "stable": null
+      },
+      "MK1:8": {
+        "stable": null
+      },
+      "MK2:1": {
+        "stable": null
+      },
+      "MK2:2": {
+        "stable": null
+      },
+      "MK2:3": {
+        "stable": null
+      },
+      "MK2:4": {
+        "stable": null
+      },
+      "MK2:5": {
+        "stable": null
+      },
+      "MK2:6": {
+        "stable": null
+      },
+      "MK2:7": {
+        "stable": null
+      },
+      "MK2:8": {
+        "stable": null
+      },
+      "MK3:1": {
+        "stable": null
+      },
+      "MK3:2": {
+        "stable": null
+      },
+      "MK3:3": {
+        "stable": null
+      },
+      "MK3:4": {
+        "stable": null
+      },
+      "MK3:5": {
+        "stable": null
+      },
+      "MK3:6": {
+        "stable": null
+      },
+      "MK3:7": {
+        "stable": null
+      },
+      "MK3:8": {
+        "stable": null
+      },
+      "MK4:1": {
+        "stable": null
+      },
+      "MK4:2": {
+        "stable": null
+      },
+      "MK4:3": {
+        "stable": null
+      },
+      "MK4:4": {
+        "stable": null
+      },
+      "MK4:5": {
+        "stable": null
+      },
+      "MK4:6": {
+        "stable": null
+      },
+      "MK4:7": {
+        "stable": null
+      },
+      "MK4:8": {
+        "stable": null
+      },
+      "MK5:1": {
+        "stable": null
+      },
+      "MK5:2": {
+        "stable": null
+      },
+      "MK5:3": {
+        "stable": null
+      },
+      "MK5:4": {
+        "stable": null
+      },
+      "MK5:5": {
+        "stable": null
+      },
+      "MK5:6": {
+        "stable": null
+      },
+      "MK5:7": {
+        "stable": null
+      },
+      "MK5:8": {
+        "stable": null
+      },
+      "MK6:1": {
+        "stable": null
+      },
+      "MK6:2": {
+        "stable": null
+      },
+      "MK6:3": {
+        "stable": null
+      },
+      "MK6:4": {
+        "stable": null
+      },
+      "MK6:5": {
+        "stable": null
+      },
+      "MK6:6": {
+        "stable": null
+      },
+      "MK6:7": {
+        "stable": null
+      },
+      "MK6:8": {
+        "stable": null
+      },
+      "MK7:1": {
+        "stable": null
+      },
+      "MK7:2": {
+        "stable": null
+      },
+      "MK7:3": {
+        "stable": null
+      },
+      "MK7:4": {
+        "stable": null
+      },
+      "MK7:5": {
+        "stable": null
+      },
+      "MK7:6": {
+        "stable": null
+      },
+      "MK7:7": {
+        "stable": null
+      },
+      "MK7:8": {
+        "stable": null
+      },
+      "MK8:1": {
+        "stable": null
+      },
+      "MK8:2": {
+        "stable": null
+      },
+      "MK8:3": {
+        "stable": null
+      },
+      "MK8:4": {
+        "stable": null
+      },
+      "MK8:5": {
+        "stable": null
+      },
+      "MK8:6": {
+        "stable": null
+      },
+      "MK8:7": {
+        "stable": null
+      },
+      "MK8:8": {
+        "stable": null
+      },
+      "RF1:0": {
+        "stable": null
+      },
+      "RF1:1": {
+        "stable": null
+      },
+      "RF1:2": {
+        "stable": null
+      },
+      "RF1:3": {
+        "stable": null
+      },
+      "RF1:4": {
+        "stable": null
+      },
+      "RF1:5": {
+        "stable": null
+      },
+      "RF1:6": {
+        "stable": null
+      },
+      "RF1:7": {
+        "stable": null
+      },
+      "RF1:8": {
+        "stable": null
+      },
+      "RF5:0": {
+        "stable": null
+      },
+      "RF5:1": {
+        "stable": null
+      },
+      "RF5:10": {
+        "stable": null
+      },
+      "RF5:11": {
+        "stable": null
+      },
+      "RF5:12": {
+        "stable": null
+      },
+      "RF5:2": {
+        "stable": null
+      },
+      "RF5:3": {
+        "stable": null
+      },
+      "RF5:4": {
+        "stable": null
+      },
+      "RF5:5": {
+        "stable": null
+      },
+      "RF5:6": {
+        "stable": null
+      },
+      "RF5:7": {
+        "stable": null
+      },
+      "RF5:8": {
+        "stable": null
+      },
+      "RF5:9": {
+        "stable": null
+      },
+      "XC1:1": {
+        "stable": null
+      },
+      "XC1:2": {
+        "stable": null
+      },
+      "XC1:3": {
+        "stable": null
+      },
+      "XC1:4": {
+        "stable": null
+      },
+      "XC1:5": {
+        "stable": null
+      },
+      "XC1:6": {
+        "stable": null
+      },
+      "XC1:7": {
+        "stable": null
+      },
+      "XC1:8": {
+        "stable": null
+      },
+      "XC2:10": {
+        "stable": null
+      },
+      "XC2:12": {
+        "stable": null
+      },
+      "XC2:14": {
+        "stable": null
+      },
+      "XC2:16": {
+        "stable": null
+      },
+      "XC2:2": {
+        "stable": null
+      },
+      "XC2:4": {
+        "stable": null
+      },
+      "XC2:6": {
+        "stable": null
+      },
+      "XC2:8": {
+        "stable": null
+      },
+      "XC3:10": {
+        "stable": null
+      },
+      "XC3:3": {
+        "stable": null
+      },
+      "XC3:4": {
+        "stable": null
+      },
+      "XC3:5": {
+        "stable": null
+      },
+      "XC3:6": {
+        "stable": null
+      },
+      "XC3:7": {
+        "stable": null
+      },
+      "XC3:8": {
+        "stable": null
+      },
+      "XC3:9": {
+        "stable": null
+      }
+    }
+  },
+  "gate3b": {
+    "core_references": [
+      {
+        "family": "MK2",
+        "feature_group": "marker_hence",
+        "severity": 3,
+        "structural_tier": 1
+      },
+      {
+        "family": "XC3",
+        "feature_group": "sentence",
+        "severity": 5,
+        "structural_tier": 2
+      },
+      {
+        "family": "MK7",
+        "feature_group": "marker_instead",
+        "severity": 3,
+        "structural_tier": 1
+      }
+    ],
+    "identification_statuses": [
+      "COMPANION_CLASS_NOT_MATCHED",
+      "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+      "NEAR_FORM_ARM_NOT_AVAILABLE",
+      "REFERENCE_POOL_SAME_FORM",
+      "REFERENCE_ROLE_NOT_MATCHED"
+    ],
+    "m_star": 8,
+    "slot_map": {
+      "CL": [
+        "RF5",
+        2
+      ],
+      "R1": [
+        "MK2",
+        3
+      ],
+      "R2": [
+        "XC3",
+        5
+      ],
+      "R3": [
+        "MK7",
+        3
+      ]
+    }
+  },
+  "gate3c": {
+    "admitted_arms": [
+      "base",
+      "core",
+      "class"
+    ],
+    "derived_cell_count": 29,
+    "failures": [],
+    "identification_statuses": [
+      "COMPANION_CLASS_NOT_MATCHED",
+      "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+      "NEAR_FORM_ARM_NOT_AVAILABLE",
+      "REFERENCE_POOL_SAME_FORM",
+      "REFERENCE_ROLE_NOT_MATCHED"
+    ],
+    "m_star": 8,
+    "realised": {
+      "core_references": 3,
+      "feature_groups": [
+        "marker_hence",
+        "marker_instead",
+        "sentence"
+      ],
+      "frozen_backups": [
+        "MK1",
+        "MK3"
+      ],
+      "qualified_families": 12,
+      "structurally_eligible_tier12_families": 11,
+      "tier1_core": 2
+    },
+    "slots": [
+      "A",
+      "B",
+      "R1",
+      "R2",
+      "R3",
+      "CL"
+    ],
+    "support_met": true
+  },
+  "m_star": 8
+}

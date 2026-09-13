@@ -1,0 +1,127 @@
+{
+  "check": "C6",
+  "models": {
+    "gemma-3n-e2b-it": {
+      "a_solo_at_n_star_same_topics_same_estimator": 0.7083333333333334,
+      "a_solo_by_n": {
+        "solo:A:1": 0.5,
+        "solo:A:2": 0.7291666666666666,
+        "solo:A:3": 0.6875,
+        "solo:A:4": 0.625,
+        "solo:A:5": 0.7083333333333334,
+        "solo:A:6": 0.6354166666666666,
+        "solo:A:7": 0.3854166666666667,
+        "solo:A:8": 0.4375
+      },
+      "b_solo_by_m": {
+        "solo:B:10": 0.9791666666666666,
+        "solo:B:7": 0.8125,
+        "solo:B:8": 0.8541666666666666,
+        "solo:B:9": 0.8333333333333334
+      },
+      "mean_reference_minus_A_gap": 0.16369047619047614,
+      "provenance": {
+        "check": "C6",
+        "classification": "design_evidence",
+        "note": "this source licenses no scientific claim; its rows may never enter a v4 estimator and its point estimates are never the effect the confirmatory design expects",
+        "path": "/home/cnm13ryan/git/dci/dci1/evidence/dci1-v3/gemma-3n-e2b-it/gate2a/cache.jsonl",
+        "purpose": "anchor the reference caliper",
+        "status": "non-confirmatory",
+        "tree": "v3_evidence"
+      },
+      "reference_minus_A_gap_per_family": {
+        "RF1": 0.15625,
+        "RF2": 0.15625,
+        "RF3": 0.16666666666666663,
+        "RF4": 0.17708333333333326,
+        "RF6": 0.15625,
+        "RF7": 0.16666666666666663,
+        "RF8": 0.16666666666666663
+      },
+      "rows": 4224,
+      "rungs_measured": 32,
+      "rungs_within_the_caliper_of_A_on_the_v3_four_point_grid": {
+        "solo:RF1:2": 0.75,
+        "solo:RF2:2": 0.6875,
+        "solo:RF4:4": 0.6875,
+        "solo:RF8:2": 0.75
+      },
+      "v3_admitted_reference_solo": {
+        "RF1": 0.8645833333333334,
+        "RF2": 0.8645833333333334,
+        "RF3": 0.875,
+        "RF4": 0.8854166666666666,
+        "RF6": 0.8645833333333334,
+        "RF7": 0.875,
+        "RF8": 0.875
+      },
+      "v3_admitted_references": {
+        "RF1": 5,
+        "RF2": 5,
+        "RF3": 2,
+        "RF4": 6,
+        "RF6": 4,
+        "RF7": 8,
+        "RF8": 5
+      },
+      "v3_m_star": 7,
+      "v3_n_star": 5
+    },
+    "gemma-3n-e4b-it": {
+      "a_solo_at_n_star_same_topics_same_estimator": 0.6875,
+      "a_solo_by_n": {
+        "solo:A:1": 0.90625,
+        "solo:A:2": 0.8854166666666666,
+        "solo:A:3": 0.8645833333333334,
+        "solo:A:4": 0.7708333333333334,
+        "solo:A:5": 0.8541666666666666,
+        "solo:A:6": 0.7604166666666666,
+        "solo:A:7": 0.6875,
+        "solo:A:8": 0.5
+      },
+      "b_solo_by_m": {
+        "solo:B:10": 0.96875,
+        "solo:B:7": 0.7604166666666666,
+        "solo:B:8": 0.875,
+        "solo:B:9": 0.9166666666666666
+      },
+      "mean_reference_minus_A_gap": 0.10069444444444446,
+      "provenance": {
+        "check": "C6",
+        "classification": "design_evidence",
+        "note": "this source licenses no scientific claim; its rows may never enter a v4 estimator and its point estimates are never the effect the confirmatory design expects",
+        "path": "/home/cnm13ryan/git/dci/dci1/evidence/dci1-v3/gemma-3n-e4b-it/gate2a/cache.jsonl",
+        "purpose": "anchor the reference caliper",
+        "status": "non-confirmatory",
+        "tree": "v3_evidence"
+      },
+      "reference_minus_A_gap_per_family": {
+        "RF2": 0.09375,
+        "RF4": 0.11458333333333337,
+        "RF6": 0.09375
+      },
+      "rows": 4224,
+      "rungs_measured": 32,
+      "rungs_within_the_caliper_of_A_on_the_v3_four_point_grid": {
+        "solo:RF2:2": 0.78125,
+        "solo:RF3:0": 0.6458333333333334,
+        "solo:RF4:2": 0.6666666666666666,
+        "solo:RF6:4": 0.78125
+      },
+      "v3_admitted_reference_solo": {
+        "RF2": 0.78125,
+        "RF4": 0.8020833333333334,
+        "RF6": 0.78125
+      },
+      "v3_admitted_references": {
+        "RF2": 2,
+        "RF4": 4,
+        "RF6": 4
+      },
+      "v3_m_star": 7,
+      "v3_n_star": 7
+    }
+  },
+  "note": "this bounds feasibility only, and only on the four-point v3 grid. In v4 the quantity is measured directly at Gate 2 on v4 topics under the v4 instrument across the full 94-rung ladder; these rows are design evidence and enter no v4 estimator (\u00a714.2)",
+  "status": "COMPLETE"
+}

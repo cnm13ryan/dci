@@ -1,0 +1,9 @@
+{
+ "model": "qwen3-4b-instruct-2507",
+ "stage": "GATE_2_REGIME",
+ "outcome": "PASS",
+ "n_star": 5,
+ "m_star": 10,
+ "iota_a": 0.5963060686015831,
+ "calibration_rows": 15744
+}

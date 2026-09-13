@@ -1,0 +1,193 @@
+{
+  "analysis_interpreter": {
+    "executable": "/home/cnm13ryan/git/dci/dci1/.venv/bin/python",
+    "python_version": "3.13.12"
+  },
+  "artifact_type": "v4r4-backend-provenance",
+  "backend_interpreter": "/home/cnm13ryan/git/dci/dci1/environments/backend/.venv/bin/python",
+  "chat_templates": {
+    "gemma-3n-e2b-it": {
+      "chat_template_chars": 1626,
+      "chat_template_hash": "ac03dcb3b09726f1e50ac55ae58fc8d5930eadc3b3a12cb04286dc1d82ac8001",
+      "chat_template_present": true,
+      "model_id": "google/gemma-3n-E2B-it",
+      "revision": "5e092ebca197cdcd8d8b195040accf22693501bc",
+      "tokenizer_class": "GemmaTokenizerFast"
+    },
+    "gemma-3n-e4b-it": {
+      "chat_template_chars": 1626,
+      "chat_template_hash": "ac03dcb3b09726f1e50ac55ae58fc8d5930eadc3b3a12cb04286dc1d82ac8001",
+      "chat_template_present": true,
+      "model_id": "google/gemma-3n-E4B-it",
+      "revision": "c1221e9c62e34a43ab7ffacd1be0ea71f126ef10",
+      "tokenizer_class": "GemmaTokenizerFast"
+    },
+    "qwen3-4b": {
+      "chat_template_chars": 4168,
+      "chat_template_hash": "a55ee1b1660128b7098723e0abcd92caa0788061051c62d51cbe87d9cf1974d8",
+      "chat_template_present": true,
+      "model_id": "Qwen/Qwen3-4B",
+      "revision": "1cfa9a7208912126459214e8b04321603b3df60c",
+      "tokenizer_class": "Qwen2TokenizerFast"
+    },
+    "qwen3-4b-instruct-2507": {
+      "chat_template_chars": 2630,
+      "chat_template_hash": "64f85b198065d0fba2a81f37e10ed68161ce2c19a754c7100e67e0ca2ee9c326",
+      "chat_template_present": true,
+      "model_id": "Qwen/Qwen3-4B-Instruct-2507",
+      "revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+      "tokenizer_class": "Qwen2TokenizerFast"
+    }
+  },
+  "dependencies": {
+    "dependency_digest": "3c621d7ce06232d73fa448003cc542191f03847a9e4f84479cb398a922cff607",
+    "files": {
+      "dci1/environments/backend/uv.lock": "d14291c77641ff4b3ced3596b909b64ad7ed77bd5e3e842f8aa8cd0ae624bc10",
+      "dci1/environments/backend/vendor/MANIFEST.sha256": "3ce41a2f090f7195ec1f24614f6d7771c398b51a2e03f265f575d819430f7e8c",
+      "dci1/requirements-frozen.txt": "67c7ed012f82dbe03d38bc6123bffec71f2565177dccfb286519a075e7ba3ed3",
+      "dci1/uv.lock": "e5251bba7d6819b35e11c485c741cbf0b1be4cf1ab08fd344cd2e1ecc90e9b66"
+    }
+  },
+  "environment_digest": "befebc135f100edd3e52bdf03da5616f81d075a5bf1a82ecd0d174ef316d325e",
+  "hardware": {
+    "gemma-3n-e2b-it": {
+      "backend_runs": [
+        "GATE_0_APPARATUS/backend_runs/pilot/rows_engine.json",
+        "GATE_2_REGIME/backend_runs/calibration/rows_engine.json",
+        "GATE_4_COMPOSED_HEADROOM/backend_runs/headroom/rows_engine.json",
+        "REGIME_SCREEN/backend_runs/cap1024/rows_engine.json",
+        "REGIME_SCREEN/backend_runs/cap512/rows_engine.json",
+        "REGIME_SCREEN/backend_runs/cap768/rows_engine.json",
+        "REGIME_SCREEN/backend_runs/ladder/rows_engine.json"
+      ],
+      "device_count_per_run": [
+        1
+      ],
+      "device_names": [
+        "Radeon RX 7900 XTX"
+      ],
+      "gcn_archs": [
+        "gfx1100"
+      ],
+      "hip_visible_devices_used": [
+        "0",
+        "1"
+      ],
+      "note": "the hardware the evidence came off, read from the backend's own provenance sidecars, not the machine that ran the freeze",
+      "platform_class": "RocmPlatform",
+      "torch_hip": "7.2.26015-fc0010cf6a",
+      "torch_version": "2.9.1+rocm7.2.0.git7e1940d4",
+      "total_vram_gib": [
+        23.98
+      ],
+      "vllm_version": "0.15.1"
+    },
+    "gemma-3n-e4b-it": {
+      "backend_runs": [
+        "CONFIRMATORY_GENERATION/backend_runs/blocks-0000-0096/rows_engine.json",
+        "CONFIRMATORY_GENERATION/backend_runs/blocks-0096-0192/rows_engine.json",
+        "CONFIRMATORY_GENERATION/backend_runs/blocks-0192-0288/rows_engine.json",
+        "CONFIRMATORY_GENERATION/backend_runs/blocks-0288-0384/rows_engine.json",
+        "GATE_0_APPARATUS/backend_runs/pilot/rows_engine.json",
+        "GATE_2_REGIME/backend_runs/calibration/rows_engine.json",
+        "GATE_4_COMPOSED_HEADROOM/backend_runs/headroom/rows_engine.json",
+        "REGIME_SCREEN/backend_runs/cap1024/rows_engine.json",
+        "REGIME_SCREEN/backend_runs/cap512/rows_engine.json",
+        "REGIME_SCREEN/backend_runs/cap768/rows_engine.json",
+        "REGIME_SCREEN/backend_runs/ladder/rows_engine.json"
+      ],
+      "device_count_per_run": [
+        1
+      ],
+      "device_names": [
+        "Radeon RX 7900 XTX"
+      ],
+      "gcn_archs": [
+        "gfx1100"
+      ],
+      "hip_visible_devices_used": [
+        "0",
+        "1"
+      ],
+      "note": "the hardware the evidence came off, read from the backend's own provenance sidecars, not the machine that ran the freeze",
+      "platform_class": "RocmPlatform",
+      "torch_hip": "7.2.26015-fc0010cf6a",
+      "torch_version": "2.9.1+rocm7.2.0.git7e1940d4",
+      "total_vram_gib": [
+        23.98
+      ],
+      "vllm_version": "0.15.1"
+    },
+    "qwen3-4b": {
+      "backend_runs": [
+        "CONFIRMATORY_GENERATION/backend_runs/blocks-0000-0096/rows_engine.json",
+        "CONFIRMATORY_GENERATION/backend_runs/blocks-0096-0192/rows_engine.json",
+        "CONFIRMATORY_GENERATION/backend_runs/blocks-0192-0288/rows_engine.json",
+        "CONFIRMATORY_GENERATION/backend_runs/blocks-0288-0384/rows_engine.json",
+        "GATE_0_APPARATUS/backend_runs/pilot/rows_engine.json",
+        "GATE_2_REGIME/backend_runs/calibration/rows_engine.json",
+        "GATE_2_REGIME/backend_runs/focal_extension/rows_engine.json",
+        "GATE_4_COMPOSED_HEADROOM/backend_runs/headroom/rows_engine.json",
+        "REGIME_SCREEN/backend_runs/cap1024/rows_engine.json",
+        "REGIME_SCREEN/backend_runs/cap512/rows_engine.json",
+        "REGIME_SCREEN/backend_runs/cap768/rows_engine.json",
+        "REGIME_SCREEN/backend_runs/ladder/rows_engine.json"
+      ],
+      "device_count_per_run": [
+        1
+      ],
+      "device_names": [
+        "Radeon RX 7900 XTX"
+      ],
+      "gcn_archs": [
+        "gfx1100"
+      ],
+      "hip_visible_devices_used": [
+        "0",
+        "1"
+      ],
+      "note": "the hardware the evidence came off, read from the backend's own provenance sidecars, not the machine that ran the freeze",
+      "platform_class": "RocmPlatform",
+      "torch_hip": "7.2.26015-fc0010cf6a",
+      "torch_version": "2.9.1+rocm7.2.0.git7e1940d4",
+      "total_vram_gib": [
+        23.98
+      ],
+      "vllm_version": "0.15.1"
+    },
+    "qwen3-4b-instruct-2507": {
+      "backend_runs": [
+        "GATE_0_APPARATUS/backend_runs/pilot/rows_engine.json",
+        "GATE_2_REGIME/backend_runs/calibration/rows_engine.json",
+        "GATE_4_COMPOSED_HEADROOM/backend_runs/headroom/rows_engine.json",
+        "REGIME_SCREEN/backend_runs/cap1024/rows_engine.json",
+        "REGIME_SCREEN/backend_runs/cap512/rows_engine.json",
+        "REGIME_SCREEN/backend_runs/cap768/rows_engine.json",
+        "REGIME_SCREEN/backend_runs/ladder/rows_engine.json"
+      ],
+      "device_count_per_run": [
+        1
+      ],
+      "device_names": [
+        "Radeon RX 7900 XTX"
+      ],
+      "gcn_archs": [
+        "gfx1100"
+      ],
+      "hip_visible_devices_used": [
+        "0",
+        "1"
+      ],
+      "note": "the hardware the evidence came off, read from the backend's own provenance sidecars, not the machine that ran the freeze",
+      "platform_class": "RocmPlatform",
+      "torch_hip": "7.2.26015-fc0010cf6a",
+      "torch_version": "2.9.1+rocm7.2.0.git7e1940d4",
+      "total_vram_gib": [
+        23.98
+      ],
+      "vllm_version": "0.15.1"
+    }
+  },
+  "kernel": "6.14.0-29-generic",
+  "operating_system": "Linux #29~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu Aug 14 16:52:50 UTC 2"
+}

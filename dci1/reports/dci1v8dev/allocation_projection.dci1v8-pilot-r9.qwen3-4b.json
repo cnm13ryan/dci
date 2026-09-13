@@ -1,0 +1,433 @@
+{
+ "assumption": "each frame's measured per-topic vector repeated k times: every rate unchanged, every SE divided by sqrt(k). Not a measurement.",
+ "by_factor": {
+  "1": {
+   "by_frame": {
+    "0": {
+     "core_identified": true,
+     "core_references": {
+      "MK1": 4,
+      "MK8": 2,
+      "XC3": 10
+     },
+     "coverage_identified": true,
+     "coverage_reasons": [],
+     "iota_a": 0.6705729166666666,
+     "local_first_failing": {
+      "PASSED": 8,
+      "V_head": 21,
+      "V_stab": 30,
+      "V_struct": 4
+     },
+     "local_valid_families": [
+      "MK1",
+      "MK2",
+      "MK6",
+      "MK8",
+      "XC3"
+     ],
+     "m_star": 12,
+     "n_backups": 2,
+     "n_coordinates": 63,
+     "n_coordinates_within_floor": 62,
+     "n_local_valid_families": 5,
+     "n_spectrum_references": 8,
+     "n_spectrum_valid_above": 9,
+     "n_spectrum_valid_below": 21,
+     "n_star": 6,
+     "projected_se_beta_at_frame_blocks": 0.025417929103197696,
+     "projected_se_beta_at_full_blocks": 0.012708964551598848,
+     "se_iota_median": 0.025830156547268526,
+     "spectrum_families_above": [
+      "MK1",
+      "MK2",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "XC3"
+     ],
+     "spectrum_families_below": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "XC1",
+      "XC3"
+     ],
+     "spectrum_first_failing": {
+      "PASSED": 30,
+      "V_coord": 12,
+      "V_inter_s": 6,
+      "V_pos": 10,
+      "V_stab": 5
+     },
+     "state": "LOCAL_AND_SPECTRUM",
+     "topics_per_frame": 192,
+     "topics_per_split": 96
+    },
+    "1": {
+     "core_identified": true,
+     "core_references": {
+      "MK1": 8,
+      "MK7": 2,
+      "XC3": 9
+     },
+     "coverage_identified": true,
+     "coverage_reasons": [],
+     "iota_a": 0.6080729166666666,
+     "local_first_failing": {
+      "PASSED": 6,
+      "V_head": 17,
+      "V_inter": 1,
+      "V_stab": 34,
+      "V_struct": 5
+     },
+     "local_valid_families": [
+      "MK1",
+      "MK7",
+      "MK8",
+      "XC3"
+     ],
+     "m_star": 12,
+     "n_backups": 1,
+     "n_coordinates": 63,
+     "n_coordinates_within_floor": 62,
+     "n_local_valid_families": 4,
+     "n_spectrum_references": 8,
+     "n_spectrum_valid_above": 15,
+     "n_spectrum_valid_below": 19,
+     "n_star": 7,
+     "projected_se_beta_at_frame_blocks": 0.024479456661042866,
+     "projected_se_beta_at_full_blocks": 0.012239728330521433,
+     "se_iota_median": 0.025176510208984152,
+     "spectrum_families_above": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "XC1",
+      "XC3"
+     ],
+     "spectrum_families_below": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "RF11",
+      "XC1",
+      "XC3"
+     ],
+     "spectrum_first_failing": {
+      "PASSED": 34,
+      "V_coord": 10,
+      "V_inter_s": 4,
+      "V_pos": 5,
+      "V_stab": 10
+     },
+     "state": "LOCAL_AND_SPECTRUM",
+     "topics_per_frame": 192,
+     "topics_per_split": 96
+    },
+    "2": {
+     "core_identified": true,
+     "core_references": {
+      "MK1": 6,
+      "MK2": 3,
+      "MK7": 2
+     },
+     "coverage_identified": true,
+     "coverage_reasons": [],
+     "iota_a": 0.671875,
+     "local_first_failing": {
+      "PASSED": 11,
+      "V_head": 21,
+      "V_stab": 28,
+      "V_struct": 3
+     },
+     "local_valid_families": [
+      "MK1",
+      "MK2",
+      "MK6",
+      "MK7"
+     ],
+     "m_star": 12,
+     "n_backups": 1,
+     "n_coordinates": 63,
+     "n_coordinates_within_floor": 62,
+     "n_local_valid_families": 4,
+     "n_spectrum_references": 8,
+     "n_spectrum_valid_above": 13,
+     "n_spectrum_valid_below": 22,
+     "n_star": 3,
+     "projected_se_beta_at_frame_blocks": 0.026384657261331292,
+     "projected_se_beta_at_full_blocks": 0.013192328630665646,
+     "se_iota_median": 0.02476110194397442,
+     "spectrum_families_above": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "XC1",
+      "XC3"
+     ],
+     "spectrum_families_below": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "XC1",
+      "XC3"
+     ],
+     "spectrum_first_failing": {
+      "PASSED": 35,
+      "V_coord": 12,
+      "V_inter_s": 3,
+      "V_pos": 5,
+      "V_stab": 8
+     },
+     "state": "LOCAL_AND_SPECTRUM",
+     "topics_per_frame": 192,
+     "topics_per_split": 96
+    },
+    "3": {
+     "core_identified": true,
+     "core_references": {
+      "MK2": 6,
+      "MK7": 2,
+      "XC3": 8
+     },
+     "coverage_identified": true,
+     "coverage_reasons": [],
+     "iota_a": 0.6966145833333334,
+     "local_first_failing": {
+      "PASSED": 10,
+      "V_head": 20,
+      "V_stab": 31,
+      "V_struct": 2
+     },
+     "local_valid_families": [
+      "MK1",
+      "MK2",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "XC3"
+     ],
+     "m_star": 13,
+     "n_backups": 2,
+     "n_coordinates": 63,
+     "n_coordinates_within_floor": 62,
+     "n_local_valid_families": 7,
+     "n_spectrum_references": 8,
+     "n_spectrum_valid_above": 13,
+     "n_spectrum_valid_below": 24,
+     "n_star": 5,
+     "projected_se_beta_at_frame_blocks": 0.027341508156871763,
+     "projected_se_beta_at_full_blocks": 0.013670754078435881,
+     "se_iota_median": 0.0248541339692751,
+     "spectrum_families_above": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK6",
+      "MK7",
+      "XC1",
+      "XC3"
+     ],
+     "spectrum_families_below": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "XC1",
+      "XC3"
+     ],
+     "spectrum_first_failing": {
+      "PASSED": 37,
+      "V_coord": 11,
+      "V_inter_s": 5,
+      "V_pos": 7,
+      "V_stab": 3
+     },
+     "state": "LOCAL_AND_SPECTRUM",
+     "topics_per_frame": 192,
+     "topics_per_split": 96
+    }
+   },
+   "calibration_multiplier": 1,
+   "gate2_generation_multiplier": 1,
+   "n_frames_local": 4,
+   "n_frames_spectrum": 4,
+   "topics_per_frame": 192
+  }
+ },
+ "calibration_allocation_of_this_run": {
+  "amendment": "CHANGES_SCIENTIFIC.md 2026-08-30 (two passes, 96 topics per frame; prompted by r5/r6's measured per-frame SE(iota) = 0.0497 against the unchanged 0.05 floor) and 2026-08-31 (four passes for qwen3-4b, 192 topics per frame at the topic ceiling; prompted by r8's split-level V_coord refusals under \u00a713.7 condition 1). No threshold moved at either step.",
+  "at_topic_ceiling": true,
+  "blocks_per_run": 768,
+  "calibration_topics": 192,
+  "default_frame_offsets": [
+   0,
+   2
+  ],
+  "draws": 4,
+  "frame_offsets": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "generations_per_rung": 3072,
+  "is_default_allocation": false,
+  "max_passes": 4,
+  "model_key": "qwen3-4b",
+  "passes": 4,
+  "realised": {
+   "candidates": {
+    "0": {
+     "by_split": {
+      "calibration_a": 96,
+      "calibration_b": 96
+     },
+     "n_topics": 192
+    },
+    "1": {
+     "by_split": {
+      "calibration_a": 96,
+      "calibration_b": 96
+     },
+     "n_topics": 192
+    },
+    "2": {
+     "by_split": {
+      "calibration_a": 96,
+      "calibration_b": 96
+     },
+     "n_topics": 192
+    },
+    "3": {
+     "by_split": {
+      "calibration_a": 96,
+      "calibration_b": 96
+     },
+     "n_topics": 192
+    }
+   },
+   "extension": {
+    "0": {
+     "by_split": {
+      "calibration_a": 96,
+      "calibration_b": 96
+     },
+     "n_topics": 192
+    },
+    "1": {
+     "by_split": {
+      "calibration_a": 96,
+      "calibration_b": 96
+     },
+     "n_topics": 192
+    },
+    "2": {
+     "by_split": {
+      "calibration_a": 96,
+      "calibration_b": 96
+     },
+     "n_topics": 192
+    },
+    "3": {
+     "by_split": {
+      "calibration_a": 96,
+      "calibration_b": 96
+     },
+     "n_topics": 192
+    }
+   },
+   "grids": {
+    "0": {
+     "by_split": {
+      "calibration_a": 96,
+      "calibration_b": 96
+     },
+     "n_topics": 192
+    },
+    "1": {
+     "by_split": {
+      "calibration_a": 96,
+      "calibration_b": 96
+     },
+     "n_topics": 192
+    },
+    "2": {
+     "by_split": {
+      "calibration_a": 96,
+      "calibration_b": 96
+     },
+     "n_topics": 192
+    },
+    "3": {
+     "by_split": {
+      "calibration_a": 96,
+      "calibration_b": 96
+     },
+     "n_topics": 192
+    }
+   }
+  },
+  "rule": "a calibration pass renders every calibration topic under one frame; pass p offsets the frame by frame_offsets[p]. The offsets are distinct modulo N_WORDINGS, so every frame is measured on passes/N_WORDINGS of the calibration topics, no topic recurs within a frame, and each frame's own information grows with the pass count at proportional Gate-2 generation. No frame is pooled with another (rules.calibration_frame_offsets)",
+  "topics_per_frame": 192,
+  "topics_per_frame_per_split": 96
+ },
+ "calibration_passes_of_this_run": 4,
+ "factor_ceiling_rule": "a frame is measured on at most the 192 calibration topics (every block under every frame, 4 passes); factors past that are not printed because no allocation buys them",
+ "factors_reachable": [
+  1
+ ],
+ "factors_requested": [
+  1,
+  2,
+  4
+ ],
+ "is_projection": true,
+ "model_key": "qwen3-4b",
+ "precision_floor": {
+  "max_se_iota": 0.05,
+  "stability_bound": 0.2
+ },
+ "registered_calibration_topics": 192,
+ "stages_read": [
+  "GATE_2_CALIBRATION",
+  "GATE_3_REFERENCES"
+ ],
+ "supported_frames": [
+  0,
+  1,
+  2,
+  3
+ ],
+ "topics_per_frame_at_the_registered_allocation": 192
+}

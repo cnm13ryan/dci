@@ -1,0 +1,415 @@
+{
+ "amendment": "R2 (\u00a710.4-R2, changelog C28, DECISIONS A7), registered before the tool was run and before any microcase was judged",
+ "approves": "nothing. Gate 1 is NOT approved and no measurement basis is written.",
+ "artifact": "\u00a710.4-R2 microcase semantic audit, outcome",
+ "artifact_type": "v4r3-section-10-4R2-outcome",
+ "attribution_of_the_criterion_5_failure": {
+  "denominator_swap": {
+   "agreed": 2,
+   "agreed_on_those": 0,
+   "deciding_arm": "instruction_only",
+   "items": 10,
+   "items_whose_answer_has_no_words": 7,
+   "same_cases_in_the_other_arm": {
+    "agreement": 0.8181818181818182,
+    "items": 11
+   }
+  },
+  "inequality_flip": {
+   "agreed": 26,
+   "agreed_on_those": 3,
+   "deciding_arm": "instruction_only",
+   "items": 38,
+   "items_whose_answer_has_no_words": 13,
+   "same_cases_in_the_other_arm": {
+    "agreement": 0.8947368421052632,
+    "items": 38
+   }
+  },
+  "numerator_swap": {
+   "agreed": 18,
+   "agreed_on_those": 1,
+   "deciding_arm": "instruction_only",
+   "items": 19,
+   "items_whose_answer_has_no_words": 1,
+   "same_cases_in_the_other_arm": {
+    "agreement": 1.0,
+    "items": 19
+   }
+  },
+  "off_by_one": {
+   "agreed": 5,
+   "agreed_on_those": 0,
+   "deciding_arm": "instruction_only",
+   "items": 5,
+   "items_whose_answer_has_no_words": 0,
+   "same_cases_in_the_other_arm": {
+    "agreement": 1.0,
+    "items": 5
+   }
+  },
+  "segmentation_drift": {
+   "agreed": 3,
+   "agreed_on_those": 0,
+   "deciding_arm": "with_conventions",
+   "items": 3,
+   "items_whose_answer_has_no_words": 0,
+   "same_cases_in_the_other_arm": {
+    "agreement": 0.6666666666666666,
+    "items": 3
+   }
+  },
+  "vacuity_ignored": {
+   "agreed": 8,
+   "agreed_on_those": 8,
+   "deciding_arm": "with_conventions",
+   "items": 12,
+   "items_whose_answer_has_no_words": 12,
+   "same_cases_in_the_other_arm": {
+    "agreement": 0.16666666666666666,
+    "items": 12
+   }
+  }
+ },
+ "canonical_verifier_hash": "41edc84c8c1381c698aa3ea62265ef11ff1162993fa2f68d1245dbce10096074",
+ "case_set_hash": "141525355353ed04789af15f317f8a8f2750a353bd2108b2178bde6e7509b73b",
+ "classification": "DCI-1 PROTOCOL v4 REVISION 3 (ADOPTED, NOT FROZEN)",
+ "conditions_not_run": {
+  "mc-high": {
+   "status": "NOT_RUN",
+   "why": "a registered contingency on \u00a710.4's reasoning-effort axis, and not one matched to this failure. The criterion-5 failure is attributable to items whose verdict turns on \u00a77.3's wordless-rate convention, which the deciding arm deliberately does not state; more reasoning cannot supply a convention the prompt withholds. Running it after seeing the failure would be seeking a better draw. It remains available to the researcher, who registered the contingency."
+  },
+  "mc-low": {
+   "status": "NOT_RUN",
+   "why": "as mc-high"
+  }
+ },
+ "config": {
+  "condition": "mc-medium",
+  "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+  "generator_hash": "2c82b709de3ee9edc616b32501e1fd5535244d24f32a36cffec5b5e56315503a",
+  "judge_model_key": "gpt-oss-20b",
+  "judge_revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+  "output_cap": 3584,
+  "parser_version": "microcase-parse/1.0.0",
+  "prompt_hashes": {
+   "microcase-conventions/1.0.0": "9aca25784abf2964d769587867202e844eed5784ebed41024081ea259878f450",
+   "microcase/1.0.0": "4ef84f07e6d8a8ec6cc438a6fc78df0ce80c70ec13baacb82734577741e948db"
+  },
+  "prompts": {
+   "instruction_only": "microcase/1.0.0",
+   "with_conventions": "microcase-conventions/1.0.0"
+  },
+  "reasoning_effort": "medium",
+  "temperature": 0.0,
+  "thresholds": {
+   "parse_validity_min": 0.95,
+   "per_kind_min_items": 4,
+   "repeatability_min": 0.95,
+   "sensitivity_min": 0.8,
+   "sensitivity_per_kind_min": 0.5,
+   "specificity_min": 0.9,
+   "truncation_group_max": 0.2,
+   "truncation_pooled_max": 0.1
+  },
+  "verifier_hash": "41edc84c8c1381c698aa3ea62265ef11ff1162993fa2f68d1245dbce10096074"
+ },
+ "consequence": "\u00a710.4-R2: the LLM-validator pathway stops. It is not prompt-tuned and no threshold moves. \u00a710.3's human semantic audit is the only remaining registered route to a measurement basis, and the replication records HUMAN_VALIDATION_UNAVAILABLE until an independent annotator completes one.",
+ "generated_at": "2026-08-21T17:18:39+00:00",
+ "outcome": "FAIL",
+ "per_kind_sensitivity_under_both_readings": {
+  "denominator_swap": {
+   "as_implemented": {
+    "agreed": 3,
+    "below_floor": true,
+    "n": 13,
+    "sensitivity": 0.23076923076923078
+   },
+   "as_section_10_4R2_words_it": {
+    "agreed": 2,
+    "below_floor": true,
+    "n": 10,
+    "sensitivity": 0.2
+   }
+  },
+  "inequality_flip": {
+   "as_implemented": {
+    "agreed": 60,
+    "below_floor": false,
+    "n": 75,
+    "sensitivity": 0.8
+   },
+   "as_section_10_4R2_words_it": {
+    "agreed": 26,
+    "below_floor": false,
+    "n": 38,
+    "sensitivity": 0.6842105263157895
+   }
+  },
+  "numerator_swap": {
+   "as_implemented": {
+    "agreed": 22,
+    "below_floor": false,
+    "n": 25,
+    "sensitivity": 0.88
+   },
+   "as_section_10_4R2_words_it": {
+    "agreed": 18,
+    "below_floor": false,
+    "n": 19,
+    "sensitivity": 0.9473684210526315
+   }
+  },
+  "off_by_one": {
+   "as_implemented": {
+    "agreed": 19,
+    "below_floor": false,
+    "n": 19,
+    "sensitivity": 1.0
+   },
+   "as_section_10_4R2_words_it": {
+    "agreed": 5,
+    "below_floor": false,
+    "n": 5,
+    "sensitivity": 1.0
+   }
+  },
+  "segmentation_drift": {
+   "as_implemented": {
+    "agreed": 7,
+    "below_floor": false,
+    "n": 8,
+    "sensitivity": 0.875
+   },
+   "as_section_10_4R2_words_it": {
+    "agreed": 3,
+    "below_floor": false,
+    "n": 3,
+    "sensitivity": 1.0
+   }
+  },
+  "vacuity_ignored": {
+   "as_implemented": {
+    "agreed": 8,
+    "below_floor": false,
+    "n": 12,
+    "sensitivity": 0.6666666666666666
+   },
+   "as_section_10_4R2_words_it": {
+    "agreed": 8,
+    "below_floor": false,
+    "n": 12,
+    "sensitivity": 0.6666666666666666
+   }
+  },
+  "verdict_is_invariant": true
+ },
+ "phases": {
+  "calibration": {
+   "status": "NOT_RUN",
+   "why": "\u00a710.4-R2: the calibration half is not run until the development half passes. It is untouched and its split hash is recorded above."
+  },
+  "development": {
+   "by_arm": {
+    "instruction_only": {
+     "agreement": 0.8192771084337349,
+     "n": 84,
+     "parsed": 83
+    },
+    "with_conventions": {
+     "agreement": 0.9036144578313253,
+     "n": 84,
+     "parsed": 83
+    }
+   },
+   "condition": "mc-medium",
+   "items": {
+    "calibration_half": 76,
+    "development_half": 84,
+    "judged": 168,
+    "per_arm": 84
+   },
+   "parse_validity": 0.9880952380952381,
+   "replicate": 0,
+   "sensitivity": {
+    "by_defect": {
+     "denominator_swap": {
+      "agreed": 3,
+      "arm": "instruction_only",
+      "n": 13,
+      "sensitivity": 0.23076923076923078
+     },
+     "inequality_flip": {
+      "agreed": 60,
+      "arm": "instruction_only",
+      "n": 75,
+      "sensitivity": 0.8
+     },
+     "numerator_swap": {
+      "agreed": 22,
+      "arm": "instruction_only",
+      "n": 25,
+      "sensitivity": 0.88
+     },
+     "off_by_one": {
+      "agreed": 19,
+      "arm": "instruction_only",
+      "n": 19,
+      "sensitivity": 1.0
+     },
+     "segmentation_drift": {
+      "agreed": 7,
+      "arm": "with_conventions",
+      "n": 8,
+      "sensitivity": 0.875
+     },
+     "vacuity_ignored": {
+      "agreed": 8,
+      "arm": "with_conventions",
+      "n": 12,
+      "sensitivity": 0.6666666666666666
+     }
+    },
+    "definition": "agreement with the registered verdict on cases the verifier records as not satisfied --- the detection side",
+    "n": 86,
+    "value": 0.813953488372093
+   },
+   "specificity": {
+    "definition": "agreement with the registered verdict on cases the verifier records as satisfied --- the false-alarm side",
+    "n": 80,
+    "value": 0.9125
+   },
+   "status_counts": {
+    "invalid_output": 2,
+    "refusal": 0,
+    "valid": 166
+   },
+   "truncation": {
+    "by_group": {
+     "instruction_only:count_budget": {
+      "n": 31,
+      "rate": 0.0,
+      "truncated": 0
+     },
+     "instruction_only:count_lower_bound": {
+      "n": 4,
+      "rate": 0.0,
+      "truncated": 0
+     },
+     "instruction_only:exact_count": {
+      "n": 9,
+      "rate": 0.0,
+      "truncated": 0
+     },
+     "instruction_only:rate_budget": {
+      "n": 34,
+      "rate": 0.029411764705882353,
+      "truncated": 1
+     },
+     "instruction_only:rate_lower_bound": {
+      "n": 6,
+      "rate": 0.0,
+      "truncated": 0
+     },
+     "with_conventions:count_budget": {
+      "n": 31,
+      "rate": 0.0,
+      "truncated": 0
+     },
+     "with_conventions:count_lower_bound": {
+      "n": 4,
+      "rate": 0.0,
+      "truncated": 0
+     },
+     "with_conventions:exact_count": {
+      "n": 9,
+      "rate": 0.0,
+      "truncated": 0
+     },
+     "with_conventions:rate_budget": {
+      "n": 34,
+      "rate": 0.029411764705882353,
+      "truncated": 1
+     },
+     "with_conventions:rate_lower_bound": {
+      "n": 6,
+      "rate": 0.0,
+      "truncated": 0
+     }
+    },
+    "pooled": 0.011904761904761904
+   },
+   "verdict": {
+    "checks": [
+     {
+      "criterion": "2 adequate output cap and absence of problematic truncation",
+      "observed": {
+       "pooled": 0.011904761904761904,
+       "worst_group": "instruction_only:rate_budget",
+       "worst_group_rate": 0.029411764705882353
+      },
+      "passed": true,
+      "threshold": {
+       "per_group": 0.2,
+       "pooled": 0.1
+      }
+     },
+     {
+      "criterion": "3 valid parsing and coverage",
+      "observed": 0.9880952380952381,
+      "passed": true,
+      "threshold": 0.95
+     },
+     {
+      "criterion": "4 specificity on cases the verifier records as satisfied",
+      "observed": 0.9125,
+      "passed": true,
+      "threshold": 0.9
+     },
+     {
+      "criterion": "5 sensitivity, overall and per defect kind",
+      "observed": {
+       "by_defect": {
+        "denominator_swap": 0.23076923076923078,
+        "inequality_flip": 0.8,
+        "numerator_swap": 0.88,
+        "off_by_one": 1.0,
+        "segmentation_drift": 0.875,
+        "vacuity_ignored": 0.6666666666666666
+       },
+       "kinds_below_floor": {
+        "denominator_swap": 0.23076923076923078
+       },
+       "kinds_with_too_few_items": [],
+       "overall": 0.813953488372093
+      },
+      "passed": false,
+      "threshold": {
+       "overall": 0.8,
+       "per_kind": 0.5,
+       "per_kind_min_items": 4
+      }
+     }
+    ],
+    "failed": [
+     "5 sensitivity, overall and per defect kind"
+    ],
+    "outcome": "FAIL",
+    "thresholds_registered_at": "\u00a710.4-R2 and DECISIONS A7, before any microcase was judged; criteria 2 to 5 carried unchanged from \u00a710.4-R"
+   }
+  },
+  "repeatability": {
+   "criterion": "6 repeatability across two replicates",
+   "status": "NOT_MEASURED",
+   "why": "criterion 6 is conjunctive with criteria 2 to 5, so a replicate cannot turn this development half's FAIL into a PASS. \u00a710.4-R2's stopping rule takes effect at the criterion-5 failure and a second replicate of a condition that has already failed has no registered role."
+  }
+ },
+ "producing_commit": "d33551b3f635565aac2be086adefb49650e825d2",
+ "prompt_fit": {
+  "cap": 3584,
+  "estimated_tokens": 421,
+  "headroom": 512,
+  "longest_prompt_chars": 1263
+ },
+ "split_hash": "e3b8fa1e6ba45071717bd440ff30a15bfe80ff841bfbc64739338fed91b71555"
+}

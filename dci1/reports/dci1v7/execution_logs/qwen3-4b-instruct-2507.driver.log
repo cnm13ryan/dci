@@ -1,0 +1,40 @@
+2026-08-28T06:14:53Z [qwen3-4b-instruct-2507 gpu1] START QUALIFIED (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/qwen3-4b-instruct-2507.QUALIFIED.20260828T061453Z.out
+2026-08-28T06:14:55Z [qwen3-4b-instruct-2507 gpu1] EXIT QUALIFIED code=0
+2026-08-28T06:14:55Z [qwen3-4b-instruct-2507 gpu1] START GATE_0_APPARATUS (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/qwen3-4b-instruct-2507.GATE_0_APPARATUS.20260828T061455Z.out
+2026-08-28T06:19:29Z [qwen3-4b-instruct-2507 gpu1] EXIT GATE_0_APPARATUS code=0
+2026-08-28T06:19:30Z [qwen3-4b-instruct-2507 gpu1] START REGIME_SCREEN (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/qwen3-4b-instruct-2507.REGIME_SCREEN.20260828T061930Z.out
+2026-08-28T06:36:41Z [qwen3-4b-instruct-2507 gpu1] EXIT REGIME_SCREEN code=0
+2026-08-28T06:36:41Z [qwen3-4b-instruct-2507 gpu1] START GATE_1_MEASUREMENT (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/qwen3-4b-instruct-2507.GATE_1_MEASUREMENT.20260828T063641Z.out
+2026-08-28T06:39:01Z [qwen3-4b-instruct-2507 gpu1] EXIT GATE_1_MEASUREMENT code=0
+2026-08-28T07:24:22Z [qwen3-4b-instruct-2507 gpu1] predecessor process 3209626 has exited
+2026-08-28T07:24:22Z [qwen3-4b-instruct-2507 gpu1] WAIT card 1 for GATE_2_FOCAL_CALIBRATION
+2026-08-28T07:24:22Z [qwen3-4b-instruct-2507 gpu1] EXIT GATE_2_FOCAL_CALIBRATION code=127
+tee: .venv/bin/python: Text file busy
+2026-08-28T07:24:22Z [qwen3-4b-instruct-2507 gpu1] START GATE_2_FOCAL_CALIBRATION (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/qwen3-4b-instruct-2507.GATE_2_FOCAL_CALIBRATION.20260828T072422Z.out
+_: line 4: -m: command not found
+2026-08-28T07:24:22Z [qwen3-4b-instruct-2507 gpu1] retrying GATE_2_FOCAL_CALIBRATION after 120s
+2026-08-28T07:25:13Z [qwen3-4b-instruct-2507 gpu1] WAIT card 1 for GATE_2_FOCAL_CALIBRATION
+2026-08-28T07:25:13Z [qwen3-4b-instruct-2507 gpu1] START GATE_2_FOCAL_CALIBRATION (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/qwen3-4b-instruct-2507.GATE_2_FOCAL_CALIBRATION.20260828T072513Z.out
+2026-08-28T09:38:12Z [qwen3-4b-instruct-2507 gpu1] EXIT GATE_2_FOCAL_CALIBRATION code=0
+2026-08-28T09:38:13Z [qwen3-4b-instruct-2507 gpu1] START GATE_2_5_CANDIDATE_QUALIFICATION (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/qwen3-4b-instruct-2507.GATE_2_5_CANDIDATE_QUALIFICATION.20260828T093813Z.out
+2026-08-28T09:38:13Z [qwen3-4b-instruct-2507 gpu1] EXIT GATE_2_5_CANDIDATE_QUALIFICATION code=0
+2026-08-28T09:38:13Z [qwen3-4b-instruct-2507 gpu1] WAIT card 1 for GATE_2_75_COMPOSED_PROBE
+2026-08-28T13:31:51Z [qwen3-4b-instruct-2507 gpu0] WAIT card 0 for GATE_2_75_COMPOSED_PROBE
+2026-08-28T13:31:51Z [qwen3-4b-instruct-2507 gpu0] START GATE_2_75_COMPOSED_PROBE (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/qwen3-4b-instruct-2507.GATE_2_75_COMPOSED_PROBE.20260828T133151Z.out
+2026-08-28T13:50:55Z [qwen3-4b-instruct-2507 gpu0] EXIT GATE_2_75_COMPOSED_PROBE code=0
+2026-08-28T13:50:55Z [qwen3-4b-instruct-2507 gpu0] START GATE_3A_REFERENCE_CALIBRATION (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/qwen3-4b-instruct-2507.GATE_3A_REFERENCE_CALIBRATION.20260828T135055Z.out
+2026-08-28T13:51:48Z [qwen3-4b-instruct-2507 gpu0] EXIT GATE_3A_REFERENCE_CALIBRATION code=0
+2026-08-28T13:51:48Z [qwen3-4b-instruct-2507 gpu0] START GATE_3B_REFERENCE_SELECTION (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/qwen3-4b-instruct-2507.GATE_3B_REFERENCE_SELECTION.20260828T135148Z.out
+2026-08-28T13:51:48Z [qwen3-4b-instruct-2507 gpu0] EXIT GATE_3B_REFERENCE_SELECTION code=0
+2026-08-28T13:51:48Z [qwen3-4b-instruct-2507 gpu0] START GATE_3C_IDENTIFICATION (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/qwen3-4b-instruct-2507.GATE_3C_IDENTIFICATION.20260828T135148Z.out
+2026-08-28T13:51:48Z [qwen3-4b-instruct-2507 gpu0] EXIT GATE_3C_IDENTIFICATION code=0
+2026-08-28T13:51:49Z [qwen3-4b-instruct-2507 gpu0] WAIT card 0 for GATE_4_COMPOSED_CONTRAST
+2026-08-28T13:51:49Z [qwen3-4b-instruct-2507 gpu0] START GATE_4_COMPOSED_CONTRAST (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/qwen3-4b-instruct-2507.GATE_4_COMPOSED_CONTRAST.20260828T135149Z.out
+2026-08-28T13:52:38Z [qwen3-4b-instruct-2507 gpu0] EXIT GATE_4_COMPOSED_CONTRAST code=0
+2026-08-28T13:52:38Z [qwen3-4b-instruct-2507 gpu0] START PREFREEZE_AUDIT (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/qwen3-4b-instruct-2507.PREFREEZE_AUDIT.20260828T135238Z.out
+2026-08-28T13:52:38Z [qwen3-4b-instruct-2507 gpu0] EXIT PREFREEZE_AUDIT code=1
+{
+  "error": "TerminalStatus",
+  "message": "PREFREEZE_AUDIT: PREFREEZE_AUDIT_FAILURE"
+}
+2026-08-28T13:52:38Z [qwen3-4b-instruct-2507 gpu0] TERMINAL PREFREEZE_AUDIT_FAILURE at GATE_4_COMPOSED_CONTRAST; stopping

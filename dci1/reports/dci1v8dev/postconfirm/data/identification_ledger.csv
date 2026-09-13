@@ -1,0 +1,1647 @@
+model,frame,configuration,family,member,status
+qwen3-4b,0,outcome_first,F1,D(A<-B),ESTIMATED
+qwen3-4b,0,outcome_first,F1,D(B<-A),ESTIMATED
+qwen3-4b,0,outcome_first,F1,Delta_R,ESTIMATED
+qwen3-4b,0,outcome_first,F1,Lambda,ESTIMATED
+qwen3-4b,0,outcome_first,F1,Xi,ESTIMATED
+qwen3-4b,0,outcome_first,F1,delta_difficulty,ESTIMATED
+qwen3-4b,0,outcome_first,F2,D(B<-R1),ESTIMATED
+qwen3-4b,0,outcome_first,F2,D(B<-R2),ESTIMATED
+qwen3-4b,0,outcome_first,F2,D(B<-R3),ESTIMATED
+qwen3-4b,0,outcome_first,F2,Delta_1,ESTIMATED
+qwen3-4b,0,outcome_first,F2,Delta_2,ESTIMATED
+qwen3-4b,0,outcome_first,F2,Delta_3,ESTIMATED
+qwen3-4b,0,outcome_first,F3,D(A<-R1),ESTIMATED
+qwen3-4b,0,outcome_first,F3,D(A<-R2),ESTIMATED
+qwen3-4b,0,outcome_first,F3,D(A<-R3),ESTIMATED
+qwen3-4b,0,outcome_first,F3,Delta^A,ESTIMATED
+qwen3-4b,0,outcome_first,F4,D(Rbar<-A),ESTIMATED
+qwen3-4b,0,outcome_first,F4,D(Rbar<-B),ESTIMATED
+qwen3-4b,0,outcome_first,F4,D(Rbar<-Rbar'),ESTIMATED
+qwen3-4b,0,outcome_first,F5,D(A<-B)|vacuity_forced,ESTIMATED
+qwen3-4b,0,outcome_first,F5,D(B<-A)|graded_0.99,ESTIMATED
+qwen3-4b,0,outcome_first,F5,D(B<-A)|vacuity_forced,ESTIMATED
+qwen3-4b,0,outcome_first,F5,Delta_R|graded_0.99,ESTIMATED
+qwen3-4b,0,outcome_first,F5,Delta_R|vacuity_forced,ESTIMATED
+qwen3-4b,0,outcome_first,F5,Lambda|vacuity_forced,ESTIMATED
+qwen3-4b,0,outcome_first,F5,Xi|vacuity_forced,ESTIMATED
+qwen3-4b,0,outcome_first,F5,delta_difficulty|graded_0.99,ESTIMATED
+qwen3-4b,0,outcome_first,F5,delta_difficulty|vacuity_forced,ESTIMATED
+qwen3-4b,0,outcome_first,F6,vac(B|A+B)-vac(B solo),ESTIMATED
+qwen3-4b,0,outcome_first,F6,vac(B|B+A2)-vac(B solo),ESTIMATED
+qwen3-4b,0,outcome_first,F6,vac(B|B+R1)-vac(B solo),ESTIMATED
+qwen3-4b,0,outcome_first,F6,vac(B|B+R2)-vac(B solo),ESTIMATED
+qwen3-4b,0,outcome_first,F6,vac(B|B+R3)-vac(B solo),ESTIMATED
+qwen3-4b,0,outcome_first,F6,vac(B|B+R4)-vac(B solo),ESTIMATED
+qwen3-4b,0,outcome_first,F6,vac(B|B+R5)-vac(B solo),ESTIMATED
+qwen3-4b,0,outcome_first,F6,vac(B|B+S1)-vac(B solo),ESTIMATED
+qwen3-4b,0,outcome_first,F6,vac(B|B+S2)-vac(B solo),ESTIMATED
+qwen3-4b,0,outcome_first,F6,vac(B|B+S3)-vac(B solo),ESTIMATED
+qwen3-4b,0,outcome_first,F6,vac(B|B+S4)-vac(B solo),ESTIMATED
+qwen3-4b,0,outcome_first,F6,vac(B|B+S5)-vac(B solo),ESTIMATED
+qwen3-4b,0,outcome_first,F6,vac(B|B+S6)-vac(B solo),ESTIMATED
+qwen3-4b,0,outcome_first,F6,vac(B|B+S7)-vac(B solo),ESTIMATED
+qwen3-4b,0,outcome_first,F6,vac(B|B+S8)-vac(B solo),ESTIMATED
+qwen3-4b,0,outcome_first,F7,D(R1<-A),ESTIMATED
+qwen3-4b,0,outcome_first,F7,D(R1<-B),ESTIMATED
+qwen3-4b,0,outcome_first,F7,D(R2<-A),ESTIMATED
+qwen3-4b,0,outcome_first,F7,D(R2<-B),ESTIMATED
+qwen3-4b,0,outcome_first,F7,D(R3<-A),ESTIMATED
+qwen3-4b,0,outcome_first,F7,D(R3<-B),ESTIMATED
+qwen3-4b,0,outcome_first,F_REFSENS,Delta_R[R1+R2+R3],ESTIMATED
+qwen3-4b,0,outcome_first,F_REFSENS,Delta_R[R1+R2+R5],ESTIMATED
+qwen3-4b,0,outcome_first,F_REFSENS,Delta_R[R1+R3+R4],ESTIMATED
+qwen3-4b,0,outcome_first,F_REFSENS,Delta_R[R1+R3+R5],ESTIMATED
+qwen3-4b,0,outcome_first,F_REFSENS,Delta_R[R1+R4+R5],ESTIMATED
+qwen3-4b,0,outcome_first,F_REFSENS,Delta_R[R2+R3+R4],ESTIMATED
+qwen3-4b,0,outcome_first,F_REFSENS,Delta_R[R2+R3+R5],ESTIMATED
+qwen3-4b,0,outcome_first,F_REFSENS,Delta_R[R2+R4+R5],ESTIMATED
+qwen3-4b,0,outcome_first,F_REFSENS,Delta_R[R3+R4+R5],ESTIMATED
+qwen3-4b,0,outcome_first,F_RUNNER_UP,Delta_R[A2],ESTIMATED
+qwen3-4b,0,outcome_first,F_RUNNER_UP,Delta_R[B2],NOT_ASKED
+qwen3-4b,0,outcome_first,F_SPECTRUM,slope,ESTIMATED
+qwen3-4b,0,outcome_second,F1,D(A<-B),ESTIMATED
+qwen3-4b,0,outcome_second,F1,D(B<-A),ESTIMATED
+qwen3-4b,0,outcome_second,F1,Delta_R,ESTIMATED
+qwen3-4b,0,outcome_second,F1,Lambda,ESTIMATED
+qwen3-4b,0,outcome_second,F1,Xi,ESTIMATED
+qwen3-4b,0,outcome_second,F1,delta_difficulty,ESTIMATED
+qwen3-4b,0,outcome_second,F2,D(B<-R1),ESTIMATED
+qwen3-4b,0,outcome_second,F2,D(B<-R2),ESTIMATED
+qwen3-4b,0,outcome_second,F2,D(B<-R3),ESTIMATED
+qwen3-4b,0,outcome_second,F2,Delta_1,ESTIMATED
+qwen3-4b,0,outcome_second,F2,Delta_2,ESTIMATED
+qwen3-4b,0,outcome_second,F2,Delta_3,ESTIMATED
+qwen3-4b,0,outcome_second,F3,D(A<-R1),ESTIMATED
+qwen3-4b,0,outcome_second,F3,D(A<-R2),ESTIMATED
+qwen3-4b,0,outcome_second,F3,D(A<-R3),ESTIMATED
+qwen3-4b,0,outcome_second,F3,Delta^A,ESTIMATED
+qwen3-4b,0,outcome_second,F4,D(Rbar<-A),ESTIMATED
+qwen3-4b,0,outcome_second,F4,D(Rbar<-B),ESTIMATED
+qwen3-4b,0,outcome_second,F4,D(Rbar<-Rbar'),ESTIMATED
+qwen3-4b,0,outcome_second,F5,D(A<-B)|vacuity_forced,ESTIMATED
+qwen3-4b,0,outcome_second,F5,D(B<-A)|graded_0.99,ESTIMATED
+qwen3-4b,0,outcome_second,F5,D(B<-A)|vacuity_forced,ESTIMATED
+qwen3-4b,0,outcome_second,F5,Delta_R|graded_0.99,ESTIMATED
+qwen3-4b,0,outcome_second,F5,Delta_R|vacuity_forced,ESTIMATED
+qwen3-4b,0,outcome_second,F5,Lambda|vacuity_forced,ESTIMATED
+qwen3-4b,0,outcome_second,F5,Xi|vacuity_forced,ESTIMATED
+qwen3-4b,0,outcome_second,F5,delta_difficulty|graded_0.99,ESTIMATED
+qwen3-4b,0,outcome_second,F5,delta_difficulty|vacuity_forced,ESTIMATED
+qwen3-4b,0,outcome_second,F6,vac(B|A+B)-vac(B solo),ESTIMATED
+qwen3-4b,0,outcome_second,F6,vac(B|B+A2)-vac(B solo),ESTIMATED
+qwen3-4b,0,outcome_second,F6,vac(B|B+R1)-vac(B solo),ESTIMATED
+qwen3-4b,0,outcome_second,F6,vac(B|B+R2)-vac(B solo),ESTIMATED
+qwen3-4b,0,outcome_second,F6,vac(B|B+R3)-vac(B solo),ESTIMATED
+qwen3-4b,0,outcome_second,F6,vac(B|B+R4)-vac(B solo),ESTIMATED
+qwen3-4b,0,outcome_second,F6,vac(B|B+R5)-vac(B solo),ESTIMATED
+qwen3-4b,0,outcome_second,F6,vac(B|B+S1)-vac(B solo),ESTIMATED
+qwen3-4b,0,outcome_second,F6,vac(B|B+S2)-vac(B solo),ESTIMATED
+qwen3-4b,0,outcome_second,F6,vac(B|B+S3)-vac(B solo),ESTIMATED
+qwen3-4b,0,outcome_second,F6,vac(B|B+S4)-vac(B solo),ESTIMATED
+qwen3-4b,0,outcome_second,F6,vac(B|B+S5)-vac(B solo),ESTIMATED
+qwen3-4b,0,outcome_second,F6,vac(B|B+S6)-vac(B solo),ESTIMATED
+qwen3-4b,0,outcome_second,F6,vac(B|B+S7)-vac(B solo),ESTIMATED
+qwen3-4b,0,outcome_second,F6,vac(B|B+S8)-vac(B solo),ESTIMATED
+qwen3-4b,0,outcome_second,F7,D(R1<-A),ESTIMATED
+qwen3-4b,0,outcome_second,F7,D(R1<-B),ESTIMATED
+qwen3-4b,0,outcome_second,F7,D(R2<-A),ESTIMATED
+qwen3-4b,0,outcome_second,F7,D(R2<-B),ESTIMATED
+qwen3-4b,0,outcome_second,F7,D(R3<-A),ESTIMATED
+qwen3-4b,0,outcome_second,F7,D(R3<-B),ESTIMATED
+qwen3-4b,0,outcome_second,F_REFSENS,Delta_R[R1+R2+R3],ESTIMATED
+qwen3-4b,0,outcome_second,F_REFSENS,Delta_R[R1+R2+R5],ESTIMATED
+qwen3-4b,0,outcome_second,F_REFSENS,Delta_R[R1+R3+R4],ESTIMATED
+qwen3-4b,0,outcome_second,F_REFSENS,Delta_R[R1+R3+R5],ESTIMATED
+qwen3-4b,0,outcome_second,F_REFSENS,Delta_R[R1+R4+R5],ESTIMATED
+qwen3-4b,0,outcome_second,F_REFSENS,Delta_R[R2+R3+R4],ESTIMATED
+qwen3-4b,0,outcome_second,F_REFSENS,Delta_R[R2+R3+R5],ESTIMATED
+qwen3-4b,0,outcome_second,F_REFSENS,Delta_R[R2+R4+R5],ESTIMATED
+qwen3-4b,0,outcome_second,F_REFSENS,Delta_R[R3+R4+R5],ESTIMATED
+qwen3-4b,0,outcome_second,F_RUNNER_UP,Delta_R[A2],ESTIMATED
+qwen3-4b,0,outcome_second,F_RUNNER_UP,Delta_R[B2],NOT_ASKED
+qwen3-4b,0,outcome_second,F_SPECTRUM,slope,ESTIMATED
+qwen3-4b,1,outcome_first,F1,D(A<-B),ESTIMATED
+qwen3-4b,1,outcome_first,F1,D(B<-A),ESTIMATED
+qwen3-4b,1,outcome_first,F1,Delta_R,ESTIMATED
+qwen3-4b,1,outcome_first,F1,Lambda,ESTIMATED
+qwen3-4b,1,outcome_first,F1,Xi,ESTIMATED
+qwen3-4b,1,outcome_first,F1,delta_difficulty,ESTIMATED
+qwen3-4b,1,outcome_first,F2,D(B<-R1),ESTIMATED
+qwen3-4b,1,outcome_first,F2,D(B<-R2),ESTIMATED
+qwen3-4b,1,outcome_first,F2,D(B<-R3),ESTIMATED
+qwen3-4b,1,outcome_first,F2,Delta_1,ESTIMATED
+qwen3-4b,1,outcome_first,F2,Delta_2,ESTIMATED
+qwen3-4b,1,outcome_first,F2,Delta_3,ESTIMATED
+qwen3-4b,1,outcome_first,F3,D(A<-R1),ESTIMATED
+qwen3-4b,1,outcome_first,F3,D(A<-R2),ESTIMATED
+qwen3-4b,1,outcome_first,F3,D(A<-R3),ESTIMATED
+qwen3-4b,1,outcome_first,F3,Delta^A,ESTIMATED
+qwen3-4b,1,outcome_first,F4,D(Rbar<-A),ESTIMATED
+qwen3-4b,1,outcome_first,F4,D(Rbar<-B),ESTIMATED
+qwen3-4b,1,outcome_first,F4,D(Rbar<-Rbar'),ESTIMATED
+qwen3-4b,1,outcome_first,F5,D(A<-B)|vacuity_forced,ESTIMATED
+qwen3-4b,1,outcome_first,F5,D(B<-A)|graded_0.99,ESTIMATED
+qwen3-4b,1,outcome_first,F5,D(B<-A)|vacuity_forced,ESTIMATED
+qwen3-4b,1,outcome_first,F5,Delta_R|graded_0.99,ESTIMATED
+qwen3-4b,1,outcome_first,F5,Delta_R|vacuity_forced,ESTIMATED
+qwen3-4b,1,outcome_first,F5,Lambda|vacuity_forced,ESTIMATED
+qwen3-4b,1,outcome_first,F5,Xi|vacuity_forced,ESTIMATED
+qwen3-4b,1,outcome_first,F5,delta_difficulty|graded_0.99,ESTIMATED
+qwen3-4b,1,outcome_first,F5,delta_difficulty|vacuity_forced,ESTIMATED
+qwen3-4b,1,outcome_first,F6,vac(B|A+B)-vac(B solo),ESTIMATED
+qwen3-4b,1,outcome_first,F6,vac(B|B+A2)-vac(B solo),ESTIMATED
+qwen3-4b,1,outcome_first,F6,vac(B|B+R1)-vac(B solo),ESTIMATED
+qwen3-4b,1,outcome_first,F6,vac(B|B+R2)-vac(B solo),ESTIMATED
+qwen3-4b,1,outcome_first,F6,vac(B|B+R3)-vac(B solo),ESTIMATED
+qwen3-4b,1,outcome_first,F6,vac(B|B+R4)-vac(B solo),ESTIMATED
+qwen3-4b,1,outcome_first,F6,vac(B|B+R5)-vac(B solo),ESTIMATED
+qwen3-4b,1,outcome_first,F6,vac(B|B+S1)-vac(B solo),ESTIMATED
+qwen3-4b,1,outcome_first,F6,vac(B|B+S2)-vac(B solo),ESTIMATED
+qwen3-4b,1,outcome_first,F6,vac(B|B+S3)-vac(B solo),ESTIMATED
+qwen3-4b,1,outcome_first,F6,vac(B|B+S4)-vac(B solo),ESTIMATED
+qwen3-4b,1,outcome_first,F6,vac(B|B+S5)-vac(B solo),ESTIMATED
+qwen3-4b,1,outcome_first,F6,vac(B|B+S6)-vac(B solo),ESTIMATED
+qwen3-4b,1,outcome_first,F6,vac(B|B+S7)-vac(B solo),ESTIMATED
+qwen3-4b,1,outcome_first,F6,vac(B|B+S8)-vac(B solo),ESTIMATED
+qwen3-4b,1,outcome_first,F7,D(R1<-A),ESTIMATED
+qwen3-4b,1,outcome_first,F7,D(R1<-B),ESTIMATED
+qwen3-4b,1,outcome_first,F7,D(R2<-A),ESTIMATED
+qwen3-4b,1,outcome_first,F7,D(R2<-B),ESTIMATED
+qwen3-4b,1,outcome_first,F7,D(R3<-A),ESTIMATED
+qwen3-4b,1,outcome_first,F7,D(R3<-B),ESTIMATED
+qwen3-4b,1,outcome_first,F_REFSENS,Delta_R[R1+R2+R3],ESTIMATED
+qwen3-4b,1,outcome_first,F_REFSENS,Delta_R[R1+R2+R4],ESTIMATED
+qwen3-4b,1,outcome_first,F_REFSENS,Delta_R[R1+R2+R5],ESTIMATED
+qwen3-4b,1,outcome_first,F_REFSENS,Delta_R[R1+R3+R4],ESTIMATED
+qwen3-4b,1,outcome_first,F_REFSENS,Delta_R[R1+R3+R5],ESTIMATED
+qwen3-4b,1,outcome_first,F_REFSENS,Delta_R[R1+R4+R5],ESTIMATED
+qwen3-4b,1,outcome_first,F_REFSENS,Delta_R[R2+R3+R5],ESTIMATED
+qwen3-4b,1,outcome_first,F_REFSENS,Delta_R[R2+R4+R5],ESTIMATED
+qwen3-4b,1,outcome_first,F_REFSENS,Delta_R[R3+R4+R5],ESTIMATED
+qwen3-4b,1,outcome_first,F_RUNNER_UP,Delta_R[A2],ESTIMATED
+qwen3-4b,1,outcome_first,F_RUNNER_UP,Delta_R[B2],NOT_ASKED
+qwen3-4b,1,outcome_first,F_SPECTRUM,slope,ESTIMATED
+qwen3-4b,1,outcome_second,F1,D(A<-B),ESTIMATED
+qwen3-4b,1,outcome_second,F1,D(B<-A),ESTIMATED
+qwen3-4b,1,outcome_second,F1,Delta_R,ESTIMATED
+qwen3-4b,1,outcome_second,F1,Lambda,ESTIMATED
+qwen3-4b,1,outcome_second,F1,Xi,ESTIMATED
+qwen3-4b,1,outcome_second,F1,delta_difficulty,ESTIMATED
+qwen3-4b,1,outcome_second,F2,D(B<-R1),ESTIMATED
+qwen3-4b,1,outcome_second,F2,D(B<-R2),ESTIMATED
+qwen3-4b,1,outcome_second,F2,D(B<-R3),ESTIMATED
+qwen3-4b,1,outcome_second,F2,Delta_1,ESTIMATED
+qwen3-4b,1,outcome_second,F2,Delta_2,ESTIMATED
+qwen3-4b,1,outcome_second,F2,Delta_3,ESTIMATED
+qwen3-4b,1,outcome_second,F3,D(A<-R1),ESTIMATED
+qwen3-4b,1,outcome_second,F3,D(A<-R2),ESTIMATED
+qwen3-4b,1,outcome_second,F3,D(A<-R3),ESTIMATED
+qwen3-4b,1,outcome_second,F3,Delta^A,ESTIMATED
+qwen3-4b,1,outcome_second,F4,D(Rbar<-A),ESTIMATED
+qwen3-4b,1,outcome_second,F4,D(Rbar<-B),ESTIMATED
+qwen3-4b,1,outcome_second,F4,D(Rbar<-Rbar'),ESTIMATED
+qwen3-4b,1,outcome_second,F5,D(A<-B)|vacuity_forced,ESTIMATED
+qwen3-4b,1,outcome_second,F5,D(B<-A)|graded_0.99,ESTIMATED
+qwen3-4b,1,outcome_second,F5,D(B<-A)|vacuity_forced,ESTIMATED
+qwen3-4b,1,outcome_second,F5,Delta_R|graded_0.99,ESTIMATED
+qwen3-4b,1,outcome_second,F5,Delta_R|vacuity_forced,ESTIMATED
+qwen3-4b,1,outcome_second,F5,Lambda|vacuity_forced,ESTIMATED
+qwen3-4b,1,outcome_second,F5,Xi|vacuity_forced,ESTIMATED
+qwen3-4b,1,outcome_second,F5,delta_difficulty|graded_0.99,ESTIMATED
+qwen3-4b,1,outcome_second,F5,delta_difficulty|vacuity_forced,ESTIMATED
+qwen3-4b,1,outcome_second,F6,vac(B|A+B)-vac(B solo),ESTIMATED
+qwen3-4b,1,outcome_second,F6,vac(B|B+A2)-vac(B solo),ESTIMATED
+qwen3-4b,1,outcome_second,F6,vac(B|B+R1)-vac(B solo),ESTIMATED
+qwen3-4b,1,outcome_second,F6,vac(B|B+R2)-vac(B solo),ESTIMATED
+qwen3-4b,1,outcome_second,F6,vac(B|B+R3)-vac(B solo),ESTIMATED
+qwen3-4b,1,outcome_second,F6,vac(B|B+R4)-vac(B solo),ESTIMATED
+qwen3-4b,1,outcome_second,F6,vac(B|B+R5)-vac(B solo),ESTIMATED
+qwen3-4b,1,outcome_second,F6,vac(B|B+S1)-vac(B solo),ESTIMATED
+qwen3-4b,1,outcome_second,F6,vac(B|B+S2)-vac(B solo),ESTIMATED
+qwen3-4b,1,outcome_second,F6,vac(B|B+S3)-vac(B solo),ESTIMATED
+qwen3-4b,1,outcome_second,F6,vac(B|B+S4)-vac(B solo),ESTIMATED
+qwen3-4b,1,outcome_second,F6,vac(B|B+S5)-vac(B solo),ESTIMATED
+qwen3-4b,1,outcome_second,F6,vac(B|B+S6)-vac(B solo),ESTIMATED
+qwen3-4b,1,outcome_second,F6,vac(B|B+S7)-vac(B solo),ESTIMATED
+qwen3-4b,1,outcome_second,F6,vac(B|B+S8)-vac(B solo),ESTIMATED
+qwen3-4b,1,outcome_second,F7,D(R1<-A),ESTIMATED
+qwen3-4b,1,outcome_second,F7,D(R1<-B),ESTIMATED
+qwen3-4b,1,outcome_second,F7,D(R2<-A),ESTIMATED
+qwen3-4b,1,outcome_second,F7,D(R2<-B),ESTIMATED
+qwen3-4b,1,outcome_second,F7,D(R3<-A),ESTIMATED
+qwen3-4b,1,outcome_second,F7,D(R3<-B),ESTIMATED
+qwen3-4b,1,outcome_second,F_REFSENS,Delta_R[R1+R2+R3],ESTIMATED
+qwen3-4b,1,outcome_second,F_REFSENS,Delta_R[R1+R2+R4],ESTIMATED
+qwen3-4b,1,outcome_second,F_REFSENS,Delta_R[R1+R2+R5],ESTIMATED
+qwen3-4b,1,outcome_second,F_REFSENS,Delta_R[R1+R3+R4],ESTIMATED
+qwen3-4b,1,outcome_second,F_REFSENS,Delta_R[R1+R3+R5],ESTIMATED
+qwen3-4b,1,outcome_second,F_REFSENS,Delta_R[R1+R4+R5],ESTIMATED
+qwen3-4b,1,outcome_second,F_REFSENS,Delta_R[R2+R3+R5],ESTIMATED
+qwen3-4b,1,outcome_second,F_REFSENS,Delta_R[R2+R4+R5],ESTIMATED
+qwen3-4b,1,outcome_second,F_REFSENS,Delta_R[R3+R4+R5],ESTIMATED
+qwen3-4b,1,outcome_second,F_RUNNER_UP,Delta_R[A2],ESTIMATED
+qwen3-4b,1,outcome_second,F_RUNNER_UP,Delta_R[B2],NOT_ASKED
+qwen3-4b,1,outcome_second,F_SPECTRUM,slope,ESTIMATED
+qwen3-4b,2,outcome_first,F1,D(A<-B),ESTIMATED
+qwen3-4b,2,outcome_first,F1,D(B<-A),ESTIMATED
+qwen3-4b,2,outcome_first,F1,Delta_R,ESTIMATED
+qwen3-4b,2,outcome_first,F1,Lambda,ESTIMATED
+qwen3-4b,2,outcome_first,F1,Xi,ESTIMATED
+qwen3-4b,2,outcome_first,F1,delta_difficulty,ESTIMATED
+qwen3-4b,2,outcome_first,F2,D(B<-R1),ESTIMATED
+qwen3-4b,2,outcome_first,F2,D(B<-R2),ESTIMATED
+qwen3-4b,2,outcome_first,F2,D(B<-R3),ESTIMATED
+qwen3-4b,2,outcome_first,F2,Delta_1,ESTIMATED
+qwen3-4b,2,outcome_first,F2,Delta_2,ESTIMATED
+qwen3-4b,2,outcome_first,F2,Delta_3,ESTIMATED
+qwen3-4b,2,outcome_first,F3,D(A<-R1),ESTIMATED
+qwen3-4b,2,outcome_first,F3,D(A<-R2),ESTIMATED
+qwen3-4b,2,outcome_first,F3,D(A<-R3),ESTIMATED
+qwen3-4b,2,outcome_first,F3,Delta^A,ESTIMATED
+qwen3-4b,2,outcome_first,F4,D(Rbar<-A),ESTIMATED
+qwen3-4b,2,outcome_first,F4,D(Rbar<-B),ESTIMATED
+qwen3-4b,2,outcome_first,F4,D(Rbar<-Rbar'),ESTIMATED
+qwen3-4b,2,outcome_first,F5,D(A<-B)|vacuity_forced,ESTIMATED
+qwen3-4b,2,outcome_first,F5,D(B<-A)|graded_0.99,ESTIMATED
+qwen3-4b,2,outcome_first,F5,D(B<-A)|vacuity_forced,ESTIMATED
+qwen3-4b,2,outcome_first,F5,Delta_R|graded_0.99,ESTIMATED
+qwen3-4b,2,outcome_first,F5,Delta_R|vacuity_forced,ESTIMATED
+qwen3-4b,2,outcome_first,F5,Lambda|vacuity_forced,ESTIMATED
+qwen3-4b,2,outcome_first,F5,Xi|vacuity_forced,ESTIMATED
+qwen3-4b,2,outcome_first,F5,delta_difficulty|graded_0.99,ESTIMATED
+qwen3-4b,2,outcome_first,F5,delta_difficulty|vacuity_forced,ESTIMATED
+qwen3-4b,2,outcome_first,F6,vac(B|A+B)-vac(B solo),ESTIMATED
+qwen3-4b,2,outcome_first,F6,vac(B|B+A2)-vac(B solo),ESTIMATED
+qwen3-4b,2,outcome_first,F6,vac(B|B+R1)-vac(B solo),ESTIMATED
+qwen3-4b,2,outcome_first,F6,vac(B|B+R2)-vac(B solo),ESTIMATED
+qwen3-4b,2,outcome_first,F6,vac(B|B+R3)-vac(B solo),ESTIMATED
+qwen3-4b,2,outcome_first,F6,vac(B|B+R4)-vac(B solo),ESTIMATED
+qwen3-4b,2,outcome_first,F6,vac(B|B+R5)-vac(B solo),ESTIMATED
+qwen3-4b,2,outcome_first,F6,vac(B|B+S1)-vac(B solo),ESTIMATED
+qwen3-4b,2,outcome_first,F6,vac(B|B+S2)-vac(B solo),ESTIMATED
+qwen3-4b,2,outcome_first,F6,vac(B|B+S3)-vac(B solo),ESTIMATED
+qwen3-4b,2,outcome_first,F6,vac(B|B+S4)-vac(B solo),ESTIMATED
+qwen3-4b,2,outcome_first,F6,vac(B|B+S5)-vac(B solo),ESTIMATED
+qwen3-4b,2,outcome_first,F6,vac(B|B+S6)-vac(B solo),ESTIMATED
+qwen3-4b,2,outcome_first,F6,vac(B|B+S7)-vac(B solo),ESTIMATED
+qwen3-4b,2,outcome_first,F7,D(R1<-A),ESTIMATED
+qwen3-4b,2,outcome_first,F7,D(R1<-B),ESTIMATED
+qwen3-4b,2,outcome_first,F7,D(R2<-A),ESTIMATED
+qwen3-4b,2,outcome_first,F7,D(R2<-B),ESTIMATED
+qwen3-4b,2,outcome_first,F7,D(R3<-A),ESTIMATED
+qwen3-4b,2,outcome_first,F7,D(R3<-B),ESTIMATED
+qwen3-4b,2,outcome_first,F_REFSENS,Delta_R[R1+R2+R3],ESTIMATED
+qwen3-4b,2,outcome_first,F_REFSENS,Delta_R[R1+R2+R4],ESTIMATED
+qwen3-4b,2,outcome_first,F_REFSENS,Delta_R[R1+R2+R5],ESTIMATED
+qwen3-4b,2,outcome_first,F_REFSENS,Delta_R[R1+R3+R4],ESTIMATED
+qwen3-4b,2,outcome_first,F_REFSENS,Delta_R[R1+R3+R5],ESTIMATED
+qwen3-4b,2,outcome_first,F_REFSENS,Delta_R[R1+R4+R5],ESTIMATED
+qwen3-4b,2,outcome_first,F_REFSENS,Delta_R[R2+R3+R4],ESTIMATED
+qwen3-4b,2,outcome_first,F_REFSENS,Delta_R[R2+R3+R5],ESTIMATED
+qwen3-4b,2,outcome_first,F_REFSENS,Delta_R[R2+R4+R5],ESTIMATED
+qwen3-4b,2,outcome_first,F_REFSENS,Delta_R[R3+R4+R5],ESTIMATED
+qwen3-4b,2,outcome_first,F_RUNNER_UP,Delta_R[A2],ESTIMATED
+qwen3-4b,2,outcome_first,F_RUNNER_UP,Delta_R[B2],NOT_ASKED
+qwen3-4b,2,outcome_first,F_SPECTRUM,slope,ESTIMATED
+qwen3-4b,2,outcome_second,F1,D(A<-B),ESTIMATED
+qwen3-4b,2,outcome_second,F1,D(B<-A),ESTIMATED
+qwen3-4b,2,outcome_second,F1,Delta_R,ESTIMATED
+qwen3-4b,2,outcome_second,F1,Lambda,ESTIMATED
+qwen3-4b,2,outcome_second,F1,Xi,ESTIMATED
+qwen3-4b,2,outcome_second,F1,delta_difficulty,ESTIMATED
+qwen3-4b,2,outcome_second,F2,D(B<-R1),ESTIMATED
+qwen3-4b,2,outcome_second,F2,D(B<-R2),ESTIMATED
+qwen3-4b,2,outcome_second,F2,D(B<-R3),ESTIMATED
+qwen3-4b,2,outcome_second,F2,Delta_1,ESTIMATED
+qwen3-4b,2,outcome_second,F2,Delta_2,ESTIMATED
+qwen3-4b,2,outcome_second,F2,Delta_3,ESTIMATED
+qwen3-4b,2,outcome_second,F3,D(A<-R1),ESTIMATED
+qwen3-4b,2,outcome_second,F3,D(A<-R2),ESTIMATED
+qwen3-4b,2,outcome_second,F3,D(A<-R3),ESTIMATED
+qwen3-4b,2,outcome_second,F3,Delta^A,ESTIMATED
+qwen3-4b,2,outcome_second,F4,D(Rbar<-A),ESTIMATED
+qwen3-4b,2,outcome_second,F4,D(Rbar<-B),ESTIMATED
+qwen3-4b,2,outcome_second,F4,D(Rbar<-Rbar'),ESTIMATED
+qwen3-4b,2,outcome_second,F5,D(A<-B)|vacuity_forced,ESTIMATED
+qwen3-4b,2,outcome_second,F5,D(B<-A)|graded_0.99,ESTIMATED
+qwen3-4b,2,outcome_second,F5,D(B<-A)|vacuity_forced,ESTIMATED
+qwen3-4b,2,outcome_second,F5,Delta_R|graded_0.99,ESTIMATED
+qwen3-4b,2,outcome_second,F5,Delta_R|vacuity_forced,ESTIMATED
+qwen3-4b,2,outcome_second,F5,Lambda|vacuity_forced,ESTIMATED
+qwen3-4b,2,outcome_second,F5,Xi|vacuity_forced,ESTIMATED
+qwen3-4b,2,outcome_second,F5,delta_difficulty|graded_0.99,ESTIMATED
+qwen3-4b,2,outcome_second,F5,delta_difficulty|vacuity_forced,ESTIMATED
+qwen3-4b,2,outcome_second,F6,vac(B|A+B)-vac(B solo),ESTIMATED
+qwen3-4b,2,outcome_second,F6,vac(B|B+A2)-vac(B solo),ESTIMATED
+qwen3-4b,2,outcome_second,F6,vac(B|B+R1)-vac(B solo),ESTIMATED
+qwen3-4b,2,outcome_second,F6,vac(B|B+R2)-vac(B solo),ESTIMATED
+qwen3-4b,2,outcome_second,F6,vac(B|B+R3)-vac(B solo),ESTIMATED
+qwen3-4b,2,outcome_second,F6,vac(B|B+R4)-vac(B solo),ESTIMATED
+qwen3-4b,2,outcome_second,F6,vac(B|B+R5)-vac(B solo),ESTIMATED
+qwen3-4b,2,outcome_second,F6,vac(B|B+S1)-vac(B solo),ESTIMATED
+qwen3-4b,2,outcome_second,F6,vac(B|B+S2)-vac(B solo),ESTIMATED
+qwen3-4b,2,outcome_second,F6,vac(B|B+S3)-vac(B solo),ESTIMATED
+qwen3-4b,2,outcome_second,F6,vac(B|B+S4)-vac(B solo),ESTIMATED
+qwen3-4b,2,outcome_second,F6,vac(B|B+S5)-vac(B solo),ESTIMATED
+qwen3-4b,2,outcome_second,F6,vac(B|B+S6)-vac(B solo),ESTIMATED
+qwen3-4b,2,outcome_second,F6,vac(B|B+S7)-vac(B solo),ESTIMATED
+qwen3-4b,2,outcome_second,F7,D(R1<-A),ESTIMATED
+qwen3-4b,2,outcome_second,F7,D(R1<-B),ESTIMATED
+qwen3-4b,2,outcome_second,F7,D(R2<-A),ESTIMATED
+qwen3-4b,2,outcome_second,F7,D(R2<-B),ESTIMATED
+qwen3-4b,2,outcome_second,F7,D(R3<-A),ESTIMATED
+qwen3-4b,2,outcome_second,F7,D(R3<-B),ESTIMATED
+qwen3-4b,2,outcome_second,F_REFSENS,Delta_R[R1+R2+R3],ESTIMATED
+qwen3-4b,2,outcome_second,F_REFSENS,Delta_R[R1+R2+R4],ESTIMATED
+qwen3-4b,2,outcome_second,F_REFSENS,Delta_R[R1+R2+R5],ESTIMATED
+qwen3-4b,2,outcome_second,F_REFSENS,Delta_R[R1+R3+R4],ESTIMATED
+qwen3-4b,2,outcome_second,F_REFSENS,Delta_R[R1+R3+R5],ESTIMATED
+qwen3-4b,2,outcome_second,F_REFSENS,Delta_R[R1+R4+R5],ESTIMATED
+qwen3-4b,2,outcome_second,F_REFSENS,Delta_R[R2+R3+R4],ESTIMATED
+qwen3-4b,2,outcome_second,F_REFSENS,Delta_R[R2+R3+R5],ESTIMATED
+qwen3-4b,2,outcome_second,F_REFSENS,Delta_R[R2+R4+R5],ESTIMATED
+qwen3-4b,2,outcome_second,F_REFSENS,Delta_R[R3+R4+R5],ESTIMATED
+qwen3-4b,2,outcome_second,F_RUNNER_UP,Delta_R[A2],ESTIMATED
+qwen3-4b,2,outcome_second,F_RUNNER_UP,Delta_R[B2],NOT_ASKED
+qwen3-4b,2,outcome_second,F_SPECTRUM,slope,ESTIMATED
+qwen3-4b,3,outcome_first,F1,D(A<-B),ESTIMATED
+qwen3-4b,3,outcome_first,F1,D(B<-A),ESTIMATED
+qwen3-4b,3,outcome_first,F1,Delta_R,ESTIMATED
+qwen3-4b,3,outcome_first,F1,Lambda,ESTIMATED
+qwen3-4b,3,outcome_first,F1,Xi,ESTIMATED
+qwen3-4b,3,outcome_first,F1,delta_difficulty,ESTIMATED
+qwen3-4b,3,outcome_first,F2,D(B<-R1),ESTIMATED
+qwen3-4b,3,outcome_first,F2,D(B<-R2),ESTIMATED
+qwen3-4b,3,outcome_first,F2,D(B<-R3),ESTIMATED
+qwen3-4b,3,outcome_first,F2,Delta_1,ESTIMATED
+qwen3-4b,3,outcome_first,F2,Delta_2,ESTIMATED
+qwen3-4b,3,outcome_first,F2,Delta_3,ESTIMATED
+qwen3-4b,3,outcome_first,F3,D(A<-R1),ESTIMATED
+qwen3-4b,3,outcome_first,F3,D(A<-R2),ESTIMATED
+qwen3-4b,3,outcome_first,F3,D(A<-R3),ESTIMATED
+qwen3-4b,3,outcome_first,F3,Delta^A,ESTIMATED
+qwen3-4b,3,outcome_first,F4,D(Rbar<-A),ESTIMATED
+qwen3-4b,3,outcome_first,F4,D(Rbar<-B),ESTIMATED
+qwen3-4b,3,outcome_first,F4,D(Rbar<-Rbar'),ESTIMATED
+qwen3-4b,3,outcome_first,F5,D(A<-B)|vacuity_forced,ESTIMATED
+qwen3-4b,3,outcome_first,F5,D(B<-A)|graded_0.99,ESTIMATED
+qwen3-4b,3,outcome_first,F5,D(B<-A)|vacuity_forced,ESTIMATED
+qwen3-4b,3,outcome_first,F5,Delta_R|graded_0.99,ESTIMATED
+qwen3-4b,3,outcome_first,F5,Delta_R|vacuity_forced,ESTIMATED
+qwen3-4b,3,outcome_first,F5,Lambda|vacuity_forced,ESTIMATED
+qwen3-4b,3,outcome_first,F5,Xi|vacuity_forced,ESTIMATED
+qwen3-4b,3,outcome_first,F5,delta_difficulty|graded_0.99,ESTIMATED
+qwen3-4b,3,outcome_first,F5,delta_difficulty|vacuity_forced,ESTIMATED
+qwen3-4b,3,outcome_first,F6,vac(B|A+B)-vac(B solo),ESTIMATED
+qwen3-4b,3,outcome_first,F6,vac(B|B+A2)-vac(B solo),ESTIMATED
+qwen3-4b,3,outcome_first,F6,vac(B|B+R1)-vac(B solo),ESTIMATED
+qwen3-4b,3,outcome_first,F6,vac(B|B+R2)-vac(B solo),ESTIMATED
+qwen3-4b,3,outcome_first,F6,vac(B|B+R3)-vac(B solo),ESTIMATED
+qwen3-4b,3,outcome_first,F6,vac(B|B+R4)-vac(B solo),ESTIMATED
+qwen3-4b,3,outcome_first,F6,vac(B|B+R5)-vac(B solo),ESTIMATED
+qwen3-4b,3,outcome_first,F6,vac(B|B+S1)-vac(B solo),ESTIMATED
+qwen3-4b,3,outcome_first,F6,vac(B|B+S2)-vac(B solo),ESTIMATED
+qwen3-4b,3,outcome_first,F6,vac(B|B+S3)-vac(B solo),ESTIMATED
+qwen3-4b,3,outcome_first,F6,vac(B|B+S4)-vac(B solo),ESTIMATED
+qwen3-4b,3,outcome_first,F6,vac(B|B+S5)-vac(B solo),ESTIMATED
+qwen3-4b,3,outcome_first,F6,vac(B|B+S6)-vac(B solo),ESTIMATED
+qwen3-4b,3,outcome_first,F6,vac(B|B+S7)-vac(B solo),ESTIMATED
+qwen3-4b,3,outcome_first,F6,vac(B|B+S8)-vac(B solo),ESTIMATED
+qwen3-4b,3,outcome_first,F7,D(R1<-A),ESTIMATED
+qwen3-4b,3,outcome_first,F7,D(R1<-B),ESTIMATED
+qwen3-4b,3,outcome_first,F7,D(R2<-A),ESTIMATED
+qwen3-4b,3,outcome_first,F7,D(R2<-B),ESTIMATED
+qwen3-4b,3,outcome_first,F7,D(R3<-A),ESTIMATED
+qwen3-4b,3,outcome_first,F7,D(R3<-B),ESTIMATED
+qwen3-4b,3,outcome_first,F_REFSENS,Delta_R[R1+R2+R3],ESTIMATED
+qwen3-4b,3,outcome_first,F_REFSENS,Delta_R[R1+R2+R5],ESTIMATED
+qwen3-4b,3,outcome_first,F_REFSENS,Delta_R[R1+R3+R4],ESTIMATED
+qwen3-4b,3,outcome_first,F_REFSENS,Delta_R[R1+R3+R5],ESTIMATED
+qwen3-4b,3,outcome_first,F_REFSENS,Delta_R[R1+R4+R5],ESTIMATED
+qwen3-4b,3,outcome_first,F_REFSENS,Delta_R[R2+R3+R4],ESTIMATED
+qwen3-4b,3,outcome_first,F_REFSENS,Delta_R[R2+R3+R5],ESTIMATED
+qwen3-4b,3,outcome_first,F_REFSENS,Delta_R[R2+R4+R5],ESTIMATED
+qwen3-4b,3,outcome_first,F_REFSENS,Delta_R[R3+R4+R5],ESTIMATED
+qwen3-4b,3,outcome_first,F_RUNNER_UP,Delta_R[A2],ESTIMATED
+qwen3-4b,3,outcome_first,F_RUNNER_UP,Delta_R[B2],NOT_ASKED
+qwen3-4b,3,outcome_first,F_SPECTRUM,slope,ESTIMATED
+qwen3-4b,3,outcome_second,F1,D(A<-B),ESTIMATED
+qwen3-4b,3,outcome_second,F1,D(B<-A),ESTIMATED
+qwen3-4b,3,outcome_second,F1,Delta_R,ESTIMATED
+qwen3-4b,3,outcome_second,F1,Lambda,ESTIMATED
+qwen3-4b,3,outcome_second,F1,Xi,ESTIMATED
+qwen3-4b,3,outcome_second,F1,delta_difficulty,ESTIMATED
+qwen3-4b,3,outcome_second,F2,D(B<-R1),ESTIMATED
+qwen3-4b,3,outcome_second,F2,D(B<-R2),ESTIMATED
+qwen3-4b,3,outcome_second,F2,D(B<-R3),ESTIMATED
+qwen3-4b,3,outcome_second,F2,Delta_1,ESTIMATED
+qwen3-4b,3,outcome_second,F2,Delta_2,ESTIMATED
+qwen3-4b,3,outcome_second,F2,Delta_3,ESTIMATED
+qwen3-4b,3,outcome_second,F3,D(A<-R1),ESTIMATED
+qwen3-4b,3,outcome_second,F3,D(A<-R2),ESTIMATED
+qwen3-4b,3,outcome_second,F3,D(A<-R3),ESTIMATED
+qwen3-4b,3,outcome_second,F3,Delta^A,ESTIMATED
+qwen3-4b,3,outcome_second,F4,D(Rbar<-A),ESTIMATED
+qwen3-4b,3,outcome_second,F4,D(Rbar<-B),ESTIMATED
+qwen3-4b,3,outcome_second,F4,D(Rbar<-Rbar'),ESTIMATED
+qwen3-4b,3,outcome_second,F5,D(A<-B)|vacuity_forced,ESTIMATED
+qwen3-4b,3,outcome_second,F5,D(B<-A)|graded_0.99,ESTIMATED
+qwen3-4b,3,outcome_second,F5,D(B<-A)|vacuity_forced,ESTIMATED
+qwen3-4b,3,outcome_second,F5,Delta_R|graded_0.99,ESTIMATED
+qwen3-4b,3,outcome_second,F5,Delta_R|vacuity_forced,ESTIMATED
+qwen3-4b,3,outcome_second,F5,Lambda|vacuity_forced,ESTIMATED
+qwen3-4b,3,outcome_second,F5,Xi|vacuity_forced,ESTIMATED
+qwen3-4b,3,outcome_second,F5,delta_difficulty|graded_0.99,ESTIMATED
+qwen3-4b,3,outcome_second,F5,delta_difficulty|vacuity_forced,ESTIMATED
+qwen3-4b,3,outcome_second,F6,vac(B|A+B)-vac(B solo),ESTIMATED
+qwen3-4b,3,outcome_second,F6,vac(B|B+A2)-vac(B solo),ESTIMATED
+qwen3-4b,3,outcome_second,F6,vac(B|B+R1)-vac(B solo),ESTIMATED
+qwen3-4b,3,outcome_second,F6,vac(B|B+R2)-vac(B solo),ESTIMATED
+qwen3-4b,3,outcome_second,F6,vac(B|B+R3)-vac(B solo),ESTIMATED
+qwen3-4b,3,outcome_second,F6,vac(B|B+R4)-vac(B solo),ESTIMATED
+qwen3-4b,3,outcome_second,F6,vac(B|B+R5)-vac(B solo),ESTIMATED
+qwen3-4b,3,outcome_second,F6,vac(B|B+S1)-vac(B solo),ESTIMATED
+qwen3-4b,3,outcome_second,F6,vac(B|B+S2)-vac(B solo),ESTIMATED
+qwen3-4b,3,outcome_second,F6,vac(B|B+S3)-vac(B solo),ESTIMATED
+qwen3-4b,3,outcome_second,F6,vac(B|B+S4)-vac(B solo),ESTIMATED
+qwen3-4b,3,outcome_second,F6,vac(B|B+S5)-vac(B solo),ESTIMATED
+qwen3-4b,3,outcome_second,F6,vac(B|B+S6)-vac(B solo),ESTIMATED
+qwen3-4b,3,outcome_second,F6,vac(B|B+S7)-vac(B solo),ESTIMATED
+qwen3-4b,3,outcome_second,F6,vac(B|B+S8)-vac(B solo),ESTIMATED
+qwen3-4b,3,outcome_second,F7,D(R1<-A),ESTIMATED
+qwen3-4b,3,outcome_second,F7,D(R1<-B),ESTIMATED
+qwen3-4b,3,outcome_second,F7,D(R2<-A),ESTIMATED
+qwen3-4b,3,outcome_second,F7,D(R2<-B),ESTIMATED
+qwen3-4b,3,outcome_second,F7,D(R3<-A),ESTIMATED
+qwen3-4b,3,outcome_second,F7,D(R3<-B),ESTIMATED
+qwen3-4b,3,outcome_second,F_REFSENS,Delta_R[R1+R2+R3],ESTIMATED
+qwen3-4b,3,outcome_second,F_REFSENS,Delta_R[R1+R2+R5],ESTIMATED
+qwen3-4b,3,outcome_second,F_REFSENS,Delta_R[R1+R3+R4],ESTIMATED
+qwen3-4b,3,outcome_second,F_REFSENS,Delta_R[R1+R3+R5],ESTIMATED
+qwen3-4b,3,outcome_second,F_REFSENS,Delta_R[R1+R4+R5],ESTIMATED
+qwen3-4b,3,outcome_second,F_REFSENS,Delta_R[R2+R3+R4],ESTIMATED
+qwen3-4b,3,outcome_second,F_REFSENS,Delta_R[R2+R3+R5],ESTIMATED
+qwen3-4b,3,outcome_second,F_REFSENS,Delta_R[R2+R4+R5],ESTIMATED
+qwen3-4b,3,outcome_second,F_REFSENS,Delta_R[R3+R4+R5],ESTIMATED
+qwen3-4b,3,outcome_second,F_RUNNER_UP,Delta_R[A2],ESTIMATED
+qwen3-4b,3,outcome_second,F_RUNNER_UP,Delta_R[B2],NOT_ASKED
+qwen3-4b,3,outcome_second,F_SPECTRUM,slope,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F1,D(A<-B),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F1,D(B<-A),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F1,Delta_R,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F1,Lambda,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F1,Xi,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F1,delta_difficulty,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F2,D(B<-R1),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F2,D(B<-R2),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F2,D(B<-R3),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F2,Delta_1,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F2,Delta_2,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F2,Delta_3,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F3,D(A<-R1),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F3,D(A<-R2),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F3,D(A<-R3),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F3,Delta^A,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F4,D(Rbar<-A),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F4,D(Rbar<-B),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F4,D(Rbar<-Rbar'),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F5,D(A<-B)|vacuity_forced,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F5,D(B<-A)|graded_0.99,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F5,D(B<-A)|vacuity_forced,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F5,Delta_R|graded_0.99,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F5,Delta_R|vacuity_forced,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F5,Lambda|vacuity_forced,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F5,Xi|vacuity_forced,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F5,delta_difficulty|graded_0.99,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F5,delta_difficulty|vacuity_forced,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F6,vac(B|A+B)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F6,vac(B|B+R1)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F6,vac(B|B+R2)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F6,vac(B|B+R3)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F6,vac(B|B+R4)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F6,vac(B|B+R5)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F6,vac(B|B+S1)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F6,vac(B|B+S2)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F6,vac(B|B+S3)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F6,vac(B|B+S4)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F6,vac(B|B+S5)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F6,vac(B|B+S6)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F6,vac(B|B+S7)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F6,vac(B|B+S8)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F7,D(R1<-A),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F7,D(R1<-B),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F7,D(R2<-A),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F7,D(R2<-B),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F7,D(R3<-A),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F7,D(R3<-B),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F_REFSENS,Delta_R[R1+R2+R3],ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F_REFSENS,Delta_R[R1+R2+R4],ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F_REFSENS,Delta_R[R1+R2+R5],ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F_REFSENS,Delta_R[R1+R3+R4],ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F_REFSENS,Delta_R[R1+R3+R5],ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F_REFSENS,Delta_R[R1+R4+R5],ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F_REFSENS,Delta_R[R2+R3+R4],ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F_REFSENS,Delta_R[R2+R3+R5],ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F_REFSENS,Delta_R[R2+R4+R5],ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F_REFSENS,Delta_R[R3+R4+R5],ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_first,F_RUNNER_UP,Delta_R[A2],NOT_ASKED
+qwen3-4b-instruct-2507,1,outcome_first,F_RUNNER_UP,Delta_R[B2],NOT_ASKED
+qwen3-4b-instruct-2507,1,outcome_first,F_SPECTRUM,slope,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F1,D(A<-B),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F1,D(B<-A),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F1,Delta_R,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F1,Lambda,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F1,Xi,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F1,delta_difficulty,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F2,D(B<-R1),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F2,D(B<-R2),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F2,D(B<-R3),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F2,Delta_1,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F2,Delta_2,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F2,Delta_3,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F3,D(A<-R1),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F3,D(A<-R2),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F3,D(A<-R3),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F3,Delta^A,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F4,D(Rbar<-A),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F4,D(Rbar<-B),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F4,D(Rbar<-Rbar'),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F5,D(A<-B)|vacuity_forced,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F5,D(B<-A)|graded_0.99,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F5,D(B<-A)|vacuity_forced,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F5,Delta_R|graded_0.99,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F5,Delta_R|vacuity_forced,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F5,Lambda|vacuity_forced,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F5,Xi|vacuity_forced,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F5,delta_difficulty|graded_0.99,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F5,delta_difficulty|vacuity_forced,ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F6,vac(B|A+B)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F6,vac(B|B+R1)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F6,vac(B|B+R2)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F6,vac(B|B+R3)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F6,vac(B|B+R4)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F6,vac(B|B+R5)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F6,vac(B|B+S1)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F6,vac(B|B+S2)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F6,vac(B|B+S3)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F6,vac(B|B+S4)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F6,vac(B|B+S5)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F6,vac(B|B+S6)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F6,vac(B|B+S7)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F6,vac(B|B+S8)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F7,D(R1<-A),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F7,D(R1<-B),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F7,D(R2<-A),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F7,D(R2<-B),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F7,D(R3<-A),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F7,D(R3<-B),ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F_REFSENS,Delta_R[R1+R2+R3],ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F_REFSENS,Delta_R[R1+R2+R4],ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F_REFSENS,Delta_R[R1+R2+R5],ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F_REFSENS,Delta_R[R1+R3+R4],ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F_REFSENS,Delta_R[R1+R3+R5],ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F_REFSENS,Delta_R[R1+R4+R5],ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F_REFSENS,Delta_R[R2+R3+R4],ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F_REFSENS,Delta_R[R2+R3+R5],ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F_REFSENS,Delta_R[R2+R4+R5],ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F_REFSENS,Delta_R[R3+R4+R5],ESTIMATED
+qwen3-4b-instruct-2507,1,outcome_second,F_RUNNER_UP,Delta_R[A2],NOT_ASKED
+qwen3-4b-instruct-2507,1,outcome_second,F_RUNNER_UP,Delta_R[B2],NOT_ASKED
+qwen3-4b-instruct-2507,1,outcome_second,F_SPECTRUM,slope,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F1,D(A<-B),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F1,D(B<-A),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F1,Delta_R,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F1,Lambda,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F1,Xi,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F1,delta_difficulty,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F2,D(B<-R1),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F2,D(B<-R2),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F2,D(B<-R3),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F2,Delta_1,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F2,Delta_2,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F2,Delta_3,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F3,D(A<-R1),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F3,D(A<-R2),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F3,D(A<-R3),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F3,Delta^A,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F4,D(Rbar<-A),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F4,D(Rbar<-B),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F4,D(Rbar<-Rbar'),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F5,D(A<-B)|vacuity_forced,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F5,D(B<-A)|graded_0.99,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F5,D(B<-A)|vacuity_forced,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F5,Delta_R|graded_0.99,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F5,Delta_R|vacuity_forced,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F5,Lambda|vacuity_forced,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F5,Xi|vacuity_forced,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F5,delta_difficulty|graded_0.99,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F5,delta_difficulty|vacuity_forced,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F6,vac(B|A+B)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F6,vac(B|B+R1)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F6,vac(B|B+R2)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F6,vac(B|B+R3)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F6,vac(B|B+R4)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F6,vac(B|B+R5)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F6,vac(B|B+S1)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F6,vac(B|B+S2)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F6,vac(B|B+S3)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F6,vac(B|B+S4)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F6,vac(B|B+S5)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F6,vac(B|B+S6)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F6,vac(B|B+S7)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F6,vac(B|B+S8)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F7,D(R1<-A),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F7,D(R1<-B),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F7,D(R2<-A),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F7,D(R2<-B),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F7,D(R3<-A),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F7,D(R3<-B),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F_REFSENS,Delta_R[R1+R2+R3],ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F_REFSENS,Delta_R[R1+R2+R4],ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F_REFSENS,Delta_R[R1+R2+R5],ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F_REFSENS,Delta_R[R1+R3+R4],ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F_REFSENS,Delta_R[R1+R3+R5],ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F_REFSENS,Delta_R[R1+R4+R5],ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F_REFSENS,Delta_R[R2+R3+R4],ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F_REFSENS,Delta_R[R2+R3+R5],ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F_REFSENS,Delta_R[R2+R4+R5],ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F_REFSENS,Delta_R[R3+R4+R5],ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_first,F_RUNNER_UP,Delta_R[A2],NOT_ASKED
+qwen3-4b-instruct-2507,3,outcome_first,F_RUNNER_UP,Delta_R[B2],NOT_ASKED
+qwen3-4b-instruct-2507,3,outcome_first,F_SPECTRUM,slope,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F1,D(A<-B),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F1,D(B<-A),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F1,Delta_R,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F1,Lambda,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F1,Xi,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F1,delta_difficulty,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F2,D(B<-R1),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F2,D(B<-R2),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F2,D(B<-R3),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F2,Delta_1,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F2,Delta_2,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F2,Delta_3,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F3,D(A<-R1),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F3,D(A<-R2),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F3,D(A<-R3),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F3,Delta^A,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F4,D(Rbar<-A),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F4,D(Rbar<-B),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F4,D(Rbar<-Rbar'),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F5,D(A<-B)|vacuity_forced,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F5,D(B<-A)|graded_0.99,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F5,D(B<-A)|vacuity_forced,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F5,Delta_R|graded_0.99,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F5,Delta_R|vacuity_forced,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F5,Lambda|vacuity_forced,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F5,Xi|vacuity_forced,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F5,delta_difficulty|graded_0.99,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F5,delta_difficulty|vacuity_forced,ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F6,vac(B|A+B)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F6,vac(B|B+R1)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F6,vac(B|B+R2)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F6,vac(B|B+R3)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F6,vac(B|B+R4)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F6,vac(B|B+R5)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F6,vac(B|B+S1)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F6,vac(B|B+S2)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F6,vac(B|B+S3)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F6,vac(B|B+S4)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F6,vac(B|B+S5)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F6,vac(B|B+S6)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F6,vac(B|B+S7)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F6,vac(B|B+S8)-vac(B solo),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F7,D(R1<-A),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F7,D(R1<-B),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F7,D(R2<-A),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F7,D(R2<-B),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F7,D(R3<-A),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F7,D(R3<-B),ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F_REFSENS,Delta_R[R1+R2+R3],ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F_REFSENS,Delta_R[R1+R2+R4],ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F_REFSENS,Delta_R[R1+R2+R5],ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F_REFSENS,Delta_R[R1+R3+R4],ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F_REFSENS,Delta_R[R1+R3+R5],ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F_REFSENS,Delta_R[R1+R4+R5],ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F_REFSENS,Delta_R[R2+R3+R4],ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F_REFSENS,Delta_R[R2+R3+R5],ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F_REFSENS,Delta_R[R2+R4+R5],ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F_REFSENS,Delta_R[R3+R4+R5],ESTIMATED
+qwen3-4b-instruct-2507,3,outcome_second,F_RUNNER_UP,Delta_R[A2],NOT_ASKED
+qwen3-4b-instruct-2507,3,outcome_second,F_RUNNER_UP,Delta_R[B2],NOT_ASKED
+qwen3-4b-instruct-2507,3,outcome_second,F_SPECTRUM,slope,ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F1,D(A<-B),ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F1,D(B<-A),ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F1,Delta_R,ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F1,Lambda,ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F1,Xi,ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F1,delta_difficulty,ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F2,D(B<-R1),ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F2,D(B<-R2),ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F2,D(B<-R3),ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F2,Delta_1,ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F2,Delta_2,ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F2,Delta_3,ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F3,D(A<-R1),ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F3,D(A<-R2),ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F3,D(A<-R3),ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F3,Delta^A,ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F4,D(Rbar<-A),ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F4,D(Rbar<-B),ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F4,D(Rbar<-Rbar'),ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F5,D(A<-B)|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F5,D(B<-A)|graded_0.99,ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F5,D(B<-A)|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F5,Delta_R|graded_0.99,ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F5,Delta_R|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F5,Lambda|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F5,Xi|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F5,delta_difficulty|graded_0.99,ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F5,delta_difficulty|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F6,vac(B|A+B)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F6,vac(B|B+A2)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F6,vac(B|B+R1)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F6,vac(B|B+R2)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F6,vac(B|B+R3)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F6,vac(B|B+R4)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F6,vac(B|B+R5)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F6,vac(B|B+S1)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F6,vac(B|B+S2)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F6,vac(B|B+S3)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F6,vac(B|B+S4)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F6,vac(B|B+S5)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F6,vac(B|B+S6)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F6,vac(B|B+S7)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F6,vac(B|B+S8)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F7,D(R1<-A),ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F7,D(R1<-B),ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F7,D(R2<-A),ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F7,D(R2<-B),ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F7,D(R3<-A),ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F7,D(R3<-B),ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F_REFSENS,Delta_R[R1+R2+R3],ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F_REFSENS,Delta_R[R1+R2+R4],ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F_REFSENS,Delta_R[R1+R2+R5],ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F_REFSENS,Delta_R[R1+R3+R4],ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F_REFSENS,Delta_R[R1+R3+R5],ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F_REFSENS,Delta_R[R1+R4+R5],ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F_REFSENS,Delta_R[R2+R3+R4],ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F_REFSENS,Delta_R[R2+R3+R5],ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F_REFSENS,Delta_R[R2+R4+R5],ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F_REFSENS,Delta_R[R3+R4+R5],ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F_RUNNER_UP,Delta_R[A2],ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F_RUNNER_UP,Delta_R[B2],ESTIMATED
+gemma-3n-e2b-it,0,outcome_first,F_SPECTRUM,slope,ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F1,D(A<-B),ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F1,D(B<-A),ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F1,Delta_R,ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F1,Lambda,ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F1,Xi,ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F1,delta_difficulty,ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F2,D(B<-R1),ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F2,D(B<-R2),ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F2,D(B<-R3),ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F2,Delta_1,ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F2,Delta_2,ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F2,Delta_3,ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F3,D(A<-R1),ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F3,D(A<-R2),ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F3,D(A<-R3),ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F3,Delta^A,ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F4,D(Rbar<-A),ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F4,D(Rbar<-B),ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F4,D(Rbar<-Rbar'),ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F5,D(A<-B)|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F5,D(B<-A)|graded_0.99,ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F5,D(B<-A)|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F5,Delta_R|graded_0.99,ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F5,Delta_R|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F5,Lambda|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F5,Xi|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F5,delta_difficulty|graded_0.99,ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F5,delta_difficulty|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F6,vac(B|A+B)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F6,vac(B|B+A2)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F6,vac(B|B+R1)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F6,vac(B|B+R2)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F6,vac(B|B+R3)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F6,vac(B|B+R4)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F6,vac(B|B+R5)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F6,vac(B|B+S1)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F6,vac(B|B+S2)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F6,vac(B|B+S3)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F6,vac(B|B+S4)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F6,vac(B|B+S5)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F6,vac(B|B+S6)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F6,vac(B|B+S7)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F6,vac(B|B+S8)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F7,D(R1<-A),ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F7,D(R1<-B),ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F7,D(R2<-A),ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F7,D(R2<-B),ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F7,D(R3<-A),ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F7,D(R3<-B),ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F_REFSENS,Delta_R[R1+R2+R3],ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F_REFSENS,Delta_R[R1+R2+R4],ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F_REFSENS,Delta_R[R1+R2+R5],ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F_REFSENS,Delta_R[R1+R3+R4],ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F_REFSENS,Delta_R[R1+R3+R5],ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F_REFSENS,Delta_R[R1+R4+R5],ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F_REFSENS,Delta_R[R2+R3+R4],ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F_REFSENS,Delta_R[R2+R3+R5],ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F_REFSENS,Delta_R[R2+R4+R5],ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F_REFSENS,Delta_R[R3+R4+R5],ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F_RUNNER_UP,Delta_R[A2],ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F_RUNNER_UP,Delta_R[B2],ESTIMATED
+gemma-3n-e2b-it,0,outcome_second,F_SPECTRUM,slope,ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F1,D(A<-B),ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F1,D(B<-A),ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F1,Delta_R,ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F1,Lambda,ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F1,Xi,ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F1,delta_difficulty,ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F2,D(B<-R1),ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F2,D(B<-R2),ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F2,D(B<-R3),ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F2,Delta_1,ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F2,Delta_2,ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F2,Delta_3,ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F3,D(A<-R1),ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F3,D(A<-R2),ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F3,D(A<-R3),ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F3,Delta^A,ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F4,D(Rbar<-A),ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F4,D(Rbar<-B),ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F4,D(Rbar<-Rbar'),ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F5,D(A<-B)|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F5,D(B<-A)|graded_0.99,ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F5,D(B<-A)|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F5,Delta_R|graded_0.99,ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F5,Delta_R|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F5,Lambda|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F5,Xi|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F5,delta_difficulty|graded_0.99,ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F5,delta_difficulty|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F6,vac(B|A+B)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F6,vac(B|B+R1)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F6,vac(B|B+R2)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F6,vac(B|B+R3)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F6,vac(B|B+R4)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F6,vac(B|B+R5)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F6,vac(B|B+S1)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F6,vac(B|B+S2)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F6,vac(B|B+S3)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F6,vac(B|B+S4)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F6,vac(B|B+S5)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F6,vac(B|B+S6)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F6,vac(B|B+S7)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F6,vac(B|B+S8)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F7,D(R1<-A),ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F7,D(R1<-B),ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F7,D(R2<-A),ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F7,D(R2<-B),ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F7,D(R3<-A),ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F7,D(R3<-B),ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F_REFSENS,Delta_R[R1+R2+R3],ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F_REFSENS,Delta_R[R1+R2+R5],ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F_REFSENS,Delta_R[R1+R3+R4],ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F_REFSENS,Delta_R[R1+R3+R5],ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F_REFSENS,Delta_R[R1+R4+R5],ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F_REFSENS,Delta_R[R2+R3+R4],ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F_REFSENS,Delta_R[R2+R3+R5],ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F_REFSENS,Delta_R[R2+R4+R5],ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F_REFSENS,Delta_R[R3+R4+R5],ESTIMATED
+gemma-3n-e2b-it,1,outcome_first,F_RUNNER_UP,Delta_R[A2],NOT_ASKED
+gemma-3n-e2b-it,1,outcome_first,F_RUNNER_UP,Delta_R[B2],NOT_ASKED
+gemma-3n-e2b-it,1,outcome_first,F_SPECTRUM,slope,ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F1,D(A<-B),ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F1,D(B<-A),ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F1,Delta_R,ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F1,Lambda,ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F1,Xi,ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F1,delta_difficulty,ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F2,D(B<-R1),ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F2,D(B<-R2),ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F2,D(B<-R3),ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F2,Delta_1,ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F2,Delta_2,ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F2,Delta_3,ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F3,D(A<-R1),ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F3,D(A<-R2),ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F3,D(A<-R3),ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F3,Delta^A,ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F4,D(Rbar<-A),ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F4,D(Rbar<-B),ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F4,D(Rbar<-Rbar'),ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F5,D(A<-B)|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F5,D(B<-A)|graded_0.99,ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F5,D(B<-A)|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F5,Delta_R|graded_0.99,ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F5,Delta_R|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F5,Lambda|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F5,Xi|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F5,delta_difficulty|graded_0.99,ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F5,delta_difficulty|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F6,vac(B|A+B)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F6,vac(B|B+R1)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F6,vac(B|B+R2)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F6,vac(B|B+R3)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F6,vac(B|B+R4)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F6,vac(B|B+R5)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F6,vac(B|B+S1)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F6,vac(B|B+S2)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F6,vac(B|B+S3)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F6,vac(B|B+S4)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F6,vac(B|B+S5)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F6,vac(B|B+S6)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F6,vac(B|B+S7)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F6,vac(B|B+S8)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F7,D(R1<-A),ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F7,D(R1<-B),ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F7,D(R2<-A),ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F7,D(R2<-B),ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F7,D(R3<-A),ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F7,D(R3<-B),ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F_REFSENS,Delta_R[R1+R2+R3],ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F_REFSENS,Delta_R[R1+R2+R5],ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F_REFSENS,Delta_R[R1+R3+R4],ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F_REFSENS,Delta_R[R1+R3+R5],ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F_REFSENS,Delta_R[R1+R4+R5],ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F_REFSENS,Delta_R[R2+R3+R4],ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F_REFSENS,Delta_R[R2+R3+R5],ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F_REFSENS,Delta_R[R2+R4+R5],ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F_REFSENS,Delta_R[R3+R4+R5],ESTIMATED
+gemma-3n-e2b-it,1,outcome_second,F_RUNNER_UP,Delta_R[A2],NOT_ASKED
+gemma-3n-e2b-it,1,outcome_second,F_RUNNER_UP,Delta_R[B2],NOT_ASKED
+gemma-3n-e2b-it,1,outcome_second,F_SPECTRUM,slope,ESTIMATED
+gemma-3n-e2b-it,2,outcome_first,F1,D(A<-B),ESTIMATED
+gemma-3n-e2b-it,2,outcome_first,F1,D(B<-A),ESTIMATED
+gemma-3n-e2b-it,2,outcome_first,F1,Delta_R,NOT_ASKED
+gemma-3n-e2b-it,2,outcome_first,F1,Lambda,ESTIMATED
+gemma-3n-e2b-it,2,outcome_first,F1,Xi,NOT_ASKED
+gemma-3n-e2b-it,2,outcome_first,F1,delta_difficulty,ESTIMATED
+gemma-3n-e2b-it,2,outcome_first,F2,D(B<-R1),NOT_ASKED
+gemma-3n-e2b-it,2,outcome_first,F2,D(B<-R2),NOT_ASKED
+gemma-3n-e2b-it,2,outcome_first,F2,D(B<-R3),NOT_ASKED
+gemma-3n-e2b-it,2,outcome_first,F2,Delta_1,NOT_ASKED
+gemma-3n-e2b-it,2,outcome_first,F2,Delta_2,NOT_ASKED
+gemma-3n-e2b-it,2,outcome_first,F2,Delta_3,NOT_ASKED
+gemma-3n-e2b-it,2,outcome_first,F3,D(A<-R1),NOT_ASKED
+gemma-3n-e2b-it,2,outcome_first,F3,D(A<-R2),NOT_ASKED
+gemma-3n-e2b-it,2,outcome_first,F3,D(A<-R3),NOT_ASKED
+gemma-3n-e2b-it,2,outcome_first,F3,Delta^A,NOT_ASKED
+gemma-3n-e2b-it,2,outcome_first,F4,D(Rbar<-A),NOT_ASKED
+gemma-3n-e2b-it,2,outcome_first,F4,D(Rbar<-B),NOT_ASKED
+gemma-3n-e2b-it,2,outcome_first,F4,D(Rbar<-Rbar'),NOT_ASKED
+gemma-3n-e2b-it,2,outcome_first,F5,D(A<-B)|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,2,outcome_first,F5,D(B<-A)|graded_0.99,ESTIMATED
+gemma-3n-e2b-it,2,outcome_first,F5,D(B<-A)|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,2,outcome_first,F5,Delta_R|graded_0.99,NOT_ASKED
+gemma-3n-e2b-it,2,outcome_first,F5,Delta_R|vacuity_forced,NOT_ASKED
+gemma-3n-e2b-it,2,outcome_first,F5,Lambda|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,2,outcome_first,F5,Xi|vacuity_forced,NOT_ASKED
+gemma-3n-e2b-it,2,outcome_first,F5,delta_difficulty|graded_0.99,ESTIMATED
+gemma-3n-e2b-it,2,outcome_first,F5,delta_difficulty|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,2,outcome_first,F6,vac(B|A+B)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,2,outcome_first,F6,vac(B|B+S1)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,2,outcome_first,F6,vac(B|B+S2)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,2,outcome_first,F6,vac(B|B+S3)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,2,outcome_first,F6,vac(B|B+S4)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,2,outcome_first,F6,vac(B|B+S5)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,2,outcome_first,F6,vac(B|B+S6)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,2,outcome_first,F7,D(R1<-A),NOT_ASKED
+gemma-3n-e2b-it,2,outcome_first,F7,D(R1<-B),NOT_ASKED
+gemma-3n-e2b-it,2,outcome_first,F7,D(R2<-A),NOT_ASKED
+gemma-3n-e2b-it,2,outcome_first,F7,D(R2<-B),NOT_ASKED
+gemma-3n-e2b-it,2,outcome_first,F7,D(R3<-A),NOT_ASKED
+gemma-3n-e2b-it,2,outcome_first,F7,D(R3<-B),NOT_ASKED
+gemma-3n-e2b-it,2,outcome_first,F_RUNNER_UP,Delta_R[A2],NOT_ASKED
+gemma-3n-e2b-it,2,outcome_first,F_RUNNER_UP,Delta_R[B2],NOT_ASKED
+gemma-3n-e2b-it,2,outcome_first,F_SPECTRUM,slope,ESTIMATED
+gemma-3n-e2b-it,2,outcome_second,F1,D(A<-B),ESTIMATED
+gemma-3n-e2b-it,2,outcome_second,F1,D(B<-A),ESTIMATED
+gemma-3n-e2b-it,2,outcome_second,F1,Delta_R,NOT_ASKED
+gemma-3n-e2b-it,2,outcome_second,F1,Lambda,ESTIMATED
+gemma-3n-e2b-it,2,outcome_second,F1,Xi,NOT_ASKED
+gemma-3n-e2b-it,2,outcome_second,F1,delta_difficulty,ESTIMATED
+gemma-3n-e2b-it,2,outcome_second,F2,D(B<-R1),NOT_ASKED
+gemma-3n-e2b-it,2,outcome_second,F2,D(B<-R2),NOT_ASKED
+gemma-3n-e2b-it,2,outcome_second,F2,D(B<-R3),NOT_ASKED
+gemma-3n-e2b-it,2,outcome_second,F2,Delta_1,NOT_ASKED
+gemma-3n-e2b-it,2,outcome_second,F2,Delta_2,NOT_ASKED
+gemma-3n-e2b-it,2,outcome_second,F2,Delta_3,NOT_ASKED
+gemma-3n-e2b-it,2,outcome_second,F3,D(A<-R1),NOT_ASKED
+gemma-3n-e2b-it,2,outcome_second,F3,D(A<-R2),NOT_ASKED
+gemma-3n-e2b-it,2,outcome_second,F3,D(A<-R3),NOT_ASKED
+gemma-3n-e2b-it,2,outcome_second,F3,Delta^A,NOT_ASKED
+gemma-3n-e2b-it,2,outcome_second,F4,D(Rbar<-A),NOT_ASKED
+gemma-3n-e2b-it,2,outcome_second,F4,D(Rbar<-B),NOT_ASKED
+gemma-3n-e2b-it,2,outcome_second,F4,D(Rbar<-Rbar'),NOT_ASKED
+gemma-3n-e2b-it,2,outcome_second,F5,D(A<-B)|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,2,outcome_second,F5,D(B<-A)|graded_0.99,ESTIMATED
+gemma-3n-e2b-it,2,outcome_second,F5,D(B<-A)|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,2,outcome_second,F5,Delta_R|graded_0.99,NOT_ASKED
+gemma-3n-e2b-it,2,outcome_second,F5,Delta_R|vacuity_forced,NOT_ASKED
+gemma-3n-e2b-it,2,outcome_second,F5,Lambda|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,2,outcome_second,F5,Xi|vacuity_forced,NOT_ASKED
+gemma-3n-e2b-it,2,outcome_second,F5,delta_difficulty|graded_0.99,ESTIMATED
+gemma-3n-e2b-it,2,outcome_second,F5,delta_difficulty|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,2,outcome_second,F6,vac(B|A+B)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,2,outcome_second,F6,vac(B|B+S1)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,2,outcome_second,F6,vac(B|B+S2)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,2,outcome_second,F6,vac(B|B+S3)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,2,outcome_second,F6,vac(B|B+S4)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,2,outcome_second,F6,vac(B|B+S5)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,2,outcome_second,F6,vac(B|B+S6)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,2,outcome_second,F7,D(R1<-A),NOT_ASKED
+gemma-3n-e2b-it,2,outcome_second,F7,D(R1<-B),NOT_ASKED
+gemma-3n-e2b-it,2,outcome_second,F7,D(R2<-A),NOT_ASKED
+gemma-3n-e2b-it,2,outcome_second,F7,D(R2<-B),NOT_ASKED
+gemma-3n-e2b-it,2,outcome_second,F7,D(R3<-A),NOT_ASKED
+gemma-3n-e2b-it,2,outcome_second,F7,D(R3<-B),NOT_ASKED
+gemma-3n-e2b-it,2,outcome_second,F_RUNNER_UP,Delta_R[A2],NOT_ASKED
+gemma-3n-e2b-it,2,outcome_second,F_RUNNER_UP,Delta_R[B2],NOT_ASKED
+gemma-3n-e2b-it,2,outcome_second,F_SPECTRUM,slope,ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F1,D(A<-B),ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F1,D(B<-A),ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F1,Delta_R,ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F1,Lambda,ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F1,Xi,ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F1,delta_difficulty,ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F2,D(B<-R1),ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F2,D(B<-R2),ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F2,D(B<-R3),ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F2,Delta_1,ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F2,Delta_2,ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F2,Delta_3,ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F3,D(A<-R1),ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F3,D(A<-R2),ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F3,D(A<-R3),ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F3,Delta^A,ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F4,D(Rbar<-A),ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F4,D(Rbar<-B),ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F4,D(Rbar<-Rbar'),ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F5,D(A<-B)|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F5,D(B<-A)|graded_0.99,ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F5,D(B<-A)|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F5,Delta_R|graded_0.99,ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F5,Delta_R|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F5,Lambda|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F5,Xi|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F5,delta_difficulty|graded_0.99,ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F5,delta_difficulty|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F6,vac(B|A+B)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F6,vac(B|B+R1)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F6,vac(B|B+R2)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F6,vac(B|B+R3)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F6,vac(B|B+R4)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F6,vac(B|B+R5)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F6,vac(B|B+S1)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F6,vac(B|B+S2)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F6,vac(B|B+S3)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F6,vac(B|B+S4)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F6,vac(B|B+S5)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F6,vac(B|B+S6)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F6,vac(B|B+S7)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F6,vac(B|B+S8)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F7,D(R1<-A),ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F7,D(R1<-B),ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F7,D(R2<-A),ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F7,D(R2<-B),ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F7,D(R3<-A),ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F7,D(R3<-B),ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F_REFSENS,Delta_R[R1+R2+R3],ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F_REFSENS,Delta_R[R1+R2+R4],ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F_REFSENS,Delta_R[R1+R2+R5],ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F_REFSENS,Delta_R[R1+R3+R4],ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F_REFSENS,Delta_R[R1+R3+R5],ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F_REFSENS,Delta_R[R1+R4+R5],ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F_REFSENS,Delta_R[R2+R3+R4],ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F_REFSENS,Delta_R[R2+R3+R5],ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F_REFSENS,Delta_R[R2+R4+R5],ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F_REFSENS,Delta_R[R3+R4+R5],ESTIMATED
+gemma-3n-e2b-it,3,outcome_first,F_RUNNER_UP,Delta_R[A2],NOT_ASKED
+gemma-3n-e2b-it,3,outcome_first,F_RUNNER_UP,Delta_R[B2],NOT_ASKED
+gemma-3n-e2b-it,3,outcome_first,F_SPECTRUM,slope,ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F1,D(A<-B),ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F1,D(B<-A),ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F1,Delta_R,ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F1,Lambda,ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F1,Xi,ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F1,delta_difficulty,ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F2,D(B<-R1),ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F2,D(B<-R2),ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F2,D(B<-R3),ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F2,Delta_1,ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F2,Delta_2,ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F2,Delta_3,ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F3,D(A<-R1),ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F3,D(A<-R2),ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F3,D(A<-R3),ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F3,Delta^A,ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F4,D(Rbar<-A),ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F4,D(Rbar<-B),ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F4,D(Rbar<-Rbar'),ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F5,D(A<-B)|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F5,D(B<-A)|graded_0.99,ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F5,D(B<-A)|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F5,Delta_R|graded_0.99,ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F5,Delta_R|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F5,Lambda|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F5,Xi|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F5,delta_difficulty|graded_0.99,ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F5,delta_difficulty|vacuity_forced,ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F6,vac(B|A+B)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F6,vac(B|B+R1)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F6,vac(B|B+R2)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F6,vac(B|B+R3)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F6,vac(B|B+R4)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F6,vac(B|B+R5)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F6,vac(B|B+S1)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F6,vac(B|B+S2)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F6,vac(B|B+S3)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F6,vac(B|B+S4)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F6,vac(B|B+S5)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F6,vac(B|B+S6)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F6,vac(B|B+S7)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F6,vac(B|B+S8)-vac(B solo),ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F7,D(R1<-A),ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F7,D(R1<-B),ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F7,D(R2<-A),ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F7,D(R2<-B),ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F7,D(R3<-A),ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F7,D(R3<-B),ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F_REFSENS,Delta_R[R1+R2+R3],ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F_REFSENS,Delta_R[R1+R2+R4],ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F_REFSENS,Delta_R[R1+R2+R5],ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F_REFSENS,Delta_R[R1+R3+R4],ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F_REFSENS,Delta_R[R1+R3+R5],ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F_REFSENS,Delta_R[R1+R4+R5],ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F_REFSENS,Delta_R[R2+R3+R4],ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F_REFSENS,Delta_R[R2+R3+R5],ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F_REFSENS,Delta_R[R2+R4+R5],ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F_REFSENS,Delta_R[R3+R4+R5],ESTIMATED
+gemma-3n-e2b-it,3,outcome_second,F_RUNNER_UP,Delta_R[A2],NOT_ASKED
+gemma-3n-e2b-it,3,outcome_second,F_RUNNER_UP,Delta_R[B2],NOT_ASKED
+gemma-3n-e2b-it,3,outcome_second,F_SPECTRUM,slope,ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F1,D(A<-B),ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F1,D(B<-A),ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F1,Delta_R,ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F1,Lambda,ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F1,Xi,ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F1,delta_difficulty,ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F2,D(B<-R1),ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F2,D(B<-R2),ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F2,D(B<-R3),ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F2,Delta_1,ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F2,Delta_2,ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F2,Delta_3,ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F3,D(A<-R1),ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F3,D(A<-R2),ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F3,D(A<-R3),ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F3,Delta^A,ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F4,D(Rbar<-A),ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F4,D(Rbar<-B),ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F4,D(Rbar<-Rbar'),ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F5,D(A<-B)|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F5,D(B<-A)|graded_0.99,ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F5,D(B<-A)|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F5,Delta_R|graded_0.99,ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F5,Delta_R|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F5,Lambda|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F5,Xi|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F5,delta_difficulty|graded_0.99,ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F5,delta_difficulty|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F6,vac(B|A+B)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F6,vac(B|B+A2)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F6,vac(B|B+R1)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F6,vac(B|B+R2)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F6,vac(B|B+R3)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F6,vac(B|B+R4)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F6,vac(B|B+R5)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F6,vac(B|B+S1)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F6,vac(B|B+S2)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F6,vac(B|B+S3)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F6,vac(B|B+S4)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F6,vac(B|B+S5)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F6,vac(B|B+S6)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F6,vac(B|B+S7)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F6,vac(B|B+S8)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F7,D(R1<-A),ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F7,D(R1<-B),ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F7,D(R2<-A),ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F7,D(R2<-B),ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F7,D(R3<-A),ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F7,D(R3<-B),ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F_REFSENS,Delta_R[R1+R2+R3],ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F_REFSENS,Delta_R[R1+R2+R4],ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F_REFSENS,Delta_R[R1+R3+R4],ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F_REFSENS,Delta_R[R1+R3+R5],ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F_REFSENS,Delta_R[R1+R4+R5],ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F_REFSENS,Delta_R[R2+R3+R4],ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F_REFSENS,Delta_R[R2+R3+R5],ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F_REFSENS,Delta_R[R2+R4+R5],ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F_REFSENS,Delta_R[R3+R4+R5],ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F_RUNNER_UP,Delta_R[A2],ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F_RUNNER_UP,Delta_R[B2],ESTIMATED
+gemma-3n-e4b-it,0,outcome_first,F_SPECTRUM,slope,ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F1,D(A<-B),ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F1,D(B<-A),ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F1,Delta_R,ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F1,Lambda,ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F1,Xi,ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F1,delta_difficulty,ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F2,D(B<-R1),ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F2,D(B<-R2),ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F2,D(B<-R3),ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F2,Delta_1,ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F2,Delta_2,ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F2,Delta_3,ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F3,D(A<-R1),ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F3,D(A<-R2),ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F3,D(A<-R3),ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F3,Delta^A,ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F4,D(Rbar<-A),ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F4,D(Rbar<-B),ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F4,D(Rbar<-Rbar'),ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F5,D(A<-B)|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F5,D(B<-A)|graded_0.99,ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F5,D(B<-A)|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F5,Delta_R|graded_0.99,ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F5,Delta_R|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F5,Lambda|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F5,Xi|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F5,delta_difficulty|graded_0.99,ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F5,delta_difficulty|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F6,vac(B|A+B)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F6,vac(B|B+A2)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F6,vac(B|B+R1)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F6,vac(B|B+R2)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F6,vac(B|B+R3)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F6,vac(B|B+R4)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F6,vac(B|B+R5)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F6,vac(B|B+S1)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F6,vac(B|B+S2)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F6,vac(B|B+S3)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F6,vac(B|B+S4)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F6,vac(B|B+S5)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F6,vac(B|B+S6)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F6,vac(B|B+S7)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F6,vac(B|B+S8)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F7,D(R1<-A),ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F7,D(R1<-B),ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F7,D(R2<-A),ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F7,D(R2<-B),ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F7,D(R3<-A),ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F7,D(R3<-B),ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F_REFSENS,Delta_R[R1+R2+R3],ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F_REFSENS,Delta_R[R1+R2+R4],ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F_REFSENS,Delta_R[R1+R3+R4],ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F_REFSENS,Delta_R[R1+R3+R5],ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F_REFSENS,Delta_R[R1+R4+R5],ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F_REFSENS,Delta_R[R2+R3+R4],ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F_REFSENS,Delta_R[R2+R3+R5],ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F_REFSENS,Delta_R[R2+R4+R5],ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F_REFSENS,Delta_R[R3+R4+R5],ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F_RUNNER_UP,Delta_R[A2],ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F_RUNNER_UP,Delta_R[B2],ESTIMATED
+gemma-3n-e4b-it,0,outcome_second,F_SPECTRUM,slope,ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F1,D(A<-B),ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F1,D(B<-A),ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F1,Delta_R,ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F1,Lambda,ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F1,Xi,ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F1,delta_difficulty,ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F2,D(B<-R1),ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F2,D(B<-R2),ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F2,D(B<-R3),ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F2,Delta_1,ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F2,Delta_2,ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F2,Delta_3,ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F3,D(A<-R1),ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F3,D(A<-R2),ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F3,D(A<-R3),ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F3,Delta^A,ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F4,D(Rbar<-A),ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F4,D(Rbar<-B),ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F4,D(Rbar<-Rbar'),ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F5,D(A<-B)|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F5,D(B<-A)|graded_0.99,ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F5,D(B<-A)|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F5,Delta_R|graded_0.99,ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F5,Delta_R|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F5,Lambda|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F5,Xi|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F5,delta_difficulty|graded_0.99,ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F5,delta_difficulty|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F6,vac(B|A+B)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F6,vac(B|B+A2)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F6,vac(B|B+R1)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F6,vac(B|B+R2)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F6,vac(B|B+R3)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F6,vac(B|B+R4)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F6,vac(B|B+R5)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F6,vac(B|B+S1)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F6,vac(B|B+S2)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F6,vac(B|B+S3)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F6,vac(B|B+S4)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F6,vac(B|B+S5)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F6,vac(B|B+S6)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F6,vac(B|B+S7)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F6,vac(B|B+S8)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F7,D(R1<-A),ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F7,D(R1<-B),ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F7,D(R2<-A),ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F7,D(R2<-B),ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F7,D(R3<-A),ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F7,D(R3<-B),ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F_REFSENS,Delta_R[R1+R2+R3],ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F_REFSENS,Delta_R[R1+R2+R4],ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F_REFSENS,Delta_R[R1+R3+R4],ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F_REFSENS,Delta_R[R1+R3+R5],ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F_REFSENS,Delta_R[R1+R4+R5],ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F_REFSENS,Delta_R[R2+R3+R4],ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F_REFSENS,Delta_R[R2+R3+R5],ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F_REFSENS,Delta_R[R2+R4+R5],ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F_REFSENS,Delta_R[R3+R4+R5],ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F_RUNNER_UP,Delta_R[A2],ESTIMATED
+gemma-3n-e4b-it,1,outcome_first,F_RUNNER_UP,Delta_R[B2],NOT_ASKED
+gemma-3n-e4b-it,1,outcome_first,F_SPECTRUM,slope,ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F1,D(A<-B),ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F1,D(B<-A),ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F1,Delta_R,ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F1,Lambda,ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F1,Xi,ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F1,delta_difficulty,ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F2,D(B<-R1),ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F2,D(B<-R2),ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F2,D(B<-R3),ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F2,Delta_1,ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F2,Delta_2,ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F2,Delta_3,ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F3,D(A<-R1),ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F3,D(A<-R2),ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F3,D(A<-R3),ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F3,Delta^A,ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F4,D(Rbar<-A),ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F4,D(Rbar<-B),ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F4,D(Rbar<-Rbar'),ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F5,D(A<-B)|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F5,D(B<-A)|graded_0.99,ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F5,D(B<-A)|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F5,Delta_R|graded_0.99,ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F5,Delta_R|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F5,Lambda|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F5,Xi|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F5,delta_difficulty|graded_0.99,ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F5,delta_difficulty|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F6,vac(B|A+B)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F6,vac(B|B+A2)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F6,vac(B|B+R1)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F6,vac(B|B+R2)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F6,vac(B|B+R3)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F6,vac(B|B+R4)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F6,vac(B|B+R5)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F6,vac(B|B+S1)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F6,vac(B|B+S2)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F6,vac(B|B+S3)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F6,vac(B|B+S4)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F6,vac(B|B+S5)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F6,vac(B|B+S6)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F6,vac(B|B+S7)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F6,vac(B|B+S8)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F7,D(R1<-A),ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F7,D(R1<-B),ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F7,D(R2<-A),ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F7,D(R2<-B),ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F7,D(R3<-A),ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F7,D(R3<-B),ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F_REFSENS,Delta_R[R1+R2+R3],ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F_REFSENS,Delta_R[R1+R2+R4],ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F_REFSENS,Delta_R[R1+R3+R4],ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F_REFSENS,Delta_R[R1+R3+R5],ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F_REFSENS,Delta_R[R1+R4+R5],ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F_REFSENS,Delta_R[R2+R3+R4],ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F_REFSENS,Delta_R[R2+R3+R5],ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F_REFSENS,Delta_R[R2+R4+R5],ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F_REFSENS,Delta_R[R3+R4+R5],ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F_RUNNER_UP,Delta_R[A2],ESTIMATED
+gemma-3n-e4b-it,1,outcome_second,F_RUNNER_UP,Delta_R[B2],NOT_ASKED
+gemma-3n-e4b-it,1,outcome_second,F_SPECTRUM,slope,ESTIMATED
+gemma-3n-e4b-it,2,outcome_first,F1,D(A<-B),ESTIMATED
+gemma-3n-e4b-it,2,outcome_first,F1,D(B<-A),ESTIMATED
+gemma-3n-e4b-it,2,outcome_first,F1,Delta_R,NOT_ASKED
+gemma-3n-e4b-it,2,outcome_first,F1,Lambda,ESTIMATED
+gemma-3n-e4b-it,2,outcome_first,F1,Xi,NOT_ASKED
+gemma-3n-e4b-it,2,outcome_first,F1,delta_difficulty,ESTIMATED
+gemma-3n-e4b-it,2,outcome_first,F2,D(B<-R1),NOT_ASKED
+gemma-3n-e4b-it,2,outcome_first,F2,D(B<-R2),NOT_ASKED
+gemma-3n-e4b-it,2,outcome_first,F2,D(B<-R3),NOT_ASKED
+gemma-3n-e4b-it,2,outcome_first,F2,Delta_1,NOT_ASKED
+gemma-3n-e4b-it,2,outcome_first,F2,Delta_2,NOT_ASKED
+gemma-3n-e4b-it,2,outcome_first,F2,Delta_3,NOT_ASKED
+gemma-3n-e4b-it,2,outcome_first,F3,D(A<-R1),NOT_ASKED
+gemma-3n-e4b-it,2,outcome_first,F3,D(A<-R2),NOT_ASKED
+gemma-3n-e4b-it,2,outcome_first,F3,D(A<-R3),NOT_ASKED
+gemma-3n-e4b-it,2,outcome_first,F3,Delta^A,NOT_ASKED
+gemma-3n-e4b-it,2,outcome_first,F4,D(Rbar<-A),NOT_ASKED
+gemma-3n-e4b-it,2,outcome_first,F4,D(Rbar<-B),NOT_ASKED
+gemma-3n-e4b-it,2,outcome_first,F4,D(Rbar<-Rbar'),NOT_ASKED
+gemma-3n-e4b-it,2,outcome_first,F5,D(A<-B)|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,2,outcome_first,F5,D(B<-A)|graded_0.99,ESTIMATED
+gemma-3n-e4b-it,2,outcome_first,F5,D(B<-A)|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,2,outcome_first,F5,Delta_R|graded_0.99,NOT_ASKED
+gemma-3n-e4b-it,2,outcome_first,F5,Delta_R|vacuity_forced,NOT_ASKED
+gemma-3n-e4b-it,2,outcome_first,F5,Lambda|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,2,outcome_first,F5,Xi|vacuity_forced,NOT_ASKED
+gemma-3n-e4b-it,2,outcome_first,F5,delta_difficulty|graded_0.99,ESTIMATED
+gemma-3n-e4b-it,2,outcome_first,F5,delta_difficulty|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,2,outcome_first,F6,vac(B|A+B)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,2,outcome_first,F6,vac(B|B+S1)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,2,outcome_first,F6,vac(B|B+S10)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,2,outcome_first,F6,vac(B|B+S2)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,2,outcome_first,F6,vac(B|B+S3)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,2,outcome_first,F6,vac(B|B+S4)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,2,outcome_first,F6,vac(B|B+S5)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,2,outcome_first,F6,vac(B|B+S6)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,2,outcome_first,F6,vac(B|B+S7)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,2,outcome_first,F6,vac(B|B+S8)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,2,outcome_first,F6,vac(B|B+S9)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,2,outcome_first,F7,D(R1<-A),NOT_ASKED
+gemma-3n-e4b-it,2,outcome_first,F7,D(R1<-B),NOT_ASKED
+gemma-3n-e4b-it,2,outcome_first,F7,D(R2<-A),NOT_ASKED
+gemma-3n-e4b-it,2,outcome_first,F7,D(R2<-B),NOT_ASKED
+gemma-3n-e4b-it,2,outcome_first,F7,D(R3<-A),NOT_ASKED
+gemma-3n-e4b-it,2,outcome_first,F7,D(R3<-B),NOT_ASKED
+gemma-3n-e4b-it,2,outcome_first,F_RUNNER_UP,Delta_R[A2],NOT_ASKED
+gemma-3n-e4b-it,2,outcome_first,F_RUNNER_UP,Delta_R[B2],NOT_ASKED
+gemma-3n-e4b-it,2,outcome_first,F_SPECTRUM,slope,ESTIMATED
+gemma-3n-e4b-it,2,outcome_second,F1,D(A<-B),ESTIMATED
+gemma-3n-e4b-it,2,outcome_second,F1,D(B<-A),ESTIMATED
+gemma-3n-e4b-it,2,outcome_second,F1,Delta_R,NOT_ASKED
+gemma-3n-e4b-it,2,outcome_second,F1,Lambda,ESTIMATED
+gemma-3n-e4b-it,2,outcome_second,F1,Xi,NOT_ASKED
+gemma-3n-e4b-it,2,outcome_second,F1,delta_difficulty,ESTIMATED
+gemma-3n-e4b-it,2,outcome_second,F2,D(B<-R1),NOT_ASKED
+gemma-3n-e4b-it,2,outcome_second,F2,D(B<-R2),NOT_ASKED
+gemma-3n-e4b-it,2,outcome_second,F2,D(B<-R3),NOT_ASKED
+gemma-3n-e4b-it,2,outcome_second,F2,Delta_1,NOT_ASKED
+gemma-3n-e4b-it,2,outcome_second,F2,Delta_2,NOT_ASKED
+gemma-3n-e4b-it,2,outcome_second,F2,Delta_3,NOT_ASKED
+gemma-3n-e4b-it,2,outcome_second,F3,D(A<-R1),NOT_ASKED
+gemma-3n-e4b-it,2,outcome_second,F3,D(A<-R2),NOT_ASKED
+gemma-3n-e4b-it,2,outcome_second,F3,D(A<-R3),NOT_ASKED
+gemma-3n-e4b-it,2,outcome_second,F3,Delta^A,NOT_ASKED
+gemma-3n-e4b-it,2,outcome_second,F4,D(Rbar<-A),NOT_ASKED
+gemma-3n-e4b-it,2,outcome_second,F4,D(Rbar<-B),NOT_ASKED
+gemma-3n-e4b-it,2,outcome_second,F4,D(Rbar<-Rbar'),NOT_ASKED
+gemma-3n-e4b-it,2,outcome_second,F5,D(A<-B)|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,2,outcome_second,F5,D(B<-A)|graded_0.99,ESTIMATED
+gemma-3n-e4b-it,2,outcome_second,F5,D(B<-A)|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,2,outcome_second,F5,Delta_R|graded_0.99,NOT_ASKED
+gemma-3n-e4b-it,2,outcome_second,F5,Delta_R|vacuity_forced,NOT_ASKED
+gemma-3n-e4b-it,2,outcome_second,F5,Lambda|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,2,outcome_second,F5,Xi|vacuity_forced,NOT_ASKED
+gemma-3n-e4b-it,2,outcome_second,F5,delta_difficulty|graded_0.99,ESTIMATED
+gemma-3n-e4b-it,2,outcome_second,F5,delta_difficulty|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,2,outcome_second,F6,vac(B|A+B)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,2,outcome_second,F6,vac(B|B+S1)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,2,outcome_second,F6,vac(B|B+S10)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,2,outcome_second,F6,vac(B|B+S2)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,2,outcome_second,F6,vac(B|B+S3)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,2,outcome_second,F6,vac(B|B+S4)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,2,outcome_second,F6,vac(B|B+S5)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,2,outcome_second,F6,vac(B|B+S6)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,2,outcome_second,F6,vac(B|B+S7)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,2,outcome_second,F6,vac(B|B+S8)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,2,outcome_second,F6,vac(B|B+S9)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,2,outcome_second,F7,D(R1<-A),NOT_ASKED
+gemma-3n-e4b-it,2,outcome_second,F7,D(R1<-B),NOT_ASKED
+gemma-3n-e4b-it,2,outcome_second,F7,D(R2<-A),NOT_ASKED
+gemma-3n-e4b-it,2,outcome_second,F7,D(R2<-B),NOT_ASKED
+gemma-3n-e4b-it,2,outcome_second,F7,D(R3<-A),NOT_ASKED
+gemma-3n-e4b-it,2,outcome_second,F7,D(R3<-B),NOT_ASKED
+gemma-3n-e4b-it,2,outcome_second,F_RUNNER_UP,Delta_R[A2],NOT_ASKED
+gemma-3n-e4b-it,2,outcome_second,F_RUNNER_UP,Delta_R[B2],NOT_ASKED
+gemma-3n-e4b-it,2,outcome_second,F_SPECTRUM,slope,ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F1,D(A<-B),ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F1,D(B<-A),ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F1,Delta_R,ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F1,Lambda,ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F1,Xi,ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F1,delta_difficulty,ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F2,D(B<-R1),ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F2,D(B<-R2),ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F2,D(B<-R3),ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F2,Delta_1,ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F2,Delta_2,ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F2,Delta_3,ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F3,D(A<-R1),ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F3,D(A<-R2),ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F3,D(A<-R3),ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F3,Delta^A,ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F4,D(Rbar<-A),ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F4,D(Rbar<-B),ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F4,D(Rbar<-Rbar'),ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F5,D(A<-B)|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F5,D(B<-A)|graded_0.99,ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F5,D(B<-A)|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F5,Delta_R|graded_0.99,ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F5,Delta_R|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F5,Lambda|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F5,Xi|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F5,delta_difficulty|graded_0.99,ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F5,delta_difficulty|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F6,vac(B|A+B)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F6,vac(B|B+R1)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F6,vac(B|B+R2)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F6,vac(B|B+R3)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F6,vac(B|B+R4)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F6,vac(B|B+R5)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F6,vac(B|B+S1)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F6,vac(B|B+S2)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F6,vac(B|B+S3)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F6,vac(B|B+S4)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F6,vac(B|B+S5)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F6,vac(B|B+S6)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F6,vac(B|B+S7)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F6,vac(B|B+S8)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F7,D(R1<-A),ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F7,D(R1<-B),ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F7,D(R2<-A),ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F7,D(R2<-B),ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F7,D(R3<-A),ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F7,D(R3<-B),ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F_REFSENS,Delta_R[R1+R2+R3],ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F_REFSENS,Delta_R[R1+R2+R4],ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F_REFSENS,Delta_R[R1+R3+R4],ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F_REFSENS,Delta_R[R1+R3+R5],ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F_REFSENS,Delta_R[R1+R4+R5],ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F_REFSENS,Delta_R[R2+R3+R4],ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F_REFSENS,Delta_R[R2+R3+R5],ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F_REFSENS,Delta_R[R2+R4+R5],ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F_REFSENS,Delta_R[R3+R4+R5],ESTIMATED
+gemma-3n-e4b-it,3,outcome_first,F_RUNNER_UP,Delta_R[A2],NOT_ASKED
+gemma-3n-e4b-it,3,outcome_first,F_RUNNER_UP,Delta_R[B2],NOT_ASKED
+gemma-3n-e4b-it,3,outcome_first,F_SPECTRUM,slope,ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F1,D(A<-B),ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F1,D(B<-A),ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F1,Delta_R,ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F1,Lambda,ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F1,Xi,ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F1,delta_difficulty,ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F2,D(B<-R1),ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F2,D(B<-R2),ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F2,D(B<-R3),ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F2,Delta_1,ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F2,Delta_2,ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F2,Delta_3,ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F3,D(A<-R1),ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F3,D(A<-R2),ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F3,D(A<-R3),ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F3,Delta^A,ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F4,D(Rbar<-A),ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F4,D(Rbar<-B),ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F4,D(Rbar<-Rbar'),ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F5,D(A<-B)|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F5,D(B<-A)|graded_0.99,ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F5,D(B<-A)|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F5,Delta_R|graded_0.99,ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F5,Delta_R|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F5,Lambda|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F5,Xi|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F5,delta_difficulty|graded_0.99,ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F5,delta_difficulty|vacuity_forced,ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F6,vac(B|A+B)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F6,vac(B|B+R1)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F6,vac(B|B+R2)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F6,vac(B|B+R3)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F6,vac(B|B+R4)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F6,vac(B|B+R5)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F6,vac(B|B+S1)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F6,vac(B|B+S2)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F6,vac(B|B+S3)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F6,vac(B|B+S4)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F6,vac(B|B+S5)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F6,vac(B|B+S6)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F6,vac(B|B+S7)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F6,vac(B|B+S8)-vac(B solo),ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F7,D(R1<-A),ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F7,D(R1<-B),ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F7,D(R2<-A),ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F7,D(R2<-B),ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F7,D(R3<-A),ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F7,D(R3<-B),ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F_REFSENS,Delta_R[R1+R2+R3],ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F_REFSENS,Delta_R[R1+R2+R4],ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F_REFSENS,Delta_R[R1+R3+R4],ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F_REFSENS,Delta_R[R1+R3+R5],ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F_REFSENS,Delta_R[R1+R4+R5],ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F_REFSENS,Delta_R[R2+R3+R4],ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F_REFSENS,Delta_R[R2+R3+R5],ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F_REFSENS,Delta_R[R2+R4+R5],ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F_REFSENS,Delta_R[R3+R4+R5],ESTIMATED
+gemma-3n-e4b-it,3,outcome_second,F_RUNNER_UP,Delta_R[A2],NOT_ASKED
+gemma-3n-e4b-it,3,outcome_second,F_RUNNER_UP,Delta_R[B2],NOT_ASKED
+gemma-3n-e4b-it,3,outcome_second,F_SPECTRUM,slope,ESTIMATED

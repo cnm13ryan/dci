@@ -1,0 +1,495 @@
+{
+ "admission_disposition": "conditions 1 and 3-6 as registered on the 96 calibration topics; condition 2 with its registered one-draw \u00a712.2 input, applied where that input exists; every other condition exactly as registered on the 96 calibration topics. The strict registered-precision disposition admits 5 families.",
+ "admitted_families": [
+  "CR7",
+  "RF1",
+  "RF7",
+  "CL8",
+  "RF3",
+  "CR4",
+  "RF2"
+ ],
+ "cell_set": {
+  "allocation_assertion": {
+   "blocks": 120,
+   "cell_types": 23,
+   "orders_balanced": true,
+   "wording_counts": {
+    "A:0": 330,
+    "A:1": 330,
+    "A:2": 330,
+    "A:3": 330,
+    "B:0": 390,
+    "B:1": 390,
+    "B:2": 390,
+    "B:3": 390,
+    "C1:0": 150,
+    "C1:1": 150,
+    "C1:2": 150,
+    "C1:3": 150,
+    "R1:0": 270,
+    "R1:1": 270,
+    "R1:2": 270,
+    "R1:3": 270,
+    "R2:0": 270,
+    "R2:1": 270,
+    "R2:2": 270,
+    "R2:3": 270,
+    "R3:0": 270,
+    "R3:1": 270,
+    "R3:2": 270,
+    "R3:3": 270,
+    "S1:0": 60,
+    "S1:1": 60,
+    "S1:2": 60,
+    "S1:3": 60,
+    "S2:0": 60,
+    "S2:1": 60,
+    "S2:2": 60,
+    "S2:3": 60
+   }
+  },
+  "draws_per_cell": 4,
+  "prompt_template": "\u00a78.5, with the screen stem inserted after the topic question",
+  "source": "\u00a78.1 verbatim: 5 solo cells and 10 unordered pairs in both orders",
+  "stem": "floored",
+  "summary": {
+   "blocks": 120,
+   "by_arm": {
+    "class_composed": 480,
+    "class_solo": 120,
+    "composed": 2400,
+    "solo": 600,
+    "spanning_composed": 240,
+    "spanning_solo": 240,
+    "unconstrained": 120
+   },
+   "cells": 4200,
+   "cells_per_block": 35,
+   "distinct_prompts": 4200,
+   "draws_per_cell": 4,
+   "generations": 16800
+  },
+  "wording_allocation": "\u00a78.4 verbatim"
+ },
+ "class_control_arm": {
+  "cells": "one solo cell and four composed cells per block: B+CL and A+CL, each in both orders",
+  "companion": {
+   "kind": "CL8",
+   "role": "C1",
+   "severity": 10
+  },
+  "purpose": "A is the only PRODUCTION constraint in the registered pool; B and every reference are budgets. Delta_R against budgets alone cannot separate 'A damages B' from 'a production companion damages a budget outcome'. This arm adds the best-admitted lower-bound family, composed with BOTH outcome constraints in both orders, so Delta_class = D(B<-A) - D(B<-CL) is estimable with the companion's class held fixed."
+ },
+ "classification": "NON-CONFIRMATORY DESIGN SCREEN",
+ "constraint_set": [
+  {
+   "kind": "A",
+   "role": "A",
+   "severity": 5
+  },
+  {
+   "kind": "B",
+   "role": "B",
+   "severity": 10
+  },
+  {
+   "kind": "CR7",
+   "role": "R1",
+   "severity": 44
+  },
+  {
+   "kind": "RF1",
+   "role": "R2",
+   "severity": 5
+  },
+  {
+   "kind": "RF7",
+   "role": "R3",
+   "severity": 24
+  }
+ ],
+ "design": "\u00a78.1 full matrix",
+ "inputs_from_the_calibration_screen": {
+  "admission_status": "three references admitted",
+  "path": "reports/cal_screen_v4/results.json",
+  "screen_protocol_hash": "fd49e5d4df428c3eadbc40b2c0740e59baed44b1e75ce3e8a69b4ea4aa302af9",
+  "sha256": "322a17058dd7a07b102e7dfb38178b14dd10eefa2185344e7549c4d8e980123d"
+ },
+ "m_star_source": "registered focal grid",
+ "model": "qwen3-4b-instruct-2507",
+ "n_references_admitted": 3,
+ "no_revision_declaration": "The reference set, n*, m* and the spanning rungs below are inputs to this screen and outputs of the calibration screen. No reference family, no reference severity, no n*, no m*, and no amendment may be revised, reordered or reconsidered on any evidence this screen produces. \u00a713.3: selecting a control on the outcome it is meant to counterfactual is circular, and a pre-freeze screen is where that would happen unnoticed. If this screen's numbers were to change a reference decision, the reference decision would have to be remade from the calibration evidence alone, on a fresh topic sample, and this screen discarded.",
+ "producing_commit": "6954dd65530e34d8e6e866f2a512fbd9a99e51cb",
+ "reference_pool_selected_from": "the eight registered families plus the three candidate rate families, with \u00a713.2's own selection rule unchanged. Neither Amendment B nor any other amendment is adopted by this screen; the enlarged pool is what \u00a713.2 would rank if it were, and restricting to candidates alone would be a selection rule the protocol does not contain.",
+ "reference_slot_rule": "three budget families, lower-bound families reserved for the class arm",
+ "reference_slots_exclude_lower_bound_families": "the three R slots are drawn from the BUDGET families in \u00a713.2's own order and the lower-bound families are reserved for the class arm. A lower-bound reference would make Delta_R a mixed-class contrast and would blur the distinction the class arm draws; on some models it would also put one family in both slots.",
+ "registered_values_untouched": {
+  "delta_R_generic_load_threshold": 0.1,
+  "delta_R_pair_specific_threshold": 0.25,
+  "equivalence_region": 0.1,
+  "m_draws": 4,
+  "n_blocks_registered": 384,
+  "note": "listed so a later diff proves the screen changed none of them; both Delta_R thresholds predate every observation in this constraint vocabulary (\u00a711.6)"
+ },
+ "screen_protocol_hash": "931cae4a593576fefed14a36d95da587c6c2652dd338e52b2ef92e274d045777",
+ "seeds": {
+  "distinct_from": {
+   "bgrid_screen_root": 202608210,
+   "cal_screen_root": 202608220,
+   "fs_screen_root": 202608200,
+   "v3_roots": "202608170-202608175",
+   "v4_roots": "202608190-202608195"
+  },
+  "domain": "matrix:gen:v1",
+  "screen_root": 202608230,
+  "stage_label": "matrix-screen"
+ },
+ "spanning_arm": {
+  "family": "CR6",
+  "orders": "one, B stated first, so each spanning loss is position-matched to B's solo cell (\u00a711.4)",
+  "purpose": "registered open decision V5: matched-only references cannot estimate the relationship between companion solo difficulty and delivery loss, because they hold difficulty fixed by construction. This arm varies it.",
+  "rule": "per admitted family, the ladder rungs whose calibration solo compliance is nearest the matched rung's plus [-0.25, 0.2], among rungs meeting the same \u00a713.2 vacuity condition; ties toward the less restrictive severity",
+  "rungs": [
+   {
+    "kind": "CR6",
+    "role": "S1",
+    "severity": 6
+   },
+   {
+    "kind": "CR6",
+    "role": "S2",
+    "severity": 8
+   }
+  ],
+  "selection": "one rate family, chosen for the widest measured calibration span that brackets A's compliance; a spanning companion is deliberately unmatched, so \u00a713.2's caliper does not apply to it"
+ },
+ "status": "NON-CONFIRMATORY DESIGN SCREEN. Not a registered v4 stage. It runs the registered \u00a78.1 cell set at screen scale on screen topics, so it cannot meet the \u00a717.3 precision preconditions and licenses no L1, L2 or L3 statement.",
+ "study_id": "dci1-matrix-screen-v4",
+ "topic_set_authority": "\u00a76.2 lists the permitted use of the 96 solo-calibration topics as solo curves and severity selection, so generating COMPOSED cells there is outside its literal wording even for a non-registered screen. Two checks and one decision stand behind doing it anyway: (1) the registered gate code was read and no gate reads a composed cell from this set; (2) a second Claude session working the Gate 1 track independently traced the same code and reached the same reading; (3) that session reports its user ratified it, conditional on the reference set being hashed into this frozen protocol before generation with the no-revision bar attached, which it is. The ratification reached this session RELAYED BY A PEER SESSION and not directly, so it is recorded as such and the researcher should confirm it. The screen is designed so the confirmation is not load-bearing: every quantity is reported on the 24 pre-screen blocks alone as well as on all 120, the pre-screen half needs no ratification, and evidence/matrix-screen-v4 can be deleted without touching anything else.",
+ "topics": {
+  "blocks": 120,
+  "blocks_by_set": {
+   "prescreen": 24,
+   "solo": 96
+  },
+  "excluded": {
+   "composed": "Gate 4's own evidence set (\u00a713.6)",
+   "confirmatory": "reserved for the frozen experiment",
+   "sequestered": "inaccessible by construction (\u00a76.2)"
+  },
+  "sets": [
+   "prescreen",
+   "solo"
+  ],
+  "why_permitted": {
+   "prescreen": "the declared development sample; \u00a713.2 condition 2 already prices its reuse in at a widened caliper",
+   "solo": "no registered gate reads a composed cell from this set: gates.gate2_payload takes only solo quantities, and gates.admit_family's own docstring says its calibration argument is 'per-topic solo-compliance cell means'. Gate 4, the one stage that does read composed cells, runs on the composed-validation set"
+  }
+ },
+ "verifier_source_hash": "f5d4f7e74e757769ec43d7007b0121687fa4b5b388184e5ef32b171ea7580ee4",
+ "what_this_can_and_cannot_support": {
+  "can": [
+   "whether the registered design identifies Delta_R, Xi and the reciprocal losses at all",
+   "the sign and rough size of Delta_R for THIS reference set",
+   "the companion-difficulty relationship of decision V5",
+   "the A-versus-reference block correlation the \u00a716.1 variance model needs"
+  ],
+  "cannot": [
+   "any L1, L2 or L3 claim: the \u00a717.3 precision preconditions need the 384 confirmatory blocks",
+   "outcome specificity: Xi's half-width at screen scale is far wider than the interval that would separate the hypotheses",
+   "anything about a reference set other than this one: if Gate 3 later admits different families or severities, every per-reference number here is about constraints that are not in the study"
+  ]
+ },
+ "witnesses": {
+  "all_witnessed": true,
+  "note": "joint satisfiability carries upward in m by B's proved monotonicity; non-entailment does not, and is witnessed here at the severity actually used",
+  "pairs": {
+   "A(A:5)|B(B:10)": {
+    "constructive_failure": null,
+    "constructive_method": "registered verify_pair",
+    "pool_witnesses": {
+     "a_not_b": {
+      "excerpt": "A bar of soap wears away in the shower through continuous friction and exposure ",
+      "words": 79
+     },
+     "b_not_a": {
+      "excerpt": "A bar of soap wears away in the shower through friction and water exposure. As i",
+      "words": 74
+     },
+     "joint": {
+      "excerpt": "A shaken bottle of fizzy drink sprays when opened because shaking forces carbon ",
+      "words": 83
+     }
+    },
+    "proved": true,
+    "proved_by": "constructor"
+   },
+   "A(A:5)|C1(CL8:10)": {
+    "constructive_failure": null,
+    "constructive_method": "candidate verify_pair",
+    "pool_gap": [
+     "joint"
+    ],
+    "pool_witnesses": {
+     "a_not_b": {
+      "excerpt": "A bar of soap wears away in the shower through continuous friction and exposure ",
+      "words": 79
+     },
+     "b_not_a": {
+      "excerpt": "Puddles disappear even when the day stays cool because of evaporation. Although ",
+      "words": 81
+     },
+     "joint": null
+    },
+    "proved": true,
+    "proved_by": "constructor"
+   },
+   "A(A:5)|R1(CR7:44)": {
+    "constructive_failure": null,
+    "constructive_method": "candidate verify_pair",
+    "pool_witnesses": {
+     "a_not_b": {
+      "excerpt": "A bar of soap wears away in the shower through constant friction and water expos",
+      "words": 81
+     },
+     "b_not_a": {
+      "excerpt": "A bar of soap wears away in the shower through a combination of friction, water ",
+      "words": 88
+     },
+     "joint": {
+      "excerpt": "A bar of soap wears away in the shower through continuous friction and exposure ",
+      "words": 79
+     }
+    },
+    "proved": true,
+    "proved_by": "constructor"
+   },
+   "A(A:5)|R2(RF1:5)": {
+    "constructive_failure": null,
+    "constructive_method": "registered verify_pair",
+    "pool_witnesses": {
+     "a_not_b": {
+      "excerpt": "A bar of soap wears away in the shower through friction and water exposure. As i",
+      "words": 75
+     },
+     "b_not_a": {
+      "excerpt": "A bar of soap wears away in the shower through a combination of friction, water ",
+      "words": 88
+     },
+     "joint": {
+      "excerpt": "A bar of soap wears away in the shower through continuous friction and exposure ",
+      "words": 79
+     }
+    },
+    "proved": true,
+    "proved_by": "constructor"
+   },
+   "A(A:5)|R3(RF7:24)": {
+    "constructive_failure": null,
+    "constructive_method": "registered verify_pair",
+    "pool_witnesses": {
+     "a_not_b": {
+      "excerpt": "A bar of soap wears away in the shower through continuous friction and exposure ",
+      "words": 79
+     },
+     "b_not_a": {
+      "excerpt": "A bar of soap wears away in the shower through friction and water exposure. As i",
+      "words": 69
+     },
+     "joint": {
+      "excerpt": "Mirrors don\u2019t actually reverse left and right; they reflect light in a way that ",
+      "words": 80
+     }
+    },
+    "proved": true,
+    "proved_by": "constructor"
+   },
+   "B(B:10)|C1(CL8:10)": {
+    "constructive_failure": null,
+    "constructive_method": "candidate verify_pair",
+    "pool_witnesses": {
+     "a_not_b": {
+      "excerpt": "A bar of soap wears away in the shower through friction and water exposure. As i",
+      "words": 74
+     },
+     "b_not_a": {
+      "excerpt": "Puddles disappear even when the day stays cool because of evaporation. Although ",
+      "words": 81
+     },
+     "joint": {
+      "excerpt": "Shaking a fizzy drink increases carbon dioxide pressure. When opened, the pressu",
+      "words": 84
+     }
+    },
+    "proved": true,
+    "proved_by": "constructor"
+   },
+   "B(B:10)|R1(CR7:44)": {
+    "constructive_failure": null,
+    "constructive_method": "candidate verify_pair",
+    "pool_witnesses": {
+     "a_not_b": {
+      "excerpt": "Soap wears away by rubbing, water, and use.  \nIt breaks down with friction and m",
+      "words": 44
+     },
+     "b_not_a": {
+      "excerpt": "A bar of soap wears away in the shower through a combination of friction, water ",
+      "words": 88
+     },
+     "joint": {
+      "excerpt": "A bar of soap wears away in the shower through friction and water exposure. As i",
+      "words": 74
+     }
+    },
+    "proved": true,
+    "proved_by": "constructor"
+   },
+   "B(B:10)|R2(RF1:5)": {
+    "constructive_failure": null,
+    "constructive_method": "registered verify_pair",
+    "pool_witnesses": {
+     "a_not_b": {
+      "excerpt": "Soap wears away by friction, water, and use.  \nBubbles form, rubbing skin.  \nWat",
+      "words": 36
+     },
+     "b_not_a": {
+      "excerpt": "A bar of soap wears away in the shower through a combination of friction, water ",
+      "words": 88
+     },
+     "joint": {
+      "excerpt": "A bar of soap wears away in the shower through friction and water exposure. As i",
+      "words": 74
+     }
+    },
+    "proved": true,
+    "proved_by": "constructor"
+   },
+   "B(B:10)|R3(RF7:24)": {
+    "constructive_failure": null,
+    "constructive_method": "registered verify_pair",
+    "pool_witnesses": {
+     "a_not_b": {
+      "excerpt": "A bar of soap wears away in the shower through friction and water exposure. As i",
+      "words": 74
+     },
+     "b_not_a": {
+      "excerpt": "A bar of soap wears away in the shower through friction and water exposure. As i",
+      "words": 69
+     },
+     "joint": {
+      "excerpt": "Soap wears away by rubbing, water, and use.  \nIt breaks down with friction and m",
+      "words": 44
+     }
+    },
+    "proved": true,
+    "proved_by": "constructor"
+   },
+   "B(B:10)|S1(CR6:6)": {
+    "constructive_failure": null,
+    "constructive_method": "candidate verify_pair",
+    "pool_witnesses": {
+     "a_not_b": {
+      "excerpt": "A bar of soap wears away in the shower through friction and water exposure. As i",
+      "words": 74
+     },
+     "b_not_a": {
+      "excerpt": "A bar of soap wears away in the shower through a combination of friction, water ",
+      "words": 88
+     },
+     "joint": {
+      "excerpt": "Mirrors don't reverse left and right; they reverse front to back. The illusion o",
+      "words": 82
+     }
+    },
+    "proved": true,
+    "proved_by": "constructor"
+   },
+   "B(B:10)|S2(CR6:8)": {
+    "constructive_failure": null,
+    "constructive_method": "candidate verify_pair",
+    "pool_witnesses": {
+     "a_not_b": {
+      "excerpt": "A bar of soap wears away in the shower through friction and water exposure. As i",
+      "words": 74
+     },
+     "b_not_a": {
+      "excerpt": "A bar of soap wears away in the shower through a combination of friction, water ",
+      "words": 88
+     },
+     "joint": {
+      "excerpt": "A bar of soap wears away in the shower through friction and water exposure. As y",
+      "words": 80
+     }
+    },
+    "proved": true,
+    "proved_by": "constructor"
+   },
+   "R1(CR7:44)|R2(RF1:5)": {
+    "constructive_failure": null,
+    "constructive_method": "not reachable constructively",
+    "pool_witnesses": {
+     "a_not_b": {
+      "excerpt": "A bar of soap wears away in the shower through friction and water exposure. As i",
+      "words": 75
+     },
+     "b_not_a": {
+      "excerpt": "A bar of soap wears away in the shower through repeated friction against skin an",
+      "words": 78
+     },
+     "joint": {
+      "excerpt": "A bar of soap wears away in the shower through a combination of friction, water ",
+      "words": 88
+     }
+    },
+    "proved": true,
+    "proved_by": "response pool"
+   },
+   "R1(CR7:44)|R3(RF7:24)": {
+    "constructive_failure": null,
+    "constructive_method": "not reachable constructively",
+    "pool_witnesses": {
+     "a_not_b": {
+      "excerpt": "A bar of soap wears away in the shower through a combination of friction, water ",
+      "words": 88
+     },
+     "b_not_a": {
+      "excerpt": "Soap wears away by rubbing, water, and use.  \nIt breaks down with friction and m",
+      "words": 44
+     },
+     "joint": {
+      "excerpt": "A bar of soap wears away in the shower through friction and water exposure. As i",
+      "words": 69
+     }
+    },
+    "proved": true,
+    "proved_by": "response pool"
+   },
+   "R2(RF1:5)|R3(RF7:24)": {
+    "constructive_failure": null,
+    "constructive_method": "registered verify_pair",
+    "pool_witnesses": {
+     "a_not_b": {
+      "excerpt": "A bar of soap wears away in the shower through a combination of friction, water ",
+      "words": 88
+     },
+     "b_not_a": {
+      "excerpt": "Soap wears away by friction, water, and use.  \nBubbles form, rubbing skin.  \nWat",
+      "words": 36
+     },
+     "joint": {
+      "excerpt": "A bar of soap wears away in the shower through friction and water exposure. As i",
+      "words": 69
+     }
+    },
+    "proved": true,
+    "proved_by": "constructor"
+   }
+  },
+  "pairs_checked": 14,
+  "pool_limit": 3000,
+  "pool_size": 3000,
+  "source": "the model's own calibration-screen responses",
+  "unwitnessed": []
+ }
+}

@@ -1,0 +1,78 @@
+# Spectrum-rule scenarios (constructed pools, deterministic)
+
+## local_not_spectrum
+Expectation: local valid rungs exist; spectrum NOT identified
+- n_pooled: 9
+- n_local_valid: 9
+- n_spectrum_valid: 3
+- reaches_below: false
+- reaches_above: false
+- beyond_v_head: 0
+- old_c4: false
+- old_c4_groups: []
+- families_meeting_old_c4: []
+- new_status: "DIFFICULTY_SUPPORT_NOT_IDENTIFIED"
+- new_reasons: ["0 points below A; 2 required", "0 points above A; 2 required", "0 families below A; 2 required", "0 families above A; 2 required", "no point at or beyond 0.15 below A", "no point at or beyond 0.1 above A", "total span 0.000 below 0.25", "projected SE(beta) None above 0.05 (within-family leverage 0.0000)"]
+- selected: []
+- se_beta: null
+- spectrum_rejections: {"MK1:5": "V_pos", "MK1:6": "V_pos", "MK2:4": "V_pos", "MK2:5": "V_pos", "MK3:4": "V_pos", "MK3:5": "V_pos"}
+
+## spectrum_without_old_c4
+Expectation: no family spans 0.40 (old C4 fails); new rule identified
+- n_pooled: 9
+- n_local_valid: 3
+- n_spectrum_valid: 6
+- reaches_below: true
+- reaches_above: true
+- beyond_v_head: 0
+- old_c4: false
+- old_c4_groups: []
+- families_meeting_old_c4: []
+- new_status: "DIFFICULTY_SUPPORT_IDENTIFIED"
+- new_reasons: []
+- selected: [["MK1:8", 0.52, "SPECTRUM_LOW"], ["MK1:2", 0.82, "SPECTRUM_HIGH"], ["MK2:8", 0.5, "SPECTRUM_LOW"], ["MK2:2", 0.8, "SPECTRUM_HIGH"], ["MK3:8", 0.55, "SPECTRUM_LOW"], ["MK3:2", 0.84, "SPECTRUM_HIGH"]]
+- se_beta: 0.02262581048857811
+- spectrum_rejections: {"MK1:5": "V_pos", "MK2:5": "V_pos", "MK3:5": "V_pos"}
+
+## extreme_stable_survives
+Expectation: MK1:1 at 0.93 is spectrum-valid (beyond V_head) and selected high
+- n_pooled: 6
+- n_local_valid: 2
+- n_spectrum_valid: 4
+- reaches_below: true
+- reaches_above: true
+- beyond_v_head: 2
+- old_c4: false
+- old_c4_groups: []
+- families_meeting_old_c4: []
+- new_status: "DIFFICULTY_SUPPORT_IDENTIFIED"
+- new_reasons: []
+- selected: [["MK1:8", 0.45, "SPECTRUM_LOW"], ["MK1:1", 0.93, "SPECTRUM_HIGH"], ["MK2:8", 0.48, "SPECTRUM_LOW"], ["MK2:1", 0.92, "SPECTRUM_HIGH"]]
+- se_beta: 0.017856873313329573
+- spectrum_rejections: {"MK1:4": "V_pos", "MK2:4": "V_pos"}
+
+## degenerate_rejected
+Expectation: RF6:1 (kappa 0.995) no coordinate; RF7:2 vacuous; CR5:3 chance 0.8 fail
+- n_pooled: 6
+- n_local_valid: 1
+- n_spectrum_valid: 2
+- reaches_below: true
+- reaches_above: true
+- beyond_v_head: 0
+- old_c4: false
+- old_c4_groups: []
+- families_meeting_old_c4: []
+- new_status: "DIFFICULTY_SUPPORT_NOT_IDENTIFIED"
+- new_reasons: ["1 points below A; 2 required", "1 points above A; 2 required", "1 families below A; 2 required", "1 families above A; 2 required"]
+- selected: [["MK1:8", 0.45, "SPECTRUM_LOW"], ["MK1:2", 0.85, "SPECTRUM_HIGH"]]
+- se_beta: 0.02906888370749727
+- spectrum_rejections: {"MK1:5": "V_pos", "RF6:1": "V_coord", "RF7:2": "V_coord", "CR5:3": "V_coord"}
+
+## expansion_recovers_hard_side
+Expectation: no valid rung <= iota_A - 0.15 before; picks 9,10; after: reaches_below (one family alone cannot satisfy two-families-per-side, so the coverage status is informational here)
+- before: {"n_pooled": 8, "n_local_valid": 1, "n_spectrum_valid": 5, "reaches_below": false, "reaches_above": true, "beyond_v_head": 2, "old_c4": false, "old_c4_groups": [], "families_meeting_old_c4": [], "new_status": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED", "new_reasons": ["0 points below A; 2 required", "0 families below A; 2 required", "1 families above A; 2 required", "no point at or beyond 0.15 below A", "total span 0.000 below 0.25", "projected SE(beta) 0.055369302299994774 above 0.05 (within-family leverage 0.0221)"], "selected": [["MK8:8", 0.72, "SPECTRUM_ABOVE_PAIR"], ["MK8:4", 0.93, "SPECTRUM_ABOVE_PAIR"]], "se_beta": 0.055369302299994774, "spectrum_rejections": {"MK8:1": "V_coord", "MK8:2": "V_coord", "MK8:3": "V_coord"}}
+- reach_picks: [9, 10]
+- reach_picks_batch_2: [11, 12]
+- after: {"n_pooled": 12, "n_local_valid": 3, "n_spectrum_valid": 8, "reaches_below": true, "reaches_above": true, "beyond_v_head": 2, "old_c4": false, "old_c4_groups": ["marker_overall"], "families_meeting_old_c4": ["MK8"], "new_status": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED", "new_reasons": ["1 points below A; 2 required", "1 points above A; 2 required", "1 families below A; 2 required", "1 families above A; 2 required"], "selected": [["MK8:11", 0.46, "SPECTRUM_LOW"], ["MK8:7", 0.79, "SPECTRUM_HIGH"]], "se_beta": 0.035235010554542145, "spectrum_rejections": {"MK8:1": "V_coord", "MK8:2": "V_coord", "MK8:3": "V_coord", "MK8:9": "V_pos"}}
+- extrapolation: {"family": "MK8", "estimate": 9.984555657713962, "slope_logit_per_severity": -0.47858647099028045, "within_ladder": false, "within_reserve": true, "reserve_max": 12, "target": 0.47}
+

@@ -1,0 +1,31 @@
+2026-08-28T06:14:53Z [qwen3-4b gpu0] START QUALIFIED (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/qwen3-4b.QUALIFIED.20260828T061453Z.out
+2026-08-28T06:14:55Z [qwen3-4b gpu0] EXIT QUALIFIED code=0
+2026-08-28T06:14:55Z [qwen3-4b gpu0] START GATE_0_APPARATUS (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/qwen3-4b.GATE_0_APPARATUS.20260828T061455Z.out
+2026-08-28T06:18:42Z [qwen3-4b gpu0] EXIT GATE_0_APPARATUS code=0
+2026-08-28T06:18:42Z [qwen3-4b gpu0] START REGIME_SCREEN (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/qwen3-4b.REGIME_SCREEN.20260828T061842Z.out
+2026-08-28T06:33:30Z [qwen3-4b gpu0] EXIT REGIME_SCREEN code=0
+2026-08-28T06:33:30Z [qwen3-4b gpu0] START GATE_1_MEASUREMENT (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/qwen3-4b.GATE_1_MEASUREMENT.20260828T063330Z.out
+2026-08-28T06:35:44Z [qwen3-4b gpu0] EXIT GATE_1_MEASUREMENT code=0
+2026-08-28T06:49:14Z [qwen3-4b gpu0] START GATE_2_FOCAL_CALIBRATION (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/qwen3-4b.GATE_2_FOCAL_CALIBRATION.20260828T064914Z.out
+2026-08-28T08:49:58Z [qwen3-4b gpu0] predecessor process 3238958 has exited
+2026-08-28T08:49:58Z [qwen3-4b gpu0] START GATE_2_5_CANDIDATE_QUALIFICATION (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/qwen3-4b.GATE_2_5_CANDIDATE_QUALIFICATION.20260828T084958Z.out
+2026-08-28T08:49:58Z [qwen3-4b gpu0] EXIT GATE_2_5_CANDIDATE_QUALIFICATION code=0
+2026-08-28T08:49:58Z [qwen3-4b gpu0] WAIT card 0 for GATE_2_75_COMPOSED_PROBE
+2026-08-28T08:58:50Z [qwen3-4b gpu0] START GATE_2_75_COMPOSED_PROBE (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/qwen3-4b.GATE_2_75_COMPOSED_PROBE.20260828T084958Z.out
+2026-08-28T09:21:37Z [qwen3-4b gpu0] EXIT GATE_2_75_COMPOSED_PROBE code=0
+2026-08-28T09:21:37Z [qwen3-4b gpu0] START GATE_3A_REFERENCE_CALIBRATION (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/qwen3-4b.GATE_3A_REFERENCE_CALIBRATION.20260828T092137Z.out
+2026-08-28T09:22:30Z [qwen3-4b gpu0] EXIT GATE_3A_REFERENCE_CALIBRATION code=0
+2026-08-28T09:22:30Z [qwen3-4b gpu0] START GATE_3B_REFERENCE_SELECTION (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/qwen3-4b.GATE_3B_REFERENCE_SELECTION.20260828T092230Z.out
+2026-08-28T09:22:30Z [qwen3-4b gpu0] EXIT GATE_3B_REFERENCE_SELECTION code=0
+2026-08-28T09:22:31Z [qwen3-4b gpu0] START GATE_3C_IDENTIFICATION (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/qwen3-4b.GATE_3C_IDENTIFICATION.20260828T092231Z.out
+2026-08-28T09:22:31Z [qwen3-4b gpu0] EXIT GATE_3C_IDENTIFICATION code=0
+2026-08-28T09:22:31Z [qwen3-4b gpu0] WAIT card 0 for GATE_4_COMPOSED_CONTRAST
+2026-08-28T13:04:27Z [qwen3-4b gpu0] START GATE_4_COMPOSED_CONTRAST (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/qwen3-4b.GATE_4_COMPOSED_CONTRAST.20260828T092231Z.out
+2026-08-28T13:05:11Z [qwen3-4b gpu0] EXIT GATE_4_COMPOSED_CONTRAST code=0
+2026-08-28T13:05:11Z [qwen3-4b gpu0] START PREFREEZE_AUDIT (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/qwen3-4b.PREFREEZE_AUDIT.20260828T130511Z.out
+2026-08-28T13:05:11Z [qwen3-4b gpu0] EXIT PREFREEZE_AUDIT code=1
+{
+  "error": "TerminalStatus",
+  "message": "PREFREEZE_AUDIT: PREFREEZE_AUDIT_FAILURE"
+}
+2026-08-28T13:05:11Z [qwen3-4b gpu0] TERMINAL PREFREEZE_AUDIT_FAILURE at GATE_4_COMPOSED_CONTRAST; stopping

@@ -1,0 +1,161 @@
+{
+ "artifact_type": "v4r3-human-review-packet",
+ "classification": "DCI-1 PROTOCOL v4 REVISION 3 (ADOPTED, NOT FROZEN)",
+ "verifier_hash": "41edc84c8c1381c698aa3ea62265ef11ff1162993fa2f68d1245dbce10096074",
+ "built_at": "2026-08-21T16:00:19+00:00",
+ "items": 25,
+ "packet_hash": "bfec2e05d99ae619c4a68f85fca875a03a74901793fab44cf412288fb046bfd9",
+ "blinded": "the family, severity, verdict and defect live in key.json",
+ "packet": [
+  {
+   "item_id": "hr-00-4bb27dee",
+   "instruction": "At most 2 percent of words begin with vowels.",
+   "answer": "point clue form step field cloud north guide point clue",
+   "answer_sha256": "e4ec7deb93eb4a89a97c57b9029f91861f4c54d153e6c60f012c30a278ea10e0"
+  },
+  {
+   "item_id": "hr-01-baeba5f2",
+   "instruction": "Use exactly 1 semicolon characters in your answer.",
+   "answer": "point; point clue form step field cloud",
+   "answer_sha256": "3ddcb529eeb54f05db02c33026e544173a74a347df48a610f9f6b7732bb94a93"
+  },
+  {
+   "item_id": "hr-02-32658392",
+   "instruction": "Limit words beginning with vowels to 2 percent.",
+   "answer": "well-known form",
+   "answer_sha256": "544c026865295e40b082766c07e53f8772c9bce0dc9e5dcc1a47c0cc2a59a910"
+  },
+  {
+   "item_id": "hr-03-657385c4",
+   "instruction": "Keep words ending with s to 1 percent.",
+   "answer": "clues point clue form step field cloud north guide point",
+   "answer_sha256": "8c35df38f696a5b2e08bc64ca6851666d4b4e5c9179f91bdc395bfded0b2c1a7"
+  },
+  {
+   "item_id": "hr-04-1fd6e3df",
+   "instruction": "Keep words beginning with t to 1 percent.",
+   "answer": "top point clue form step field cloud north guide point",
+   "answer_sha256": "6e89d1d04eb05ea8294de38e63ea0c9b952afafc2764168bda9ebbbbb7c5e6bf"
+  },
+  {
+   "item_id": "hr-05-305fa0a4",
+   "instruction": "The word thus must appear exactly 1 times.",
+   "answer": "Thus Point Clue",
+   "answer_sha256": "178e3c5200214af5beebc8ba68a8374360f3f5055b0a836c094903c25d09cb03"
+  },
+  {
+   "item_id": "hr-06-36be9fc4",
+   "instruction": "Your answer must use exactly 1 semicolons.",
+   "answer": "\u0130stanbul is one word",
+   "answer_sha256": "9b01e290e7e6317d4df5757de4c15ba405f45c1bcdf3ee45766c6dfd14f664de"
+  },
+  {
+   "item_id": "hr-07-6388b504",
+   "instruction": "No more than 1 sentences may appear.",
+   "answer": "\u0130ce clue",
+   "answer_sha256": "16edee15b45989f9952b46b8f1fb05cf94d055260ca8cddb6618a2f98c0e1169"
+  },
+  {
+   "item_id": "hr-08-ec8d833b",
+   "instruction": "Use the word thus exactly 1 times.",
+   "answer": "THUS POINT",
+   "answer_sha256": "5f2ddecd29f2e0c0aaa8f2565e6bdb2cc4cdfc45702f7c3f4f13d6a4fe6025d2"
+  },
+  {
+   "item_id": "hr-09-c4e77469",
+   "instruction": "Words beginning with t: at most 1 percent.",
+   "answer": "\u0130stanbul is one word",
+   "answer_sha256": "9b01e290e7e6317d4df5757de4c15ba405f45c1bcdf3ee45766c6dfd14f664de"
+  },
+  {
+   "item_id": "hr-10-ecf193ac",
+   "instruction": "Include thus exactly 1 times in your answer.",
+   "answer": "thus thus point clue form step field cloud",
+   "answer_sha256": "cd153915a1a96071b4143b538a7609c6511a8d5018b8e626f34b8cdb7f5098be"
+  },
+  {
+   "item_id": "hr-11-a7198420",
+   "instruction": "Exactly 1 semicolons must appear in your answer.",
+   "answer": "point; clue; point clue form step field cloud",
+   "answer_sha256": "57741b7aed08decd44228589ccb9da05ca45a4f86dd22495dc9b9d2c270f18a2"
+  },
+  {
+   "item_id": "hr-12-99139fb2",
+   "instruction": "At most 1 sentences per hundred words.",
+   "answer": "point clue form step field cloud north guide point clue",
+   "answer_sha256": "e4ec7deb93eb4a89a97c57b9029f91861f4c54d153e6c60f012c30a278ea10e0"
+  },
+  {
+   "item_id": "hr-13-75406125",
+   "instruction": "Words beginning with vowels: at most 2 percent.",
+   "answer": "\u0130stanbul is one word",
+   "answer_sha256": "9b01e290e7e6317d4df5757de4c15ba405f45c1bcdf3ee45766c6dfd14f664de"
+  },
+  {
+   "item_id": "hr-14-999723cb",
+   "instruction": "At most 1 percent of words end with s.",
+   "answer": "point clue form step field cloud north guide point clue",
+   "answer_sha256": "e4ec7deb93eb4a89a97c57b9029f91861f4c54d153e6c60f012c30a278ea10e0"
+  },
+  {
+   "item_id": "hr-15-79d60ac5",
+   "instruction": "At most 1 percent of words begin with t.",
+   "answer": "point clue form step field cloud north guide point clue",
+   "answer_sha256": "e4ec7deb93eb4a89a97c57b9029f91861f4c54d153e6c60f012c30a278ea10e0"
+  },
+  {
+   "item_id": "hr-16-872f3b98",
+   "instruction": "Limit words beginning with vowels to 2 percent.",
+   "answer": "\u0130stanbul",
+   "answer_sha256": "24ec8f72b5eac4594cf4401235af1639159192194e025495d4a1055ab0f6dc9b"
+  },
+  {
+   "item_id": "hr-17-cd227ae4",
+   "instruction": "Use the word thus exactly 1 times.",
+   "answer": "point clue form step field cloud",
+   "answer_sha256": "0e73461b486721eb124a443e3abdb21c14e091f83db98f0e53e5290a972fd177"
+  },
+  {
+   "item_id": "hr-18-6fab77c2",
+   "instruction": "Use at most 1 sentences per hundred words.",
+   "answer": "point clue form step field cloud north guide point clue",
+   "answer_sha256": "e4ec7deb93eb4a89a97c57b9029f91861f4c54d153e6c60f012c30a278ea10e0"
+  },
+  {
+   "item_id": "hr-19-7d818bd5",
+   "instruction": "Words ending with s: at most 1 percent.",
+   "answer": "point clue form step field cloud north guide point clue",
+   "answer_sha256": "e4ec7deb93eb4a89a97c57b9029f91861f4c54d153e6c60f012c30a278ea10e0"
+  },
+  {
+   "item_id": "hr-20-06893951",
+   "instruction": "At most 1 words may begin with vowels.",
+   "answer": "\u0130\u0130 point",
+   "answer_sha256": "6e33cbdc9f8951d044c5e8f190e8d4757cbcf64dc353f7cf0163bd3d3f279420"
+  },
+  {
+   "item_id": "hr-21-d843b413",
+   "instruction": "Do not write more than 1 sentences.",
+   "answer": "well-known form",
+   "answer_sha256": "544c026865295e40b082766c07e53f8772c9bce0dc9e5dcc1a47c0cc2a59a910"
+  },
+  {
+   "item_id": "hr-22-ba252e85",
+   "instruction": "Limit words ending with s to 1 percent.",
+   "answer": "...",
+   "answer_sha256": "ab5df625bc76dbd4e163bed2dd888df828f90159bb93556525c31821b6541d46"
+  },
+  {
+   "item_id": "hr-23-0beae5e3",
+   "instruction": "At most 1 percent of words begin with t.",
+   "answer": "cats' toys",
+   "answer_sha256": "7638f34c273099dc1a1f716ee817b09f6067d68c169614499f683257dd2122ef"
+  },
+  {
+   "item_id": "hr-24-d8079c8c",
+   "instruction": "Include exactly 1 semicolon characters in your answer.",
+   "answer": "",
+   "answer_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+ ]
+}

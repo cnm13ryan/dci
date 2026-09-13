@@ -1,0 +1,412 @@
+{
+ "classification": "DERIVED / POST-HOC re-analysis of closed evidence",
+ "licenses_no_confirmatory_claim": true,
+ "non_vacuity_min_words": 20,
+ "produced_by": "dci1/tools/pilot_length_channel.py",
+ "results": {
+  "gemma-3n-e2b-it": {
+   "m_star": 7,
+   "model": "gemma-3n-e2b-it",
+   "overlap_on_the_mediator": {
+    "reading": "the two cells are nearly SEPARATED on the mediator. Where the overlap is this thin, a length-adjusted contrast is only weakly identified and the raw contrast is largely a comparison of two disjoint length regimes. That is the finding, and it is stronger than either 'the effect is real' or 'the effect is length': companion identity and response length are close to collinear in this design, and this design cannot separate them.",
+    "share_of_A_plus_B_rows_in_common_bins": 0.09147135416666667,
+    "share_of_B_plus_R_rows_in_common_bins": 0.2829861111111111
+   },
+   "question_1_vacuity": {
+    "delta_all_responses": 0.34326171875,
+    "delta_non_vacuous_only": 0.34841439497797155,
+    "delta_section_17_4_vacuous_forced_to_failure": 0.0949978298611111,
+    "reading": "if the pilot's Delta were carried by degenerate short answers, restricting to the registered non-vacuity threshold would move it",
+    "vacuous_pass_rate_A_plus_B": 0.0,
+    "vacuous_pass_rate_B_plus_R": 0.2482638888888889,
+    "which_is_registered": "the \u00a717.4 forced recomputation. \u00a79.3 counts vacuous passes as passes in the primary estimand and handles them by forcing, precisely because dropping them would condition on a consequence of the treatment. The restriction is reported beside it and is a collider-conditioned sub-population."
+   },
+   "question_2_length": {
+    "A_plus_B_standardised_to_B_plus_R_lengths": {
+     "bins_dropped": [
+      {
+       "bin": [
+        20,
+        30
+       ],
+       "source_n": 9,
+       "target_n": 194
+      },
+      {
+       "bin": [
+        70,
+        110
+       ],
+       "source_n": 1624,
+       "target_n": 6
+      },
+      {
+       "bin": [
+        110,
+        170
+       ],
+       "source_n": 2885,
+       "target_n": 4
+      },
+      {
+       "bin": [
+        170,
+        null
+       ],
+       "source_n": 1064,
+       "target_n": 0
+      }
+     ],
+     "bins_used": 2,
+     "common_support_rows": 163,
+     "share_of_target_in_common_support": 0.2829861111111111,
+     "standardised_rate": 0.7536161404558831
+    },
+    "B_plus_R_standardised_to_A_plus_B_lengths": {
+     "bins_dropped": [
+      {
+       "bin": [
+        20,
+        30
+       ],
+       "source_n": 194,
+       "target_n": 9
+      },
+      {
+       "bin": [
+        70,
+        110
+       ],
+       "source_n": 6,
+       "target_n": 1624
+      },
+      {
+       "bin": [
+        110,
+        170
+       ],
+       "source_n": 4,
+       "target_n": 2885
+      },
+      {
+       "bin": [
+        170,
+        null
+       ],
+       "source_n": 0,
+       "target_n": 1064
+      }
+     ],
+     "bins_used": 2,
+     "common_support_rows": 562,
+     "share_of_target_in_common_support": 0.09147135416666667,
+     "standardised_rate": 0.6045600760903252
+    },
+    "bootstrap_raw_difference": {
+     "ci95": [
+      0.30338541666666663,
+      0.3822157118055555
+     ],
+     "estimate": 0.34326171875
+    },
+    "by_bin": [
+     {
+      "A_plus_B_n": 9,
+      "A_plus_B_rate": 0.5555555555555556,
+      "B_plus_R_n": 194,
+      "B_plus_R_rate": 0.7319587628865979,
+      "bin": [
+       20,
+       30
+      ],
+      "gap": 0.1764032073310423
+     },
+     {
+      "A_plus_B_n": 70,
+      "A_plus_B_rate": 0.7857142857142857,
+      "B_plus_R_n": 126,
+      "B_plus_R_rate": 0.6746031746031746,
+      "bin": [
+       30,
+       45
+      ],
+      "gap": -0.11111111111111105
+     },
+     {
+      "A_plus_B_n": 492,
+      "A_plus_B_rate": 0.6443089430894309,
+      "B_plus_R_n": 37,
+      "B_plus_R_rate": 0.5945945945945946,
+      "bin": [
+       45,
+       70
+      ],
+      "gap": -0.04971434849483625
+     },
+     {
+      "A_plus_B_n": 1624,
+      "A_plus_B_rate": 0.49938423645320196,
+      "B_plus_R_n": 6,
+      "B_plus_R_rate": 0.5,
+      "bin": [
+       70,
+       110
+      ],
+      "gap": 0.0006157635467980427
+     },
+     {
+      "A_plus_B_n": 2885,
+      "A_plus_B_rate": 0.28318890814558056,
+      "B_plus_R_n": 4,
+      "B_plus_R_rate": 0.25,
+      "bin": [
+       110,
+       170
+      ],
+      "gap": -0.033188908145580565
+     },
+     {
+      "A_plus_B_n": 1064,
+      "A_plus_B_rate": 0.10338345864661654,
+      "B_plus_R_n": 0,
+      "B_plus_R_rate": NaN,
+      "bin": [
+       170,
+       null
+      ],
+      "gap": null
+     }
+    ],
+    "collider_caveat": "length is a consequence of the companion (\u00a713.3) and \u00a722 registers it as a mediator the primary estimand is never conditioned on. These are sub-population comparisons, not a causal decomposition.",
+    "length_matched_gap_over_common_support": -0.05736163209472813
+   },
+   "question_3_common_support": {
+    "A_plus_B_rows_in_those_bins": 562,
+    "B_plus_R_rows_in_those_bins": 163,
+    "bins_with_at_least_20_in_both": 2
+   },
+   "response_length": {
+    "A_plus_B_mean_words": 127.89176432291667,
+    "A_plus_B_median_words": 126,
+    "B_plus_R_mean_words": 24.84375,
+    "B_plus_R_median_words": 23
+   },
+   "sources": {
+    "A_plus_B": {
+     "path": "evidence/dci1-v3/gemma-3n-e2b-it/confirmatory/cache.jsonl",
+     "rows": 6144,
+     "sha256": "f74402e83188da86f1b42f3c73b36b7f9737db4240c66757688cef391212982b",
+     "topics": "the 384 confirmatory topics"
+    },
+    "B_plus_R": {
+     "path": "evidence/br-pilot-v4/gemma-3n-e2b-it/cache.jsonl",
+     "rows": 576,
+     "sha256": "9c51901fa89eb05c9513df63674a22f7d06251aa56281efe10ef50211222c040",
+     "topics": "the 96 solo-calibration topics"
+    }
+   }
+  },
+  "gemma-3n-e4b-it": {
+   "m_star": 7,
+   "model": "gemma-3n-e4b-it",
+   "overlap_on_the_mediator": {
+    "reading": "the two cells are nearly SEPARATED on the mediator. Where the overlap is this thin, a length-adjusted contrast is only weakly identified and the raw contrast is largely a comparison of two disjoint length regimes. That is the finding, and it is stronger than either 'the effect is real' or 'the effect is length': companion identity and response length are close to collinear in this design, and this design cannot separate them.",
+    "share_of_A_plus_B_rows_in_common_bins": 0.07763671875,
+    "share_of_B_plus_R_rows_in_common_bins": 0.3055555555555556
+   },
+   "question_1_vacuity": {
+    "delta_all_responses": 0.37510850694444453,
+    "delta_non_vacuous_only": 0.3599165711663018,
+    "delta_section_17_4_vacuous_forced_to_failure": 0.06781684027777779,
+    "reading": "if the pilot's Delta were carried by degenerate short answers, restricting to the registered non-vacuity threshold would move it",
+    "vacuous_pass_rate_A_plus_B": 0.0,
+    "vacuous_pass_rate_B_plus_R": 0.3072916666666667,
+    "which_is_registered": "the \u00a717.4 forced recomputation. \u00a79.3 counts vacuous passes as passes in the primary estimand and handles them by forcing, precisely because dropping them would condition on a consequence of the treatment. The restriction is reported beside it and is a collider-conditioned sub-population."
+   },
+   "question_2_length": {
+    "A_plus_B_standardised_to_B_plus_R_lengths": {
+     "bins_dropped": [
+      {
+       "bin": [
+        20,
+        30
+       ],
+       "source_n": 0,
+       "target_n": 186
+      },
+      {
+       "bin": [
+        70,
+        110
+       ],
+       "source_n": 1425,
+       "target_n": 5
+      },
+      {
+       "bin": [
+        110,
+        170
+       ],
+       "source_n": 2568,
+       "target_n": 0
+      },
+      {
+       "bin": [
+        170,
+        null
+       ],
+       "source_n": 1674,
+       "target_n": 0
+      }
+     ],
+     "bins_used": 2,
+     "common_support_rows": 176,
+     "share_of_target_in_common_support": 0.3055555555555556,
+     "standardised_rate": 0.8420151253606306
+    },
+    "B_plus_R_standardised_to_A_plus_B_lengths": {
+     "bins_dropped": [
+      {
+       "bin": [
+        20,
+        30
+       ],
+       "source_n": 186,
+       "target_n": 0
+      },
+      {
+       "bin": [
+        70,
+        110
+       ],
+       "source_n": 5,
+       "target_n": 1425
+      },
+      {
+       "bin": [
+        110,
+        170
+       ],
+       "source_n": 0,
+       "target_n": 2568
+      },
+      {
+       "bin": [
+        170,
+        null
+       ],
+       "source_n": 0,
+       "target_n": 1674
+      }
+     ],
+     "bins_used": 2,
+     "common_support_rows": 477,
+     "share_of_target_in_common_support": 0.07763671875,
+     "standardised_rate": 0.7218847362468878
+    },
+    "bootstrap_raw_difference": {
+     "ci95": [
+      0.3415798611111111,
+      0.4087999131944445
+     ],
+     "estimate": 0.3751085069444444
+    },
+    "by_bin": [
+     {
+      "A_plus_B_n": 0,
+      "A_plus_B_rate": NaN,
+      "B_plus_R_n": 186,
+      "B_plus_R_rate": 0.8279569892473119,
+      "bin": [
+       20,
+       30
+      ],
+      "gap": null
+     },
+     {
+      "A_plus_B_n": 34,
+      "A_plus_B_rate": 0.8823529411764706,
+      "B_plus_R_n": 134,
+      "B_plus_R_rate": 0.8208955223880597,
+      "bin": [
+       30,
+       45
+      ],
+      "gap": -0.06145741878841082
+     },
+     {
+      "A_plus_B_n": 443,
+      "A_plus_B_rate": 0.7133182844243793,
+      "B_plus_R_n": 42,
+      "B_plus_R_rate": 0.7142857142857143,
+      "bin": [
+       45,
+       70
+      ],
+      "gap": 0.000967429861335023
+     },
+     {
+      "A_plus_B_n": 1425,
+      "A_plus_B_rate": 0.6175438596491228,
+      "B_plus_R_n": 5,
+      "B_plus_R_rate": 0.2,
+      "bin": [
+       70,
+       110
+      ],
+      "gap": -0.41754385964912283
+     },
+     {
+      "A_plus_B_n": 2568,
+      "A_plus_B_rate": 0.42562305295950154,
+      "B_plus_R_n": 0,
+      "B_plus_R_rate": NaN,
+      "bin": [
+       110,
+       170
+      ],
+      "gap": null
+     },
+     {
+      "A_plus_B_n": 1674,
+      "A_plus_B_rate": 0.24551971326164876,
+      "B_plus_R_n": 0,
+      "B_plus_R_rate": NaN,
+      "bin": [
+       170,
+       null
+      ],
+      "gap": null
+     }
+    ],
+    "collider_caveat": "length is a consequence of the companion (\u00a713.3) and \u00a722 registers it as a mediator the primary estimand is never conditioned on. These are sub-population comparisons, not a causal decomposition.",
+    "length_matched_gap_over_common_support": -0.0034821400633848073
+   },
+   "question_3_common_support": {
+    "A_plus_B_rows_in_those_bins": 477,
+    "B_plus_R_rows_in_those_bins": 176,
+    "bins_with_at_least_20_in_both": 2
+   },
+   "response_length": {
+    "A_plus_B_mean_words": 139.07470703125,
+    "A_plus_B_median_words": 137,
+    "B_plus_R_mean_words": 24.82465277777778,
+    "B_plus_R_median_words": 23
+   },
+   "sources": {
+    "A_plus_B": {
+     "path": "evidence/dci1-v3/gemma-3n-e4b-it/confirmatory/cache.jsonl",
+     "rows": 6144,
+     "sha256": "5438abeb2b88e7963304b0a3e2d2ed0c820156c8c46731d1f19b8e3d040cf415",
+     "topics": "the 384 confirmatory topics"
+    },
+    "B_plus_R": {
+     "path": "evidence/br-pilot-v4/gemma-3n-e4b-it/cache.jsonl",
+     "rows": 576,
+     "sha256": "569e2e8f92f320be060bec35a026c81cc632aa53fad6630ff404ae39dda32842",
+     "topics": "the 96 solo-calibration topics"
+    }
+   }
+  }
+ }
+}
