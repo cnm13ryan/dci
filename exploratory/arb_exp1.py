@@ -57,7 +57,8 @@ for order in ORDERS:
 print(A.show(A.table(clusters, rows), float_format=lambda v: f"{v:.3f}"))
 
 print("\n\n## The same table as a crosstab, for reading the shift at a glance\n")
-focal = frame[frame["arm"] == A.FOCAL_ARM]
+focal = A.behavioural(frame)
+focal = focal[focal["arm"] == A.FOCAL_ARM]
 print(pd.crosstab([focal["order"], focal["background_name"],
                    focal["reasoning_budget"]], focal["arbitration_state"],
                   normalize="index").to_string(float_format=lambda v: f"{v:.3f}"))

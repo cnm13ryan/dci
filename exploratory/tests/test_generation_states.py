@@ -108,6 +108,44 @@ class TestTechnicalFailuresLeaveTheEstimands:
                                        A.survival(scored(polluted), **common))
 
 
+    def test_every_printed_arbitration_view_reads_behavioural_rows(self) -> None:
+        """The crosstabs printed beside the bootstrap table must share its
+        denominator, or one report shows two sets of probabilities for one run
+        (Codex on PR #37)."""
+        for script in ("arb_exp1.py", "arb_exp2.py", "arb_exp3.py",
+                       "mfr_focal_calibration.py", "mfr_figures.py"):
+            text = (ROOT / script).read_text()
+            reads_states = text.count('["arbitration_state"]')
+            assert reads_states, script
+            assert text.count("A.behavioural(") >= reads_states, (
+                f"{script} reads arbitration_state without A.behavioural()")
+
+    def test_a_task_lost_to_technical_failures_keeps_the_interval_finite(self) -> None:
+        """A task whose focal rows are all technical leaves the per-task series.
+        A bootstrap draw of only such tasks has no mean, and one such draw used
+        to make both bounds NaN (Codex on PR #37)."""
+        rows = [row("PLT01", "B", FOUR), row("PLT01", "C_L3", FOUR)]
+        for task in ("PLT02", "PLT03", "PLT04", "PLT05"):
+            rows += [row(task, "B", None, technical=True),
+                     row(task, "C_L3", FOUR)]
+        frame = scored(rows)
+        both = A.arbitration(frame, background=A.AMPLIFIER, order="QAC",
+                             reasoning_budget=0)["both"]
+        assert list(both.index) == ["PLT01"]
+        clusters = A.Clusters(sorted(frame["task_id"].unique()), "finite", draws=500)
+        estimate, lo, hi = clusters.interval(both)
+        assert (estimate, lo, hi) == (1.0, 1.0, 1.0)
+
+    def test_a_complete_series_keeps_its_interval_exactly(self) -> None:
+        tasks = [f"PLT{i:02d}" for i in range(1, 21)]
+        series = pd.Series(np.linspace(0.0, 1.0, 20), index=tasks)
+        clusters = A.Clusters(tasks, "unchanged", draws=2000)
+        means = np.nanmean(series.to_numpy()[clusters.index], axis=1)
+        assert clusters.interval(series) == (
+            float(series.mean()), float(np.percentile(means, 2.5)),
+            float(np.percentile(means, 97.5)))
+
+
 class TestModelCausedNonAnswers:
     def test_empty_answer_without_technical_flag_is_still_scored(self) -> None:
         """Category B is model behaviour. Dropping it would condition on a

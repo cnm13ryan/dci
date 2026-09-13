@@ -97,6 +97,23 @@ reported estimate changes.
      quarantined cross-model file that `arbprogram` never reads.
      `test_technical_rows_do_not_move_the_arbitration_summaries` fails on the old
      code.
+   - **Review follow-up, same day (Codex on PR #37).** Two consequences of that
+     filter:
+     - The crosstabs printed beside the bootstrap table (`arb_exp1/2/3.py`), the
+       focal-calibration gate's state shares and its figure
+       (`mfr_focal_calibration.py`, `mfr_figures.py`) still counted technical
+       rows. They now read `arbprogram.behavioural()`, the same rows
+       `arbitration()` uses, and `arb_verify.py` restates the rule
+       independently. The technical-invalidity gate is still computed over all
+       rows.
+     - A task whose focal rows are all technical leaves the per-task series. A
+       bootstrap draw of only such tasks has no mean, and `Clusters.interval`
+       returned NaN bounds if even one draw was empty. The percentiles are now
+       taken over the non-empty draws. Where no draw is empty the result is
+       exactly what it was, so every finite interval ever reported is unchanged;
+       `tau()` had the same exposure and gets the same repair.
+     - `arb_verify.py` on two stored arbitration runs (46 and 92 quantities)
+       reports no disagreements.
 2. **The cross-model second verdict layer presented a conditional as an
    observation (PR #24).**
    - `identification.read()` fills every never-established prerequisite with

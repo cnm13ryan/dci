@@ -54,8 +54,9 @@ by_cell = frame.groupby(["rung", "background_name", "reasoning_budget"]).agg(
 print(by_cell.to_string(float_format=lambda v: f"{v:.3f}"))
 
 print("\n\n### Four-state distribution by rung and background\n")
-print(pd.crosstab([frame["rung"], frame["background_name"],
-                   frame["reasoning_budget"]], frame["arbitration_state"],
+states = A.behavioural(frame)
+print(pd.crosstab([states["rung"], states["background_name"],
+                   states["reasoning_budget"]], states["arbitration_state"],
                   normalize="index").to_string(float_format=lambda v: f"{v:.3f}"))
 
 print(f"\n\n### Gates, on the primary background ({PRIMARY_BACKGROUND}), "
@@ -64,7 +65,9 @@ primary = frame[frame["background"] == PRIMARY_BACKGROUND]
 selected, rows = None, []
 for rung in LADDER:
     subset = primary[primary["rung"] == rung]
-    states = subset["arbitration_state"].value_counts(normalize=True)
+    # The state shares partition behavioural rows, like `focal` and `target`
+    # (NaN on technical rows); technical failures are gated by `invalid` below.
+    states = A.behavioural(subset)["arbitration_state"].value_counts(normalize=True)
     summary = {
         "rung": rung, "n": len(subset),
         "focal": subset["Q_pass"].mean(), "target": subset["A_pass"].mean(),
@@ -102,7 +105,7 @@ print(f"\n\n### Secondary check: the same rung under the semicolon background\n"
 secondary = frame[(frame["background"] != PRIMARY_BACKGROUND)
                   & (frame["rung"] == selected)]
 if len(secondary):
-    states = secondary["arbitration_state"].value_counts(normalize=True)
+    states = A.behavioural(secondary)["arbitration_state"].value_counts(normalize=True)
     print(f"  n={len(secondary)}  focal={secondary['Q_pass'].mean():.3f}  "
           f"target={secondary['A_pass'].mean():.3f}")
     print("  " + "  ".join(f"{s}={float(states.get(s, 0.0)):.3f}" for s in A.STATES))
