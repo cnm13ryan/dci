@@ -159,10 +159,20 @@ def test_only_the_focal_verifier_declares_the_label_matcher():
 
 
 def test_the_target_verifier_declares_only_generic_segmentation():
+    """Pair 1's target counts items; it never matches them to relation labels.
+
+    The implementation tuple used to be pinned exactly, which froze an incomplete
+    closure in place: review found the outcome contract and the marker builders
+    executed but unhashed (see test_v19_implementation_closure.py). What this
+    test is for is that nothing label- or relation-specific is in the target's
+    closure, so that is what it asserts.
+    """
     entry = V.bundle(P)["v19:p1.target.exact_bullet_count"]
-    assert [f.__name__ for f in entry.implementation] == [
-        "verify_exact_bullet_count", "parse_list", "normalise"]
+    names = [f.__name__ for f in entry.implementation]
+    assert names[:2] == ["verify_exact_bullet_count", "parse_list"]
     assert match_items_to_labels not in entry.implementation
+    assert not {"closure", "chain_depth", "assert_labels_are_tokens",
+                "match_items_to_labels"} & set(names)
 
 
 def test_label_matching_is_reachable_but_not_used_by_the_other_five():
@@ -180,11 +190,34 @@ def test_no_verifier_accepts_an_arm_a_role_or_a_composition():
         assert not leaked, (constraint_id, leaked)
 
 
+def _without_docstrings(source: str) -> str:
+    """The source with docstring literals blanked, code and comments kept.
+
+    `assert_evidence_is_diagnostic` is in every closure now, and its docstring
+    names `arm` as a field it REJECTS. Documentation of a forbidden field is not a
+    use of it; any identifier, string constant or comment still counts.
+    """
+    import ast
+    import textwrap
+    text = textwrap.dedent(source)
+    lines = text.splitlines(keepends=True)
+    tree = ast.parse(text)
+    spans = []
+    for node in ast.walk(tree):
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef,
+                             ast.Module)) and ast.get_docstring(node) is not None:
+            doc = node.body[0]
+            spans.append((doc.lineno, doc.end_lineno))
+    keep = [line for number, line in enumerate(lines, start=1)
+            if not any(start <= number <= end for start, end in spans)]
+    return "".join(keep)
+
+
 def test_no_function_a_verifier_declares_mentions_an_arm():
     """Over the whole declared closure, not just the entry point."""
     for constraint_id, entry in V.bundle(P).items():
         for function in entry.implementation:
-            source = inspect.getsource(function)
+            source = _without_docstrings(inspect.getsource(function))
             for forbidden in ("arm", "A+B+S", "A+R_j"):
                 assert forbidden not in source, (constraint_id, function.__name__,
                                                  forbidden)
