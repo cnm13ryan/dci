@@ -324,6 +324,24 @@ def test_the_certification_report_is_serialisable():
     assert 0 < described["n_outstanding"] < len(described["findings"])
 
 
+def test_a_certified_report_carries_the_bundle_it_certified():
+    """Found in review: `Certification.bundle_hash` was always empty, so a
+    certified report named no bundle. It now carries the hash the bundle finding
+    computed, through both halves of Stage 2."""
+    report = stage2.certify_verifiers(all_frozen())
+    assert report.certified
+    assert report.bundle_hash == verifiers.bundle_hash(P)
+    assert report.describe()["bundle_hash"] == report.bundle_hash
+    assert stage2.certify_stage2(all_frozen()).bundle_hash == report.bundle_hash
+
+
+def test_an_unevaluable_bundle_leaves_the_hash_empty():
+    """No frozen list policy, no bundle identity: the report must not invent one."""
+    report = stage2.certify_verifiers(stand_in.table_without("verifiers.p1.list_policy"))
+    assert not report.certified
+    assert report.bundle_hash == ""
+
+
 def test_a_certification_with_no_findings_is_not_certified():
     """Vacuous truth would make an empty check look like a passing one."""
     assert not stage2.Certification(findings=()).certified

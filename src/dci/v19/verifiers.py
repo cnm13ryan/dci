@@ -52,11 +52,13 @@ from typing import Any
 
 from dci.provenance.hashes import sha
 from dci.v19 import field_roles, pairs
+from dci.v19 import parsing as _parsing
 from dci.v19 import text as textlib
 from dci.v19.parsing import (
     CANONICAL_LIST_POLICY,
     ListPolicy,
     OrderingRelation,
+    ParsedList,
     match_items_to_labels,
     parse_list,
     sentence_lengths,
@@ -714,6 +716,25 @@ class Verifier:
                 evidence={})
 
 
+def _outcome_contract() -> tuple[Callable, ...]:
+    """The code between a verifier's decision and the recorded outcome.
+
+    Every verifier returns through these: `Verifier.invoke` maps a crash to
+    VERIFIER_ERROR, `_scored`/`_missing` build the outcome, `_delivered` and
+    `_unparseable` settle the generation state, the compliance mappers turn a
+    count or fraction into FULL/PARTIAL/VIOLATION, and the outcome's own checks
+    (`VerifierOutcome.__post_init__`, `assert_evidence_is_diagnostic` with
+    `field_roles.role_of`) decide whether it is admissible at all. A change to any
+    of them moves a recorded verdict, compliance or state, so they belong in "the
+    code that ran" for every verifier. Found in review: none of them was hashed.
+    `tests/unit/test_v19_implementation_closure.py` traces the bundle and fails
+    if an executed function is neither hashed nor declared identity-only.
+    """
+    return (Verifier.invoke, VerifierOutcome.__post_init__, _scored, _missing,
+            _delivered, _unparseable, _count_compliance, _fraction_compliance,
+            assert_evidence_is_diagnostic, field_roles.role_of)
+
+
 def bundle(policy: ListPolicy = CANONICAL_LIST_POLICY) -> dict[str, Verifier]:
     """Every target and focal verifier the three pairs require.
 
@@ -724,32 +745,47 @@ def bundle(policy: ListPolicy = CANONICAL_LIST_POLICY) -> dict[str, Verifier]:
     decision and the registry still gates whether it may be relied on.
     """
     text_policy = policy.text
+    contract = _outcome_contract()
     built = {
         pairs.PAIR_1.target.constraint_id: Verifier(
             spec=_p1_count_spec(policy),
             run=lambda t, **kw: verify_exact_bullet_count(t, policy=policy, **kw),
             implementation=(verify_exact_bullet_count, parse_list,
-                            textlib.normalise),
+                            _parsing._bullet_pattern, _parsing._numbered_pattern,
+                            ParsedList.count.fget, ParsedList.describe,
+                            _parsing.ListItem.describe, textlib.normalise)
+            + contract,
             status="new"),
         pairs.PAIR_1.focal.constraint_id: Verifier(
             spec=_p1_order_spec(policy),
             run=lambda t, **kw: verify_transitive_order(t, policy=policy, **kw),
             implementation=(verify_transitive_order, parse_list,
-                            match_items_to_labels, textlib.folded_tokens),
+                            _parsing._bullet_pattern, _parsing._numbered_pattern,
+                            ParsedList.count.fget, ParsedList.describe,
+                            _parsing.ListItem.describe, match_items_to_labels,
+                            OrderingRelation.assert_labels_are_tokens,
+                            OrderingRelation.closure, OrderingRelation.chain_depth.fget,
+                            textlib.folded_tokens, textlib.word_tokens,
+                            textlib.normalise, textlib.fold)
+            + contract,
             status="new"),
         pairs.PAIR_2.target.constraint_id: Verifier(
             spec=_p2_target_spec(text_policy),
             run=lambda t, **kw: verify_mandatory_words(
                 t, text_policy=text_policy, **kw),
             implementation=(verify_mandatory_words, textlib.token_multiset,
-                            textlib.word_tokens, textlib.normalise, textlib.fold),
+                            textlib.folded_tokens, textlib.word_tokens,
+                            textlib.normalise, textlib.fold)
+            + contract,
             status="inherited_corrected"),
         pairs.PAIR_2.focal.constraint_id: Verifier(
             spec=_p2_focal_spec(text_policy),
             run=lambda t, **kw: verify_all_words_unique(
                 t, text_policy=text_policy, **kw),
             implementation=(verify_all_words_unique, textlib.token_multiset,
-                            textlib.folded_tokens, textlib.normalise, textlib.fold),
+                            textlib.folded_tokens, textlib.word_tokens,
+                            textlib.normalise, textlib.fold)
+            + contract,
             status="inherited_corrected"),
         pairs.PAIR_3.target.constraint_id: Verifier(
             spec=_p3_target_spec(policy),
@@ -761,7 +797,8 @@ def bundle(policy: ListPolicy = CANONICAL_LIST_POLICY) -> dict[str, Verifier]:
             implementation=(verify_exact_sentence_count, sentences,
                             textlib.split_sentences, textlib.normalise,
                             rules.split_line, rules.ends_sentence,
-                            rules._opens_with_capital),
+                            rules._opens_with_capital)
+            + contract,
             status="inherited_corrected"),
         pairs.PAIR_3.focal.constraint_id: Verifier(
             spec=_p3_focal_spec(policy),
@@ -770,7 +807,8 @@ def bundle(policy: ListPolicy = CANONICAL_LIST_POLICY) -> dict[str, Verifier]:
                             textlib.sentence_lengths, textlib.split_sentences,
                             textlib.word_tokens, textlib.normalise,
                             rules.split_line, rules.ends_sentence,
-                            rules._opens_with_capital),
+                            rules._opens_with_capital)
+            + contract,
             status="inherited_corrected"),
     }
     return built
