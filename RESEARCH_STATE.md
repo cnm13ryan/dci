@@ -3,7 +3,7 @@
 The 10-minute orientation. Everything here points at something else; primary
 numbers live in the reports and the generated artifacts, not in this file.
 
-Last reviewed: 2026-09-10.
+Last reviewed: 2026-09-13.
 
 ---
 
@@ -30,13 +30,18 @@ Positive τ is directional interference.
 | what | the preregistered v15/v19 protocol | fast, cheap, local-GPU probing |
 | changes | ledgered amendments (`docs/migration_ledger.csv`, `src/dci/v19/stage2_frozen.json`) | free; interfaces break by design |
 | output | a **gate status**, not a number (`src/dci/statuses.py`) | estimates stamped `EXPLORATORY_NO_EVIDENCE` |
-| status | Stage 2 frozen, with Pair 3 segmentation re-frozen on 2026-09-13 and its section 10.6 semantic re-audit outstanding; the confirmatory run has **not** been executed | eleven rounds completed |
+| status | **Paused.** Stage 2 frozen, with Pair 3 segmentation and the verifier implementation hashes re-frozen on 2026-09-13 and Pair 3's section 10.6 semantic re-audit outstanding; the confirmatory run has **not** been executed | eleven rounds completed |
 
 They are coupled in one direction: `exploratory/dci_exploratory/harvest.py`
 executes confirmatory stages `c112…c212` at runtime to obtain the constraint
 definitions, wordings, verifiers and task bank, so the exploratory arm invents no
 scientific content — and a change in `src/dci/` changes what an exploratory design
 means. Each run records the definition hashes it used.
+
+`dci1/` is a third area and a separate study, DCI-1 (§4b), with its own
+preregistrations, code and evidence. **DCI-1 v8.1 is the active study line** and
+has completed its frozen confirmatory run and analysis. The v19 protocol above
+is a different study, currently paused; v8.1 does not supersede it.
 
 ## 3. Experiment families
 
@@ -84,6 +89,37 @@ and [`exploratory/HYPOTHESES.md`](exploratory/HYPOTHESES.md).
 its own evidence tree. It does not share code with `src/dci/` or
 `exploratory/`.
 
+**Current line: v8.1**, frozen on 2026-09-08 and analysed on 2026-09-10 (§4d,
+last paragraph). It is not a successor to the v19 protocol in `src/dci/v19/`
+(§2), which is a separate, paused study.
+
+**Where the code is.** The authoritative code for every DCI-1 revision, v8.1
+included, is on `main`; the development branches named in the dated sections
+below (`dev/v8-canonical`, `dev/v8-frame-aware-prescreen`,
+`dev/v7-difficulty-spectrum`) have been merged into it.
+
+**What evidence a clone carries.** Raw stage records are not in git:
+`dci1/evidence/` is gitignored, and the repository records no off-machine
+archive of it. For v8.1 the durable references are the committed ones: the
+preregistration `dci1/docs/DCI1_preregistration_v8.1.md` and the freeze commit
+`034fc72`; the tables projected from the signed confirmatory records,
+[`dci1/reports/dci1v8dev/postconfirm/data/`](dci1/reports/dci1v8dev/postconfirm/data/),
+whose `provenance.json` carries each signed record's hash and its signature
+verification; and the audits in `dci1/reports/dci1v8dev/postconfirm/audits/`,
+which authenticate all 2,353,152 scored rows in 168 backend runs against the
+signed generation records and replay all 56 executed `delta_difficulty`
+bootstraps. A clone can check every reported number against those tables and
+see which signed record each came from. Re-verifying the tables against the
+records themselves needs the raw root.
+
+**The author's local raw copy.** The raw roots exist only on the machine that
+ran the study, which is also where the absolute paths inside `provenance.json`
+and the audits point. There, the v8 and v8.1 roots (`dci1v8-pilot*`,
+`dci1v8-confirm*`, `dci1v8p1-confirm`) sit in a sibling worktree,
+`../dci-v8-canonical`, a checkout of `main` kept because it holds them, and the
+roots of earlier revisions sit in the primary checkout's `dci1/evidence/`.
+Neither location exists in a fresh clone or in CI.
+
 | Version | Status |
 |---|---|
 | v2 | closed |
@@ -94,7 +130,9 @@ its own evidence tree. It does not share code with `src/dci/` or
 | **v5** | **RUN AND CLOSED 2026-08-24. No replication reached `CONFIRMATORY_GENERATION`: two terminated at Gate 4 on §13.14 composed headroom, two are permanently blocked at `PREFREEZE_AUDIT` by an irreversible D6 non-identification. 459,312 behavioural rows exist and none is confirmatory.** [`dci1/reports/dci1v5/CLOSURE.md`](dci1/reports/dci1v5/CLOSURE.md) All nineteen §34 decisions closed, U2 resolved at A2, P1 confirmed, registration manifest signed; three closures went against the document's own standing proposal (D16, D17, D18). The registered design is five arms, four models, 56 cells, 1,172,544 generations. A standalone preregistration that rebuilds the reference-construction procedure v4r4 could not make work. The core reference pool inverts to production class and same-form with A; ι is demoted from the admission coordinate to the difficulty coordinate; a pre-composition interaction gate, two calibration splits, direct order estimands and the L4 fix are new. Its execution plumbing has been exercised end to end on synthetic fixtures, which is engineering evidence and not a result. A stage 3–18 execution-path audit then found twelve registered rules that the production path did not execute — four multiplicity families with no producer, three claim emitters with no caller, §12.6's expansion unreachable and its coverage criterion evaluated on an empty set — and one place, §12.6's eligibility predicate, where the preregistration did not determine the rule. That one was resolved at E2 — §13's band applied to the quantity §13 bands, $p_{\text{solo}}$ — and §18 step 14's raw-coordinate fit was implemented as §15 registers it, with no multiplicity family invented. 48 registered rules are now audited against the path a replication takes, all 48 reachable, over 15 conditional scenarios. §4q, §4r, §4s, §4t, §4u, §4v, §4w, §4x. [`user-notes/DCI1_preregistration_v5.md`](user-notes/DCI1_preregistration_v5.md), [`dci1/src/dci1v5/`](dci1/src/dci1v5/), [`dci1/reports/dci1v5/`](dci1/reports/dci1v5/) |
 | **v6** | **RAN AND CLOSED 2026-08-27, zero survivors of four (§4ak).** `qwen3-4b` and `qwen3-4b-instruct-2507` terminated at Gate 2.75 `COMPOSED_HEADROOM_UNREACHABLE` because **B's compliance rose under A toward the ceiling** (0.747 → 0.891; 0.779 → 0.924); `gemma-3n-e4b-it` at Gate 4 `COMPOSED_HEADROOM_FAILURE` on `solo:CL` = 0.958, a companion's own solo cell; `gemma-3n-e2b-it` passed Gate 4 and terminated at `PREFREEZE_AUDIT` because A16/A17 had edited the registered document and the lifecycle could not bind a post-registration amendment. Both Gemmas had lost `Delta_R` at Gate 3C. All four verdicts stand. [`dci1/reports/dci1v6/CLOSURE.md`](dci1/reports/dci1v6/CLOSURE.md). *Registration history:* ADOPTED and REGISTERED 2026-08-26 (registration after amendment A15; §4ah). Zero behavioural rows at registration. All twenty-seven §34 decisions and all three blocking §33 items closed on [`dci1/reports/dci1v6/researcher_decisions.json`](dci1/reports/dci1v6/researcher_decisions.json); D0–D18 carried at v5's actually adopted values with v5's evidence and a `carried_from` block. Nineteen stages: a new `GATE_2_75_COMPOSED_PROBE` measures composed headroom at the **frozen** m\* two stages before Gate 4 and may terminate a replication `COMPOSED_HEADROOM_UNREACHABLE` but may never move the operating point. V6-E01/E02/E05 repair §12.6's reachability, expansion-row eligibility and `n_stable` prospectively. Three `probe_only` families PS1–PS3 are non-selectable by construction. §34 D23 = `projection_sd`, D26 = 0.0142 (measured). Registered design: five arms, four models, 56 cells, 1,174,080 generations. §18 stage 1's `REGISTRATION_INCOMPLETE` is a **readiness refusal**, not a §28 terminal status (A15); §12.6 drops a rung with no difficulty coordinate from its coverage conditions and records it (A16). Executing: all four registered, qualified and through Gate 1; §4aa–§4aj. [`user-notes/DCI1_preregistration_v6.md`](user-notes/DCI1_preregistration_v6.md), [`dci1/src/dci1v6/`](dci1/src/dci1v6/), [`dci1/reports/dci1v6/`](dci1/reports/dci1v6/) |
 | **v7** | **ADOPTED, REGISTERED AND RUN 2026-08-28; CLOSED the same day with zero survivors of four (§4am).** Every replication passed the stages v7 changed — both Qwens the composed probe, both Gemmas Gate 4 — and every one lost `Delta_R` at Gate 3C on §12.6's C4 under the calibrated re-read, then ended `PREFREEZE_AUDIT_FAILURE` on `support_satisfied`. Drafted 2026-08-27 (§4ak); §13.14 boundary-audited 2026-08-28 and revised as V10 before adoption (§4al). A superseding registration, not a v6 amendment: v6's §32.3 froze §13 from the first Gate-2.5 record and §32.1 forbids weakening a criterion so that a gate passes. v7 **withdraws** the absolute composed-headroom criterion as a terminal requirement — `COMPOSED_HEADROOM_FAILURE` and `COMPOSED_HEADROOM_UNREACHABLE` leave the vocabulary and no module can raise them — and replaces it with readings of the **contrast**: a structural zero licenses nothing, an arm at an exact boundary widens the decision interval by the Wilson allowance in the open direction, and a direction compressed below the SESOI by the other arm's level is named on the statement. Gate 2.75 and `GATE_4_COMPOSED_CONTRAST` record the paired contrasts by the confirmatory estimators, bootstrapped over topics, and have one outcome. No threshold moves; the estimand layer is byte-identical to v6's. A post-registration amendment is now bindable (A4), the hole that ended `gemma-3n-e2b-it`. [`user-notes/DCI1_preregistration_v7.md`](user-notes/DCI1_preregistration_v7.md), [`dci1/src/dci1v7/`](dci1/src/dci1v7/), [`dci1/reports/dci1v7/READINESS.md`](dci1/reports/dci1v7/READINESS.md) **Amended in place 2026-08-28 (A6–A8, §4an) after the closure:** the pre-freeze check that ended every replication (`support_satisfied`, "support met") is withdrawn for the registered invariant (support *recorded*, D6's disposition, the exact non-identified set, the arm set, no rehabilitation path); §12.6's C2/C4 now gate the spectrum arm and C1/C3/C5/C6 the core arm, no value moving; D6 means one thing everywhere. Bound via the A4 chain; V11–V13 checked; the four terminal reports stand; re-running is an open researcher decision. **2026-08-29 (§4ao):** the §13.11 chance column had been 0.0 on every replication; corrected on the Gate-2 producer (V14), stored tables not comparable with corrected ones, no record re-verdicted. |
-| **v4r4** | **adopted 2026-08-21; frozen at Gate 5 on 2026-08-22 for two of four replications, confirmatory data in hand.** The live protocol line. Gate 1 is deterministic-measurement by construction (§10.7 A–E) and `CP4`/`CP7` are removed. All four replications passed Gates 1–3; **§13.10 then ended two of them at `COMPOSED_HEADROOM_FAILURE`, including the only full-design replication**. Two survive to Gate 5, both on §8.6's 8-cell reduced design, so no spectrum-dependent estimand is identified anywhere in the study. Both survivors froze at `450a049`, generated 24,576 rows each, and are analysed through `UNMASKED_ANALYSIS`; **they disagree qualitatively** and one replication's L4 field is invalidated. §4m, §4n, §4o, §4p. `user-notes/DCI1_preregistration_v4r4.md`, `dci1/reports/dci1v4r4/final_results.json` |
+| **v4r4** | **adopted 2026-08-21; frozen at Gate 5 on 2026-08-22 for two of four replications, confirmatory data in hand.** Superseded by v5. Gate 1 is deterministic-measurement by construction (§10.7 A–E) and `CP4`/`CP7` are removed. All four replications passed Gates 1–3; **§13.10 then ended two of them at `COMPOSED_HEADROOM_FAILURE`, including the only full-design replication**. Two survive to Gate 5, both on §8.6's 8-cell reduced design, so no spectrum-dependent estimand is identified anywhere in the study. Both survivors froze at `450a049`, generated 24,576 rows each, and are analysed through `UNMASKED_ANALYSIS`; **they disagree qualitatively** and one replication's L4 field is invalidated. §4m, §4n, §4o, §4p. `user-notes/DCI1_preregistration_v4r4.md`, `dci1/reports/dci1v4r4/final_results.json` |
+| **v8** | **Frozen 2026-09-03 at `f7af7f2` (root `dci1v8-confirm-r2`); confirmatory generation never started.** A frame-conditioned redesign of DCI-1, not a replication of v7. An earlier freeze (`dci1v8-confirm`, 2026-09-02) was superseded by the pre-freeze audit the same day; its partial generation was stopped, uninspected and never analysed. The frozen root is superseded for the successor design only and is untouched. §4d. [`dci1/docs/DCI1_preregistration_v8.md`](dci1/docs/DCI1_preregistration_v8.md) |
+| **v8.1** | **The current line. Frozen 2026-09-08 at `034fc72` (root `dci1v8p1-confirm`), 2,353,152 rows generated, and the frozen `CONFIRMATORY_ANALYSIS` and `FINAL_REPORT` run once on 2026-09-10, returning `PASS` for all four models.** 23 of 24 joint decision intervals for Δ_R(f) stop below +10 pp; gemma-3n-e4b-it with B second is `FRAME_HETEROGENEOUS`. A post-confirmatory review (2026-09-13) found two gaps in the frozen analysis code that did not affect the executed run (`CHANGES_SCIENTIFIC.md`). §4d. [`dci1/docs/DCI1_preregistration_v8.1.md`](dci1/docs/DCI1_preregistration_v8.1.md), [`V8_1_POSTCONFIRM_PAPER_REWRITE_BUNDLE.md`](V8_1_POSTCONFIRM_PAPER_REWRITE_BUNDLE.md) |
 
 v4r2 replaces target failure with the per-constraint compliance vector, makes
 reciprocal delivery loss the primary estimand, matches references to A on solo
@@ -102,10 +140,11 @@ compliance rather than to B on solo failure, and makes instruction order a
 cell-level factor. It is a different protocol: v3 and v4 numbers are not
 comparable and are never compared. Nine registered open decisions (V1 to V9)
 and seven pre-freeze checks remain open; the freeze and confirmatory generation
-are implemented and deliberately not executed. **v7 (§4ak) is the live protocol line** as of 2026-08-27, drafted and not
-adopted; it supersedes v6 (§4ag–§4aj, closed 2026-08-27), which superseded v5,
-which superseded v4r4. v4r4 supersedes v4r3, which superseded v4r2. Each was adopted
-and registered on 2026-08-21, and each is structurally prevented from reading
+are implemented and deliberately not executed. **v8.1 (§4d) is the current
+line.** It succeeds v8 (frozen 2026-09-03, never generated), the frame-conditioned
+redesign that followed v7 (§4ak–§4an, closed 2026-08-28). v7 superseded v6
+(§4ag–§4aj, closed 2026-08-27), which superseded v5, which superseded v4r4.
+v4r4 supersedes v4r3, which superseded v4r2. Each was adopted and registered on 2026-08-21, and each is structurally prevented from reading
 the others' artifacts: `dci1v4r4.engine.context.foreign_roots` names v4r3's
 evidence, durable and source trees, and `assert_own_study` refuses a stage
 record whose `study_id` is another revision's. No v4r2 and no v4r3 record was
@@ -2335,8 +2374,8 @@ iota_A at the screen remains READINESS **R7** and is the researcher's.
   §10.4, neither of which completed. §10.7-R5 changed the rule, not that
   record, and v4r4 changes it again prospectively; neither describes either
   pathway as having succeeded. §4k, §4l, §4m.
-- **Live, and limiting.** Under v4r4, §12.6's C4 is met on all four models but
-  with **no leave-one-family-out margin on three of them** — exactly four
+- **Limiting, for v4r4 (since superseded).** Under v4r4, §12.6's C4 is met on
+  all four models but with **no leave-one-family-out margin on three of them** — exactly four
   well-formed straddling feature groups, every one load-bearing. Inherited from
   v4r3's reference pool, not created by removing `CP4`/`CP7`. The registered
   expansion is deliberately not invoked (`DECISIONS_V4R4.md` B7), so any
@@ -2353,6 +2392,21 @@ iota_A at the screen remains READINESS **R7** and is the researcher's.
 - **Withdrawn.** Several early quantitative claims — a nested correlation, a
   mislabelled statistic, a buggy sentence counter, a shared-seed replicate regime.
   Kept and marked in section D of `CLAIM_EVIDENCE_MATRIX.md`; never cited as support.
+- **Known, and deliberately deferred (v7 only).** v7's `StudyContext`
+  (`dci1/src/dci1v7/engine/context.py`) refuses another study's tree only when
+  that tree exists on disk. In a fresh clone, then, a v7 synthetic or
+  development root under a directory named for another study (for example
+  `…/dci1v6/nested`) is accepted. Where the foreign tree is present the overlap
+  check still refuses it, and a stage record carrying another study's
+  `study_id` is still refused (`engine/transitions.py`). The fix refuses a
+  foreign name on every path component and names the historical trees without
+  listing the disk. It exists as `d163232` on the tag
+  `archive/maint/v7-docs-marker-unification` and is not on `main`. It is
+  deferred rather than applied for three reasons. v7 is closed. Its
+  registration binds producing commit `ed0446f`, so any re-run needs a §32
+  superseding registration, which is where this fix belongs. And no active
+  code uses the module: v8.1 has its own context, which checks every ancestor.
+  Raised by the Codex review of PR #31.
 - **Not reproducible from a clone.** `runs/` is gitignored and absent. The run
   manifests hash files a fresh checkout does not have. See
   `exploratory/evidence/README.md` for the promotion path that fixes this per claim.
@@ -3112,6 +3166,8 @@ the unmerged chance-basis fix `7f89dae`), report
 `SAFETY_AND_ISOLATION.md`. Read-only over the four registered v7 trees on
 the corrected κ_c basis, with the production kernels (the reconstruction
 reproduces the signed Gate-3A C1–C8 verdicts on every model).
+(Since merged: the branch and the chance-basis fix are on `main`, and the
+worktree has been removed.)
 
 **C4 fails for a different reason on each model** (2 / 4 / 5 / 4 groups of
 6): `gemma-3n-e2b-it` — the exact-count ladders are flat or floored
@@ -3160,9 +3216,16 @@ First model: `qwen3-4b-instruct-2507`. Nothing is authorised to run.
 
 [`CHANGES_SCIENTIFIC.md`](CHANGES_SCIENTIFIC.md) — measurement-affecting changes
 only, newest first, each stating what changed, which results are affected, and
-whether old and new remain comparable. Most recent: the v19 Pair 3
-sentence-segmentation repair, ported to main on 2026-09-13 from PR #22.
-Before it: §13.11's chance column,
+whether old and new remain comparable. Most recent, all 2026-09-13: three v19
+review fixes (the verifier hash closure, the Stage 2 report's bundle identity,
+and stage gates that reach upstream stages), the v19 Pair 3
+sentence-segmentation repair ported to main from PR #22, a post-confirmatory
+audit that found two gaps in the frozen v8.1 analysis that did not affect the
+executed run, and exploratory fixes to the arbitration summaries, the
+cross-model verdict column and the natural-reasoning robustness figure. Before
+them: the v8.1 confirmatory analysis, executed once on 2026-09-10, and the v8
+and v8.1 design changes of 2026-08-29 to 2026-09-03, summarised in §4d. Before
+those: §13.11's chance column,
 zero on every replication of v5–v7, corrected on the Gate-2 producer to
 §13.2's unconstrained-cell κ_c with degenerate candidates withheld and
 recorded; no pinned §13 module and no threshold changes; stored tables are
@@ -3233,10 +3296,11 @@ and §4p.
 | what the metrics mean exactly | `exploratory/METRIC_SPEC.md` |
 | which data files are admissible | `exploratory/REASONING_DATA_PROVENANCE.md` |
 | what was actually covered | `exploratory/EXPERIMENT_COVERAGE_MATRIX.md` (rebuilt from run configs) |
-| the confirmatory protocol | `README.md`, `docs/MIGRATION.md`, `docs/preregistration/` |
+| the v19 confirmatory protocol (a separate study, paused) | `README.md`, `docs/MIGRATION.md`, `docs/preregistration/` |
 | the frozen Stage 2 decisions | `src/dci/v19/stage2_frozen.json`, `docs/v19_stage2_specification_amendments.md` |
-| the completed DCI-1 protocol | `user-notes/DCI1_preregistration_v4r4.md` (incorporates v4r3's by reference) |
-| the adopted successor protocol | `user-notes/DCI1_preregistration_v5.md` (standalone), `user-notes/DCI1_v4r4_to_v5_changelog.md` |
+| the current DCI-1 protocol (v8.1), its result and the manuscript rewrite map | `dci1/docs/DCI1_preregistration_v8.1.md`, `V8_1_POSTCONFIRM_PAPER_REWRITE_BUNDLE.md`, `POSTCONFIRM_EXEC_SUMMARY.md`, `dci1/reports/dci1v8dev/postconfirm/` |
+| the v4r4 protocol (superseded) | `user-notes/DCI1_preregistration_v4r4.md` (incorporates v4r3's by reference) |
+| the v5 protocol (run and closed) | `user-notes/DCI1_preregistration_v5.md` (standalone), `user-notes/DCI1_v4r4_to_v5_changelog.md` |
 | why v5 exists, measured | `dci1/reports/dci1v5/reference_design_development.md`, `dci1/reports/dci1v5/reference_design_spec.json` |
 | what v5 adopted, item by item, and what comes next | `dci1/reports/dci1v5/v5_adoption_checklist.md` |
 | why v7 exists, and the statistical argument for estimating the contrast rather than gating the arms | `dci1/reports/dci1v7/READINESS.md`, `user-notes/DCI1_preregistration_v7.md` |
