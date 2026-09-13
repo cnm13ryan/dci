@@ -1,0 +1,3929 @@
+{
+ "resamples": 10000,
+ "results": [
+  {
+   "tree": "v7",
+   "model": "gemma-3n-e2b-it",
+   "iota_a": 0.62109375,
+   "m_star": 10,
+   "iota_a_recorded": 0.616600790513834,
+   "chance_basis": "unconstrained-cell (\u00a713.2, corrected; dci1v8dev.chance_basis); pre-screen \u03ba on the ladder run's unconstrained cell",
+   "folded_stability_source": "recomputed on the corrected chance basis (10000 resamples)",
+   "n_rows": 132,
+   "n_folded_stable": 20,
+   "n_unfolded_stable": 74,
+   "n_local_valid": 18,
+   "n_spectrum_valid": 59,
+   "n_spectrum_valid_inside_v_head": 56,
+   "n_spectrum_valid_beyond_v_head": 3,
+   "spectrum_valid_range": [
+    0.21484375,
+    0.9401041666666666
+   ],
+   "spectrum_valid_below": 37,
+   "spectrum_valid_above": 22,
+   "spectrum_valid_families": [
+    "CL7",
+    "CL8",
+    "CR5",
+    "MK1",
+    "MK2",
+    "MK3",
+    "MK4",
+    "MK5",
+    "MK6",
+    "MK8",
+    "XC1",
+    "XC3"
+   ],
+   "folded_pool_range": {
+    "n": 20,
+    "range": [
+     0.55859375,
+     0.7018229166666666
+    ],
+    "span": 0.14322916666666663
+   },
+   "core_references": {
+    "MK4": 8,
+    "MK1": 1,
+    "XC3": 10
+   },
+   "v7_spectrum_identified": true,
+   "v7_gate3c_spectrum_met": null,
+   "selection": {
+    "iota_a": 0.62109375,
+    "families": [
+     "MK5",
+     "MK4",
+     "MK2",
+     "MK1"
+    ],
+    "points": [
+     {
+      "candidate": "MK1:7",
+      "family": "MK1",
+      "severity": 7,
+      "iota": 0.4192708333333333,
+      "se_iota": 0.02030774489023597,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_thus"
+     },
+     {
+      "candidate": "MK1:1",
+      "family": "MK1",
+      "severity": 1,
+      "iota": 0.618798955613577,
+      "side": "core",
+      "se_iota": 0.03130196038809932,
+      "role": "CORE_CENTRE",
+      "structural_tier": 1,
+      "feature_group": "marker_thus"
+     },
+     {
+      "candidate": "MK1:2",
+      "family": "MK1",
+      "severity": 2,
+      "iota": 0.7174479166666666,
+      "se_iota": 0.02674640205491264,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_thus"
+     },
+     {
+      "candidate": "MK2:11",
+      "family": "MK2",
+      "severity": 11,
+      "iota": 0.4544270833333333,
+      "se_iota": 0.02271022174159292,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_hence"
+     },
+     {
+      "candidate": "MK2:2",
+      "family": "MK2",
+      "severity": 2,
+      "iota": 0.7721354166666666,
+      "se_iota": 0.020454734748335056,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_hence"
+     },
+     {
+      "candidate": "MK4:12",
+      "family": "MK4",
+      "severity": 12,
+      "iota": 0.4140625,
+      "se_iota": 0.022051244786891196,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_whereas"
+     },
+     {
+      "candidate": "MK4:8",
+      "family": "MK4",
+      "severity": 8,
+      "iota": 0.6145833333333334,
+      "side": "core",
+      "se_iota": 0.023341103636386053,
+      "role": "CORE_CENTRE",
+      "structural_tier": 1,
+      "feature_group": "marker_whereas"
+     },
+     {
+      "candidate": "MK4:5",
+      "family": "MK4",
+      "severity": 5,
+      "iota": 0.73046875,
+      "se_iota": 0.021602884168519052,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_whereas"
+     },
+     {
+      "candidate": "MK5:11",
+      "family": "MK5",
+      "severity": 11,
+      "iota": 0.40234375,
+      "se_iota": 0.02151889802221348,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_indeed"
+     },
+     {
+      "candidate": "MK5:5",
+      "family": "MK5",
+      "severity": 5,
+      "iota": 0.7526041666666666,
+      "se_iota": 0.021130320718372585,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_indeed"
+     }
+    ],
+    "slots": {
+     "X1": "MK5:11",
+     "X2": "MK5:5",
+     "X3": "MK4:12",
+     "X4": "MK4:8",
+     "X5": "MK4:5",
+     "X6": "MK2:11",
+     "X7": "MK2:2",
+     "X8": "MK1:7",
+     "X9": "MK1:1",
+     "X10": "MK1:2"
+    },
+    "n_spectrum_references": 8,
+    "per_family": {
+     "MK5": {
+      "n_points": 2,
+      "leverage": 0.06134117974175346,
+      "min_iota": 0.40234375,
+      "max_iota": 0.7526041666666666
+     },
+     "MK4": {
+      "n_points": 3,
+      "leverage": 0.051250316478587965,
+      "min_iota": 0.4140625,
+      "max_iota": 0.73046875
+     },
+     "MK2": {
+      "n_points": 2,
+      "leverage": 0.05046929253472221,
+      "min_iota": 0.4544270833333333,
+      "max_iota": 0.7721354166666666
+     },
+     "MK1": {
+      "n_points": 3,
+      "leverage": 0.046150887374235824,
+      "min_iota": 0.4192708333333333,
+      "max_iota": 0.7174479166666666
+     }
+    },
+    "coverage": {
+     "identified": true,
+     "reasons": [],
+     "n_points": 10,
+     "n_below": 6,
+     "n_above": 4,
+     "families_below": [
+      "MK1",
+      "MK2",
+      "MK4",
+      "MK5"
+     ],
+     "families_above": [
+      "MK1",
+      "MK2",
+      "MK4",
+      "MK5"
+     ],
+     "farthest_below": 0.40234375,
+     "farthest_above": 0.7721354166666666,
+     "total_span": 0.36979166666666663,
+     "imprecise": [],
+     "n_families": 4,
+     "offset_below": 0.21875,
+     "offset_above": 0.15104166666666663,
+     "projection": {
+      "se_beta": 0.0179754755434175,
+      "leverage": 0.20921167612929947,
+      "per_family": {
+       "MK5": 0.06134117974175346,
+       "MK4": 0.051250316478587965,
+       "MK2": 0.05046929253472221,
+       "MK1": 0.046150887374235824
+      },
+      "half_width_95": 0.035231932065098295,
+      "half_width_planning": 0.04729347615473144,
+      "n_points": 10,
+      "n_families": 4,
+      "se_point": 0.013,
+      "block_corr": 0.6
+     },
+     "status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "rule": {
+      "min_points_below": 2,
+      "min_points_above": 2,
+      "min_families_per_side": 2,
+      "d_below": 0.1,
+      "d_above": 0.1,
+      "max_se_beta": 0.05,
+      "min_total_span": 0.2,
+      "max_se_iota": 0.05,
+      "se_point": 0.013,
+      "block_corr": 0.6
+     }
+    },
+    "identified": true,
+    "status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+    "rule": {
+     "d_min": 0.05,
+     "target_below": 0.2,
+     "target_above": 0.15,
+     "max_families": 4,
+     "include_core_rungs": true,
+     "min_separation": 0.05
+    }
+   },
+   "selection_trace": [
+    "MK5: straddling, leverage 0.0613, new group marker_indeed",
+    "MK4: straddling, leverage 0.0513, new group marker_whereas",
+    "MK2: straddling, leverage 0.0505, new group marker_hence",
+    "MK1: straddling, leverage 0.0462, new group marker_thus"
+   ],
+   "backups": {
+    "fully_admissible_families": [
+     "MK1",
+     "MK2",
+     "MK4",
+     "MK5",
+     "XC3"
+    ],
+    "n_fully_admissible": 5,
+    "backups": [
+     "MK2",
+     "MK5"
+    ],
+    "backup_entries": [
+     {
+      "family": "MK2",
+      "candidate": "MK2:7",
+      "iota": 0.6041666666666666,
+      "distance": 0.01692708333333337,
+      "structural_tier": 1,
+      "feature_group": "marker_hence"
+     },
+     {
+      "family": "MK5",
+      "candidate": "MK5:7",
+      "iota": 0.6393229166666666,
+      "distance": 0.01822916666666663,
+      "structural_tier": 1,
+      "feature_group": "marker_indeed"
+     }
+    ],
+    "n_spare_admissible": 2,
+    "support_count_basis": "families with a rung passing the full LOCAL rule (folded V_stab and V_diff included) from a core-admissible tier",
+    "meets_min_qualified": true,
+    "min_qualified": 5,
+    "gate2_5_qualified": [
+     "CR5",
+     "MK1",
+     "MK2",
+     "MK3",
+     "MK4",
+     "MK5",
+     "MK6",
+     "MK8",
+     "RF12",
+     "RF6",
+     "XC1",
+     "XC3"
+    ],
+    "n_gate2_5_qualified": 12,
+    "recorded_backups": [
+     "CR5",
+     "MK2"
+    ],
+    "recorded_backups_admissible": [
+     "MK2"
+    ],
+    "recorded_backups_inadmissible": [
+     "CR5"
+    ]
+   }
+  },
+  {
+   "tree": "v7",
+   "model": "gemma-3n-e4b-it",
+   "iota_a": 0.7317708333333334,
+   "m_star": 9,
+   "iota_a_recorded": 0.7252417472490831,
+   "chance_basis": "unconstrained-cell (\u00a713.2, corrected; dci1v8dev.chance_basis); pre-screen \u03ba on the ladder run's unconstrained cell",
+   "folded_stability_source": "recomputed on the corrected chance basis (10000 resamples)",
+   "n_rows": 140,
+   "n_folded_stable": 10,
+   "n_unfolded_stable": 87,
+   "n_local_valid": 5,
+   "n_spectrum_valid": 81,
+   "n_spectrum_valid_inside_v_head": 70,
+   "n_spectrum_valid_beyond_v_head": 11,
+   "spectrum_valid_range": [
+    0.21875,
+    0.93359375
+   ],
+   "spectrum_valid_below": 65,
+   "spectrum_valid_above": 16,
+   "spectrum_valid_families": [
+    "CL8",
+    "MK1",
+    "MK2",
+    "MK3",
+    "MK4",
+    "MK5",
+    "MK6",
+    "MK8",
+    "RF6",
+    "XC1",
+    "XC3"
+   ],
+   "folded_pool_range": {
+    "n": 10,
+    "range": [
+     0.67578125,
+     0.7747395833333334
+    ],
+    "span": 0.09895833333333337
+   },
+   "core_references": {
+    "MK5": 6,
+    "MK4": 7,
+    "MK6": 3
+   },
+   "v7_spectrum_identified": false,
+   "v7_gate3c_spectrum_met": null,
+   "selection": {
+    "iota_a": 0.7317708333333334,
+    "families": [
+     "MK1",
+     "MK4",
+     "MK2",
+     "MK5"
+    ],
+    "points": [
+     {
+      "candidate": "MK1:10",
+      "family": "MK1",
+      "severity": 10,
+      "iota": 0.5182291666666666,
+      "se_iota": 0.022573202326207274,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_thus"
+     },
+     {
+      "candidate": "MK1:3",
+      "family": "MK1",
+      "severity": 3,
+      "iota": 0.8802083333333334,
+      "se_iota": 0.014176215535059116,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_thus"
+     },
+     {
+      "candidate": "MK2:9",
+      "family": "MK2",
+      "severity": 9,
+      "iota": 0.5377604166666666,
+      "se_iota": 0.021946941026437815,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_hence"
+     },
+     {
+      "candidate": "MK2:2",
+      "family": "MK2",
+      "severity": 2,
+      "iota": 0.8841145833333334,
+      "se_iota": 0.012639977032915597,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_hence"
+     },
+     {
+      "candidate": "MK4:9",
+      "family": "MK4",
+      "severity": 9,
+      "iota": 0.5455729166666666,
+      "se_iota": 0.022859819810733324,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_whereas"
+     },
+     {
+      "candidate": "MK4:7",
+      "family": "MK4",
+      "severity": 7,
+      "iota": 0.7565104166666666,
+      "side": "core",
+      "se_iota": 0.019401748536937064,
+      "role": "CORE_CENTRE",
+      "structural_tier": 1,
+      "feature_group": "marker_whereas"
+     },
+     {
+      "candidate": "MK4:5",
+      "family": "MK4",
+      "severity": 5,
+      "iota": 0.8971354166666666,
+      "se_iota": 0.01321671755822622,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_whereas"
+     },
+     {
+      "candidate": "MK5:7",
+      "family": "MK5",
+      "severity": 7,
+      "iota": 0.5703125,
+      "se_iota": 0.022566909705741788,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_indeed"
+     },
+     {
+      "candidate": "MK5:6",
+      "family": "MK5",
+      "severity": 6,
+      "iota": 0.6940104166666666,
+      "side": "core",
+      "se_iota": 0.02036601436994282,
+      "role": "CORE_CENTRE",
+      "structural_tier": 1,
+      "feature_group": "marker_indeed"
+     },
+     {
+      "candidate": "MK5:5",
+      "family": "MK5",
+      "severity": 5,
+      "iota": 0.8567708333333334,
+      "se_iota": 0.016040992016252427,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_indeed"
+     }
+    ],
+    "slots": {
+     "X1": "MK1:10",
+     "X2": "MK1:3",
+     "X3": "MK4:9",
+     "X4": "MK4:7",
+     "X5": "MK4:5",
+     "X6": "MK2:9",
+     "X7": "MK2:2",
+     "X8": "MK5:7",
+     "X9": "MK5:6",
+     "X10": "MK5:5"
+    },
+    "n_spectrum_references": 8,
+    "per_family": {
+     "MK1": {
+      "n_points": 2,
+      "leverage": 0.06551445855034725,
+      "min_iota": 0.5182291666666666,
+      "max_iota": 0.8802083333333334
+     },
+     "MK4": {
+      "n_points": 3,
+      "leverage": 0.0626220703125,
+      "min_iota": 0.5455729166666666,
+      "max_iota": 0.8971354166666666
+     },
+     "MK2": {
+      "n_points": 2,
+      "leverage": 0.05998060438368058,
+      "min_iota": 0.5377604166666666,
+      "max_iota": 0.8841145833333334
+     },
+     "MK5": {
+      "n_points": 3,
+      "leverage": 0.04128350151909724,
+      "min_iota": 0.5703125,
+      "max_iota": 0.8567708333333334
+     }
+    },
+    "coverage": {
+     "identified": true,
+     "reasons": [],
+     "n_points": 10,
+     "n_below": 5,
+     "n_above": 5,
+     "families_below": [
+      "MK1",
+      "MK2",
+      "MK4",
+      "MK5"
+     ],
+     "families_above": [
+      "MK1",
+      "MK2",
+      "MK4",
+      "MK5"
+     ],
+     "farthest_below": 0.5182291666666666,
+     "farthest_above": 0.8971354166666666,
+     "total_span": 0.37890625,
+     "imprecise": [],
+     "n_families": 4,
+     "offset_below": 0.21354166666666674,
+     "offset_above": 0.16536458333333326,
+     "projection": {
+      "se_beta": 0.01716627400311998,
+      "leverage": 0.22940063476562506,
+      "per_family": {
+       "MK1": 0.06551445855034725,
+       "MK4": 0.0626220703125,
+       "MK2": 0.05998060438368058,
+       "MK5": 0.04128350151909724
+      },
+      "half_width_95": 0.033645897046115154,
+      "half_width_planning": 0.04516446690220866,
+      "n_points": 10,
+      "n_families": 4,
+      "se_point": 0.013,
+      "block_corr": 0.6
+     },
+     "status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "rule": {
+      "min_points_below": 2,
+      "min_points_above": 2,
+      "min_families_per_side": 2,
+      "d_below": 0.1,
+      "d_above": 0.1,
+      "max_se_beta": 0.05,
+      "min_total_span": 0.2,
+      "max_se_iota": 0.05,
+      "se_point": 0.013,
+      "block_corr": 0.6
+     }
+    },
+    "identified": true,
+    "status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+    "rule": {
+     "d_min": 0.05,
+     "target_below": 0.2,
+     "target_above": 0.15,
+     "max_families": 4,
+     "include_core_rungs": true,
+     "min_separation": 0.05
+    }
+   },
+   "selection_trace": [
+    "MK1: straddling, leverage 0.0655, new group marker_thus",
+    "MK4: straddling, leverage 0.0626, new group marker_whereas",
+    "MK2: straddling, leverage 0.0600, new group marker_hence",
+    "MK5: straddling, leverage 0.0413, new group marker_indeed"
+   ],
+   "backups": {
+    "fully_admissible_families": [
+     "MK4",
+     "MK5",
+     "MK6"
+    ],
+    "n_fully_admissible": 3,
+    "backups": [],
+    "backup_entries": [],
+    "n_spare_admissible": 0,
+    "support_count_basis": "families with a rung passing the full LOCAL rule (folded V_stab and V_diff included) from a core-admissible tier",
+    "meets_min_qualified": false,
+    "min_qualified": 5,
+    "gate2_5_qualified": [
+     "MK1",
+     "MK2",
+     "MK3",
+     "MK4",
+     "MK5",
+     "MK6",
+     "MK8",
+     "RF12",
+     "RF6",
+     "XC1",
+     "XC3"
+    ],
+    "n_gate2_5_qualified": 11,
+    "recorded_backups": [
+     "MK1",
+     "MK2"
+    ],
+    "recorded_backups_admissible": [],
+    "recorded_backups_inadmissible": [
+     "MK1",
+     "MK2"
+    ]
+   }
+  },
+  {
+   "tree": "v7",
+   "model": "qwen3-4b",
+   "iota_a": 0.6848958333333334,
+   "m_star": 12,
+   "iota_a_recorded": 0.682726974762373,
+   "chance_basis": "unconstrained-cell (\u00a713.2, corrected; dci1v8dev.chance_basis); pre-screen \u03ba on the ladder run's unconstrained cell",
+   "folded_stability_source": "recomputed on the corrected chance basis (10000 resamples)",
+   "n_rows": 111,
+   "n_folded_stable": 13,
+   "n_unfolded_stable": 54,
+   "n_local_valid": 13,
+   "n_spectrum_valid": 44,
+   "n_spectrum_valid_inside_v_head": 35,
+   "n_spectrum_valid_beyond_v_head": 9,
+   "spectrum_valid_range": [
+    0.21744791666666666,
+    0.92578125
+   ],
+   "spectrum_valid_below": 27,
+   "spectrum_valid_above": 17,
+   "spectrum_valid_families": [
+    "MK1",
+    "MK2",
+    "MK3",
+    "MK4",
+    "MK5",
+    "MK6",
+    "MK7",
+    "MK8",
+    "RF12",
+    "RF6",
+    "XC1",
+    "XC3"
+   ],
+   "folded_pool_range": {
+    "n": 13,
+    "range": [
+     0.6197916666666666,
+     0.7669270833333334
+    ],
+    "span": 0.14713541666666674
+   },
+   "core_references": {
+    "MK1": 6,
+    "MK6": 8,
+    "MK7": 2
+   },
+   "v7_spectrum_identified": false,
+   "v7_gate3c_spectrum_met": null,
+   "selection": {
+    "iota_a": 0.6848958333333334,
+    "families": [
+     "MK3",
+     "MK4",
+     "MK2",
+     "MK1"
+    ],
+    "points": [
+     {
+      "candidate": "MK1:8",
+      "family": "MK1",
+      "severity": 8,
+      "iota": 0.5520833333333334,
+      "se_iota": 0.027683312687212618,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_thus"
+     },
+     {
+      "candidate": "MK1:6",
+      "family": "MK1",
+      "severity": 6,
+      "iota": 0.6861979166666666,
+      "side": "core",
+      "se_iota": 0.024649000028815714,
+      "role": "CORE_CENTRE",
+      "structural_tier": 1,
+      "feature_group": "marker_thus"
+     },
+     {
+      "candidate": "MK1:2",
+      "family": "MK1",
+      "severity": 2,
+      "iota": 0.9153645833333334,
+      "se_iota": 0.01505532126837071,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_thus"
+     },
+     {
+      "candidate": "MK2:8",
+      "family": "MK2",
+      "severity": 8,
+      "iota": 0.47265625,
+      "se_iota": 0.02759193803480017,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_hence"
+     },
+     {
+      "candidate": "MK2:2",
+      "family": "MK2",
+      "severity": 2,
+      "iota": 0.859375,
+      "se_iota": 0.01941844057652632,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_hence"
+     },
+     {
+      "candidate": "MK3:2",
+      "family": "MK3",
+      "severity": 2,
+      "iota": 0.3971354166666667,
+      "se_iota": 0.027523651418585995,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_though"
+     },
+     {
+      "candidate": "MK3:1",
+      "family": "MK3",
+      "severity": 1,
+      "iota": 0.8650065530799476,
+      "se_iota": 0.01829045086066573,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_though"
+     },
+     {
+      "candidate": "MK4:3",
+      "family": "MK4",
+      "severity": 3,
+      "iota": 0.4153645833333333,
+      "se_iota": 0.026722496135568923,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_whereas"
+     },
+     {
+      "candidate": "MK4:2",
+      "family": "MK4",
+      "severity": 2,
+      "iota": 0.8631921824104235,
+      "se_iota": 0.01826903827617292,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_whereas"
+     }
+    ],
+    "slots": {
+     "X1": "MK3:2",
+     "X2": "MK3:1",
+     "X3": "MK4:3",
+     "X4": "MK4:2",
+     "X5": "MK2:8",
+     "X6": "MK2:2",
+     "X7": "MK1:8",
+     "X8": "MK1:6",
+     "X9": "MK1:2"
+    },
+    "n_spectrum_references": 8,
+    "per_family": {
+     "MK3": {
+      "n_points": 2,
+      "leverage": 0.10945170014432744,
+      "min_iota": 0.3971354166666667,
+      "max_iota": 0.8650065530799476
+     },
+     "MK4": {
+      "n_points": 2,
+      "leverage": 0.10027477924757552,
+      "min_iota": 0.4153645833333333,
+      "max_iota": 0.8631921824104235
+     },
+     "MK2": {
+      "n_points": 2,
+      "leverage": 0.07477569580078125,
+      "min_iota": 0.47265625,
+      "max_iota": 0.859375
+     },
+     "MK1": {
+      "n_points": 3,
+      "leverage": 0.06749244972511574,
+      "min_iota": 0.5520833333333334,
+      "max_iota": 0.9153645833333334
+     }
+    },
+    "coverage": {
+     "identified": true,
+     "reasons": [],
+     "n_points": 9,
+     "n_below": 4,
+     "n_above": 5,
+     "families_below": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4"
+     ],
+     "families_above": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4"
+     ],
+     "farthest_below": 0.3971354166666667,
+     "farthest_above": 0.9153645833333334,
+     "total_span": 0.5182291666666667,
+     "imprecise": [],
+     "n_families": 4,
+     "offset_below": 0.2877604166666667,
+     "offset_above": 0.23046875,
+     "projection": {
+      "se_beta": 0.013858152371342664,
+      "leverage": 0.3519946249178,
+      "per_family": {
+       "MK3": 0.10945170014432744,
+       "MK4": 0.10027477924757552,
+       "MK2": 0.07477569580078125,
+       "MK1": 0.06749244972511574
+      },
+      "half_width_95": 0.02716197864783162,
+      "half_width_planning": 0.03646079888900255,
+      "n_points": 9,
+      "n_families": 4,
+      "se_point": 0.013,
+      "block_corr": 0.6
+     },
+     "status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "rule": {
+      "min_points_below": 2,
+      "min_points_above": 2,
+      "min_families_per_side": 2,
+      "d_below": 0.1,
+      "d_above": 0.1,
+      "max_se_beta": 0.05,
+      "min_total_span": 0.2,
+      "max_se_iota": 0.05,
+      "se_point": 0.013,
+      "block_corr": 0.6
+     }
+    },
+    "identified": true,
+    "status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+    "rule": {
+     "d_min": 0.05,
+     "target_below": 0.2,
+     "target_above": 0.15,
+     "max_families": 4,
+     "include_core_rungs": true,
+     "min_separation": 0.05
+    }
+   },
+   "selection_trace": [
+    "MK3: straddling, leverage 0.1095, new group marker_though",
+    "MK4: straddling, leverage 0.1003, new group marker_whereas",
+    "MK2: straddling, leverage 0.0748, new group marker_hence",
+    "MK1: straddling, leverage 0.0675, new group marker_thus"
+   ],
+   "backups": {
+    "fully_admissible_families": [
+     "MK1",
+     "MK2",
+     "MK5",
+     "MK6",
+     "MK7",
+     "XC3"
+    ],
+    "n_fully_admissible": 6,
+    "backups": [
+     "MK5",
+     "MK2"
+    ],
+    "backup_entries": [
+     {
+      "family": "MK5",
+      "candidate": "MK5:2",
+      "iota": 0.72265625,
+      "distance": 0.03776041666666663,
+      "structural_tier": 1,
+      "feature_group": "marker_indeed"
+     },
+     {
+      "family": "MK2",
+      "candidate": "MK2:7",
+      "iota": 0.6458333333333334,
+      "distance": 0.0390625,
+      "structural_tier": 1,
+      "feature_group": "marker_hence"
+     }
+    ],
+    "n_spare_admissible": 3,
+    "support_count_basis": "families with a rung passing the full LOCAL rule (folded V_stab and V_diff included) from a core-admissible tier",
+    "meets_min_qualified": true,
+    "min_qualified": 5,
+    "gate2_5_qualified": [
+     "CR6",
+     "MK1",
+     "MK2",
+     "MK3",
+     "MK4",
+     "MK5",
+     "MK6",
+     "MK7",
+     "MK8",
+     "XC1",
+     "XC3"
+    ],
+    "n_gate2_5_qualified": 11,
+    "recorded_backups": [
+     "CR6",
+     "MK2"
+    ],
+    "recorded_backups_admissible": [
+     "MK2"
+    ],
+    "recorded_backups_inadmissible": [
+     "CR6"
+    ]
+   }
+  },
+  {
+   "tree": "v7",
+   "model": "qwen3-4b-instruct-2507",
+   "iota_a": 0.5651041666666666,
+   "m_star": 11,
+   "iota_a_recorded": 0.5398656793525056,
+   "chance_basis": "unconstrained-cell (\u00a713.2, corrected; dci1v8dev.chance_basis); pre-screen \u03ba on the ladder run's unconstrained cell",
+   "folded_stability_source": "recomputed on the corrected chance basis (10000 resamples)",
+   "n_rows": 112,
+   "n_folded_stable": 11,
+   "n_unfolded_stable": 48,
+   "n_local_valid": 10,
+   "n_spectrum_valid": 37,
+   "n_spectrum_valid_inside_v_head": 29,
+   "n_spectrum_valid_beyond_v_head": 8,
+   "spectrum_valid_range": [
+    0.21875,
+    0.9427083333333334
+   ],
+   "spectrum_valid_below": 14,
+   "spectrum_valid_above": 23,
+   "spectrum_valid_families": [
+    "CL7",
+    "MK1",
+    "MK2",
+    "MK3",
+    "MK4",
+    "MK5",
+    "MK6",
+    "MK7",
+    "MK8",
+    "XC1",
+    "XC3"
+   ],
+   "folded_pool_range": {
+    "n": 11,
+    "range": [
+     0.4973958333333333,
+     0.62109375
+    ],
+    "span": 0.12369791666666669
+   },
+   "core_references": {
+    "MK1": 7,
+    "MK3": 3,
+    "MK4": 5
+   },
+   "v7_spectrum_identified": false,
+   "v7_gate3c_spectrum_met": null,
+   "selection": {
+    "iota_a": 0.5651041666666666,
+    "families": [
+     "MK3",
+     "MK8",
+     "MK4",
+     "XC1"
+    ],
+    "points": [
+     {
+      "candidate": "MK3:4",
+      "family": "MK3",
+      "severity": 4,
+      "iota": 0.3190104166666667,
+      "se_iota": 0.025793531789082585,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_though"
+     },
+     {
+      "candidate": "MK3:3",
+      "family": "MK3",
+      "severity": 3,
+      "iota": 0.5520833333333334,
+      "side": "core",
+      "se_iota": 0.02859186471777519,
+      "role": "CORE_CENTRE",
+      "structural_tier": 1,
+      "feature_group": "marker_though"
+     },
+     {
+      "candidate": "MK3:2",
+      "family": "MK3",
+      "severity": 2,
+      "iota": 0.8776041666666666,
+      "se_iota": 0.017803478293598695,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_though"
+     },
+     {
+      "candidate": "MK4:7",
+      "family": "MK4",
+      "severity": 7,
+      "iota": 0.3619791666666667,
+      "se_iota": 0.02405355512823437,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_whereas"
+     },
+     {
+      "candidate": "MK4:5",
+      "family": "MK4",
+      "severity": 5,
+      "iota": 0.5572916666666666,
+      "side": "core",
+      "se_iota": 0.023998136372948554,
+      "role": "CORE_CENTRE",
+      "structural_tier": 1,
+      "feature_group": "marker_whereas"
+     },
+     {
+      "candidate": "MK4:4",
+      "family": "MK4",
+      "severity": 4,
+      "iota": 0.6666666666666666,
+      "se_iota": 0.023595279228302162,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_whereas"
+     },
+     {
+      "candidate": "MK8:8",
+      "family": "MK8",
+      "severity": 8,
+      "iota": 0.28125,
+      "se_iota": 0.024872877056926996,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_overall"
+     },
+     {
+      "candidate": "MK8:2",
+      "family": "MK8",
+      "severity": 2,
+      "iota": 0.7981770833333334,
+      "se_iota": 0.02152549701361643,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_overall"
+     },
+     {
+      "candidate": "XC1:2",
+      "family": "XC1",
+      "severity": 2,
+      "iota": 0.43155149934810955,
+      "se_iota": 0.023598904986764993,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 2,
+      "feature_group": "semicolon"
+     },
+     {
+      "candidate": "XC1:1",
+      "family": "XC1",
+      "severity": 1,
+      "iota": 0.7263581488933601,
+      "se_iota": 0.026872541691383197,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 2,
+      "feature_group": "semicolon"
+     }
+    ],
+    "slots": {
+     "X1": "MK3:4",
+     "X2": "MK3:3",
+     "X3": "MK3:2",
+     "X4": "MK8:8",
+     "X5": "MK8:2",
+     "X6": "MK4:7",
+     "X7": "MK4:5",
+     "X8": "MK4:4",
+     "X9": "XC1:2",
+     "X10": "XC1:1"
+    },
+    "n_spectrum_references": 8,
+    "per_family": {
+     "MK3": {
+      "n_points": 3,
+      "leverage": 0.15743792498553238,
+      "min_iota": 0.3190104166666667,
+      "max_iota": 0.8776041666666666
+     },
+     "MK8": {
+      "n_points": 2,
+      "leverage": 0.1336068047417535,
+      "min_iota": 0.28125,
+      "max_iota": 0.7981770833333334
+     },
+     "MK4": {
+      "n_points": 3,
+      "leverage": 0.04764811197916665,
+      "min_iota": 0.3619791666666667,
+      "max_iota": 0.6666666666666666
+     },
+     "XC1": {
+      "n_points": 2,
+      "leverage": 0.043455480308048106,
+      "min_iota": 0.43155149934810955,
+      "max_iota": 0.7263581488933601
+     }
+    },
+    "coverage": {
+     "identified": true,
+     "reasons": [],
+     "n_points": 10,
+     "n_below": 6,
+     "n_above": 4,
+     "families_below": [
+      "MK3",
+      "MK4",
+      "MK8",
+      "XC1"
+     ],
+     "families_above": [
+      "MK3",
+      "MK4",
+      "MK8",
+      "XC1"
+     ],
+     "farthest_below": 0.28125,
+     "farthest_above": 0.8776041666666666,
+     "total_span": 0.5963541666666666,
+     "imprecise": [],
+     "n_families": 4,
+     "offset_below": 0.28385416666666663,
+     "offset_above": 0.3125,
+     "projection": {
+      "se_beta": 0.013300175433506312,
+      "leverage": 0.3821483220145006,
+      "per_family": {
+       "MK3": 0.15743792498553238,
+       "MK8": 0.1336068047417535,
+       "MK4": 0.04764811197916665,
+       "XC1": 0.043455480308048106
+      },
+      "half_width_95": 0.02606834384967237,
+      "half_width_planning": 0.0349927615655551,
+      "n_points": 10,
+      "n_families": 4,
+      "se_point": 0.013,
+      "block_corr": 0.6
+     },
+     "status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "rule": {
+      "min_points_below": 2,
+      "min_points_above": 2,
+      "min_families_per_side": 2,
+      "d_below": 0.1,
+      "d_above": 0.1,
+      "max_se_beta": 0.05,
+      "min_total_span": 0.2,
+      "max_se_iota": 0.05,
+      "se_point": 0.013,
+      "block_corr": 0.6
+     }
+    },
+    "identified": true,
+    "status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+    "rule": {
+     "d_min": 0.05,
+     "target_below": 0.2,
+     "target_above": 0.15,
+     "max_families": 4,
+     "include_core_rungs": true,
+     "min_separation": 0.05
+    }
+   },
+   "selection_trace": [
+    "MK3: straddling, leverage 0.1574, new group marker_though",
+    "MK8: straddling, leverage 0.1336, new group marker_overall",
+    "MK4: straddling, leverage 0.0476, new group marker_whereas",
+    "XC1: straddling, leverage 0.0435, new group semicolon"
+   ],
+   "backups": {
+    "fully_admissible_families": [
+     "MK2",
+     "MK3",
+     "MK4",
+     "MK5",
+     "MK6",
+     "MK7",
+     "MK8"
+    ],
+    "n_fully_admissible": 7,
+    "backups": [
+     "MK8",
+     "MK2"
+    ],
+    "backup_entries": [
+     {
+      "family": "MK8",
+      "candidate": "MK8:4",
+      "iota": 0.5651041666666666,
+      "distance": 0.0,
+      "structural_tier": 1,
+      "feature_group": "marker_overall"
+     },
+     {
+      "family": "MK2",
+      "candidate": "MK2:7",
+      "iota": 0.5598958333333334,
+      "distance": 0.005208333333333259,
+      "structural_tier": 1,
+      "feature_group": "marker_hence"
+     }
+    ],
+    "n_spare_admissible": 5,
+    "support_count_basis": "families with a rung passing the full LOCAL rule (folded V_stab and V_diff included) from a core-admissible tier",
+    "meets_min_qualified": true,
+    "min_qualified": 5,
+    "gate2_5_qualified": [
+     "CR6",
+     "MK1",
+     "MK2",
+     "MK3",
+     "MK4",
+     "MK5",
+     "MK6",
+     "MK7",
+     "MK8",
+     "XC1",
+     "XC3"
+    ],
+    "n_gate2_5_qualified": 11,
+    "recorded_backups": [
+     "CR6",
+     "MK2"
+    ],
+    "recorded_backups_admissible": [
+     "MK2"
+    ],
+    "recorded_backups_inadmissible": [
+     "CR6"
+    ]
+   }
+  },
+  {
+   "tree": "v6",
+   "model": "gemma-3n-e2b-it",
+   "iota_a": 0.6341145833333334,
+   "m_star": 10,
+   "iota_a_recorded": 0.6288591712068681,
+   "chance_basis": "unconstrained-cell (\u00a713.2, corrected; dci1v8dev.chance_basis); pre-screen \u03ba on the ladder run's unconstrained cell",
+   "folded_stability_source": "recomputed on the corrected chance basis (10000 resamples)",
+   "n_rows": 133,
+   "n_folded_stable": 20,
+   "n_unfolded_stable": 68,
+   "n_local_valid": 19,
+   "n_spectrum_valid": 57,
+   "n_spectrum_valid_inside_v_head": 55,
+   "n_spectrum_valid_beyond_v_head": 2,
+   "spectrum_valid_range": [
+    0.21744791666666666,
+    0.9088541666666666
+   ],
+   "spectrum_valid_below": 37,
+   "spectrum_valid_above": 20,
+   "spectrum_valid_families": [
+    "CL7",
+    "CL8",
+    "CR5",
+    "MK1",
+    "MK2",
+    "MK3",
+    "MK4",
+    "MK5",
+    "MK6",
+    "MK8",
+    "XC1",
+    "XC3"
+   ],
+   "folded_pool_range": {
+    "n": 20,
+    "range": [
+     0.5572916666666666,
+     0.7161458333333334
+    ],
+    "span": 0.15885416666666674
+   },
+   "core_references": {
+    "XC3": 10,
+    "MK4": 8,
+    "MK2": 8
+   },
+   "v7_spectrum_identified": true,
+   "v7_gate3c_spectrum_met": null,
+   "selection": {
+    "iota_a": 0.6341145833333334,
+    "families": [
+     "MK5",
+     "MK4",
+     "MK1",
+     "MK2"
+    ],
+    "points": [
+     {
+      "candidate": "MK1:7",
+      "family": "MK1",
+      "severity": 7,
+      "iota": 0.4348958333333333,
+      "se_iota": 0.021648240619011813,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_thus"
+     },
+     {
+      "candidate": "MK1:2",
+      "family": "MK1",
+      "severity": 2,
+      "iota": 0.71875,
+      "se_iota": 0.027724325024791482,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_thus"
+     },
+     {
+      "candidate": "MK2:7",
+      "family": "MK2",
+      "severity": 7,
+      "iota": 0.5716145833333334,
+      "se_iota": 0.0224317849729244,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_hence"
+     },
+     {
+      "candidate": "MK2:8",
+      "family": "MK2",
+      "severity": 8,
+      "iota": 0.59375,
+      "side": "core",
+      "se_iota": 0.021727641915568502,
+      "role": "CORE_CENTRE",
+      "structural_tier": 1,
+      "feature_group": "marker_hence"
+     },
+     {
+      "candidate": "MK2:2",
+      "family": "MK2",
+      "severity": 2,
+      "iota": 0.7942708333333334,
+      "se_iota": 0.019711528016184816,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_hence"
+     },
+     {
+      "candidate": "MK4:1",
+      "family": "MK4",
+      "severity": 1,
+      "iota": 0.4530026109660574,
+      "se_iota": 0.02573636471034905,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_whereas"
+     },
+     {
+      "candidate": "MK4:8",
+      "family": "MK4",
+      "severity": 8,
+      "iota": 0.6171875,
+      "side": "core",
+      "se_iota": 0.02245334097627669,
+      "role": "CORE_CENTRE",
+      "structural_tier": 1,
+      "feature_group": "marker_whereas"
+     },
+     {
+      "candidate": "MK4:5",
+      "family": "MK4",
+      "severity": 5,
+      "iota": 0.7473958333333334,
+      "se_iota": 0.021370920406047086,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_whereas"
+     },
+     {
+      "candidate": "MK5:11",
+      "family": "MK5",
+      "severity": 11,
+      "iota": 0.4270833333333333,
+      "se_iota": 0.020210475363706626,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_indeed"
+     },
+     {
+      "candidate": "MK5:5",
+      "family": "MK5",
+      "severity": 5,
+      "iota": 0.765625,
+      "se_iota": 0.021737444596832193,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_indeed"
+     }
+    ],
+    "slots": {
+     "X1": "MK5:11",
+     "X2": "MK5:5",
+     "X3": "MK4:1",
+     "X4": "MK4:8",
+     "X5": "MK4:5",
+     "X6": "MK1:7",
+     "X7": "MK1:2",
+     "X8": "MK2:7",
+     "X9": "MK2:8",
+     "X10": "MK2:2"
+    },
+    "n_spectrum_references": 8,
+    "per_family": {
+     "MK5": {
+      "n_points": 2,
+      "leverage": 0.057305230034722224,
+      "min_iota": 0.4270833333333333,
+      "max_iota": 0.765625
+     },
+     "MK4": {
+      "n_points": 3,
+      "leverage": 0.04352608574410697,
+      "min_iota": 0.4530026109660574,
+      "max_iota": 0.7473958333333334
+     },
+     "MK1": {
+      "n_points": 2,
+      "leverage": 0.040286593967013895,
+      "min_iota": 0.4348958333333333,
+      "max_iota": 0.71875
+     },
+     "MK2": {
+      "n_points": 3,
+      "leverage": 0.0300914623119213,
+      "min_iota": 0.5716145833333334,
+      "max_iota": 0.7942708333333334
+     }
+    },
+    "coverage": {
+     "identified": true,
+     "reasons": [],
+     "n_points": 10,
+     "n_below": 6,
+     "n_above": 4,
+     "families_below": [
+      "MK1",
+      "MK2",
+      "MK4",
+      "MK5"
+     ],
+     "families_above": [
+      "MK1",
+      "MK2",
+      "MK4",
+      "MK5"
+     ],
+     "farthest_below": 0.4270833333333333,
+     "farthest_above": 0.7942708333333334,
+     "total_span": 0.36718750000000006,
+     "imprecise": [],
+     "n_families": 4,
+     "offset_below": 0.20703125000000006,
+     "offset_above": 0.16015625,
+     "projection": {
+      "se_beta": 0.019870535934571304,
+      "leverage": 0.17120937205776438,
+      "per_family": {
+       "MK5": 0.057305230034722224,
+       "MK4": 0.04352608574410697,
+       "MK1": 0.040286593967013895,
+       "MK2": 0.0300914623119213
+      },
+      "half_width_95": 0.038946250431759755,
+      "half_width_planning": 0.0522793800438571,
+      "n_points": 10,
+      "n_families": 4,
+      "se_point": 0.013,
+      "block_corr": 0.6
+     },
+     "status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "rule": {
+      "min_points_below": 2,
+      "min_points_above": 2,
+      "min_families_per_side": 2,
+      "d_below": 0.1,
+      "d_above": 0.1,
+      "max_se_beta": 0.05,
+      "min_total_span": 0.2,
+      "max_se_iota": 0.05,
+      "se_point": 0.013,
+      "block_corr": 0.6
+     }
+    },
+    "identified": true,
+    "status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+    "rule": {
+     "d_min": 0.05,
+     "target_below": 0.2,
+     "target_above": 0.15,
+     "max_families": 4,
+     "include_core_rungs": true,
+     "min_separation": 0.05
+    }
+   },
+   "selection_trace": [
+    "MK5: straddling, leverage 0.0573, new group marker_indeed",
+    "MK4: straddling, leverage 0.0435, new group marker_whereas",
+    "MK1: straddling, leverage 0.0403, new group marker_thus",
+    "MK2: straddling, leverage 0.0301, new group marker_hence"
+   ],
+   "backups": {
+    "fully_admissible_families": [
+     "MK1",
+     "MK2",
+     "MK4",
+     "MK5",
+     "XC3"
+    ],
+    "n_fully_admissible": 5,
+    "backups": [
+     "MK5",
+     "MK1"
+    ],
+    "backup_entries": [
+     {
+      "family": "MK5",
+      "candidate": "MK5:7",
+      "iota": 0.6354166666666666,
+      "distance": 0.0013020833333332593,
+      "structural_tier": 1,
+      "feature_group": "marker_indeed"
+     },
+     {
+      "family": "MK1",
+      "candidate": "MK1:1",
+      "iota": 0.6044386422976501,
+      "distance": 0.029675941035683273,
+      "structural_tier": 1,
+      "feature_group": "marker_thus"
+     }
+    ],
+    "n_spare_admissible": 2,
+    "support_count_basis": "families with a rung passing the full LOCAL rule (folded V_stab and V_diff included) from a core-admissible tier",
+    "meets_min_qualified": true,
+    "min_qualified": 5,
+    "gate2_5_qualified": [
+     "CR5",
+     "CR6",
+     "MK1",
+     "MK2",
+     "MK3",
+     "MK4",
+     "MK5",
+     "MK6",
+     "MK8",
+     "RF12",
+     "RF6",
+     "XC1",
+     "XC3"
+    ],
+    "n_gate2_5_qualified": 13,
+    "recorded_backups": [
+     "CR5",
+     "CR6"
+    ],
+    "recorded_backups_admissible": [],
+    "recorded_backups_inadmissible": [
+     "CR5",
+     "CR6"
+    ]
+   }
+  },
+  {
+   "tree": "v6",
+   "model": "gemma-3n-e4b-it",
+   "iota_a": 0.7161458333333334,
+   "m_star": 9,
+   "iota_a_recorded": 0.7094301899366878,
+   "chance_basis": "unconstrained-cell (\u00a713.2, corrected; dci1v8dev.chance_basis); pre-screen \u03ba on the ladder run's unconstrained cell",
+   "folded_stability_source": "recomputed on the corrected chance basis (10000 resamples)",
+   "n_rows": 132,
+   "n_folded_stable": 10,
+   "n_unfolded_stable": 77,
+   "n_local_valid": 8,
+   "n_spectrum_valid": 70,
+   "n_spectrum_valid_inside_v_head": 60,
+   "n_spectrum_valid_beyond_v_head": 10,
+   "spectrum_valid_range": [
+    0.2565104166666667,
+    0.9309895833333334
+   ],
+   "spectrum_valid_below": 53,
+   "spectrum_valid_above": 17,
+   "spectrum_valid_families": [
+    "CL8",
+    "CR5",
+    "MK1",
+    "MK2",
+    "MK3",
+    "MK4",
+    "MK5",
+    "MK6",
+    "MK8",
+    "XC1",
+    "XC3"
+   ],
+   "folded_pool_range": {
+    "n": 10,
+    "range": [
+     0.6432947583390061,
+     0.76171875
+    ],
+    "span": 0.11842399166099393
+   },
+   "core_references": {
+    "MK1": 6,
+    "MK5": 6,
+    "MK4": 8
+   },
+   "v7_spectrum_identified": false,
+   "v7_gate3c_spectrum_met": null,
+   "selection": {
+    "iota_a": 0.7161458333333334,
+    "families": [
+     "MK1",
+     "MK2",
+     "MK4",
+     "MK5"
+    ],
+    "points": [
+     {
+      "candidate": "MK1:10",
+      "family": "MK1",
+      "severity": 10,
+      "iota": 0.4986979166666667,
+      "se_iota": 0.020846750356196434,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_thus"
+     },
+     {
+      "candidate": "MK1:6",
+      "family": "MK1",
+      "severity": 6,
+      "iota": 0.70703125,
+      "side": "core",
+      "se_iota": 0.02069632598729236,
+      "role": "CORE_CENTRE",
+      "structural_tier": 1,
+      "feature_group": "marker_thus"
+     },
+     {
+      "candidate": "MK1:2",
+      "family": "MK1",
+      "severity": 2,
+      "iota": 0.8893229166666666,
+      "se_iota": 0.015189154196039459,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_thus"
+     },
+     {
+      "candidate": "MK2:10",
+      "family": "MK2",
+      "severity": 10,
+      "iota": 0.5078125,
+      "se_iota": 0.022604639152700976,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_hence"
+     },
+     {
+      "candidate": "MK2:2",
+      "family": "MK2",
+      "severity": 2,
+      "iota": 0.87890625,
+      "se_iota": 0.014416810083085286,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_hence"
+     },
+     {
+      "candidate": "MK4:9",
+      "family": "MK4",
+      "severity": 9,
+      "iota": 0.5455729166666666,
+      "se_iota": 0.023082399076341912,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_whereas"
+     },
+     {
+      "candidate": "MK4:8",
+      "family": "MK4",
+      "severity": 8,
+      "iota": 0.6705729166666666,
+      "side": "core",
+      "se_iota": 0.021276634178218033,
+      "role": "CORE_CENTRE",
+      "structural_tier": 1,
+      "feature_group": "marker_whereas"
+     },
+     {
+      "candidate": "MK4:4",
+      "family": "MK4",
+      "severity": 4,
+      "iota": 0.8763020833333334,
+      "se_iota": 0.015111816437826872,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_whereas"
+     },
+     {
+      "candidate": "MK5:7",
+      "family": "MK5",
+      "severity": 7,
+      "iota": 0.5625,
+      "se_iota": 0.023133297058780297,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_indeed"
+     },
+     {
+      "candidate": "MK5:6",
+      "family": "MK5",
+      "severity": 6,
+      "iota": 0.6940104166666666,
+      "side": "core",
+      "se_iota": 0.020862073530628394,
+      "role": "CORE_CENTRE",
+      "structural_tier": 1,
+      "feature_group": "marker_indeed"
+     },
+     {
+      "candidate": "MK5:5",
+      "family": "MK5",
+      "severity": 5,
+      "iota": 0.8854166666666666,
+      "se_iota": 0.01379540601674911,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_indeed"
+     }
+    ],
+    "slots": {
+     "X1": "MK1:10",
+     "X2": "MK1:6",
+     "X3": "MK1:2",
+     "X4": "MK2:10",
+     "X5": "MK2:2",
+     "X6": "MK4:9",
+     "X7": "MK4:8",
+     "X8": "MK4:4",
+     "X9": "MK5:7",
+     "X10": "MK5:6",
+     "X11": "MK5:5"
+    },
+    "n_spectrum_references": 8,
+    "per_family": {
+     "MK1": {
+      "n_points": 3,
+      "leverage": 0.07640697337962961,
+      "min_iota": 0.4986979166666667,
+      "max_iota": 0.8893229166666666
+     },
+     "MK2": {
+      "n_points": 2,
+      "leverage": 0.06885528564453125,
+      "min_iota": 0.5078125,
+      "max_iota": 0.87890625
+     },
+     "MK4": {
+      "n_points": 3,
+      "leverage": 0.05577709056712966,
+      "min_iota": 0.5455729166666666,
+      "max_iota": 0.8763020833333334
+     },
+     "MK5": {
+      "n_points": 3,
+      "leverage": 0.05273550528067129,
+      "min_iota": 0.5625,
+      "max_iota": 0.8854166666666666
+     }
+    },
+    "coverage": {
+     "identified": true,
+     "reasons": [],
+     "n_points": 11,
+     "n_below": 7,
+     "n_above": 4,
+     "families_below": [
+      "MK1",
+      "MK2",
+      "MK4",
+      "MK5"
+     ],
+     "families_above": [
+      "MK1",
+      "MK2",
+      "MK4",
+      "MK5"
+     ],
+     "farthest_below": 0.4986979166666667,
+     "farthest_above": 0.8893229166666666,
+     "total_span": 0.39062499999999994,
+     "imprecise": [],
+     "n_families": 4,
+     "offset_below": 0.21744791666666669,
+     "offset_above": 0.17317708333333326,
+     "projection": {
+      "se_beta": 0.016321086027405098,
+      "leverage": 0.25377485487196183,
+      "per_family": {
+       "MK1": 0.07640697337962961,
+       "MK2": 0.06885528564453125,
+       "MK4": 0.05577709056712966,
+       "MK5": 0.05273550528067129
+      },
+      "half_width_95": 0.031989328613713994,
+      "half_width_planning": 0.04294077733810281,
+      "n_points": 11,
+      "n_families": 4,
+      "se_point": 0.013,
+      "block_corr": 0.6
+     },
+     "status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "rule": {
+      "min_points_below": 2,
+      "min_points_above": 2,
+      "min_families_per_side": 2,
+      "d_below": 0.1,
+      "d_above": 0.1,
+      "max_se_beta": 0.05,
+      "min_total_span": 0.2,
+      "max_se_iota": 0.05,
+      "se_point": 0.013,
+      "block_corr": 0.6
+     }
+    },
+    "identified": true,
+    "status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+    "rule": {
+     "d_min": 0.05,
+     "target_below": 0.2,
+     "target_above": 0.15,
+     "max_families": 4,
+     "include_core_rungs": true,
+     "min_separation": 0.05
+    }
+   },
+   "selection_trace": [
+    "MK1: straddling, leverage 0.0764, new group marker_thus",
+    "MK2: straddling, leverage 0.0689, new group marker_hence",
+    "MK4: straddling, leverage 0.0558, new group marker_whereas",
+    "MK5: straddling, leverage 0.0527, new group marker_indeed"
+   ],
+   "backups": {
+    "fully_admissible_families": [
+     "MK1",
+     "MK2",
+     "MK4",
+     "MK5",
+     "MK6",
+     "XC3"
+    ],
+    "n_fully_admissible": 6,
+    "backups": [
+     "MK6",
+     "MK2"
+    ],
+    "backup_entries": [
+     {
+      "family": "MK6",
+      "candidate": "MK6:3",
+      "iota": 0.6640625,
+      "distance": 0.05208333333333337,
+      "structural_tier": 1,
+      "feature_group": "marker_namely"
+     },
+     {
+      "family": "MK2",
+      "candidate": "MK2:7",
+      "iota": 0.6614583333333334,
+      "distance": 0.0546875,
+      "structural_tier": 1,
+      "feature_group": "marker_hence"
+     }
+    ],
+    "n_spare_admissible": 3,
+    "support_count_basis": "families with a rung passing the full LOCAL rule (folded V_stab and V_diff included) from a core-admissible tier",
+    "meets_min_qualified": true,
+    "min_qualified": 5,
+    "gate2_5_qualified": [
+     "CR6",
+     "MK1",
+     "MK2",
+     "MK3",
+     "MK4",
+     "MK5",
+     "MK6",
+     "MK8",
+     "RF12",
+     "RF6",
+     "XC1",
+     "XC3"
+    ],
+    "n_gate2_5_qualified": 12,
+    "recorded_backups": [
+     "CR6",
+     "MK2"
+    ],
+    "recorded_backups_admissible": [
+     "MK2"
+    ],
+    "recorded_backups_inadmissible": [
+     "CR6"
+    ]
+   }
+  },
+  {
+   "tree": "v6",
+   "model": "qwen3-4b",
+   "iota_a": 0.7057291666666666,
+   "m_star": 12,
+   "iota_a_recorded": 0.7039462911413132,
+   "chance_basis": "unconstrained-cell (\u00a713.2, corrected; dci1v8dev.chance_basis); pre-screen \u03ba on the ladder run's unconstrained cell",
+   "folded_stability_source": "recomputed on the corrected chance basis (10000 resamples)",
+   "n_rows": 111,
+   "n_folded_stable": 14,
+   "n_unfolded_stable": 55,
+   "n_local_valid": 14,
+   "n_spectrum_valid": 45,
+   "n_spectrum_valid_inside_v_head": 36,
+   "n_spectrum_valid_beyond_v_head": 9,
+   "spectrum_valid_range": [
+    0.22135416666666666,
+    0.9296875
+   ],
+   "spectrum_valid_below": 29,
+   "spectrum_valid_above": 16,
+   "spectrum_valid_families": [
+    "MK1",
+    "MK2",
+    "MK3",
+    "MK4",
+    "MK5",
+    "MK6",
+    "MK7",
+    "MK8",
+    "RF12",
+    "RF6",
+    "XC1",
+    "XC3"
+   ],
+   "folded_pool_range": {
+    "n": 14,
+    "range": [
+     0.6171875,
+     0.7669270833333334
+    ],
+    "span": 0.14973958333333337
+   },
+   "core_references": {},
+   "v7_spectrum_identified": null,
+   "v7_gate3c_spectrum_met": null,
+   "selection": {
+    "iota_a": 0.7057291666666666,
+    "families": [
+     "MK3",
+     "MK4",
+     "XC1",
+     "XC3"
+    ],
+    "points": [
+     {
+      "candidate": "MK3:2",
+      "family": "MK3",
+      "severity": 2,
+      "iota": 0.39453125,
+      "se_iota": 0.027841739567860953,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_though"
+     },
+     {
+      "candidate": "MK3:1",
+      "family": "MK3",
+      "severity": 1,
+      "iota": 0.8730366492146596,
+      "se_iota": 0.01760639906934907,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_though"
+     },
+     {
+      "candidate": "MK4:3",
+      "family": "MK4",
+      "severity": 3,
+      "iota": 0.4114583333333333,
+      "se_iota": 0.02610702966427272,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_whereas"
+     },
+     {
+      "candidate": "MK4:2",
+      "family": "MK4",
+      "severity": 2,
+      "iota": 0.8616187989556136,
+      "se_iota": 0.019914119834932346,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_whereas"
+     },
+     {
+      "candidate": "XC1:5",
+      "family": "XC1",
+      "severity": 5,
+      "iota": 0.4895833333333333,
+      "se_iota": 0.025168047042110824,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 2,
+      "feature_group": "semicolon"
+     },
+     {
+      "candidate": "XC1:1",
+      "family": "XC1",
+      "severity": 1,
+      "iota": 0.9202614379084967,
+      "se_iota": 0.013081131459758921,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 2,
+      "feature_group": "semicolon"
+     },
+     {
+      "candidate": "XC3:10",
+      "family": "XC3",
+      "severity": 10,
+      "iota": 0.4791666666666667,
+      "se_iota": 0.029616636245946695,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 2,
+      "feature_group": "sentence"
+     },
+     {
+      "candidate": "XC3:7",
+      "family": "XC3",
+      "severity": 7,
+      "iota": 0.8471160528144546,
+      "se_iota": 0.0192573325168498,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 2,
+      "feature_group": "sentence"
+     }
+    ],
+    "slots": {
+     "X1": "MK3:2",
+     "X2": "MK3:1",
+     "X3": "MK4:3",
+     "X4": "MK4:2",
+     "X5": "XC1:5",
+     "X6": "XC1:1",
+     "X7": "XC3:10",
+     "X8": "XC3:7"
+    },
+    "n_spectrum_references": 8,
+    "per_family": {
+     "MK3": {
+      "n_points": 2,
+      "leverage": 0.11448370853879039,
+      "min_iota": 0.39453125,
+      "max_iota": 0.8730366492146596
+     },
+     "MK4": {
+      "n_points": 2,
+      "leverage": 0.10132222240463407,
+      "min_iota": 0.4114583333333333,
+      "max_iota": 0.8616187989556136
+     },
+     "XC1": {
+      "n_points": 2,
+      "leverage": 0.09274181488022767,
+      "min_iota": 0.4895833333333333,
+      "max_iota": 0.9202614379084967
+     },
+     "XC3": {
+      "n_points": 2,
+      "leverage": 0.06769337538326695,
+      "min_iota": 0.4791666666666667,
+      "max_iota": 0.8471160528144546
+     }
+    },
+    "coverage": {
+     "identified": true,
+     "reasons": [],
+     "n_points": 8,
+     "n_below": 4,
+     "n_above": 4,
+     "families_below": [
+      "MK3",
+      "MK4",
+      "XC1",
+      "XC3"
+     ],
+     "families_above": [
+      "MK3",
+      "MK4",
+      "XC1",
+      "XC3"
+     ],
+     "farthest_below": 0.39453125,
+     "farthest_above": 0.9202614379084967,
+     "total_span": 0.5257301879084967,
+     "imprecise": [],
+     "n_families": 4,
+     "offset_below": 0.31119791666666663,
+     "offset_above": 0.21453227124183005,
+     "projection": {
+      "se_beta": 0.013404178975540864,
+      "leverage": 0.3762411212069191,
+      "per_family": {
+       "MK3": 0.11448370853879039,
+       "MK4": 0.10132222240463407,
+       "XC1": 0.09274181488022767,
+       "XC3": 0.06769337538326695
+      },
+      "half_width_95": 0.026272190792060092,
+      "half_width_planning": 0.035266394884648014,
+      "n_points": 8,
+      "n_families": 4,
+      "se_point": 0.013,
+      "block_corr": 0.6
+     },
+     "status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "rule": {
+      "min_points_below": 2,
+      "min_points_above": 2,
+      "min_families_per_side": 2,
+      "d_below": 0.1,
+      "d_above": 0.1,
+      "max_se_beta": 0.05,
+      "min_total_span": 0.2,
+      "max_se_iota": 0.05,
+      "se_point": 0.013,
+      "block_corr": 0.6
+     }
+    },
+    "identified": true,
+    "status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+    "rule": {
+     "d_min": 0.05,
+     "target_below": 0.2,
+     "target_above": 0.15,
+     "max_families": 4,
+     "include_core_rungs": true,
+     "min_separation": 0.05
+    }
+   },
+   "selection_trace": [
+    "MK3: straddling, leverage 0.1145, new group marker_though",
+    "MK4: straddling, leverage 0.1013, new group marker_whereas",
+    "XC1: straddling, leverage 0.0927, new group semicolon",
+    "XC3: straddling, leverage 0.0677, new group sentence"
+   ],
+   "backups": {
+    "fully_admissible_families": [
+     "MK1",
+     "MK2",
+     "MK5",
+     "MK6",
+     "MK7",
+     "XC1",
+     "XC3"
+    ],
+    "n_fully_admissible": 7,
+    "backups": [
+     "MK1",
+     "MK6"
+    ],
+    "backup_entries": [
+     {
+      "family": "MK1",
+      "candidate": "MK1:3",
+      "iota": 0.70703125,
+      "distance": 0.0013020833333333703,
+      "structural_tier": 1,
+      "feature_group": "marker_thus"
+     },
+     {
+      "family": "MK6",
+      "candidate": "MK6:7",
+      "iota": 0.7005208333333334,
+      "distance": 0.005208333333333259,
+      "structural_tier": 1,
+      "feature_group": "marker_namely"
+     }
+    ],
+    "n_spare_admissible": 7,
+    "support_count_basis": "families with a rung passing the full LOCAL rule (folded V_stab and V_diff included) from a core-admissible tier",
+    "meets_min_qualified": true,
+    "min_qualified": 5,
+    "gate2_5_qualified": [
+     "MK1",
+     "MK2",
+     "MK3",
+     "MK4",
+     "MK5",
+     "MK6",
+     "MK7",
+     "MK8",
+     "XC1",
+     "XC3"
+    ],
+    "n_gate2_5_qualified": 10,
+    "recorded_backups": [],
+    "recorded_backups_admissible": [],
+    "recorded_backups_inadmissible": []
+   }
+  },
+  {
+   "tree": "v6",
+   "model": "qwen3-4b-instruct-2507",
+   "iota_a": 0.5911458333333334,
+   "m_star": 11,
+   "iota_a_recorded": 0.5651722347239052,
+   "chance_basis": "unconstrained-cell (\u00a713.2, corrected; dci1v8dev.chance_basis); pre-screen \u03ba on the ladder run's unconstrained cell",
+   "folded_stability_source": "recomputed on the corrected chance basis (10000 resamples)",
+   "n_rows": 112,
+   "n_folded_stable": 10,
+   "n_unfolded_stable": 49,
+   "n_local_valid": 10,
+   "n_spectrum_valid": 39,
+   "n_spectrum_valid_inside_v_head": 30,
+   "n_spectrum_valid_beyond_v_head": 9,
+   "spectrum_valid_range": [
+    0.21614583333333334,
+    0.9388020833333334
+   ],
+   "spectrum_valid_below": 16,
+   "spectrum_valid_above": 23,
+   "spectrum_valid_families": [
+    "MK1",
+    "MK2",
+    "MK3",
+    "MK4",
+    "MK5",
+    "MK6",
+    "MK7",
+    "MK8",
+    "RF12",
+    "XC1",
+    "XC3"
+   ],
+   "folded_pool_range": {
+    "n": 10,
+    "range": [
+     0.54296875,
+     0.6158854166666666
+    ],
+    "span": 0.07291666666666663
+   },
+   "core_references": {},
+   "v7_spectrum_identified": null,
+   "v7_gate3c_spectrum_met": null,
+   "selection": {
+    "iota_a": 0.5911458333333334,
+    "families": [
+     "MK3",
+     "MK4",
+     "XC1",
+     "MK8"
+    ],
+    "points": [
+     {
+      "candidate": "MK3:4",
+      "family": "MK3",
+      "severity": 4,
+      "iota": 0.32421875,
+      "se_iota": 0.02584990890661852,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_though"
+     },
+     {
+      "candidate": "MK3:2",
+      "family": "MK3",
+      "severity": 2,
+      "iota": 0.8736979166666666,
+      "se_iota": 0.017318992275325185,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_though"
+     },
+     {
+      "candidate": "MK4:6",
+      "family": "MK4",
+      "severity": 6,
+      "iota": 0.3411458333333333,
+      "se_iota": 0.02315094113398059,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_whereas"
+     },
+     {
+      "candidate": "MK4:4",
+      "family": "MK4",
+      "severity": 4,
+      "iota": 0.67578125,
+      "se_iota": 0.023136174728256003,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_whereas"
+     },
+     {
+      "candidate": "MK8:6",
+      "family": "MK8",
+      "severity": 6,
+      "iota": 0.46875,
+      "se_iota": 0.02904526279061555,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_overall"
+     },
+     {
+      "candidate": "MK8:2",
+      "family": "MK8",
+      "severity": 2,
+      "iota": 0.7680781758957654,
+      "se_iota": 0.0234770108899786,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_overall"
+     },
+     {
+      "candidate": "XC1:2",
+      "family": "XC1",
+      "severity": 2,
+      "iota": 0.4067796610169492,
+      "se_iota": 0.02348378999576636,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 2,
+      "feature_group": "semicolon"
+     },
+     {
+      "candidate": "XC1:1",
+      "family": "XC1",
+      "severity": 1,
+      "iota": 0.733155436957972,
+      "se_iota": 0.027338658602594712,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 2,
+      "feature_group": "semicolon"
+     }
+    ],
+    "slots": {
+     "X1": "MK3:4",
+     "X2": "MK3:2",
+     "X3": "MK4:6",
+     "X4": "MK4:4",
+     "X5": "XC1:2",
+     "X6": "XC1:1",
+     "X7": "MK8:6",
+     "X8": "MK8:2"
+    },
+    "n_spectrum_references": 8,
+    "per_family": {
+     "MK3": {
+      "n_points": 2,
+      "leverage": 0.1509636773003472,
+      "min_iota": 0.32421875,
+      "max_iota": 0.8736979166666666
+     },
+     "MK4": {
+      "n_points": 2,
+      "leverage": 0.055990431043836816,
+      "min_iota": 0.3411458333333333,
+      "max_iota": 0.67578125
+     },
+     "XC1": {
+      "n_points": 2,
+      "leverage": 0.053260573560552374,
+      "min_iota": 0.4067796610169492,
+      "max_iota": 0.733155436957972
+     },
+     "MK8": {
+      "n_points": 2,
+      "leverage": 0.04479867844254315,
+      "min_iota": 0.46875,
+      "max_iota": 0.7680781758957654
+     }
+    },
+    "coverage": {
+     "identified": true,
+     "reasons": [],
+     "n_points": 8,
+     "n_below": 4,
+     "n_above": 4,
+     "families_below": [
+      "MK3",
+      "MK4",
+      "MK8",
+      "XC1"
+     ],
+     "families_above": [
+      "MK3",
+      "MK4",
+      "MK8",
+      "XC1"
+     ],
+     "farthest_below": 0.32421875,
+     "farthest_above": 0.8736979166666666,
+     "total_span": 0.5494791666666666,
+     "imprecise": [],
+     "n_families": 4,
+     "offset_below": 0.26692708333333337,
+     "offset_above": 0.28255208333333326,
+     "projection": {
+      "se_beta": 0.01488723063249964,
+      "leverage": 0.30501336034727955,
+      "per_family": {
+       "MK3": 0.1509636773003472,
+       "MK4": 0.055990431043836816,
+       "XC1": 0.053260573560552374,
+       "MK8": 0.04479867844254315
+      },
+      "half_width_95": 0.029178972039699297,
+      "half_width_planning": 0.03916830379410655,
+      "n_points": 8,
+      "n_families": 4,
+      "se_point": 0.013,
+      "block_corr": 0.6
+     },
+     "status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "rule": {
+      "min_points_below": 2,
+      "min_points_above": 2,
+      "min_families_per_side": 2,
+      "d_below": 0.1,
+      "d_above": 0.1,
+      "max_se_beta": 0.05,
+      "min_total_span": 0.2,
+      "max_se_iota": 0.05,
+      "se_point": 0.013,
+      "block_corr": 0.6
+     }
+    },
+    "identified": true,
+    "status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+    "rule": {
+     "d_min": 0.05,
+     "target_below": 0.2,
+     "target_above": 0.15,
+     "max_families": 4,
+     "include_core_rungs": true,
+     "min_separation": 0.05
+    }
+   },
+   "selection_trace": [
+    "MK3: straddling, leverage 0.1510, new group marker_though",
+    "MK4: straddling, leverage 0.0560, new group marker_whereas",
+    "XC1: straddling, leverage 0.0533, new group semicolon",
+    "MK8: straddling, leverage 0.0448, new group marker_overall"
+   ],
+   "backups": {
+    "fully_admissible_families": [
+     "MK1",
+     "MK2",
+     "MK3",
+     "MK4",
+     "MK5",
+     "MK6",
+     "MK7",
+     "MK8"
+    ],
+    "n_fully_admissible": 8,
+    "backups": [
+     "MK2",
+     "MK8"
+    ],
+    "backup_entries": [
+     {
+      "family": "MK2",
+      "candidate": "MK2:7",
+      "iota": 0.59375,
+      "distance": 0.0026041666666666297,
+      "structural_tier": 1,
+      "feature_group": "marker_hence"
+     },
+     {
+      "family": "MK8",
+      "candidate": "MK8:3",
+      "iota": 0.5885416666666666,
+      "distance": 0.0026041666666667407,
+      "structural_tier": 1,
+      "feature_group": "marker_overall"
+     }
+    ],
+    "n_spare_admissible": 8,
+    "support_count_basis": "families with a rung passing the full LOCAL rule (folded V_stab and V_diff included) from a core-admissible tier",
+    "meets_min_qualified": true,
+    "min_qualified": 5,
+    "gate2_5_qualified": [
+     "MK1",
+     "MK2",
+     "MK3",
+     "MK4",
+     "MK5",
+     "MK6",
+     "MK7",
+     "MK8",
+     "XC1",
+     "XC3"
+    ],
+    "n_gate2_5_qualified": 10,
+    "recorded_backups": [],
+    "recorded_backups_admissible": [],
+    "recorded_backups_inadmissible": []
+   }
+  },
+  {
+   "tree": "dev",
+   "model": "qwen3-4b",
+   "iota_a": 0.6901041666666666,
+   "m_star": 12,
+   "iota_a_recorded": 0.6880733944954128,
+   "chance_basis": "unconstrained-cell (\u00a713.2, corrected; dci1v8dev.chance_basis); pre-screen \u03ba on the ladder run's unconstrained cell",
+   "folded_stability_source": "recomputed on the corrected chance basis (10000 resamples)",
+   "n_rows": 112,
+   "n_folded_stable": 14,
+   "n_unfolded_stable": 55,
+   "n_local_valid": 14,
+   "n_spectrum_valid": 45,
+   "n_spectrum_valid_inside_v_head": 36,
+   "n_spectrum_valid_beyond_v_head": 9,
+   "spectrum_valid_range": [
+    0.2265625,
+    0.9192708333333334
+   ],
+   "spectrum_valid_below": 28,
+   "spectrum_valid_above": 17,
+   "spectrum_valid_families": [
+    "MK1",
+    "MK2",
+    "MK3",
+    "MK4",
+    "MK5",
+    "MK6",
+    "MK7",
+    "MK8",
+    "RF12",
+    "RF6",
+    "XC1",
+    "XC3"
+   ],
+   "folded_pool_range": {
+    "n": 14,
+    "range": [
+     0.6223958333333334,
+     0.7734375
+    ],
+    "span": 0.15104166666666663
+   },
+   "core_references": {
+    "MK1": 7,
+    "MK7": 2,
+    "MK6": 8
+   },
+   "v7_spectrum_identified": false,
+   "v7_gate3c_spectrum_met": false,
+   "selection": {
+    "iota_a": 0.6901041666666666,
+    "families": [
+     "MK3",
+     "MK4",
+     "MK2",
+     "MK1"
+    ],
+    "points": [
+     {
+      "candidate": "MK1:8",
+      "family": "MK1",
+      "severity": 8,
+      "iota": 0.5377604166666666,
+      "se_iota": 0.02783536240420827,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_thus"
+     },
+     {
+      "candidate": "MK1:7",
+      "family": "MK1",
+      "severity": 7,
+      "iota": 0.6888020833333334,
+      "side": "core",
+      "se_iota": 0.023983151353458444,
+      "role": "CORE_CENTRE",
+      "structural_tier": 1,
+      "feature_group": "marker_thus"
+     },
+     {
+      "candidate": "MK1:2",
+      "family": "MK1",
+      "severity": 2,
+      "iota": 0.91796875,
+      "se_iota": 0.014673129004489645,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_thus"
+     },
+     {
+      "candidate": "MK2:8",
+      "family": "MK2",
+      "severity": 8,
+      "iota": 0.4739583333333333,
+      "se_iota": 0.02694232236400401,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_hence"
+     },
+     {
+      "candidate": "MK2:2",
+      "family": "MK2",
+      "severity": 2,
+      "iota": 0.8580729166666666,
+      "se_iota": 0.019324733518635676,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_hence"
+     },
+     {
+      "candidate": "MK3:2",
+      "family": "MK3",
+      "severity": 2,
+      "iota": 0.3828125,
+      "se_iota": 0.02693902751345005,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_though"
+     },
+     {
+      "candidate": "MK3:1",
+      "family": "MK3",
+      "severity": 1,
+      "iota": 0.8717277486910995,
+      "se_iota": 0.019016416292784232,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_though"
+     },
+     {
+      "candidate": "MK4:3",
+      "family": "MK4",
+      "severity": 3,
+      "iota": 0.3997395833333333,
+      "se_iota": 0.026885429598458733,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_whereas"
+     },
+     {
+      "candidate": "MK4:2",
+      "family": "MK4",
+      "severity": 2,
+      "iota": 0.8592833876221498,
+      "se_iota": 0.018159977156041507,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_whereas"
+     }
+    ],
+    "slots": {
+     "X1": "MK3:2",
+     "X2": "MK3:1",
+     "X3": "MK4:3",
+     "X4": "MK4:2",
+     "X5": "MK2:8",
+     "X6": "MK2:2",
+     "X7": "MK1:8",
+     "X8": "MK1:7",
+     "X9": "MK1:2"
+    },
+    "n_spectrum_references": 8,
+    "per_family": {
+     "MK3": {
+      "n_points": 2,
+      "leverage": 0.11951906020133983,
+      "min_iota": 0.3828125,
+      "max_iota": 0.8717277486910995
+     },
+     "MK4": {
+      "n_points": 2,
+      "leverage": 0.10559025403011905,
+      "min_iota": 0.3997395833333333,
+      "max_iota": 0.8592833876221498
+     },
+     "MK2": {
+      "n_points": 2,
+      "leverage": 0.07377200656467015,
+      "min_iota": 0.4739583333333333,
+      "max_iota": 0.8580729166666666
+     },
+     "MK1": {
+      "n_points": 3,
+      "leverage": 0.07329644097222222,
+      "min_iota": 0.5377604166666666,
+      "max_iota": 0.91796875
+     }
+    },
+    "coverage": {
+     "identified": true,
+     "reasons": [],
+     "n_points": 9,
+     "n_below": 5,
+     "n_above": 4,
+     "families_below": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4"
+     ],
+     "families_above": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4"
+     ],
+     "farthest_below": 0.3828125,
+     "farthest_above": 0.91796875,
+     "total_span": 0.53515625,
+     "imprecise": [],
+     "n_families": 4,
+     "offset_below": 0.30729166666666663,
+     "offset_above": 0.22786458333333337,
+     "projection": {
+      "se_beta": 0.013477152359045896,
+      "leverage": 0.37217776176835127,
+      "per_family": {
+       "MK3": 0.11951906020133983,
+       "MK4": 0.10559025403011905,
+       "MK2": 0.07377200656467015,
+       "MK1": 0.07329644097222222
+      },
+      "half_width_95": 0.026415218623729957,
+      "half_width_planning": 0.03545838785664975,
+      "n_points": 9,
+      "n_families": 4,
+      "se_point": 0.013,
+      "block_corr": 0.6
+     },
+     "status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "rule": {
+      "min_points_below": 2,
+      "min_points_above": 2,
+      "min_families_per_side": 2,
+      "d_below": 0.1,
+      "d_above": 0.1,
+      "max_se_beta": 0.05,
+      "min_total_span": 0.2,
+      "max_se_iota": 0.05,
+      "se_point": 0.013,
+      "block_corr": 0.6
+     }
+    },
+    "identified": true,
+    "status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+    "rule": {
+     "d_min": 0.05,
+     "target_below": 0.2,
+     "target_above": 0.15,
+     "max_families": 4,
+     "include_core_rungs": true,
+     "min_separation": 0.05
+    }
+   },
+   "selection_trace": [
+    "MK3: straddling, leverage 0.1195, new group marker_though",
+    "MK4: straddling, leverage 0.1056, new group marker_whereas",
+    "MK2: straddling, leverage 0.0738, new group marker_hence",
+    "MK1: straddling, leverage 0.0733, new group marker_thus"
+   ],
+   "backups": {
+    "fully_admissible_families": [
+     "MK1",
+     "MK2",
+     "MK5",
+     "MK6",
+     "MK7",
+     "XC1",
+     "XC3"
+    ],
+    "n_fully_admissible": 7,
+    "backups": [
+     "MK2",
+     "MK5"
+    ],
+    "backup_entries": [
+     {
+      "family": "MK2",
+      "candidate": "MK2:7",
+      "iota": 0.6588541666666666,
+      "distance": 0.03125,
+      "structural_tier": 1,
+      "feature_group": "marker_hence"
+     },
+     {
+      "family": "MK5",
+      "candidate": "MK5:2",
+      "iota": 0.72265625,
+      "distance": 0.03255208333333337,
+      "structural_tier": 1,
+      "feature_group": "marker_indeed"
+     }
+    ],
+    "n_spare_admissible": 4,
+    "support_count_basis": "families with a rung passing the full LOCAL rule (folded V_stab and V_diff included) from a core-admissible tier",
+    "meets_min_qualified": true,
+    "min_qualified": 5,
+    "gate2_5_qualified": [
+     "CR6",
+     "MK1",
+     "MK2",
+     "MK3",
+     "MK4",
+     "MK5",
+     "MK6",
+     "MK7",
+     "MK8",
+     "XC1",
+     "XC3"
+    ],
+    "n_gate2_5_qualified": 11,
+    "recorded_backups": [
+     "CR6",
+     "MK2"
+    ],
+    "recorded_backups_admissible": [
+     "MK2"
+    ],
+    "recorded_backups_inadmissible": [
+     "CR6"
+    ]
+   }
+  },
+  {
+   "tree": "r3",
+   "model": "qwen3-4b",
+   "iota_a": 0.6875,
+   "m_star": 12,
+   "iota_a_recorded": 0.6854521625163827,
+   "chance_basis": "unconstrained-cell (\u00a713.2, corrected; dci1v8dev.chance_basis); pre-screen \u03ba on the ladder run's unconstrained cell",
+   "folded_stability_source": "recomputed on the corrected chance basis (10000 resamples)",
+   "n_rows": 111,
+   "n_folded_stable": 14,
+   "n_unfolded_stable": 55,
+   "n_local_valid": 14,
+   "n_spectrum_valid": 45,
+   "n_spectrum_valid_inside_v_head": 38,
+   "n_spectrum_valid_beyond_v_head": 7,
+   "spectrum_valid_range": [
+    0.22786458333333334,
+    0.9205729166666666
+   ],
+   "spectrum_valid_below": 28,
+   "spectrum_valid_above": 17,
+   "spectrum_valid_families": [
+    "MK1",
+    "MK2",
+    "MK3",
+    "MK4",
+    "MK5",
+    "MK6",
+    "MK7",
+    "MK8",
+    "RF12",
+    "RF6",
+    "XC1",
+    "XC3"
+   ],
+   "folded_pool_range": {
+    "n": 14,
+    "range": [
+     0.6041666666666666,
+     0.7643229166666666
+    ],
+    "span": 0.16015625
+   },
+   "core_references": {
+    "MK1": 6,
+    "MK7": 2,
+    "MK6": 8
+   },
+   "v7_spectrum_identified": false,
+   "v7_gate3c_spectrum_met": false,
+   "selection": {
+    "iota_a": 0.6875,
+    "families": [
+     "MK3",
+     "MK4",
+     "MK2",
+     "XC3"
+    ],
+    "points": [
+     {
+      "candidate": "MK2:8",
+      "family": "MK2",
+      "severity": 8,
+      "iota": 0.4869791666666667,
+      "se_iota": 0.027554111405001365,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_hence"
+     },
+     {
+      "candidate": "MK2:2",
+      "family": "MK2",
+      "severity": 2,
+      "iota": 0.85546875,
+      "se_iota": 0.01992005031552308,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_hence"
+     },
+     {
+      "candidate": "MK3:2",
+      "family": "MK3",
+      "severity": 2,
+      "iota": 0.3971354166666667,
+      "se_iota": 0.027212284208508495,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_though"
+     },
+     {
+      "candidate": "MK3:1",
+      "family": "MK3",
+      "severity": 1,
+      "iota": 0.8690242305173542,
+      "se_iota": 0.019206454450830787,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_though"
+     },
+     {
+      "candidate": "MK4:3",
+      "family": "MK4",
+      "severity": 3,
+      "iota": 0.3958333333333333,
+      "se_iota": 0.0266481515675339,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_whereas"
+     },
+     {
+      "candidate": "MK4:2",
+      "family": "MK4",
+      "severity": 2,
+      "iota": 0.8578878748370273,
+      "se_iota": 0.01853813207703954,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_whereas"
+     },
+     {
+      "candidate": "XC3:10",
+      "family": "XC3",
+      "severity": 10,
+      "iota": 0.5013020833333334,
+      "se_iota": 0.029568492860595447,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 2,
+      "feature_group": "sentence"
+     },
+     {
+      "candidate": "XC3:7",
+      "family": "XC3",
+      "severity": 7,
+      "iota": 0.8476454293628809,
+      "se_iota": 0.019784380946951702,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 2,
+      "feature_group": "sentence"
+     }
+    ],
+    "slots": {
+     "X1": "MK3:2",
+     "X2": "MK3:1",
+     "X3": "MK4:3",
+     "X4": "MK4:2",
+     "X5": "MK2:8",
+     "X6": "MK2:2",
+     "X7": "XC3:10",
+     "X8": "XC3:7"
+    },
+    "n_spectrum_references": 8,
+    "per_family": {
+     "MK3": {
+      "n_points": 2,
+      "leverage": 0.11133952631870442,
+      "min_iota": 0.3971354166666667,
+      "max_iota": 0.8690242305173542
+     },
+     "MK4": {
+      "n_points": 2,
+      "leverage": 0.10674719966209445,
+      "min_iota": 0.3958333333333333,
+      "max_iota": 0.8578878748370273
+     },
+     "MK2": {
+      "n_points": 2,
+      "leverage": 0.0678922865125868,
+      "min_iota": 0.4869791666666667,
+      "max_iota": 0.85546875
+     },
+     "XC3": {
+      "n_points": 2,
+      "leverage": 0.059976856669471446,
+      "min_iota": 0.5013020833333334,
+      "max_iota": 0.8476454293628809
+     }
+    },
+    "coverage": {
+     "identified": true,
+     "reasons": [],
+     "n_points": 8,
+     "n_below": 4,
+     "n_above": 4,
+     "families_below": [
+      "MK2",
+      "MK3",
+      "MK4",
+      "XC3"
+     ],
+     "families_above": [
+      "MK2",
+      "MK3",
+      "MK4",
+      "XC3"
+     ],
+     "farthest_below": 0.3958333333333333,
+     "farthest_above": 0.8690242305173542,
+     "total_span": 0.4731908971840209,
+     "imprecise": [],
+     "n_families": 4,
+     "offset_below": 0.2916666666666667,
+     "offset_above": 0.18152423051735422,
+     "projection": {
+      "se_beta": 0.013978578077526152,
+      "leverage": 0.34595586916285714,
+      "per_family": {
+       "MK3": 0.11133952631870442,
+       "MK4": 0.10674719966209445,
+       "MK2": 0.0678922865125868,
+       "XC3": 0.059976856669471446
+      },
+      "half_width_95": 0.027398013031951256,
+      "half_width_planning": 0.036777638921971306,
+      "n_points": 8,
+      "n_families": 4,
+      "se_point": 0.013,
+      "block_corr": 0.6
+     },
+     "status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "rule": {
+      "min_points_below": 2,
+      "min_points_above": 2,
+      "min_families_per_side": 2,
+      "d_below": 0.1,
+      "d_above": 0.1,
+      "max_se_beta": 0.05,
+      "min_total_span": 0.2,
+      "max_se_iota": 0.05,
+      "se_point": 0.013,
+      "block_corr": 0.6
+     }
+    },
+    "identified": true,
+    "status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+    "rule": {
+     "d_min": 0.05,
+     "target_below": 0.2,
+     "target_above": 0.15,
+     "max_families": 4,
+     "include_core_rungs": true,
+     "min_separation": 0.05
+    }
+   },
+   "selection_trace": [
+    "MK3: straddling, leverage 0.1113, new group marker_though",
+    "MK4: straddling, leverage 0.1067, new group marker_whereas",
+    "MK2: straddling, leverage 0.0679, new group marker_hence",
+    "XC3: straddling, leverage 0.0600, new group sentence"
+   ],
+   "backups": {
+    "fully_admissible_families": [
+     "MK1",
+     "MK2",
+     "MK5",
+     "MK6",
+     "MK7",
+     "XC3"
+    ],
+    "n_fully_admissible": 6,
+    "backups": [
+     "MK5",
+     "MK2"
+    ],
+    "backup_entries": [
+     {
+      "family": "MK5",
+      "candidate": "MK5:2",
+      "iota": 0.7096354166666666,
+      "distance": 0.02213541666666663,
+      "structural_tier": 1,
+      "feature_group": "marker_indeed"
+     },
+     {
+      "family": "MK2",
+      "candidate": "MK2:7",
+      "iota": 0.6471354166666666,
+      "distance": 0.04036458333333337,
+      "structural_tier": 1,
+      "feature_group": "marker_hence"
+     }
+    ],
+    "n_spare_admissible": 3,
+    "support_count_basis": "families with a rung passing the full LOCAL rule (folded V_stab and V_diff included) from a core-admissible tier",
+    "meets_min_qualified": true,
+    "min_qualified": 5,
+    "gate2_5_qualified": [
+     "CR6",
+     "MK1",
+     "MK2",
+     "MK3",
+     "MK4",
+     "MK5",
+     "MK6",
+     "MK7",
+     "MK8",
+     "XC1",
+     "XC3"
+    ],
+    "n_gate2_5_qualified": 11,
+    "recorded_backups": [
+     "CR6",
+     "MK2"
+    ],
+    "recorded_backups_admissible": [
+     "MK2"
+    ],
+    "recorded_backups_inadmissible": [
+     "CR6"
+    ]
+   }
+  },
+  {
+   "tree": "r3",
+   "model": "gemma-3n-e2b-it",
+   "iota_a": 0.61328125,
+   "m_star": 10,
+   "iota_a_recorded": 0.6086311974962939,
+   "chance_basis": "unconstrained-cell (\u00a713.2, corrected; dci1v8dev.chance_basis); pre-screen \u03ba on the ladder run's unconstrained cell",
+   "folded_stability_source": "recomputed on the corrected chance basis (10000 resamples)",
+   "n_rows": 112,
+   "n_folded_stable": 19,
+   "n_unfolded_stable": 58,
+   "n_local_valid": 18,
+   "n_spectrum_valid": 45,
+   "n_spectrum_valid_inside_v_head": 42,
+   "n_spectrum_valid_beyond_v_head": 3,
+   "spectrum_valid_range": [
+    0.20442708333333334,
+    0.9361979166666666
+   ],
+   "spectrum_valid_below": 27,
+   "spectrum_valid_above": 18,
+   "spectrum_valid_families": [
+    "CL7",
+    "MK1",
+    "MK2",
+    "MK3",
+    "MK4",
+    "MK5",
+    "MK6",
+    "MK8",
+    "RF6",
+    "RF7",
+    "XC1",
+    "XC3"
+   ],
+   "folded_pool_range": {
+    "n": 19,
+    "range": [
+     0.5494791666666666,
+     0.7057291666666666
+    ],
+    "span": 0.15625
+   },
+   "core_references": {
+    "MK2": 7,
+    "MK1": 1,
+    "MK5": 8
+   },
+   "v7_spectrum_identified": false,
+   "v7_gate3c_spectrum_met": false,
+   "selection": {
+    "iota_a": 0.61328125,
+    "families": [
+     "MK4",
+     "MK1"
+    ],
+    "points": [
+     {
+      "candidate": "MK1:7",
+      "family": "MK1",
+      "severity": 7,
+      "iota": 0.43359375,
+      "se_iota": 0.021109095720424718,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_thus"
+     },
+     {
+      "candidate": "MK1:1",
+      "family": "MK1",
+      "severity": 1,
+      "iota": 0.596078431372549,
+      "side": "core",
+      "se_iota": 0.03039091499626894,
+      "role": "CORE_CENTRE",
+      "structural_tier": 1,
+      "feature_group": "marker_thus"
+     },
+     {
+      "candidate": "MK1:3",
+      "family": "MK1",
+      "severity": 3,
+      "iota": 0.7083333333333334,
+      "se_iota": 0.02416621531744373,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_thus"
+     },
+     {
+      "candidate": "MK4:1",
+      "family": "MK4",
+      "severity": 1,
+      "iota": 0.4302477183833116,
+      "se_iota": 0.025020638921503267,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_whereas"
+     },
+     {
+      "candidate": "MK4:5",
+      "family": "MK4",
+      "severity": 5,
+      "iota": 0.74609375,
+      "se_iota": 0.021088901663095065,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_whereas"
+     }
+    ],
+    "slots": {
+     "X1": "MK4:1",
+     "X2": "MK4:5",
+     "X3": "MK1:7",
+     "X4": "MK1:1",
+     "X5": "MK1:3"
+    },
+    "n_spectrum_references": 4,
+    "per_family": {
+     "MK4": {
+      "n_points": 2,
+      "leverage": 0.04987935784400506,
+      "min_iota": 0.4302477183833116,
+      "max_iota": 0.74609375
+     },
+     "MK1": {
+      "n_points": 3,
+      "leverage": 0.038161424448379236,
+      "min_iota": 0.43359375,
+      "max_iota": 0.7083333333333334
+     }
+    },
+    "coverage": {
+     "identified": true,
+     "reasons": [],
+     "n_points": 5,
+     "n_below": 3,
+     "n_above": 2,
+     "families_below": [
+      "MK1",
+      "MK4"
+     ],
+     "families_above": [
+      "MK1",
+      "MK4"
+     ],
+     "farthest_below": 0.4302477183833116,
+     "farthest_above": 0.74609375,
+     "total_span": 0.3158460316166884,
+     "imprecise": [],
+     "n_families": 2,
+     "offset_below": 0.1830335316166884,
+     "offset_above": 0.1328125,
+     "projection": {
+      "se_beta": 0.02770967305185003,
+      "leverage": 0.0880407822923843,
+      "per_family": {
+       "MK4": 0.04987935784400506,
+       "MK1": 0.038161424448379236
+      },
+      "half_width_95": 0.05431095918162605,
+      "half_width_planning": 0.07290414979941742,
+      "n_points": 5,
+      "n_families": 2,
+      "se_point": 0.013,
+      "block_corr": 0.6
+     },
+     "status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "rule": {
+      "min_points_below": 2,
+      "min_points_above": 2,
+      "min_families_per_side": 2,
+      "d_below": 0.1,
+      "d_above": 0.1,
+      "max_se_beta": 0.05,
+      "min_total_span": 0.2,
+      "max_se_iota": 0.05,
+      "se_point": 0.013,
+      "block_corr": 0.6
+     }
+    },
+    "identified": true,
+    "status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+    "rule": {
+     "d_min": 0.05,
+     "target_below": 0.2,
+     "target_above": 0.15,
+     "max_families": 4,
+     "include_core_rungs": true,
+     "min_separation": 0.05
+    }
+   },
+   "selection_trace": [
+    "MK4: straddling, leverage 0.0499, new group marker_whereas",
+    "MK1: straddling, leverage 0.0382, new group marker_thus"
+   ],
+   "backups": {
+    "fully_admissible_families": [
+     "MK1",
+     "MK2",
+     "MK4",
+     "MK5",
+     "XC3"
+    ],
+    "n_fully_admissible": 5,
+    "backups": [
+     "XC3",
+     "MK4"
+    ],
+    "backup_entries": [
+     {
+      "family": "XC3",
+      "candidate": "XC3:10",
+      "iota": 0.5916230366492147,
+      "distance": 0.021658213350785327,
+      "structural_tier": 2,
+      "feature_group": "sentence"
+     },
+     {
+      "family": "MK4",
+      "candidate": "MK4:8",
+      "iota": 0.6471354166666666,
+      "distance": 0.03385416666666663,
+      "structural_tier": 1,
+      "feature_group": "marker_whereas"
+     }
+    ],
+    "n_spare_admissible": 2,
+    "support_count_basis": "families with a rung passing the full LOCAL rule (folded V_stab and V_diff included) from a core-admissible tier",
+    "meets_min_qualified": true,
+    "min_qualified": 5,
+    "gate2_5_qualified": [
+     "CR5",
+     "MK1",
+     "MK2",
+     "MK3",
+     "MK4",
+     "MK5",
+     "MK6",
+     "MK8",
+     "RF12",
+     "RF6",
+     "RF7",
+     "XC1",
+     "XC3"
+    ],
+    "n_gate2_5_qualified": 13,
+    "recorded_backups": [
+     "CR5",
+     "MK3"
+    ],
+    "recorded_backups_admissible": [],
+    "recorded_backups_inadmissible": [
+     "CR5",
+     "MK3"
+    ]
+   }
+  },
+  {
+   "tree": "r4",
+   "model": "qwen3-4b-instruct-2507",
+   "iota_a": 0.56640625,
+   "m_star": 11,
+   "iota_a_recorded": 0.539737387698687,
+   "chance_basis": "unconstrained-cell (\u00a713.2, corrected; dci1v8dev.chance_basis); pre-screen \u03ba on the ladder run's unconstrained cell",
+   "folded_stability_source": "recomputed on the corrected chance basis (10000 resamples)",
+   "n_rows": 112,
+   "n_folded_stable": 14,
+   "n_unfolded_stable": 48,
+   "n_local_valid": 12,
+   "n_spectrum_valid": 37,
+   "n_spectrum_valid_inside_v_head": 30,
+   "n_spectrum_valid_beyond_v_head": 7,
+   "spectrum_valid_range": [
+    0.20572916666666666,
+    0.9375
+   ],
+   "spectrum_valid_below": 16,
+   "spectrum_valid_above": 21,
+   "spectrum_valid_families": [
+    "CL7",
+    "MK1",
+    "MK2",
+    "MK3",
+    "MK4",
+    "MK5",
+    "MK6",
+    "MK7",
+    "MK8",
+    "XC1",
+    "XC3"
+   ],
+   "folded_pool_range": {
+    "n": 14,
+    "range": [
+     0.4778645833333333,
+     0.65625
+    ],
+    "span": 0.17838541666666669
+   },
+   "core_references": {
+    "MK4": 5,
+    "MK3": 3,
+    "MK8": 4
+   },
+   "v7_spectrum_identified": false,
+   "v7_gate3c_spectrum_met": false,
+   "selection": {
+    "iota_a": 0.56640625,
+    "families": [
+     "MK3",
+     "MK8",
+     "MK4",
+     "XC1"
+    ],
+    "points": [
+     {
+      "candidate": "MK3:4",
+      "family": "MK3",
+      "severity": 4,
+      "iota": 0.3190104166666667,
+      "se_iota": 0.025727372330671,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_though"
+     },
+     {
+      "candidate": "MK3:3",
+      "family": "MK3",
+      "severity": 3,
+      "iota": 0.5494791666666666,
+      "side": "core",
+      "se_iota": 0.02819608667901143,
+      "role": "CORE_CENTRE",
+      "structural_tier": 1,
+      "feature_group": "marker_though"
+     },
+     {
+      "candidate": "MK3:2",
+      "family": "MK3",
+      "severity": 2,
+      "iota": 0.8854166666666666,
+      "se_iota": 0.017204059860496213,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_though"
+     },
+     {
+      "candidate": "MK4:7",
+      "family": "MK4",
+      "severity": 7,
+      "iota": 0.3515625,
+      "se_iota": 0.023291612568113955,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_whereas"
+     },
+     {
+      "candidate": "MK4:5",
+      "family": "MK4",
+      "severity": 5,
+      "iota": 0.5338541666666666,
+      "side": "core",
+      "se_iota": 0.024300279776250377,
+      "role": "CORE_CENTRE",
+      "structural_tier": 1,
+      "feature_group": "marker_whereas"
+     },
+     {
+      "candidate": "MK4:4",
+      "family": "MK4",
+      "severity": 4,
+      "iota": 0.65625,
+      "se_iota": 0.024177966456148142,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_whereas"
+     },
+     {
+      "candidate": "MK8:8",
+      "family": "MK8",
+      "severity": 8,
+      "iota": 0.2799479166666667,
+      "se_iota": 0.024362117058614286,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 1,
+      "feature_group": "marker_overall"
+     },
+     {
+      "candidate": "MK8:4",
+      "family": "MK8",
+      "severity": 4,
+      "iota": 0.5559895833333334,
+      "side": "core",
+      "se_iota": 0.03104123635714665,
+      "role": "CORE_CENTRE",
+      "structural_tier": 1,
+      "feature_group": "marker_overall"
+     },
+     {
+      "candidate": "MK8:2",
+      "family": "MK8",
+      "severity": 2,
+      "iota": 0.7877604166666666,
+      "se_iota": 0.023593586266474544,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 1,
+      "feature_group": "marker_overall"
+     },
+     {
+      "candidate": "XC1:2",
+      "family": "XC1",
+      "severity": 2,
+      "iota": 0.4354628422425033,
+      "se_iota": 0.02412091639448649,
+      "side": "below",
+      "role": "SPECTRUM_LOW",
+      "structural_tier": 2,
+      "feature_group": "semicolon"
+     },
+     {
+      "candidate": "XC1:1",
+      "family": "XC1",
+      "severity": 1,
+      "iota": 0.7369127516778523,
+      "se_iota": 0.02650616381013738,
+      "side": "above",
+      "role": "SPECTRUM_HIGH",
+      "structural_tier": 2,
+      "feature_group": "semicolon"
+     }
+    ],
+    "slots": {
+     "X1": "MK3:4",
+     "X2": "MK3:3",
+     "X3": "MK3:2",
+     "X4": "MK8:8",
+     "X5": "MK8:4",
+     "X6": "MK8:2",
+     "X7": "MK4:7",
+     "X8": "MK4:5",
+     "X9": "MK4:4",
+     "X10": "XC1:2",
+     "X11": "XC1:1"
+    },
+    "n_spectrum_references": 8,
+    "per_family": {
+     "MK3": {
+      "n_points": 3,
+      "leverage": 0.16226196289062497,
+      "min_iota": 0.3190104166666667,
+      "max_iota": 0.8854166666666666
+     },
+     "MK8": {
+      "n_points": 3,
+      "leverage": 0.1292634186921296,
+      "min_iota": 0.2799479166666667,
+      "max_iota": 0.7877604166666666
+     },
+     "MK4": {
+      "n_points": 3,
+      "leverage": 0.047015154803240734,
+      "min_iota": 0.3515625,
+      "max_iota": 0.65625
+     },
+     "XC1": {
+      "n_points": 2,
+      "leverage": 0.045436023949290055,
+      "min_iota": 0.4354628422425033,
+      "max_iota": 0.7369127516778523
+     }
+    },
+    "coverage": {
+     "identified": true,
+     "reasons": [],
+     "n_points": 11,
+     "n_below": 7,
+     "n_above": 4,
+     "families_below": [
+      "MK3",
+      "MK4",
+      "MK8",
+      "XC1"
+     ],
+     "families_above": [
+      "MK3",
+      "MK4",
+      "MK8",
+      "XC1"
+     ],
+     "farthest_below": 0.2799479166666667,
+     "farthest_above": 0.8854166666666666,
+     "total_span": 0.60546875,
+     "imprecise": [],
+     "n_families": 4,
+     "offset_below": 0.2864583333333333,
+     "offset_above": 0.31901041666666663,
+     "projection": {
+      "se_beta": 0.013268474405358796,
+      "leverage": 0.3839765603352854,
+      "per_family": {
+       "MK3": 0.16226196289062497,
+       "MK8": 0.1292634186921296,
+       "MK4": 0.047015154803240734,
+       "XC1": 0.045436023949290055
+      },
+      "half_width_95": 0.02600620983450324,
+      "half_width_planning": 0.03490935616049899,
+      "n_points": 11,
+      "n_families": 4,
+      "se_point": 0.013,
+      "block_corr": 0.6
+     },
+     "status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "rule": {
+      "min_points_below": 2,
+      "min_points_above": 2,
+      "min_families_per_side": 2,
+      "d_below": 0.1,
+      "d_above": 0.1,
+      "max_se_beta": 0.05,
+      "min_total_span": 0.2,
+      "max_se_iota": 0.05,
+      "se_point": 0.013,
+      "block_corr": 0.6
+     }
+    },
+    "identified": true,
+    "status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+    "rule": {
+     "d_min": 0.05,
+     "target_below": 0.2,
+     "target_above": 0.15,
+     "max_families": 4,
+     "include_core_rungs": true,
+     "min_separation": 0.05
+    }
+   },
+   "selection_trace": [
+    "MK3: straddling, leverage 0.1623, new group marker_though",
+    "MK8: straddling, leverage 0.1293, new group marker_overall",
+    "MK4: straddling, leverage 0.0470, new group marker_whereas",
+    "XC1: straddling, leverage 0.0454, new group semicolon"
+   ],
+   "backups": {
+    "fully_admissible_families": [
+     "MK2",
+     "MK3",
+     "MK4",
+     "MK5",
+     "MK6",
+     "MK7",
+     "MK8"
+    ],
+    "n_fully_admissible": 7,
+    "backups": [
+     "MK6",
+     "MK2"
+    ],
+    "backup_entries": [
+     {
+      "family": "MK6",
+      "candidate": "MK6:8",
+      "iota": 0.56640625,
+      "distance": 0.0,
+      "structural_tier": 1,
+      "feature_group": "marker_namely"
+     },
+     {
+      "family": "MK2",
+      "candidate": "MK2:7",
+      "iota": 0.5729166666666666,
+      "distance": 0.00651041666666663,
+      "structural_tier": 1,
+      "feature_group": "marker_hence"
+     }
+    ],
+    "n_spare_admissible": 4,
+    "support_count_basis": "families with a rung passing the full LOCAL rule (folded V_stab and V_diff included) from a core-admissible tier",
+    "meets_min_qualified": true,
+    "min_qualified": 5,
+    "gate2_5_qualified": [
+     "CR6",
+     "MK1",
+     "MK2",
+     "MK3",
+     "MK4",
+     "MK5",
+     "MK6",
+     "MK7",
+     "MK8",
+     "XC1",
+     "XC3"
+    ],
+    "n_gate2_5_qualified": 11,
+    "recorded_backups": [
+     "CR6",
+     "MK1"
+    ],
+    "recorded_backups_admissible": [],
+    "recorded_backups_inadmissible": [
+     "CR6",
+     "MK1"
+    ]
+   }
+  }
+ ],
+ "chance_basis": "unconstrained-cell (\u00a713.2, corrected; dci1v8dev.chance_basis); pre-screen \u03ba on the ladder run's unconstrained cell",
+ "seconds": 1002.4615621566772,
+ "summary": {
+  "n_replications": 12,
+  "v7_spectrum_identified": 2,
+  "new_spectrum_identified": 12,
+  "recorded_backup_inadmissible_replications": 10,
+  "meets_min_qualified_on_admissible_basis": 11
+ }
+}

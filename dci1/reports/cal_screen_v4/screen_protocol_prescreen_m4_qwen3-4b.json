@@ -1,0 +1,68 @@
+{
+ "a_prescreen_anchor_one_draw": 0.7083333333333334,
+ "arm": "prescreen_m4",
+ "arms": {
+  "A": "the full n grid",
+  "candidates": "CR7, CR4, CR6 full ladders",
+  "registered_pool": {
+   "RF1": [
+    4,
+    6,
+    8
+   ],
+   "RF2": [
+    2,
+    3,
+    4
+   ],
+   "RF3": [
+    0,
+    2,
+    4
+   ],
+   "RF4": [
+    4,
+    5,
+    6
+   ],
+   "RF5": [
+    0,
+    11,
+    12
+   ],
+   "RF6": [
+    0,
+    3,
+    6
+   ],
+   "RF7": [
+    22,
+    23,
+    24
+   ],
+   "RF8": [
+    6,
+    7,
+    8
+   ]
+  }
+ },
+ "cells": 1344,
+ "classification": "NON-CONFIRMATORY DESIGN SCREEN",
+ "draws_per_cell": 4,
+ "model": "qwen3-4b",
+ "producing_commit": "973f57d94028de3a273d08499fc56e3b73870566",
+ "question": "\u00a713.2 condition 2 bounds a quantity at 0.15 that \u00a712.2 measures at one draw on 24 topics. Does the condition decide differently when the quantity it reads is measured at M_cal = 4 on the same topics?",
+ "screen_protocol_hash": "bfd06f63b527d78fe580c31dc9f5d81e7a385b81f3042081e3a69f502c7c4443",
+ "seeds": {
+  "note": "a distinct stage label, so no row of this arm can share a seed with the main arm, the pool arm or the FORM x STEM screen at an identical prompt",
+  "stage_label": "cal-screen-prescreen-m4"
+ },
+ "status": "NON-CONFIRMATORY DESIGN SCREEN, third arm. Not a registered \u00a712.2 record.",
+ "stem": "floored",
+ "study_id": "dci1-cal-screen-v4",
+ "topics": "the 24 registered pre-screen topics, unchanged",
+ "verifier_source_hash": "f5d4f7e74e757769ec43d7007b0121687fa4b5b388184e5ef32b171ea7580ee4",
+ "what_is_not_changed": "the criterion. The 0.15 caliper, the topic set, the stem, the wordings and the verifier are all identical to the registered condition. Only the number of draws behind the estimate changes, which is a precision change and not a criterion change. The registered-precision result is reported as the primary number and this arm beside it.",
+ "why_this_is_not_weakening": "\u00a731 forbids an amendment that weakens a criterion so a gate passes. Measuring the same quantity more precisely against the same threshold is the opposite move: it can reject a reference the one-draw estimate would have admitted, and on these models it does both. Nothing here is adopted."
+}

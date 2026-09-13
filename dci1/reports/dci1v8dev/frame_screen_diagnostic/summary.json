@@ -1,0 +1,129 @@
+{
+ "by_model": {
+  "gemma-3n-e2b-it": {
+   "calibration_spread_median_across_families": 0.26041666666666663,
+   "local_eligible": true,
+   "model_key": "gemma-3n-e2b-it",
+   "root": "dci1v8-pilot-r8",
+   "screen_median_se_iota": 0.16666666666666669,
+   "support_source": "reports/dci1v8dev/local_eligibility.md",
+   "supported_frames": [
+    1,
+    3
+   ],
+   "unforwarded_screen_near_on_unsupported_frames": {
+    "0": 3,
+    "2": 1
+   },
+   "unforwarded_screen_near_topup_subset_on_unsupported_frames": {
+    "0": 1,
+    "2": 0
+   },
+   "unsupported_frames": [
+    0,
+    2
+   ]
+  },
+  "gemma-3n-e4b-it": {
+   "calibration_spread_median_across_families": 0.265625,
+   "local_eligible": false,
+   "model_key": "gemma-3n-e4b-it",
+   "root": "dci1v8-pilot-r11",
+   "screen_median_se_iota": 0.16666666666666669,
+   "support_source": "reports/dci1v8dev/local_eligibility.md",
+   "supported_frames": [
+    3
+   ],
+   "unforwarded_screen_near_on_unsupported_frames": {
+    "0": 3,
+    "1": 5,
+    "2": 1
+   },
+   "unforwarded_screen_near_topup_subset_on_unsupported_frames": {
+    "0": 3,
+    "1": 1,
+    "2": 0
+   },
+   "unsupported_frames": [
+    0,
+    1,
+    2
+   ]
+  },
+  "qwen3-4b": {
+   "calibration_spread_median_across_families": 0.20854406703147632,
+   "local_eligible": true,
+   "model_key": "qwen3-4b",
+   "root": "dci1v8-pilot-r9",
+   "screen_median_se_iota": 0.210818510677892,
+   "support_source": "reports/dci1v8dev/local_eligibility.md",
+   "supported_frames": [
+    0,
+    3
+   ],
+   "unforwarded_screen_near_on_unsupported_frames": {
+    "1": 0,
+    "2": 2
+   },
+   "unforwarded_screen_near_topup_subset_on_unsupported_frames": {
+    "1": 0,
+    "2": 1
+   },
+   "unsupported_frames": [
+    1,
+    2
+   ]
+  },
+  "qwen3-4b-instruct-2507": {
+   "calibration_spread_median_across_families": 0.19401041666666669,
+   "local_eligible": false,
+   "model_key": "qwen3-4b-instruct-2507",
+   "root": "dci1v8-pilot-r10",
+   "screen_median_se_iota": 0.1686548085423136,
+   "support_source": "reports/dci1v8dev/local_eligibility.md",
+   "supported_frames": [
+    1
+   ],
+   "unforwarded_screen_near_on_unsupported_frames": {
+    "0": null,
+    "2": null,
+    "3": 0
+   },
+   "unforwarded_screen_near_topup_subset_on_unsupported_frames": {
+    "0": null,
+    "2": null,
+    "3": 0
+   },
+   "unsupported_frames": [
+    0,
+    2,
+    3
+   ]
+  }
+ },
+ "caliper": 0.1,
+ "changes_membership": false,
+ "generations": 0,
+ "scope_statement": "LOCAL Delta_R(f) is identified only for model x frame combinations where the frozen screening/calibration/reference pipeline yields adequate matched controls.",
+ "study_roots": {
+  "gemma-3n-e2b-it": "dci1v8-pilot-r8",
+  "gemma-3n-e4b-it": "dci1v8-pilot-r11",
+  "qwen3-4b": "dci1v8-pilot-r9",
+  "qwen3-4b-instruct-2507": "dci1v8-pilot-r10"
+ },
+ "verdict": {
+  "caliper": 0.1,
+  "mechanism_exists": true,
+  "median_calibration_spread_across_models": 0.23448036684907148,
+  "median_screen_se_iota_across_models": 0.16766073760449013,
+  "models_with_opportunity": [
+   "qwen3-4b",
+   "gemma-3n-e2b-it",
+   "gemma-3n-e4b-it"
+  ],
+  "opportunity_on_unsupported_frames": true,
+  "rule": "CONFIRMED iff (i) the median per-family cross-frame spread of calibration iota exceeds the 0.10 caliper (the mechanism exists), (ii) on at least two of the four models some LOCAL-unsupported frame carries at least one unforwarded Tier-1/2 screen-near candidate family that is not already LOCAL-valid on that frame (the mechanism had something to bite on), and (iii) the screen's own median SE(iota) is at most the caliper, so the screen coordinate can in fact locate a rung inside a frame's caliper. PARTIALLY iff (i) and (ii) hold but (iii) does not: the loss is real but the pooled screen's per-frame coordinate is too noisy to have steered around it. NOT otherwise.",
+  "screen_coordinate_steerable": false,
+  "verdict": "PARTIALLY"
+ }
+}

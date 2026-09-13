@@ -1,0 +1,1612 @@
+{
+ "payload": {
+  "candidate_families": {
+   "CL1": {
+    "form": "lower_bound",
+    "ladder": [
+     1,
+     2,
+     3,
+     4,
+     6,
+     8,
+     11,
+     15
+    ],
+    "numerator": "words beginning with the letter b",
+    "rule_statement": "At least q words in the answer must begin with the letter b.",
+    "statistic_source": "RF1",
+    "wordings_at_first_rung": [
+     "At least 1 words must begin with b.",
+     "Use at least 1 words beginning with b.",
+     "No fewer than 1 words may begin with b.",
+     "Include at least 1 words starting with b."
+    ]
+   },
+   "CL7": {
+    "form": "lower_bound",
+    "ladder": [
+     10,
+     20,
+     30,
+     45,
+     60,
+     80,
+     100,
+     130
+    ],
+    "numerator": "words containing the letter a",
+    "rule_statement": "At least q words in the answer must contain the letter a.",
+    "statistic_source": "RF7",
+    "wordings_at_first_rung": [
+     "At least 10 words must contain letter a.",
+     "Use at least 10 words containing letter a.",
+     "No fewer than 10 words contain letter a.",
+     "Include at least 10 words with letter a."
+    ]
+   },
+   "CL8": {
+    "form": "lower_bound",
+    "ladder": [
+     2,
+     3,
+     5,
+     7,
+     10,
+     14,
+     19,
+     25
+    ],
+    "numerator": "words ending with the letter y",
+    "rule_statement": "At least q words in the answer must end with the letter y.",
+    "statistic_source": "RF8",
+    "wordings_at_first_rung": [
+     "At least 2 words must end with y.",
+     "Use at least 2 words ending with y.",
+     "No fewer than 2 words may end with y.",
+     "Include at least 2 words finishing with y."
+    ]
+   },
+   "CR4": {
+    "form": "rate",
+    "ladder": [
+     3,
+     5,
+     7,
+     9,
+     11,
+     13,
+     15,
+     18
+    ],
+    "numerator": "words containing two identical adjacent letters",
+    "rule_statement": "At most q percent of words may contain doubled letters.",
+    "statistic_source": "RF4",
+    "wordings_at_first_rung": [
+     "At most 3% of words contain doubled letters.",
+     "Use at most 3% of words with doubled letters.",
+     "No more than 3% of words contain doubled letters.",
+     "Limit words with doubled letters to 3%."
+    ]
+   },
+   "CR6": {
+    "form": "rate",
+    "ladder": [
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     10,
+     12
+    ],
+    "numerator": "words containing an upper-case letter",
+    "rule_statement": "At most q percent of words may use capitals.",
+    "statistic_source": "new",
+    "wordings_at_first_rung": [
+     "At most 3% of words use capitals.",
+     "Use at most 3% of words with capitals.",
+     "No more than 3% of words use capitals.",
+     "Limit words that use capitals to 3%."
+    ]
+   },
+   "CR7": {
+    "form": "rate",
+    "ladder": [
+     24,
+     28,
+     32,
+     36,
+     40,
+     44,
+     48,
+     52
+    ],
+    "numerator": "words containing the letter a",
+    "rule_statement": "At most q percent of words may contain the letter a.",
+    "statistic_source": "RF7",
+    "wordings_at_first_rung": [
+     "At most 24% of words contain letter a.",
+     "Use at most 24% of words containing letter a.",
+     "No more than 24% of words contain letter a.",
+     "Limit words containing letter a to 24%."
+    ]
+   }
+  },
+  "classification": "design evidence; non-confirmatory",
+  "discipline": {
+   "caliper_table_at_n4": {
+    "CL1": {
+     "a_counts": [
+      6,
+      7,
+      7,
+      7
+     ],
+     "candidate_counts": [
+      7,
+      7,
+      8,
+      7
+     ],
+     "ok": true
+    },
+    "CL7": {
+     "a_counts": [
+      6,
+      7,
+      7,
+      7
+     ],
+     "candidate_counts": [
+      7,
+      7,
+      7,
+      7
+     ],
+     "ok": true
+    },
+    "CL8": {
+     "a_counts": [
+      6,
+      7,
+      7,
+      7
+     ],
+     "candidate_counts": [
+      7,
+      7,
+      8,
+      7
+     ],
+     "ok": true
+    },
+    "CR4": {
+     "a_counts": [
+      6,
+      7,
+      7,
+      7
+     ],
+     "candidate_counts": [
+      7,
+      8,
+      8,
+      6
+     ],
+     "ok": true
+    },
+    "CR6": {
+     "a_counts": [
+      6,
+      7,
+      7,
+      7
+     ],
+     "candidate_counts": [
+      6,
+      7,
+      7,
+      6
+     ],
+     "ok": true
+    },
+    "CR7": {
+     "a_counts": [
+      6,
+      7,
+      7,
+      7
+     ],
+     "candidate_counts": [
+      7,
+      8,
+      8,
+      6
+     ],
+     "ok": true
+    }
+   },
+   "fixture_responses": 20,
+   "length_caliper_against": "A",
+   "length_caliper_tolerance": 0.2,
+   "parse_independence": "asserted on the callable signatures",
+   "witness_compositions_certified": 576,
+   "wording_equivalence_verdicts": 960,
+   "wordings_per_constraint": 4
+  },
+  "excluded_families": {
+   "RF2": "lower-bound RF2 conflicts with B at m=7"
+  },
+  "factors": {
+   "FORM": [
+    "count",
+    "candidate"
+   ],
+   "STEM": [
+    "current",
+    "floored"
+   ],
+   "stem_counts_toward_load": false,
+   "stem_diagnostic": "realised rate of 60-120 word answers",
+   "stem_is_scored": false,
+   "stem_placement": "between the topic question and the numbered constraint list, in every cell without exception",
+   "stem_sentence": "Answer in 60 to 120 words."
+  },
+  "fixture_verdict_table": {
+   "CL1:1": {
+    "verdicts": [
+     false,
+     true,
+     false,
+     false,
+     false,
+     true,
+     true,
+     true,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     true,
+     false,
+     false,
+     true,
+     false,
+     false
+    ]
+   },
+   "CL1:11": {
+    "verdicts": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ]
+   },
+   "CL1:15": {
+    "verdicts": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ]
+   },
+   "CL1:2": {
+    "verdicts": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false
+    ]
+   },
+   "CL1:3": {
+    "verdicts": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ]
+   },
+   "CL1:4": {
+    "verdicts": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ]
+   },
+   "CL1:6": {
+    "verdicts": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ]
+   },
+   "CL1:8": {
+    "verdicts": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ]
+   },
+   "CL7:10": {
+    "verdicts": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ]
+   },
+   "CL7:100": {
+    "verdicts": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ]
+   },
+   "CL7:130": {
+    "verdicts": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ]
+   },
+   "CL7:20": {
+    "verdicts": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ]
+   },
+   "CL7:30": {
+    "verdicts": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ]
+   },
+   "CL7:45": {
+    "verdicts": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ]
+   },
+   "CL7:60": {
+    "verdicts": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ]
+   },
+   "CL7:80": {
+    "verdicts": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ]
+   },
+   "CL8:10": {
+    "verdicts": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ]
+   },
+   "CL8:14": {
+    "verdicts": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ]
+   },
+   "CL8:19": {
+    "verdicts": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ]
+   },
+   "CL8:2": {
+    "verdicts": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ]
+   },
+   "CL8:25": {
+    "verdicts": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ]
+   },
+   "CL8:3": {
+    "verdicts": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ]
+   },
+   "CL8:5": {
+    "verdicts": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ]
+   },
+   "CL8:7": {
+    "verdicts": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ]
+   },
+   "CR4:11": {
+    "verdicts": [
+     true,
+     true,
+     true,
+     false,
+     false,
+     false,
+     false,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true,
+     false,
+     false,
+     true
+    ]
+   },
+   "CR4:13": {
+    "verdicts": [
+     true,
+     true,
+     true,
+     false,
+     false,
+     false,
+     false,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true,
+     true,
+     false,
+     true
+    ]
+   },
+   "CR4:15": {
+    "verdicts": [
+     true,
+     true,
+     true,
+     false,
+     false,
+     false,
+     false,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true,
+     true,
+     true,
+     true
+    ]
+   },
+   "CR4:18": {
+    "verdicts": [
+     true,
+     true,
+     true,
+     false,
+     false,
+     false,
+     false,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true,
+     true,
+     true,
+     true
+    ]
+   },
+   "CR4:3": {
+    "verdicts": [
+     true,
+     true,
+     true,
+     false,
+     false,
+     false,
+     false,
+     true,
+     true,
+     true,
+     false,
+     false,
+     false,
+     true,
+     false,
+     true,
+     false,
+     false,
+     false,
+     true
+    ]
+   },
+   "CR4:5": {
+    "verdicts": [
+     true,
+     true,
+     true,
+     false,
+     false,
+     false,
+     false,
+     true,
+     true,
+     true,
+     false,
+     false,
+     false,
+     true,
+     false,
+     true,
+     false,
+     false,
+     false,
+     true
+    ]
+   },
+   "CR4:7": {
+    "verdicts": [
+     true,
+     true,
+     true,
+     false,
+     false,
+     false,
+     false,
+     true,
+     true,
+     true,
+     false,
+     false,
+     false,
+     true,
+     false,
+     true,
+     false,
+     false,
+     false,
+     true
+    ]
+   },
+   "CR4:9": {
+    "verdicts": [
+     true,
+     true,
+     true,
+     false,
+     false,
+     false,
+     false,
+     true,
+     true,
+     true,
+     false,
+     true,
+     false,
+     true,
+     false,
+     true,
+     true,
+     false,
+     false,
+     true
+    ]
+   },
+   "CR6:10": {
+    "verdicts": [
+     true,
+     true,
+     true,
+     false,
+     false,
+     false,
+     true,
+     false,
+     true,
+     false,
+     true,
+     false,
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     false,
+     true
+    ]
+   },
+   "CR6:12": {
+    "verdicts": [
+     true,
+     true,
+     true,
+     false,
+     false,
+     false,
+     true,
+     false,
+     true,
+     false,
+     true,
+     false,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true
+    ]
+   },
+   "CR6:3": {
+    "verdicts": [
+     false,
+     true,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     true,
+     true,
+     false,
+     false,
+     true
+    ]
+   },
+   "CR6:4": {
+    "verdicts": [
+     false,
+     true,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     true,
+     true,
+     false,
+     false,
+     true
+    ]
+   },
+   "CR6:5": {
+    "verdicts": [
+     false,
+     true,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     true,
+     true,
+     false,
+     false,
+     true
+    ]
+   },
+   "CR6:6": {
+    "verdicts": [
+     false,
+     true,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     true,
+     true,
+     false,
+     false,
+     true
+    ]
+   },
+   "CR6:7": {
+    "verdicts": [
+     false,
+     true,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     true,
+     true,
+     false,
+     false,
+     true
+    ]
+   },
+   "CR6:8": {
+    "verdicts": [
+     false,
+     true,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     true,
+     true,
+     false,
+     false,
+     true
+    ]
+   },
+   "CR7:24": {
+    "verdicts": [
+     true,
+     false,
+     true,
+     false,
+     false,
+     true,
+     false,
+     true,
+     false,
+     true,
+     true,
+     false,
+     false,
+     true,
+     true,
+     true,
+     false,
+     false,
+     false,
+     true
+    ]
+   },
+   "CR7:28": {
+    "verdicts": [
+     true,
+     false,
+     true,
+     false,
+     false,
+     true,
+     false,
+     true,
+     false,
+     true,
+     true,
+     false,
+     false,
+     true,
+     true,
+     true,
+     false,
+     false,
+     false,
+     true
+    ]
+   },
+   "CR7:32": {
+    "verdicts": [
+     true,
+     true,
+     true,
+     false,
+     false,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true,
+     true,
+     false,
+     false,
+     true,
+     true
+    ]
+   },
+   "CR7:36": {
+    "verdicts": [
+     true,
+     true,
+     true,
+     false,
+     false,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true,
+     true
+    ]
+   },
+   "CR7:40": {
+    "verdicts": [
+     true,
+     true,
+     true,
+     false,
+     false,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true,
+     true
+    ]
+   },
+   "CR7:44": {
+    "verdicts": [
+     true,
+     true,
+     true,
+     false,
+     false,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true,
+     true
+    ]
+   },
+   "CR7:48": {
+    "verdicts": [
+     true,
+     true,
+     true,
+     false,
+     false,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true,
+     true
+    ]
+   },
+   "CR7:52": {
+    "verdicts": [
+     true,
+     true,
+     true,
+     false,
+     false,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true,
+     true
+    ]
+   }
+  },
+  "generation": {
+   "completion_cap": "each model's own \u00a712.1 selected cap",
+   "decoding": "the registered policy, unchanged",
+   "draws_per_cell": 1,
+   "tensor_parallel_size": 1,
+   "topics": "the 24 registered pre-screen topics, unchanged"
+  },
+  "producing_commit": "8541f9fa5fd97d12c46e767e20b47e613983a17c",
+  "question": {
+   "FORM": "every registered reference family is an S <= q monotone count budget whose pass set is downward-closed under prefix; the empty string scores 94/94 on the pool, 4/4 on B and 0/8 on A",
+   "STEM": "a uniform answer-length instruction removes the shortening escape for B and for every reference at once"
+  },
+  "registered_values_untouched": {
+   "focal_grid": [
+    7,
+    8,
+    9,
+    10
+   ],
+   "non_vacuity_min_words": 20,
+   "note": "listed so a later diff proves the screen changed none of them; the sensitivity map varies them for reporting only",
+   "reference_caliper": 0.1,
+   "reference_ladders": {
+    "RF1": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8
+    ],
+    "RF2": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8
+    ],
+    "RF3": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8
+    ],
+    "RF4": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6
+    ],
+    "RF5": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12
+    ],
+    "RF6": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12
+    ],
+    "RF7": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12,
+     13,
+     14,
+     15,
+     16,
+     17,
+     18,
+     19,
+     20,
+     21,
+     22,
+     23,
+     24
+    ],
+    "RF8": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8
+    ]
+   },
+   "reference_vacuity_max": 0.1,
+   "target_grid": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ]
+  },
+  "reused_without_regeneration": {
+   "count x current": "the registered \u00a712.2 ladder screen at evidence/dci1-v4/<model>/prescreen/ladder-cap512, read only"
+  },
+  "rf2_conflict_proof": {
+   "all_listed_long_words_exceed_7": true,
+   "all_listed_short_words_are_within_7": true,
+   "excluded": "RF2",
+   "ing_words_over_7_letters_seen_in_answers": [
+    "planning",
+    "designing",
+    "considering",
+    "including",
+    "operating",
+    "developing",
+    "maintaining",
+    "producing"
+   ],
+   "ing_words_within_7_letters": [
+    "being",
+    "bring",
+    "cling",
+    "doing",
+    "fling",
+    "going",
+    "sling",
+    "spring",
+    "sting",
+    "swing",
+    "thing",
+    "using",
+    "wring"
+   ],
+   "reason": "a lower-bound RF2 requires q words ending in 'ing'; B at m = 7 forbids any word over seven letters",
+   "verdict": "satisfiable only from a ~13-word closed vocabulary, most of which are function words; the pair is admissible in principle and unusable in practice, so RF2 carries no candidate form"
+  },
+  "seeds": {
+   "derivation": "domain, root, stage, model_id, prompt hash, draw",
+   "distinct_from": {
+    "v3_roots": "202608170-202608175",
+    "v4_roots": "202608190-202608195"
+   },
+   "domain": "fsscreen:gen:v1",
+   "screen_root": 202608200,
+   "stage_label": "fs-screen"
+  },
+  "status": "NON-CONFIRMATORY DESIGN SCREEN. Not a registered v4 stage. No Gate 1 dependency. Nothing here may enter a v4 estimator, and evidence/fs-screen-v4 is outside the v4 namespace so the positive-admission guard refuses it.",
+  "study_id": "fs-screen-v4",
+  "success_criteria": {
+   "b_side": "under the floored stem, B-solo vacuous share of passes <= 0.10 on all four models",
+   "fixed_before": "the first generation of this screen",
+   "reference": "at least three families carrying a rung inside the 0.10 caliper of A AND at solo vacuity <= 0.10, at the SAME severity, on all four models"
+  },
+  "verifier_source_hash": "f5d4f7e74e757769ec43d7007b0121687fa4b5b388184e5ef32b171ea7580ee4"
+ },
+ "screen_protocol_hash": "98f8ee0da826b5023e24c32f8b33d9fce1f645372742d6a0c2edec4f086755e5"
+}

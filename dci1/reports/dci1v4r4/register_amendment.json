@@ -1,0 +1,111 @@
+{
+ "artifact_type": "v4r4-register-amendment",
+ "decisions_entered": {
+  "B6": "closes E3: the requirement-verb construction is accepted, so `needs {q}` reads as the registered `>= q`. It ratifies the classification the specification module already produced when Gate 1 ran; no wording, predicate or row changes",
+  "B7": "closes E5: \u00a712.6's registered candidate expansion is not invoked, and C4's zero leave-one-family-out margin on three models is carried as a recorded limitation. Declining an option changes no threshold and no candidate family"
+ },
+ "documents": {
+  "moved": {
+   "dci1/DECISIONS_V4R4.md": {
+    "at_producing_commit": "2ef65124f5154cd26caa3f2e15d051d3c1b4d8ce19be6fcbf8fd6ef924d11454",
+    "now": "201403256233c1aeb0304f08bbb1a77adbcc2d05e90c66b03ef68982cb966b66",
+    "sealed": "2ef65124f5154cd26caa3f2e15d051d3c1b4d8ce19be6fcbf8fd6ef924d11454"
+   }
+  },
+  "rule": "the protocol hash covers the bytes of every document in PROTOCOL_DOCUMENTS. A register that could change without moving it would be a hole in the binding",
+  "unchanged": [
+   "user-notes/DCI1_preregistration_v4r4.md",
+   "user-notes/DCI1_v4r3_to_v4r4_changelog.md",
+   "user-notes/DCI1_preregistration_v4r3.md"
+  ]
+ },
+ "gate1_producing_commit": "d11e41c7104775890cf7420062c02531ffa33966",
+ "gate_2_may_run": true,
+ "measurement_hashes": {
+  "holds": true,
+  "meaning": "the instrument, its wordings, its specification, its mutation suite and the Gate-1 rule itself are byte-identical to what the gate certified. The amendment is confined to the decisions register",
+  "moved": {},
+  "sealed_and_recomputed": {
+   "canonical_verifier_hash": "09f0675c3018485e95fbb0aca627f13a06739ef5cd83606f76cf9458143d416f",
+   "measurement_rule_hash": "4f59182f07768257e27e2216343dba1608a203e5f2ba874c0254ce16b71839f4",
+   "mutation_hash": "a91f6220c63149baadecddec1ce29dd403882f49cc5c9dec522796d324c054c1",
+   "specification_hash": "1704ddc3d126af0f1c9ec99d100fda0a20f0a5020818f8674a7055e0a748fd6c",
+   "wordings_hash": "b9b258c5cc8280402520184fdef00c9d3823c55ede72f434cb50344b548848f0"
+  }
+ },
+ "passed": true,
+ "problems": [],
+ "protocol_hash": {
+  "moved": true,
+  "now": "63f558b62f500489a340fba8418afea2a05b706988af00ac636b68f33af0fe3b",
+  "sealed_by_gate1": "1e7a7b2dae58b429c8e558f9a1e0501631c240cfa749c3574fa7737a0dc111c1"
+ },
+ "sealed_by_gate1": {
+  "gemma-3n-e2b-it": {
+   "canonical_verifier_hash": "09f0675c3018485e95fbb0aca627f13a06739ef5cd83606f76cf9458143d416f",
+   "documents": {
+    "dci1/DECISIONS_V4R4.md": "2ef65124f5154cd26caa3f2e15d051d3c1b4d8ce19be6fcbf8fd6ef924d11454",
+    "user-notes/DCI1_preregistration_v4r3.md": "e5f8f1b1b5f43fa9f8794949cabead07d59516eea1e9f8365a2296e2bc363b5e",
+    "user-notes/DCI1_preregistration_v4r4.md": "dff51662fe498a69f7f406446e57901b4a7852724e33012ad3865a30a5bf8594",
+    "user-notes/DCI1_v4r3_to_v4r4_changelog.md": "37cd9d5c4b0214a878a4acf0e7b0050fcc2775648070d230ba1f0f14f8e930b7"
+   },
+   "measurement_rule_hash": "4f59182f07768257e27e2216343dba1608a203e5f2ba874c0254ce16b71839f4",
+   "mutation_hash": "a91f6220c63149baadecddec1ce29dd403882f49cc5c9dec522796d324c054c1",
+   "outcome": "PASS",
+   "producing_commit": "d11e41c7104775890cf7420062c02531ffa33966",
+   "protocol_hash": "1e7a7b2dae58b429c8e558f9a1e0501631c240cfa749c3574fa7737a0dc111c1",
+   "specification_hash": "1704ddc3d126af0f1c9ec99d100fda0a20f0a5020818f8674a7055e0a748fd6c",
+   "wordings_hash": "b9b258c5cc8280402520184fdef00c9d3823c55ede72f434cb50344b548848f0"
+  },
+  "gemma-3n-e4b-it": {
+   "canonical_verifier_hash": "09f0675c3018485e95fbb0aca627f13a06739ef5cd83606f76cf9458143d416f",
+   "documents": {
+    "dci1/DECISIONS_V4R4.md": "2ef65124f5154cd26caa3f2e15d051d3c1b4d8ce19be6fcbf8fd6ef924d11454",
+    "user-notes/DCI1_preregistration_v4r3.md": "e5f8f1b1b5f43fa9f8794949cabead07d59516eea1e9f8365a2296e2bc363b5e",
+    "user-notes/DCI1_preregistration_v4r4.md": "dff51662fe498a69f7f406446e57901b4a7852724e33012ad3865a30a5bf8594",
+    "user-notes/DCI1_v4r3_to_v4r4_changelog.md": "37cd9d5c4b0214a878a4acf0e7b0050fcc2775648070d230ba1f0f14f8e930b7"
+   },
+   "measurement_rule_hash": "4f59182f07768257e27e2216343dba1608a203e5f2ba874c0254ce16b71839f4",
+   "mutation_hash": "a91f6220c63149baadecddec1ce29dd403882f49cc5c9dec522796d324c054c1",
+   "outcome": "PASS",
+   "producing_commit": "d11e41c7104775890cf7420062c02531ffa33966",
+   "protocol_hash": "1e7a7b2dae58b429c8e558f9a1e0501631c240cfa749c3574fa7737a0dc111c1",
+   "specification_hash": "1704ddc3d126af0f1c9ec99d100fda0a20f0a5020818f8674a7055e0a748fd6c",
+   "wordings_hash": "b9b258c5cc8280402520184fdef00c9d3823c55ede72f434cb50344b548848f0"
+  },
+  "qwen3-4b": {
+   "canonical_verifier_hash": "09f0675c3018485e95fbb0aca627f13a06739ef5cd83606f76cf9458143d416f",
+   "documents": {
+    "dci1/DECISIONS_V4R4.md": "2ef65124f5154cd26caa3f2e15d051d3c1b4d8ce19be6fcbf8fd6ef924d11454",
+    "user-notes/DCI1_preregistration_v4r3.md": "e5f8f1b1b5f43fa9f8794949cabead07d59516eea1e9f8365a2296e2bc363b5e",
+    "user-notes/DCI1_preregistration_v4r4.md": "dff51662fe498a69f7f406446e57901b4a7852724e33012ad3865a30a5bf8594",
+    "user-notes/DCI1_v4r3_to_v4r4_changelog.md": "37cd9d5c4b0214a878a4acf0e7b0050fcc2775648070d230ba1f0f14f8e930b7"
+   },
+   "measurement_rule_hash": "4f59182f07768257e27e2216343dba1608a203e5f2ba874c0254ce16b71839f4",
+   "mutation_hash": "a91f6220c63149baadecddec1ce29dd403882f49cc5c9dec522796d324c054c1",
+   "outcome": "PASS",
+   "producing_commit": "d11e41c7104775890cf7420062c02531ffa33966",
+   "protocol_hash": "1e7a7b2dae58b429c8e558f9a1e0501631c240cfa749c3574fa7737a0dc111c1",
+   "specification_hash": "1704ddc3d126af0f1c9ec99d100fda0a20f0a5020818f8674a7055e0a748fd6c",
+   "wordings_hash": "b9b258c5cc8280402520184fdef00c9d3823c55ede72f434cb50344b548848f0"
+  },
+  "qwen3-4b-instruct-2507": {
+   "canonical_verifier_hash": "09f0675c3018485e95fbb0aca627f13a06739ef5cd83606f76cf9458143d416f",
+   "documents": {
+    "dci1/DECISIONS_V4R4.md": "2ef65124f5154cd26caa3f2e15d051d3c1b4d8ce19be6fcbf8fd6ef924d11454",
+    "user-notes/DCI1_preregistration_v4r3.md": "e5f8f1b1b5f43fa9f8794949cabead07d59516eea1e9f8365a2296e2bc363b5e",
+    "user-notes/DCI1_preregistration_v4r4.md": "dff51662fe498a69f7f406446e57901b4a7852724e33012ad3865a30a5bf8594",
+    "user-notes/DCI1_v4r3_to_v4r4_changelog.md": "37cd9d5c4b0214a878a4acf0e7b0050fcc2775648070d230ba1f0f14f8e930b7"
+   },
+   "measurement_rule_hash": "4f59182f07768257e27e2216343dba1608a203e5f2ba874c0254ce16b71839f4",
+   "mutation_hash": "a91f6220c63149baadecddec1ce29dd403882f49cc5c9dec522796d324c054c1",
+   "outcome": "PASS",
+   "producing_commit": "d11e41c7104775890cf7420062c02531ffa33966",
+   "protocol_hash": "1e7a7b2dae58b429c8e558f9a1e0501631c240cfa749c3574fa7737a0dc111c1",
+   "specification_hash": "1704ddc3d126af0f1c9ec99d100fda0a20f0a5020818f8674a7055e0a748fd6c",
+   "wordings_hash": "b9b258c5cc8280402520184fdef00c9d3823c55ede72f434cb50344b548848f0"
+  }
+ },
+ "what_this_is": "the decisions register gained B6 and B7 after Gate 1 passed and before Gate 2 began. The register is a protocol document, so the protocol hash moved. This records the delta rather than absorbing it",
+ "what_this_is_not": "a re-seal. No Gate-1 record is rewritten, no gate is re-run, and the sealed hashes below are read out of the signed records as they stand"
+}

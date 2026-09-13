@@ -1,0 +1,2035 @@
+{
+ "_provenance": "POST-HOC DIAGNOSTIC, read-only, not preregistered",
+ "models": {
+  "gemma-3n-e2b-it": {
+   "GATE_2_REGIME": {
+    "a_chance_compliance": 0.1015625,
+    "a_solo_compliance": 0.6171875,
+    "b_chance_compliance": 0.0,
+    "b_solo_compliance": 0.7994791666666666,
+    "b_solo_vacuity": 0.0,
+    "difficulty_coordinate": "instructed_compliance",
+    "focal": {
+     "curve": {
+      "10": 0.7994791666666666,
+      "7": 0.4296875,
+      "8": 0.5520833333333334,
+      "9": 0.6197916666666666
+     },
+     "extension_measured": false,
+     "grid_used": [
+      7,
+      8,
+      9,
+      10
+     ],
+     "m_star": 10
+    },
+    "iota_a": 0.5739130434782609,
+    "iota_b": 0.7994791666666666,
+    "m_star": 10,
+    "n_star": 1
+   },
+   "GATE_3_REFERENCES": {
+    "cells_per_block": 47,
+    "class_arm": true,
+    "class_companion": {
+     "constraint_class": "production",
+     "distance": 0.0007787151200520093,
+     "family": "CX2",
+     "iota": 0.5731343283582089,
+     "severity": 1,
+     "slot": "CL"
+    },
+    "core_references": [
+     {
+      "distance": 0.03966646813579511,
+      "family": "RF9",
+      "feature_group": "t_initial",
+      "iota": 0.5342465753424658,
+      "severity": 10,
+      "slot": "R1"
+     },
+     {
+      "distance": 0.05794074242252245,
+      "family": "CR5",
+      "feature_group": "comma",
+      "iota": 0.6318537859007833,
+      "severity": 2,
+      "slot": "R2"
+     },
+     {
+      "distance": 0.05911447945751891,
+      "family": "RF11",
+      "feature_group": "vowel_initial",
+      "iota": 0.6330275229357798,
+      "severity": 26,
+      "slot": "R3"
+     }
+    ],
+    "design": "full",
+    "design_variant": "full",
+    "dropped_for_no_triple": [
+     {
+      "family": "RF6",
+      "reason": "no eligible severity strictly on one side of A: the family cannot straddle"
+     }
+    ],
+    "identification_statuses": [
+     "COMPANION_CLASS_NOT_MATCHED"
+    ],
+    "slot_map": {
+     "CL": [
+      "CX2",
+      1
+     ],
+     "R1": [
+      "RF9",
+      10
+     ],
+     "R1+": [
+      "RF9",
+      13
+     ],
+     "R1-": [
+      "RF9",
+      8
+     ],
+     "R2": [
+      "CR5",
+      2
+     ],
+     "R2+": [
+      "CR5",
+      1
+     ],
+     "R2-": [
+      "CR5",
+      3
+     ],
+     "R3": [
+      "RF11",
+      26
+     ],
+     "R3+": [
+      "RF11",
+      32
+     ],
+     "R3-": [
+      "RF11",
+      21
+     ]
+    },
+    "spectrum": [
+     {
+      "family": "RF9",
+      "iota": 0.431547619047619,
+      "severity": 8,
+      "side": "lower",
+      "slot": "R1-",
+      "target": 0.3739130434782609
+     },
+     {
+      "family": "RF9",
+      "iota": 0.642512077294686,
+      "severity": 13,
+      "side": "upper",
+      "slot": "R1+",
+      "target": 0.7739130434782608
+     },
+     {
+      "family": "CR5",
+      "iota": 0.35543766578249336,
+      "severity": 3,
+      "side": "lower",
+      "slot": "R2-",
+      "target": 0.3739130434782609
+     },
+     {
+      "family": "CR5",
+      "iota": 0.6822916666666666,
+      "severity": 1,
+      "side": "upper",
+      "slot": "R2+",
+      "target": 0.7739130434782608
+     },
+     {
+      "family": "RF11",
+      "iota": 0.3359580052493438,
+      "severity": 21,
+      "side": "lower",
+      "slot": "R3-",
+      "target": 0.3739130434782609
+     },
+     {
+      "family": "RF11",
+      "iota": 0.8544600938967137,
+      "severity": 32,
+      "side": "upper",
+      "slot": "R3+",
+      "target": 0.7739130434782608
+     }
+    ],
+    "spectrum_triples": [
+     {
+      "core_severity": 10,
+      "family": "RF9",
+      "lower": {
+       "iota": 0.431547619047619,
+       "severity": 8,
+       "target": 0.3739130434782609
+      },
+      "upper": {
+       "iota": 0.642512077294686,
+       "severity": 13,
+       "target": 0.7739130434782608
+      }
+     },
+     {
+      "core_severity": 2,
+      "family": "CR5",
+      "lower": {
+       "iota": 0.35543766578249336,
+       "severity": 3,
+       "target": 0.3739130434782609
+      },
+      "upper": {
+       "iota": 0.6822916666666666,
+       "severity": 1,
+       "target": 0.7739130434782608
+      }
+     },
+     {
+      "core_severity": 26,
+      "family": "RF11",
+      "lower": {
+       "iota": 0.3359580052493438,
+       "severity": 21,
+       "target": 0.3739130434782609
+      },
+      "upper": {
+       "iota": 0.8544600938967137,
+       "severity": 32,
+       "target": 0.7739130434782608
+      }
+     }
+    ],
+    "variant_rule": "\u00a78.6, decided by reference admission and \u00a712.6 coverage only; no composed effect exists at this stage and none may be read"
+   },
+   "REGIME_SCREEN": {
+    "a_anchor": {
+     "iota": 0.5555555555555555,
+     "rule": "the A severity whose pre-screen solo compliance is nearest \u00a712.3's target aim; a pre-screen anchor only, never n*",
+     "severity": 1,
+     "solo": 0.6666666666666666
+    },
+    "iota_a_prescreen": 0.5555555555555555,
+    "selected_cap": 512
+   },
+   "model_id": "google/gemma-3n-E2B-it",
+   "model_revision": "5e092ebca197cdcd8d8b195040accf22693501bc",
+   "records_present": [
+    "QUALIFIED",
+    "GATE_0_APPARATUS",
+    "REGIME_SCREEN",
+    "GATE_1_MEASUREMENT",
+    "GATE_2_REGIME",
+    "GATE_3_REFERENCES"
+   ],
+   "stage_reached": "GATE_3_REFERENCES",
+   "terminal_report": {
+    "band": [
+     0.05,
+     0.95
+    ],
+    "criterion": "COMPOSED_HEADROOM_FAILURE",
+    "failures": [
+     {
+      "cell": "pair:B+R3",
+      "rate": 0.9583333333333334,
+      "slot": "B"
+     },
+     {
+      "cell": "pair:B+R3",
+      "rate": 0.96875,
+      "slot": "R3"
+     },
+     {
+      "cell": "pair:B+R3+",
+      "rate": 1.0,
+      "slot": "R3+"
+     },
+     {
+      "cell": "pair:R3++B",
+      "rate": 1.0,
+      "slot": "R3+"
+     },
+     {
+      "cell": "pair:R3+B",
+      "rate": 0.9583333333333334,
+      "slot": "R3"
+     }
+    ],
+    "gate": "GATE_4_COMPOSED_HEADROOM",
+    "model_key": "gemma-3n-e2b-it",
+    "observed": {
+     "band": [
+      0.05,
+      0.95
+     ],
+     "failures": [
+      {
+       "cell": "pair:B+R3",
+       "rate": 0.9583333333333334,
+       "slot": "B"
+      },
+      {
+       "cell": "pair:B+R3",
+       "rate": 0.96875,
+       "slot": "R3"
+      },
+      {
+       "cell": "pair:B+R3+",
+       "rate": 1.0,
+       "slot": "R3+"
+      },
+      {
+       "cell": "pair:R3++B",
+       "rate": 1.0,
+       "slot": "R3+"
+      },
+      {
+       "cell": "pair:R3+B",
+       "rate": 0.9583333333333334,
+       "slot": "R3"
+      }
+     ],
+     "status": "COMPOSED_HEADROOM_FAILURE",
+     "table": {
+      "pair:A+B": {
+       "A": 0.6041666666666666,
+       "B": 0.625
+      },
+      "pair:A+R1": {
+       "A": 0.6041666666666666,
+       "R1": 0.5104166666666666
+      },
+      "pair:A+R2": {
+       "A": 0.59375,
+       "R2": 0.6354166666666666
+      },
+      "pair:A+R3": {
+       "A": 0.6041666666666666,
+       "R3": 0.4375
+      },
+      "pair:B+A": {
+       "A": 0.7395833333333334,
+       "B": 0.84375
+      },
+      "pair:B+CL": {
+       "B": 0.8229166666666666,
+       "CL": 0.40625
+      },
+      "pair:B+R1": {
+       "B": 0.9270833333333334,
+       "R1": 0.7395833333333334
+      },
+      "pair:B+R1+": {
+       "B": 0.9375,
+       "R1+": 0.8125
+      },
+      "pair:B+R1-": {
+       "B": 0.8958333333333334,
+       "R1-": 0.59375
+      },
+      "pair:B+R2": {
+       "B": 0.9166666666666666,
+       "R2": 0.8020833333333334
+      },
+      "pair:B+R2+": {
+       "B": 0.8958333333333334,
+       "R2+": 0.8854166666666666
+      },
+      "pair:B+R2-": {
+       "B": 0.9166666666666666,
+       "R2-": 0.71875
+      },
+      "pair:B+R3": {
+       "B": 0.9583333333333334,
+       "R3": 0.96875
+      },
+      "pair:B+R3+": {
+       "B": 0.9270833333333334,
+       "R3+": 1.0
+      },
+      "pair:B+R3-": {
+       "B": 0.9270833333333334,
+       "R3-": 0.8229166666666666
+      },
+      "pair:CL+B": {
+       "B": 0.6458333333333334,
+       "CL": 0.4895833333333333
+      },
+      "pair:R1++B": {
+       "B": 0.6875,
+       "R1+": 0.8541666666666666
+      },
+      "pair:R1+A": {
+       "A": 0.7708333333333334,
+       "R1": 0.71875
+      },
+      "pair:R1+B": {
+       "B": 0.5208333333333334,
+       "R1": 0.8125
+      },
+      "pair:R1+R2": {
+       "R1": 0.7083333333333334,
+       "R2": 0.2708333333333333
+      },
+      "pair:R1+R3": {
+       "R1": 0.8541666666666666,
+       "R3": 0.7291666666666666
+      },
+      "pair:R1-+B": {
+       "B": 0.5416666666666666,
+       "R1-": 0.6666666666666666
+      },
+      "pair:R2++B": {
+       "B": 0.7395833333333334,
+       "R2+": 0.71875
+      },
+      "pair:R2+A": {
+       "A": 0.65625,
+       "R2": 0.625
+      },
+      "pair:R2+B": {
+       "B": 0.7604166666666666,
+       "R2": 0.5729166666666666
+      },
+      "pair:R2+R1": {
+       "R1": 0.7083333333333334,
+       "R2": 0.53125
+      },
+      "pair:R2+R3": {
+       "R2": 0.46875,
+       "R3": 0.5416666666666666
+      },
+      "pair:R2-+B": {
+       "B": 0.7291666666666666,
+       "R2-": 0.34375
+      },
+      "pair:R3++B": {
+       "B": 0.6041666666666666,
+       "R3+": 1.0
+      },
+      "pair:R3+A": {
+       "A": 0.7291666666666666,
+       "R3": 0.5625
+      },
+      "pair:R3+B": {
+       "B": 0.7604166666666666,
+       "R3": 0.9583333333333334
+      },
+      "pair:R3+R1": {
+       "R1": 0.84375,
+       "R3": 0.7395833333333334
+      },
+      "pair:R3+R2": {
+       "R2": 0.3125,
+       "R3": 0.71875
+      },
+      "pair:R3-+B": {
+       "B": 0.6979166666666666,
+       "R3-": 0.7604166666666666
+      },
+      "solo:A": {
+       "A": 0.6875
+      },
+      "solo:B": {
+       "B": 0.8333333333333334
+      },
+      "solo:CL": {
+       "CL": 0.65625
+      },
+      "solo:R1": {
+       "R1": 0.7708333333333334
+      },
+      "solo:R1+": {
+       "R1+": 0.8333333333333334
+      },
+      "solo:R1-": {
+       "R1-": 0.5520833333333334
+      },
+      "solo:R2": {
+       "R2": 0.6354166666666666
+      },
+      "solo:R2+": {
+       "R2+": 0.8125
+      },
+      "solo:R2-": {
+       "R2-": 0.3333333333333333
+      },
+      "solo:R3": {
+       "R3": 0.6354166666666666
+      },
+      "solo:R3+": {
+       "R3+": 0.9375
+      },
+      "solo:R3-": {
+       "R3-": 0.3541666666666667
+      }
+     },
+     "terminal_sentence": "a terminal pre-confirmatory status carries no evidence about the effect"
+    },
+    "producing_commit": "1f32dea619bb10e2492f506e9cad4085b392cc03",
+    "status": "COMPOSED_HEADROOM_FAILURE",
+    "strongest_permissible_statement": "a terminal pre-confirmatory status carries no evidence about the effect",
+    "table": {
+     "pair:A+B": {
+      "A": 0.6041666666666666,
+      "B": 0.625
+     },
+     "pair:A+R1": {
+      "A": 0.6041666666666666,
+      "R1": 0.5104166666666666
+     },
+     "pair:A+R2": {
+      "A": 0.59375,
+      "R2": 0.6354166666666666
+     },
+     "pair:A+R3": {
+      "A": 0.6041666666666666,
+      "R3": 0.4375
+     },
+     "pair:B+A": {
+      "A": 0.7395833333333334,
+      "B": 0.84375
+     },
+     "pair:B+CL": {
+      "B": 0.8229166666666666,
+      "CL": 0.40625
+     },
+     "pair:B+R1": {
+      "B": 0.9270833333333334,
+      "R1": 0.7395833333333334
+     },
+     "pair:B+R1+": {
+      "B": 0.9375,
+      "R1+": 0.8125
+     },
+     "pair:B+R1-": {
+      "B": 0.8958333333333334,
+      "R1-": 0.59375
+     },
+     "pair:B+R2": {
+      "B": 0.9166666666666666,
+      "R2": 0.8020833333333334
+     },
+     "pair:B+R2+": {
+      "B": 0.8958333333333334,
+      "R2+": 0.8854166666666666
+     },
+     "pair:B+R2-": {
+      "B": 0.9166666666666666,
+      "R2-": 0.71875
+     },
+     "pair:B+R3": {
+      "B": 0.9583333333333334,
+      "R3": 0.96875
+     },
+     "pair:B+R3+": {
+      "B": 0.9270833333333334,
+      "R3+": 1.0
+     },
+     "pair:B+R3-": {
+      "B": 0.9270833333333334,
+      "R3-": 0.8229166666666666
+     },
+     "pair:CL+B": {
+      "B": 0.6458333333333334,
+      "CL": 0.4895833333333333
+     },
+     "pair:R1++B": {
+      "B": 0.6875,
+      "R1+": 0.8541666666666666
+     },
+     "pair:R1+A": {
+      "A": 0.7708333333333334,
+      "R1": 0.71875
+     },
+     "pair:R1+B": {
+      "B": 0.5208333333333334,
+      "R1": 0.8125
+     },
+     "pair:R1+R2": {
+      "R1": 0.7083333333333334,
+      "R2": 0.2708333333333333
+     },
+     "pair:R1+R3": {
+      "R1": 0.8541666666666666,
+      "R3": 0.7291666666666666
+     },
+     "pair:R1-+B": {
+      "B": 0.5416666666666666,
+      "R1-": 0.6666666666666666
+     },
+     "pair:R2++B": {
+      "B": 0.7395833333333334,
+      "R2+": 0.71875
+     },
+     "pair:R2+A": {
+      "A": 0.65625,
+      "R2": 0.625
+     },
+     "pair:R2+B": {
+      "B": 0.7604166666666666,
+      "R2": 0.5729166666666666
+     },
+     "pair:R2+R1": {
+      "R1": 0.7083333333333334,
+      "R2": 0.53125
+     },
+     "pair:R2+R3": {
+      "R2": 0.46875,
+      "R3": 0.5416666666666666
+     },
+     "pair:R2-+B": {
+      "B": 0.7291666666666666,
+      "R2-": 0.34375
+     },
+     "pair:R3++B": {
+      "B": 0.6041666666666666,
+      "R3+": 1.0
+     },
+     "pair:R3+A": {
+      "A": 0.7291666666666666,
+      "R3": 0.5625
+     },
+     "pair:R3+B": {
+      "B": 0.7604166666666666,
+      "R3": 0.9583333333333334
+     },
+     "pair:R3+R1": {
+      "R1": 0.84375,
+      "R3": 0.7395833333333334
+     },
+     "pair:R3+R2": {
+      "R2": 0.3125,
+      "R3": 0.71875
+     },
+     "pair:R3-+B": {
+      "B": 0.6979166666666666,
+      "R3-": 0.7604166666666666
+     },
+     "solo:A": {
+      "A": 0.6875
+     },
+     "solo:B": {
+      "B": 0.8333333333333334
+     },
+     "solo:CL": {
+      "CL": 0.65625
+     },
+     "solo:R1": {
+      "R1": 0.7708333333333334
+     },
+     "solo:R1+": {
+      "R1+": 0.8333333333333334
+     },
+     "solo:R1-": {
+      "R1-": 0.5520833333333334
+     },
+     "solo:R2": {
+      "R2": 0.6354166666666666
+     },
+     "solo:R2+": {
+      "R2+": 0.8125
+     },
+     "solo:R2-": {
+      "R2-": 0.3333333333333333
+     },
+     "solo:R3": {
+      "R3": 0.6354166666666666
+     },
+     "solo:R3+": {
+      "R3+": 0.9375
+     },
+     "solo:R3-": {
+      "R3-": 0.3541666666666667
+     }
+    },
+    "terminal_sentence": "a terminal pre-confirmatory status carries no evidence about the effect"
+   },
+   "terminal_status": "COMPOSED_HEADROOM_FAILURE"
+  },
+  "gemma-3n-e4b-it": {
+   "CONFIRMATORY_GENERATION": {
+    "blocks_generated": 384,
+    "completeness": {
+     "complete": true,
+     "duplicated": 0,
+     "expected": 24576,
+     "first_duplicated": [],
+     "first_missing": [],
+     "first_unexpected": [],
+     "missing": 0,
+     "present": 24576,
+     "unexpected": 0
+    },
+    "outcome": "PASS",
+    "rows": 24576
+   },
+   "GATE_2_REGIME": {
+    "a_chance_compliance": 0.10416666666666667,
+    "a_solo_compliance": 0.7265625,
+    "b_chance_compliance": 0.0,
+    "b_solo_compliance": 0.8489583333333334,
+    "b_solo_vacuity": 0.0,
+    "difficulty_coordinate": "instructed_compliance",
+    "focal": {
+     "curve": {
+      "10": 0.8489583333333334,
+      "7": 0.4557291666666667,
+      "8": 0.6276041666666666,
+      "9": 0.7291666666666666
+     },
+     "extension_measured": false,
+     "grid_used": [
+      7,
+      8,
+      9,
+      10
+     ],
+     "m_star": 10
+    },
+    "iota_a": 0.6947674418604651,
+    "iota_b": 0.8489583333333334,
+    "m_star": 10,
+    "n_star": 4
+   },
+   "GATE_3_REFERENCES": {
+    "cells_per_block": 8,
+    "class_arm": true,
+    "class_companion": {
+     "constraint_class": "production",
+     "distance": 0.013565891472868241,
+     "family": "CL7",
+     "iota": 0.7083333333333334,
+     "severity": 80,
+     "slot": "CL"
+    },
+    "core_references": [],
+    "design": "reduced",
+    "design_variant": "reduced",
+    "dropped_for_no_triple": [
+     {
+      "family": "RF9",
+      "reason": "no eligible severity strictly on one side of A: the family cannot straddle"
+     }
+    ],
+    "identification_statuses": [
+     "COMPANION_CLASS_NOT_MATCHED",
+     "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+     "EXCESS_NOT_IDENTIFIED"
+    ],
+    "slot_map": {
+     "CL": [
+      "CL7",
+      80
+     ]
+    },
+    "spectrum": [],
+    "spectrum_triples": [],
+    "variant_rule": "\u00a78.6, decided by reference admission and \u00a712.6 coverage only; no composed effect exists at this stage and none may be read"
+   },
+   "GATE_4_COMPOSED_HEADROOM": {
+    "band": [
+     0.05,
+     0.95
+    ],
+    "outcome": "PASS"
+   },
+   "GATE_5_FREEZE": {
+    "blocks": [
+     "everyday-science-00",
+     "everyday-science-02",
+     "everyday-science-04",
+     "everyday-science-05",
+     "everyday-science-07",
+     "everyday-science-10",
+     "everyday-science-11",
+     "everyday-science-12",
+     "everyday-science-14",
+     "everyday-science-15",
+     "everyday-science-16",
+     "everyday-science-17",
+     "everyday-science-18",
+     "everyday-science-19",
+     "everyday-science-21",
+     "everyday-science-22",
+     "everyday-science-25",
+     "everyday-science-26",
+     "everyday-science-27",
+     "everyday-science-30",
+     "everyday-science-31",
+     "everyday-science-33",
+     "everyday-science-35",
+     "everyday-science-36",
+     "everyday-science-38",
+     "everyday-science-39",
+     "everyday-science-43",
+     "everyday-science-45",
+     "everyday-science-46",
+     "everyday-science-47",
+     "everyday-science-50",
+     "everyday-science-51",
+     "history-00",
+     "history-01",
+     "history-02",
+     "history-06",
+     "history-07",
+     "history-09",
+     "history-10",
+     "history-11",
+     "history-12",
+     "history-13",
+     "history-14",
+     "history-15",
+     "history-16",
+     "history-18",
+     "history-19",
+     "history-22",
+     "history-23",
+     "history-24",
+     "history-25",
+     "history-26",
+     "history-27",
+     "history-30",
+     "history-31",
+     "history-33",
+     "history-35",
+     "history-36",
+     "history-37",
+     "history-38",
+     "history-41",
+     "history-43",
+     "history-45",
+     "history-50",
+     "geography-03",
+     "geography-07",
+     "geography-10",
+     "geography-11",
+     "geography-12",
+     "geography-13",
+     "geography-14",
+     "geography-16",
+     "geography-17",
+     "geography-18",
+     "geography-21",
+     "geography-24",
+     "geography-25",
+     "geography-26",
+     "geography-28",
+     "geography-29",
+     "geography-30",
+     "geography-33",
+     "geography-34",
+     "geography-35",
+     "geography-36",
+     "geography-37",
+     "geography-39",
+     "geography-40",
+     "geography-41",
+     "geography-43",
+     "geography-44",
+     "geography-45",
+     "geography-46",
+     "geography-47",
+     "geography-49",
+     "geography-50",
+     "food-00",
+     "food-01",
+     "food-02",
+     "food-03",
+     "food-04",
+     "food-05",
+     "food-09",
+     "food-10",
+     "food-11",
+     "food-12",
+     "food-15",
+     "food-16",
+     "food-17",
+     "food-18",
+     "food-19",
+     "food-20",
+     "food-21",
+     "food-22",
+     "food-25",
+     "food-26",
+     "food-31",
+     "food-32",
+     "food-33",
+     "food-34",
+     "food-36",
+     "food-40",
+     "food-42",
+     "food-44",
+     "food-45",
+     "food-46",
+     "food-47",
+     "food-50",
+     "music-00",
+     "music-01",
+     "music-03",
+     "music-06",
+     "music-07",
+     "music-11",
+     "music-13",
+     "music-15",
+     "music-16",
+     "music-17",
+     "music-18",
+     "music-19",
+     "music-21",
+     "music-22",
+     "music-23",
+     "music-25",
+     "music-28",
+     "music-29",
+     "music-30",
+     "music-33",
+     "music-34",
+     "music-36",
+     "music-37",
+     "music-39",
+     "music-40",
+     "music-41",
+     "music-43",
+     "music-44",
+     "music-46",
+     "music-49",
+     "music-50",
+     "music-51",
+     "sport-00",
+     "sport-01",
+     "sport-02",
+     "sport-03",
+     "sport-04",
+     "sport-05",
+     "sport-12",
+     "sport-16",
+     "sport-18",
+     "sport-20",
+     "sport-21",
+     "sport-22",
+     "sport-23",
+     "sport-24",
+     "sport-25",
+     "sport-26",
+     "sport-27",
+     "sport-28",
+     "sport-29",
+     "sport-31",
+     "sport-32",
+     "sport-33",
+     "sport-34",
+     "sport-37",
+     "sport-38",
+     "sport-40",
+     "sport-41",
+     "sport-44",
+     "sport-45",
+     "sport-47",
+     "sport-48",
+     "sport-49",
+     "work-and-organisations-00",
+     "work-and-organisations-01",
+     "work-and-organisations-02",
+     "work-and-organisations-03",
+     "work-and-organisations-05",
+     "work-and-organisations-06",
+     "work-and-organisations-08",
+     "work-and-organisations-10",
+     "work-and-organisations-11",
+     "work-and-organisations-13",
+     "work-and-organisations-15",
+     "work-and-organisations-16",
+     "work-and-organisations-18",
+     "work-and-organisations-20",
+     "work-and-organisations-24",
+     "work-and-organisations-26",
+     "work-and-organisations-27",
+     "work-and-organisations-29",
+     "work-and-organisations-31",
+     "work-and-organisations-32",
+     "work-and-organisations-33",
+     "work-and-organisations-35",
+     "work-and-organisations-36",
+     "work-and-organisations-38",
+     "work-and-organisations-39",
+     "work-and-organisations-40",
+     "work-and-organisations-42",
+     "work-and-organisations-43",
+     "work-and-organisations-44",
+     "work-and-organisations-45",
+     "work-and-organisations-49",
+     "work-and-organisations-50",
+     "health-and-the-body-00",
+     "health-and-the-body-01",
+     "health-and-the-body-03",
+     "health-and-the-body-04",
+     "health-and-the-body-05",
+     "health-and-the-body-06",
+     "health-and-the-body-09",
+     "health-and-the-body-11",
+     "health-and-the-body-14",
+     "health-and-the-body-16",
+     "health-and-the-body-17",
+     "health-and-the-body-18",
+     "health-and-the-body-21",
+     "health-and-the-body-22",
+     "health-and-the-body-23",
+     "health-and-the-body-24",
+     "health-and-the-body-25",
+     "health-and-the-body-27",
+     "health-and-the-body-30",
+     "health-and-the-body-31",
+     "health-and-the-body-32",
+     "health-and-the-body-33",
+     "health-and-the-body-34",
+     "health-and-the-body-37",
+     "health-and-the-body-38",
+     "health-and-the-body-39",
+     "health-and-the-body-42",
+     "health-and-the-body-44",
+     "health-and-the-body-46",
+     "health-and-the-body-47",
+     "health-and-the-body-48",
+     "health-and-the-body-49",
+     "technology-00",
+     "technology-02",
+     "technology-03",
+     "technology-05",
+     "technology-06",
+     "technology-07",
+     "technology-12",
+     "technology-13",
+     "technology-15",
+     "technology-16",
+     "technology-17",
+     "technology-22",
+     "technology-23",
+     "technology-24",
+     "technology-26",
+     "technology-27",
+     "technology-28",
+     "technology-32",
+     "technology-33",
+     "technology-35",
+     "technology-36",
+     "technology-37",
+     "technology-39",
+     "technology-40",
+     "technology-41",
+     "technology-43",
+     "technology-44",
+     "technology-46",
+     "technology-47",
+     "technology-48",
+     "technology-49",
+     "technology-50",
+     "language-and-writing-00",
+     "language-and-writing-01",
+     "language-and-writing-02",
+     "language-and-writing-03",
+     "language-and-writing-05",
+     "language-and-writing-07",
+     "language-and-writing-08",
+     "language-and-writing-11",
+     "language-and-writing-12",
+     "language-and-writing-13",
+     "language-and-writing-15",
+     "language-and-writing-17",
+     "language-and-writing-21",
+     "language-and-writing-23",
+     "language-and-writing-24",
+     "language-and-writing-25",
+     "language-and-writing-26",
+     "language-and-writing-28",
+     "language-and-writing-30",
+     "language-and-writing-31",
+     "language-and-writing-32",
+     "language-and-writing-33",
+     "language-and-writing-38",
+     "language-and-writing-41",
+     "language-and-writing-43",
+     "language-and-writing-44",
+     "language-and-writing-45",
+     "language-and-writing-46",
+     "language-and-writing-47",
+     "language-and-writing-48",
+     "language-and-writing-50",
+     "language-and-writing-51",
+     "art-and-design-00",
+     "art-and-design-01",
+     "art-and-design-02",
+     "art-and-design-03",
+     "art-and-design-04",
+     "art-and-design-05",
+     "art-and-design-06",
+     "art-and-design-10",
+     "art-and-design-11",
+     "art-and-design-12",
+     "art-and-design-13",
+     "art-and-design-15",
+     "art-and-design-16",
+     "art-and-design-17",
+     "art-and-design-19",
+     "art-and-design-20",
+     "art-and-design-21",
+     "art-and-design-22",
+     "art-and-design-23",
+     "art-and-design-26",
+     "art-and-design-30",
+     "art-and-design-31",
+     "art-and-design-35",
+     "art-and-design-36",
+     "art-and-design-37",
+     "art-and-design-39",
+     "art-and-design-41",
+     "art-and-design-44",
+     "art-and-design-45",
+     "art-and-design-46",
+     "art-and-design-48",
+     "art-and-design-51",
+     "the-natural-world-00",
+     "the-natural-world-02",
+     "the-natural-world-03",
+     "the-natural-world-04",
+     "the-natural-world-05",
+     "the-natural-world-08",
+     "the-natural-world-09",
+     "the-natural-world-11",
+     "the-natural-world-13",
+     "the-natural-world-16",
+     "the-natural-world-18",
+     "the-natural-world-19",
+     "the-natural-world-20",
+     "the-natural-world-21",
+     "the-natural-world-26",
+     "the-natural-world-27",
+     "the-natural-world-29",
+     "the-natural-world-30",
+     "the-natural-world-31",
+     "the-natural-world-33",
+     "the-natural-world-35",
+     "the-natural-world-37",
+     "the-natural-world-38",
+     "the-natural-world-39",
+     "the-natural-world-41",
+     "the-natural-world-42",
+     "the-natural-world-45",
+     "the-natural-world-46",
+     "the-natural-world-47",
+     "the-natural-world-48",
+     "the-natural-world-50",
+     "the-natural-world-51"
+    ],
+    "canonical_verifier_hash": "09f0675c3018485e95fbb0aca627f13a06739ef5cd83606f76cf9458143d416f",
+    "completion_cap": 512,
+    "design_variant": "reduced",
+    "focal_extension_measured": false,
+    "identification_statuses": [
+     "COMPANION_CLASS_NOT_MATCHED",
+     "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+     "EXCESS_NOT_IDENTIFIED"
+    ],
+    "m_draws": 8,
+    "outcome": "PASS",
+    "producing_commit": "450a0499e05fc780d20b8f3a8139a2879a8589c2"
+   },
+   "MASKED_ANALYSIS": {
+    "analysis_code_hash": "dffb5a861a497cc24e57017d4c97b4260dccb03dc29063fb3c02fca46bc7e9ca",
+    "mask_effectiveness": {
+     "groups": 6,
+     "maskable_groups": 2,
+     "min_differing_share": 0.5,
+     "structurally_unmaskable": [
+      [
+       "A",
+       "outcome_first"
+      ],
+      [
+       "A",
+       "outcome_second"
+      ],
+      [
+       "CL",
+       "outcome_first"
+      ],
+      [
+       "CL",
+       "outcome_second"
+      ]
+     ],
+     "structurally_unmaskable_note": "these (outcome, configuration) groups carry exactly one companion, because \u00a78.1's spectrum and class arms pair with B alone, so their companion label is not hidden and could not be. Under the full and no-spectrum designs that costs nothing: the singleton outcomes are the spectrum rungs and the class companion, and no registered estimand reads them as an OUTCOME -- F8 reads D(B <- R_j+-) and F9 reads D(B <- CL), both with B as the outcome and masked among its many companions. Under \u00a78.6's REDUCED design it costs something and the cost is stated rather than implied: B has exactly two companions (A and the class companion) and is masked among them, while A and CL each have only B, so D(A <- B) -- a registered reduced-design estimand -- and any CL-as-outcome quantity are analysed with their companion identity visible. The masked phase protects D(B <- A), D(B <- CL) and Lambda on that design, and does not protect the reciprocal direction. This sentence used to assert the full-design case unconditionally, which is false for a reduced replication",
+     "structurally_unmaskable_outcomes": [
+      "A",
+      "CL"
+     ]
+    },
+    "mask_key_hash": "b2520830b59280de5b33507f1e42e20fca6145f8f5ebc9b96fcf705aee98fd6d",
+    "masked_artifact_hash": "6ca030d9d05e08c6548f979663da185b4e7a9b2616aa98753bce77ce8d276366",
+    "resamples": 10000,
+    "spectrum_fit_ran": false
+   },
+   "REGIME_SCREEN": {
+    "a_anchor": {
+     "iota": 0.6666666666666666,
+     "rule": "the A severity whose pre-screen solo compliance is nearest \u00a712.3's target aim; a pre-screen anchor only, never n*",
+     "severity": 7,
+     "solo": 0.6666666666666666
+    },
+    "iota_a_prescreen": 0.6666666666666666,
+    "selected_cap": 512
+   },
+   "UNMASKED_ANALYSIS": {
+    "analysis_code_hash": "dffb5a861a497cc24e57017d4c97b4260dccb03dc29063fb3c02fca46bc7e9ca",
+    "blocks": 384,
+    "design_variant": "reduced",
+    "identical_computation_as_masked": true,
+    "measurement_basis": "deterministic_measurement_validated",
+    "resamples": 10000
+   },
+   "UNMASKING": {
+    "mask_key_hash": "b2520830b59280de5b33507f1e42e20fca6145f8f5ebc9b96fcf705aee98fd6d",
+    "masked_outputs_hash": "6ca030d9d05e08c6548f979663da185b4e7a9b2616aa98753bce77ce8d276366"
+   },
+   "model_id": "google/gemma-3n-E4B-it",
+   "model_revision": "c1221e9c62e34a43ab7ffacd1be0ea71f126ef10",
+   "records_present": [
+    "QUALIFIED",
+    "GATE_0_APPARATUS",
+    "REGIME_SCREEN",
+    "GATE_1_MEASUREMENT",
+    "GATE_2_REGIME",
+    "GATE_3_REFERENCES",
+    "GATE_4_COMPOSED_HEADROOM",
+    "GATE_5_FREEZE",
+    "CONFIRMATORY_GENERATION",
+    "MASKED_ANALYSIS",
+    "UNMASKING",
+    "UNMASKED_ANALYSIS"
+   ],
+   "stage_reached": "UNMASKED_ANALYSIS",
+   "terminal_status": null
+  },
+  "qwen3-4b": {
+   "CONFIRMATORY_GENERATION": {
+    "blocks_generated": 384,
+    "completeness": {
+     "complete": true,
+     "duplicated": 0,
+     "expected": 24576,
+     "first_duplicated": [],
+     "first_missing": [],
+     "first_unexpected": [],
+     "missing": 0,
+     "present": 24576,
+     "unexpected": 0
+    },
+    "outcome": "PASS",
+    "rows": 24576
+   },
+   "GATE_2_REGIME": {
+    "a_chance_compliance": 0.057291666666666664,
+    "a_solo_compliance": 0.71875,
+    "b_chance_compliance": 0.0,
+    "b_solo_compliance": 0.7421875,
+    "b_solo_vacuity": 0.005208333333333333,
+    "difficulty_coordinate": "instructed_compliance",
+    "focal": {
+     "curve": {
+      "10": 0.4114583333333333,
+      "11": 0.6588541666666666,
+      "12": 0.7421875,
+      "7": 0.03125,
+      "8": 0.10677083333333333,
+      "9": 0.24479166666666666
+     },
+     "extension_measured": true,
+     "grid_used": [
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "m_star": 12
+    },
+    "iota_a": 0.7016574585635359,
+    "iota_b": 0.7421875,
+    "m_star": 12,
+    "n_star": 2
+   },
+   "GATE_3_REFERENCES": {
+    "cells_per_block": 8,
+    "class_arm": true,
+    "class_companion": {
+     "constraint_class": "production",
+     "distance": 0.006344958563535896,
+     "family": "CX1",
+     "iota": 0.6953125,
+     "severity": 4,
+     "slot": "CL"
+    },
+    "core_references": [
+     {
+      "distance": 0.012628255722178294,
+      "family": "RF11",
+      "feature_group": "vowel_initial",
+      "iota": 0.7142857142857142,
+      "severity": 21,
+      "slot": "R1"
+     },
+     {
+      "distance": 0.025427950366814556,
+      "family": "CR5",
+      "feature_group": "comma",
+      "iota": 0.6762295081967213,
+      "severity": 8,
+      "slot": "R2"
+     }
+    ],
+    "design": "reduced",
+    "design_variant": "reduced",
+    "dropped_for_no_triple": [],
+    "identification_statuses": [
+     "COMPANION_CLASS_NOT_MATCHED",
+     "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+     "EXCESS_NOT_IDENTIFIED"
+    ],
+    "slot_map": {
+     "CL": [
+      "CX1",
+      4
+     ],
+     "R1": [
+      "RF11",
+      21
+     ],
+     "R2": [
+      "CR5",
+      8
+     ]
+    },
+    "spectrum": [],
+    "spectrum_triples": [
+     {
+      "core_severity": 21,
+      "family": "RF11",
+      "lower": {
+       "iota": 0.5278514588859416,
+       "severity": 16,
+       "target": 0.5016574585635358
+      },
+      "upper": {
+       "iota": 0.7848837209302326,
+       "severity": 26,
+       "target": 0.901657458563536
+      }
+     },
+     {
+      "core_severity": 8,
+      "family": "CR5",
+      "lower": {
+       "iota": 0.5428571428571428,
+       "severity": 5,
+       "target": 0.5016574585635358
+      },
+      "upper": {
+       "iota": 0.7972027972027971,
+       "severity": 10,
+       "target": 0.901657458563536
+      }
+     }
+    ],
+    "variant_rule": "\u00a78.6, decided by reference admission and \u00a712.6 coverage only; no composed effect exists at this stage and none may be read"
+   },
+   "GATE_4_COMPOSED_HEADROOM": {
+    "band": [
+     0.05,
+     0.95
+    ],
+    "outcome": "PASS"
+   },
+   "GATE_5_FREEZE": {
+    "blocks": [
+     "everyday-science-00",
+     "everyday-science-02",
+     "everyday-science-04",
+     "everyday-science-05",
+     "everyday-science-07",
+     "everyday-science-10",
+     "everyday-science-11",
+     "everyday-science-12",
+     "everyday-science-14",
+     "everyday-science-15",
+     "everyday-science-16",
+     "everyday-science-17",
+     "everyday-science-18",
+     "everyday-science-19",
+     "everyday-science-21",
+     "everyday-science-22",
+     "everyday-science-25",
+     "everyday-science-26",
+     "everyday-science-27",
+     "everyday-science-30",
+     "everyday-science-31",
+     "everyday-science-33",
+     "everyday-science-35",
+     "everyday-science-36",
+     "everyday-science-38",
+     "everyday-science-39",
+     "everyday-science-43",
+     "everyday-science-45",
+     "everyday-science-46",
+     "everyday-science-47",
+     "everyday-science-50",
+     "everyday-science-51",
+     "history-00",
+     "history-01",
+     "history-02",
+     "history-06",
+     "history-07",
+     "history-09",
+     "history-10",
+     "history-11",
+     "history-12",
+     "history-13",
+     "history-14",
+     "history-15",
+     "history-16",
+     "history-18",
+     "history-19",
+     "history-22",
+     "history-23",
+     "history-24",
+     "history-25",
+     "history-26",
+     "history-27",
+     "history-30",
+     "history-31",
+     "history-33",
+     "history-35",
+     "history-36",
+     "history-37",
+     "history-38",
+     "history-41",
+     "history-43",
+     "history-45",
+     "history-50",
+     "geography-03",
+     "geography-07",
+     "geography-10",
+     "geography-11",
+     "geography-12",
+     "geography-13",
+     "geography-14",
+     "geography-16",
+     "geography-17",
+     "geography-18",
+     "geography-21",
+     "geography-24",
+     "geography-25",
+     "geography-26",
+     "geography-28",
+     "geography-29",
+     "geography-30",
+     "geography-33",
+     "geography-34",
+     "geography-35",
+     "geography-36",
+     "geography-37",
+     "geography-39",
+     "geography-40",
+     "geography-41",
+     "geography-43",
+     "geography-44",
+     "geography-45",
+     "geography-46",
+     "geography-47",
+     "geography-49",
+     "geography-50",
+     "food-00",
+     "food-01",
+     "food-02",
+     "food-03",
+     "food-04",
+     "food-05",
+     "food-09",
+     "food-10",
+     "food-11",
+     "food-12",
+     "food-15",
+     "food-16",
+     "food-17",
+     "food-18",
+     "food-19",
+     "food-20",
+     "food-21",
+     "food-22",
+     "food-25",
+     "food-26",
+     "food-31",
+     "food-32",
+     "food-33",
+     "food-34",
+     "food-36",
+     "food-40",
+     "food-42",
+     "food-44",
+     "food-45",
+     "food-46",
+     "food-47",
+     "food-50",
+     "music-00",
+     "music-01",
+     "music-03",
+     "music-06",
+     "music-07",
+     "music-11",
+     "music-13",
+     "music-15",
+     "music-16",
+     "music-17",
+     "music-18",
+     "music-19",
+     "music-21",
+     "music-22",
+     "music-23",
+     "music-25",
+     "music-28",
+     "music-29",
+     "music-30",
+     "music-33",
+     "music-34",
+     "music-36",
+     "music-37",
+     "music-39",
+     "music-40",
+     "music-41",
+     "music-43",
+     "music-44",
+     "music-46",
+     "music-49",
+     "music-50",
+     "music-51",
+     "sport-00",
+     "sport-01",
+     "sport-02",
+     "sport-03",
+     "sport-04",
+     "sport-05",
+     "sport-12",
+     "sport-16",
+     "sport-18",
+     "sport-20",
+     "sport-21",
+     "sport-22",
+     "sport-23",
+     "sport-24",
+     "sport-25",
+     "sport-26",
+     "sport-27",
+     "sport-28",
+     "sport-29",
+     "sport-31",
+     "sport-32",
+     "sport-33",
+     "sport-34",
+     "sport-37",
+     "sport-38",
+     "sport-40",
+     "sport-41",
+     "sport-44",
+     "sport-45",
+     "sport-47",
+     "sport-48",
+     "sport-49",
+     "work-and-organisations-00",
+     "work-and-organisations-01",
+     "work-and-organisations-02",
+     "work-and-organisations-03",
+     "work-and-organisations-05",
+     "work-and-organisations-06",
+     "work-and-organisations-08",
+     "work-and-organisations-10",
+     "work-and-organisations-11",
+     "work-and-organisations-13",
+     "work-and-organisations-15",
+     "work-and-organisations-16",
+     "work-and-organisations-18",
+     "work-and-organisations-20",
+     "work-and-organisations-24",
+     "work-and-organisations-26",
+     "work-and-organisations-27",
+     "work-and-organisations-29",
+     "work-and-organisations-31",
+     "work-and-organisations-32",
+     "work-and-organisations-33",
+     "work-and-organisations-35",
+     "work-and-organisations-36",
+     "work-and-organisations-38",
+     "work-and-organisations-39",
+     "work-and-organisations-40",
+     "work-and-organisations-42",
+     "work-and-organisations-43",
+     "work-and-organisations-44",
+     "work-and-organisations-45",
+     "work-and-organisations-49",
+     "work-and-organisations-50",
+     "health-and-the-body-00",
+     "health-and-the-body-01",
+     "health-and-the-body-03",
+     "health-and-the-body-04",
+     "health-and-the-body-05",
+     "health-and-the-body-06",
+     "health-and-the-body-09",
+     "health-and-the-body-11",
+     "health-and-the-body-14",
+     "health-and-the-body-16",
+     "health-and-the-body-17",
+     "health-and-the-body-18",
+     "health-and-the-body-21",
+     "health-and-the-body-22",
+     "health-and-the-body-23",
+     "health-and-the-body-24",
+     "health-and-the-body-25",
+     "health-and-the-body-27",
+     "health-and-the-body-30",
+     "health-and-the-body-31",
+     "health-and-the-body-32",
+     "health-and-the-body-33",
+     "health-and-the-body-34",
+     "health-and-the-body-37",
+     "health-and-the-body-38",
+     "health-and-the-body-39",
+     "health-and-the-body-42",
+     "health-and-the-body-44",
+     "health-and-the-body-46",
+     "health-and-the-body-47",
+     "health-and-the-body-48",
+     "health-and-the-body-49",
+     "technology-00",
+     "technology-02",
+     "technology-03",
+     "technology-05",
+     "technology-06",
+     "technology-07",
+     "technology-12",
+     "technology-13",
+     "technology-15",
+     "technology-16",
+     "technology-17",
+     "technology-22",
+     "technology-23",
+     "technology-24",
+     "technology-26",
+     "technology-27",
+     "technology-28",
+     "technology-32",
+     "technology-33",
+     "technology-35",
+     "technology-36",
+     "technology-37",
+     "technology-39",
+     "technology-40",
+     "technology-41",
+     "technology-43",
+     "technology-44",
+     "technology-46",
+     "technology-47",
+     "technology-48",
+     "technology-49",
+     "technology-50",
+     "language-and-writing-00",
+     "language-and-writing-01",
+     "language-and-writing-02",
+     "language-and-writing-03",
+     "language-and-writing-05",
+     "language-and-writing-07",
+     "language-and-writing-08",
+     "language-and-writing-11",
+     "language-and-writing-12",
+     "language-and-writing-13",
+     "language-and-writing-15",
+     "language-and-writing-17",
+     "language-and-writing-21",
+     "language-and-writing-23",
+     "language-and-writing-24",
+     "language-and-writing-25",
+     "language-and-writing-26",
+     "language-and-writing-28",
+     "language-and-writing-30",
+     "language-and-writing-31",
+     "language-and-writing-32",
+     "language-and-writing-33",
+     "language-and-writing-38",
+     "language-and-writing-41",
+     "language-and-writing-43",
+     "language-and-writing-44",
+     "language-and-writing-45",
+     "language-and-writing-46",
+     "language-and-writing-47",
+     "language-and-writing-48",
+     "language-and-writing-50",
+     "language-and-writing-51",
+     "art-and-design-00",
+     "art-and-design-01",
+     "art-and-design-02",
+     "art-and-design-03",
+     "art-and-design-04",
+     "art-and-design-05",
+     "art-and-design-06",
+     "art-and-design-10",
+     "art-and-design-11",
+     "art-and-design-12",
+     "art-and-design-13",
+     "art-and-design-15",
+     "art-and-design-16",
+     "art-and-design-17",
+     "art-and-design-19",
+     "art-and-design-20",
+     "art-and-design-21",
+     "art-and-design-22",
+     "art-and-design-23",
+     "art-and-design-26",
+     "art-and-design-30",
+     "art-and-design-31",
+     "art-and-design-35",
+     "art-and-design-36",
+     "art-and-design-37",
+     "art-and-design-39",
+     "art-and-design-41",
+     "art-and-design-44",
+     "art-and-design-45",
+     "art-and-design-46",
+     "art-and-design-48",
+     "art-and-design-51",
+     "the-natural-world-00",
+     "the-natural-world-02",
+     "the-natural-world-03",
+     "the-natural-world-04",
+     "the-natural-world-05",
+     "the-natural-world-08",
+     "the-natural-world-09",
+     "the-natural-world-11",
+     "the-natural-world-13",
+     "the-natural-world-16",
+     "the-natural-world-18",
+     "the-natural-world-19",
+     "the-natural-world-20",
+     "the-natural-world-21",
+     "the-natural-world-26",
+     "the-natural-world-27",
+     "the-natural-world-29",
+     "the-natural-world-30",
+     "the-natural-world-31",
+     "the-natural-world-33",
+     "the-natural-world-35",
+     "the-natural-world-37",
+     "the-natural-world-38",
+     "the-natural-world-39",
+     "the-natural-world-41",
+     "the-natural-world-42",
+     "the-natural-world-45",
+     "the-natural-world-46",
+     "the-natural-world-47",
+     "the-natural-world-48",
+     "the-natural-world-50",
+     "the-natural-world-51"
+    ],
+    "canonical_verifier_hash": "09f0675c3018485e95fbb0aca627f13a06739ef5cd83606f76cf9458143d416f",
+    "completion_cap": 512,
+    "design_variant": "reduced",
+    "focal_extension_measured": true,
+    "identification_statuses": [
+     "COMPANION_CLASS_NOT_MATCHED",
+     "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+     "EXCESS_NOT_IDENTIFIED"
+    ],
+    "m_draws": 8,
+    "outcome": "PASS",
+    "producing_commit": "450a0499e05fc780d20b8f3a8139a2879a8589c2"
+   },
+   "MASKED_ANALYSIS": {
+    "analysis_code_hash": "dffb5a861a497cc24e57017d4c97b4260dccb03dc29063fb3c02fca46bc7e9ca",
+    "mask_effectiveness": {
+     "groups": 6,
+     "maskable_groups": 2,
+     "min_differing_share": 0.5,
+     "structurally_unmaskable": [
+      [
+       "A",
+       "outcome_first"
+      ],
+      [
+       "A",
+       "outcome_second"
+      ],
+      [
+       "CL",
+       "outcome_first"
+      ],
+      [
+       "CL",
+       "outcome_second"
+      ]
+     ],
+     "structurally_unmaskable_note": "these (outcome, configuration) groups carry exactly one companion, because \u00a78.1's spectrum and class arms pair with B alone, so their companion label is not hidden and could not be. Under the full and no-spectrum designs that costs nothing: the singleton outcomes are the spectrum rungs and the class companion, and no registered estimand reads them as an OUTCOME -- F8 reads D(B <- R_j+-) and F9 reads D(B <- CL), both with B as the outcome and masked among its many companions. Under \u00a78.6's REDUCED design it costs something and the cost is stated rather than implied: B has exactly two companions (A and the class companion) and is masked among them, while A and CL each have only B, so D(A <- B) -- a registered reduced-design estimand -- and any CL-as-outcome quantity are analysed with their companion identity visible. The masked phase protects D(B <- A), D(B <- CL) and Lambda on that design, and does not protect the reciprocal direction. This sentence used to assert the full-design case unconditionally, which is false for a reduced replication",
+     "structurally_unmaskable_outcomes": [
+      "A",
+      "CL"
+     ]
+    },
+    "mask_key_hash": "26c74456ba7ae9a2d42644621592c73a4cf66e301671f45a19934ab797c210ac",
+    "masked_artifact_hash": "3368b8577891e87fca3985f5381c50e587329d448367e04cf2c293c364f3ac5e",
+    "resamples": 10000,
+    "spectrum_fit_ran": false
+   },
+   "REGIME_SCREEN": {
+    "a_anchor": {
+     "iota": 0.75,
+     "rule": "the A severity whose pre-screen solo compliance is nearest \u00a712.3's target aim; a pre-screen anchor only, never n*",
+     "severity": 2,
+     "solo": 0.75
+    },
+    "iota_a_prescreen": 0.75,
+    "selected_cap": 512
+   },
+   "UNMASKED_ANALYSIS": {
+    "analysis_code_hash": "dffb5a861a497cc24e57017d4c97b4260dccb03dc29063fb3c02fca46bc7e9ca",
+    "blocks": 384,
+    "design_variant": "reduced",
+    "identical_computation_as_masked": true,
+    "measurement_basis": "deterministic_measurement_validated",
+    "resamples": 10000
+   },
+   "UNMASKING": {
+    "mask_key_hash": "26c74456ba7ae9a2d42644621592c73a4cf66e301671f45a19934ab797c210ac",
+    "masked_outputs_hash": "3368b8577891e87fca3985f5381c50e587329d448367e04cf2c293c364f3ac5e"
+   },
+   "model_id": "Qwen/Qwen3-4B",
+   "model_revision": "1cfa9a7208912126459214e8b04321603b3df60c",
+   "records_present": [
+    "QUALIFIED",
+    "GATE_0_APPARATUS",
+    "REGIME_SCREEN",
+    "GATE_1_MEASUREMENT",
+    "GATE_2_REGIME",
+    "GATE_3_REFERENCES",
+    "GATE_4_COMPOSED_HEADROOM",
+    "GATE_5_FREEZE",
+    "CONFIRMATORY_GENERATION",
+    "MASKED_ANALYSIS",
+    "UNMASKING",
+    "UNMASKED_ANALYSIS"
+   ],
+   "stage_reached": "UNMASKED_ANALYSIS",
+   "terminal_status": null
+  },
+  "qwen3-4b-instruct-2507": {
+   "GATE_2_REGIME": {
+    "a_chance_compliance": 0.013020833333333334,
+    "a_solo_compliance": 0.6015625,
+    "b_chance_compliance": 0.0,
+    "b_solo_compliance": 0.6796875,
+    "b_solo_vacuity": 0.057291666666666664,
+    "difficulty_coordinate": "instructed_compliance",
+    "focal": {
+     "curve": {
+      "10": 0.6796875,
+      "7": 0.12760416666666666,
+      "8": 0.3046875,
+      "9": 0.4791666666666667
+     },
+     "extension_measured": false,
+     "grid_used": [
+      7,
+      8,
+      9,
+      10
+     ],
+     "m_star": 10
+    },
+    "iota_a": 0.5963060686015831,
+    "iota_b": 0.6796875,
+    "m_star": 10,
+    "n_star": 5
+   },
+   "GATE_3_REFERENCES": {
+    "cells_per_block": 8,
+    "class_arm": true,
+    "class_companion": {
+     "constraint_class": "production",
+     "distance": 0.019078546783033112,
+     "family": "CL8",
+     "iota": 0.6153846153846162,
+     "severity": 3,
+     "slot": "CL"
+    },
+    "core_references": [],
+    "design": "reduced",
+    "design_variant": "reduced",
+    "dropped_for_no_triple": [
+     {
+      "family": "RF7",
+      "reason": "no eligible severity strictly on one side of A: the family cannot straddle"
+     }
+    ],
+    "identification_statuses": [
+     "COMPANION_CLASS_NOT_MATCHED",
+     "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+     "EXCESS_NOT_IDENTIFIED"
+    ],
+    "slot_map": {
+     "CL": [
+      "CL8",
+      3
+     ]
+    },
+    "spectrum": [],
+    "spectrum_triples": [],
+    "variant_rule": "\u00a78.6, decided by reference admission and \u00a712.6 coverage only; no composed effect exists at this stage and none may be read"
+   },
+   "REGIME_SCREEN": {
+    "a_anchor": {
+     "iota": 0.625,
+     "rule": "the A severity whose pre-screen solo compliance is nearest \u00a712.3's target aim; a pre-screen anchor only, never n*",
+     "severity": 5,
+     "solo": 0.625
+    },
+    "iota_a_prescreen": 0.625,
+    "selected_cap": 512
+   },
+   "model_id": "Qwen/Qwen3-4B-Instruct-2507",
+   "model_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+   "records_present": [
+    "QUALIFIED",
+    "GATE_0_APPARATUS",
+    "REGIME_SCREEN",
+    "GATE_1_MEASUREMENT",
+    "GATE_2_REGIME",
+    "GATE_3_REFERENCES"
+   ],
+   "stage_reached": "GATE_3_REFERENCES",
+   "terminal_report": {
+    "band": [
+     0.05,
+     0.95
+    ],
+    "criterion": "COMPOSED_HEADROOM_FAILURE",
+    "failures": [
+     {
+      "cell": "solo:CL",
+      "rate": 0.9895833333333334,
+      "slot": "CL"
+     }
+    ],
+    "gate": "GATE_4_COMPOSED_HEADROOM",
+    "model_key": "qwen3-4b-instruct-2507",
+    "observed": {
+     "band": [
+      0.05,
+      0.95
+     ],
+     "failures": [
+      {
+       "cell": "solo:CL",
+       "rate": 0.9895833333333334,
+       "slot": "CL"
+      }
+     ],
+     "status": "COMPOSED_HEADROOM_FAILURE",
+     "table": {
+      "pair:A+B": {
+       "A": 0.5833333333333334,
+       "B": 0.7916666666666666
+      },
+      "pair:B+A": {
+       "A": 0.5833333333333334,
+       "B": 0.78125
+      },
+      "pair:B+CL": {
+       "B": 0.90625,
+       "CL": 0.90625
+      },
+      "pair:CL+B": {
+       "B": 0.78125,
+       "CL": 0.9166666666666666
+      },
+      "solo:A": {
+       "A": 0.59375
+      },
+      "solo:B": {
+       "B": 0.6666666666666666
+      },
+      "solo:CL": {
+       "CL": 0.9895833333333334
+      }
+     },
+     "terminal_sentence": "a terminal pre-confirmatory status carries no evidence about the effect"
+    },
+    "producing_commit": "1f32dea619bb10e2492f506e9cad4085b392cc03",
+    "status": "COMPOSED_HEADROOM_FAILURE",
+    "strongest_permissible_statement": "a terminal pre-confirmatory status carries no evidence about the effect",
+    "table": {
+     "pair:A+B": {
+      "A": 0.5833333333333334,
+      "B": 0.7916666666666666
+     },
+     "pair:B+A": {
+      "A": 0.5833333333333334,
+      "B": 0.78125
+     },
+     "pair:B+CL": {
+      "B": 0.90625,
+      "CL": 0.90625
+     },
+     "pair:CL+B": {
+      "B": 0.78125,
+      "CL": 0.9166666666666666
+     },
+     "solo:A": {
+      "A": 0.59375
+     },
+     "solo:B": {
+      "B": 0.6666666666666666
+     },
+     "solo:CL": {
+      "CL": 0.9895833333333334
+     }
+    },
+    "terminal_sentence": "a terminal pre-confirmatory status carries no evidence about the effect"
+   },
+   "terminal_status": "COMPOSED_HEADROOM_FAILURE"
+  }
+ },
+ "stage_sequence": [
+  "QUALIFIED",
+  "GATE_0_APPARATUS",
+  "REGIME_SCREEN",
+  "GATE_1_MEASUREMENT",
+  "GATE_2_REGIME",
+  "GATE_3_REFERENCES",
+  "GATE_4_COMPOSED_HEADROOM",
+  "GATE_5_FREEZE",
+  "CONFIRMATORY_GENERATION",
+  "MASKED_ANALYSIS",
+  "UNMASKING",
+  "UNMASKED_ANALYSIS"
+ ]
+}

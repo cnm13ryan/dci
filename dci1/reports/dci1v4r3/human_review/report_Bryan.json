@@ -1,0 +1,96 @@
+{
+ "agreed": 23,
+ "agreement": 0.92,
+ "annotator": "Bryan",
+ "artifact_type": "v4r3-human-review-report",
+ "classification": "DCI-1 PROTOCOL v4 REVISION 3 (ADOPTED, NOT FROZEN)",
+ "compared": 25,
+ "defect_kinds": [
+  "numerator_swap",
+  "denominator_swap",
+  "inequality_flip",
+  "off_by_one",
+  "segmentation_drift",
+  "vacuity_ignored"
+ ],
+ "disagreements": 2,
+ "discordant": [
+  {
+   "covers": "threshold-plus-one",
+   "family": "CX2",
+   "human": "SATISFIES",
+   "item_id": "hr-11-a7198420",
+   "separates": [
+    "inequality_flip"
+   ],
+   "severity": 1,
+   "statistic": "semicolon",
+   "verifier": "VIOLATES"
+  },
+  {
+   "covers": "exact-threshold;rate",
+   "family": "CR9",
+   "human": "VIOLATES",
+   "item_id": "hr-15-79d60ac5",
+   "separates": [
+    "inequality_flip"
+   ],
+   "severity": 1,
+   "statistic": "t_initial",
+   "verifier": "SATISFIES"
+  }
+ ],
+ "independent_of_design_team": false,
+ "items": 25,
+ "key_hash": "a27e6acdc837cbeaef75b6d27b016c987edd253c4e51dff22f4ecf9b11b5ed6a",
+ "labelled": 25,
+ "meets_threshold_numerically": false,
+ "packet_hash": "bfec2e05d99ae619c4a68f85fca875a03a74901793fab44cf412288fb046bfd9",
+ "partial": false,
+ "per_statistic": {
+  "marker_thus": {
+   "agreed": 4,
+   "agreement": 1.0,
+   "n": 4,
+   "unsure": 0
+  },
+  "s_final": {
+   "agreed": 4,
+   "agreement": 1.0,
+   "n": 4,
+   "unsure": 0
+  },
+  "semicolon": {
+   "agreed": 3,
+   "agreement": 0.75,
+   "n": 4,
+   "unsure": 0
+  },
+  "sentence": {
+   "agreed": 4,
+   "agreement": 1.0,
+   "n": 4,
+   "unsure": 0
+  },
+  "t_initial": {
+   "agreed": 3,
+   "agreement": 0.75,
+   "n": 4,
+   "unsure": 0
+  },
+  "vowel_initial": {
+   "agreed": 5,
+   "agreement": 1.0,
+   "n": 5,
+   "unsure": 0
+  }
+ },
+ "reported_at": "2026-08-21T16:13:47+00:00",
+ "scope": "microcases, not natural responses, and one packet rather than min(150, N_c) per verifier class. Even at zero disagreements this is not a \u00a710.3 pass; the bound is reported because it is \u00a710.3's own statistic and makes the two reviews comparable",
+ "section_10_3_threshold": 0.1,
+ "standing": "author-performed unless the annotator is independent of the design and analysis team; \u00a710.3 says in terms that author-performed labels are never described as independent validation. This is a diagnostic anchor for the instruments \u00a77.0-R3 added, of the same standing the v3 record gave its own 56-item review, and it does not write a measurement basis",
+ "unsure": 0,
+ "unsure_items": [],
+ "verifier_hash": "41edc84c8c1381c698aa3ea62265ef11ff1162993fa2f68d1245dbce10096074",
+ "wilson_upper_on_disagreement": 0.2151924157913751
+}

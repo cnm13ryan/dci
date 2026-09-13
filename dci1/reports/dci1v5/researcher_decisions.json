@@ -1,0 +1,285 @@
+{
+ "_not": "This is not the registration. \u00a734 requires all nineteen closed before stage 1 can pass, and `manifest.signing_blockers` reports every remaining refusal by name. A closure here is one decision taken, recorded, and reproducible.",
+ "_rules": [
+  "One entry per closed decision. A decision absent from this file is UNRESOLVED and every path that depends on it refuses.",
+  "value must be one of the decision's registered admissible_values.",
+  "evidence, decided_by and decided_on are required: \u00a734 binds the decision AND its evidence.",
+  "A decision whose value has no room for its own parameters carries a `spec`. \u00a734 D17's `floor` is the case: the quantity, the threshold, the semantics and the derivation live here, and `construct_strength.registered_floor` reads them rather than a literal in the source.",
+  "`open_items` carries the specification questions the researcher settled. U2 blocks the registration manifest outright, so its resolution is as much a recorded act as any \u00a734 closure.",
+  "A change to a recorded value is a \u00a732 amendment, not an edit: record the supersession rather than overwriting the reason."
+ ],
+ "_what": "The \u00a734 decisions the researcher has actually closed, durably. `protocol/decisions.py` reads this file at import and applies every entry, so `value_of` returns what the researcher decided rather than what a module literal happened to say. The registration manifest binds this file's hash.",
+ "closures": [
+  {
+   "consequences": [
+    "The registration manifest may be signed and \u00a718 stage 1 can pass.",
+    "\u00a730's DEVELOPMENT_EVIDENCE declaration binds into the manifest and every claim the study emits carries it.",
+    "Adoption is not execution: Gate 1 over the 650-instrument population and \u00a719's pilot both still precede qualification."
+   ],
+   "decided_by": "researcher, v5 adoption approval 2026-08-23",
+   "decided_on": "2026-08-23",
+   "evidence": "The researcher approves adoption conditionally: every D0-D18 has a concrete value, U2 is resolved at A2, P1 is confirmed, Calibration-B is frozen and valid, the preregistration, the spec and the code agree, and `manifest.signing_blockers()` is empty. \u00a730's declaration --- that v5's matching rule and its focal grid extension were both fitted to v4r4 measurements --- is attached permanently and is not weakened by adoption. The alternative, `do_not_adopt`, was constructed and costed: it leaves the primary companion-specific estimands unidentified, which is the v4r4 outcome v5 exists to repair.",
+   "id": "D0",
+   "value": "adopt"
+  },
+  {
+   "consequences": [
+    "`design.cells.admitted_arms_from_decision` returns all five registered arms and `d1_scale` returns 4 models, 384 blocks, 8 draws.",
+    "The derived cell set is 56 cells per block; the registered budget is 1,144,896 generations, recomputed from constants rather than quoted. It read 1,135,104 when D1 was closed: `design.budget` costed \u00a719's pilot at 12 topics x 4 draws x 5 where \u00a719 requires the full cell set, understating it by 2,448 per model. Corrected 2026-08-23 by \u00a732 amendment A2. The decision --- five arms, 56 cells, 384 blocks, M = 8, four models --- is unchanged; only the arithmetic over it moved.",
+    "D2 follows: a load-three arm would change the cell set, so it could not be decided after the budget.",
+    "\u00a76.1's execution order stands and a replication not reached is NOT_EXECUTED, so four models is a budget and not a promise to finish."
+   ],
+   "decided_by": "researcher, v5 adoption approval 2026-08-23",
+   "decided_on": "2026-08-23",
+   "evidence": "`d1_arm_compute_decision.md`, derived in the researcher's registered order --- essential arms, then desired claims, then required models, then budget --- and computed from dci1v5's own constants by `tools/v5_compute_budget.py`. All five arms: base and core because the primary estimand is a core-pool counterfactual; spectrum because delta_difficulty is a registered F1 member, so dropping it would narrow every primary simultaneous interval including D(B<-A)'s; near-form because D18 is closed at `precondition` and it is also the only thing that identifies gamma_tier under U2's A2; broad-class because the researcher approved the full design. Four models at 384 blocks and 8 draws per cell. The three cheaper options are constructed, costed and each records what it gives up.",
+   "id": "D1",
+   "value": "four_models_56_cells"
+  },
+  {
+   "consequences": [
+    "The cell set stays at the five registered arms; `ARMS` is unchanged.",
+    "Gamma remains outside the registered estimand set and no claim refers to it."
+   ],
+   "decided_by": "researcher, v5 adoption approval 2026-08-23",
+   "decided_on": "2026-08-23",
+   "evidence": "\u00a75 excludes a third simultaneous load and the standing proposal keeps that exclusion. The memo's Gamma is the quantity a load-three arm would make estimable; it licenses no registered claim level, and admitting it would change the derived cell set that D1's budget is computed over. No red-team finding contests the exclusion.",
+   "id": "D2",
+   "value": "no_load_three"
+  },
+  {
+   "consequences": [
+    "The bank hash enters the registration manifest; a manifest signed over a different bank is a different study.",
+    "`load_bank()` now returns a complete bank, so \u00a713.7's two-split machinery is executable for the first time.",
+    "The three non-mechanical \u00a76.2 authoring rules are recorded per question and remain the researcher's to confirm at adoption; the fourth is checked mechanically on every load."
+   ],
+   "decided_by": "researcher, v5 adoption brief 2026-08-22",
+   "decided_on": "2026-08-22",
+   "evidence": "R24 records that authoring the 96 questions is a hard prerequisite and R11 that \u00a713.7 is only a stability test if the second split is naive. The researcher directed that the bank be authored NOW, prospectively, and gave the reason: authoring after Calibration-A outcomes are known would let the second estimate agree with the first because it was written to. The bank is `dci1/src/dci1v5/topics/data/calibration_b_v5.json`; its provenance, hash and allocation are in `dci1v5.topics.calibration_b`.",
+   "id": "D3",
+   "value": "author_before_adoption"
+  },
+  {
+   "consequences": [
+    "`assert_marker_vocabulary_approved` returns the eight registered markers and \u00a718 stage 4 can run the regime screen.",
+    "The eight marker ids, words, discourse roles, verifier definitions and the population hash bind into the registration manifest; a marker moves only by a \u00a732 amendment.",
+    "Three accepted limitations are registered by name and are reported with every L3 statement, alongside the natural-rate spread the audit found across the vocabulary as a whole."
+   ],
+   "decided_by": "researcher, v5 adoption approval 2026-08-23",
+   "decided_on": "2026-08-23",
+   "evidence": "`d4_marker_audit.md` audited all eight against the researcher's eight criteria, item by item, on four v4r4 replications. No marker was REJECTED: none violates a registered \u00a77.6 rule, none is mechanically entailed by the stem, none can violate B at any admissible severity (the structural rule is <= 7 letters and the grid starts at m = 7), and every verifier is deterministic and leak-free. The researcher reviewed the three recorded judgements --- `though`'s proximity to `however` and its two syntactic frames, `namely`'s possible appositive interaction with word length, `overall`'s natural rate --- and accepts them as limitations rather than grounds for substitution.",
+   "id": "D4",
+   "value": "approve_eight"
+  },
+  {
+   "consequences": [
+    "Every \u00a713 requirement stays a separate refusal with its own status; no requirement can be compensated by another passing more strongly."
+   ],
+   "decided_by": "researcher, v5 adoption approval 2026-08-23",
+   "decided_on": "2026-08-23",
+   "evidence": "The standing proposal, uncontested. \u00a713's validity requirements are applied as a lexicographic conjunction: every requirement is a precondition and none is tradeable against another. A weighted composite would need weights, and the only data available to fix them is the v4r4 development set --- so the weights would be fitted to the predecessor study and offered as a prospective rule, which is the defect \u00a730 exists to name.",
+   "id": "D5",
+   "value": "lexicographic"
+  },
+  {
+   "consequences": [
+    "REFERENCE_SUPPORT_NOT_IDENTIFIED is an identification status and never a terminal status.",
+    "The non-identification is irreversible for the replication: no later gate, frozen backup, broad-class control or observed composed outcome may rehabilitate it. `protocol/identification.py` carries the affected estimand set and `assert_not_rehabilitated` refuses a later record that claims otherwise.",
+    "The affected set is exactly the reference-dependent estimands of \u00a715's registered families, computed from FAMILY_MEMBERS rather than restated."
+   ],
+   "decided_by": "researcher, v5 adoption brief 2026-08-22",
+   "decided_on": "2026-08-22",
+   "evidence": "R16 observes that three of four v4r4 replications spent a full confirmatory budget on a design that could not answer the primary question. The researcher accepts that cost rather than discarding the quantities that ARE identified: an unmet \u00a713.15 support requirement continues the replication and marks the reference-dependent estimands NOT_IDENTIFIED, irreversibly, for that replication. D(B<-A), D(A<-B), Lambda, the F11 order contrasts, Delta_near and Delta_broad do not depend on the primary reference set and are estimated as usual.",
+   "id": "D6",
+   "value": "identification_status"
+  },
+  {
+   "consequences": [
+    "\u00a713.5's gate refuses a reference whose kappa(R|B) exceeds 0.90.",
+    "R13 is recorded as adopted-with-objection, not as resolved by evidence; the alternatives 0.85 and 0.95 stay constructed."
+   ],
+   "decided_by": "researcher, v5 adoption approval 2026-08-23",
+   "decided_on": "2026-08-23",
+   "evidence": "The standing proposal, with R13's objection recorded and not answered by evidence. 0.90 is the interaction-gate ceiling on kappa(R|B); R13 observes that it sits inside a gap observed on twenty development points, which is a coincidence and not a derivation. The researcher adopts it as a registered convention and the coincidence is recorded beside it, exactly as \u00a734 D8's 0.75 and D17's 0.50 are.",
+   "id": "D7",
+   "value": 0.9
+  },
+  {
+   "consequences": [
+    "\u00a725's chance ceiling refuses a candidate above 0.75 on the point or 0.85 on the Wilson upper bound.",
+    "The alternatives 0.50 and 0.90 stay constructed and non-adopted."
+   ],
+   "decided_by": "researcher, v5 adoption approval 2026-08-23",
+   "decided_on": "2026-08-23",
+   "evidence": "The standing proposal, uncontested: 0.75 on the point estimate and 0.85 on the Wilson upper bound. Point-and-Wilson is the convention \u00a713.5 already uses and the one \u00a734 D17's floor now matches, so the study carries one reading of a ceiling rather than three.",
+   "id": "D8",
+   "value": 0.75
+  },
+  {
+   "consequences": [
+    "`HUMAN_VALIDATION_UNAVAILABLE` is a registered identification status and is carried by every claim whose basis \u00a710.3 would have widened.",
+    "The measurement-basis scope sentence binds into the manifest and into the final report."
+   ],
+   "decided_by": "researcher, v5 adoption approval 2026-08-23",
+   "decided_on": "2026-08-23",
+   "evidence": "The standing proposal. No independent annotator is available for v5, so \u00a710.3's human-agreement basis can never supersede \u00a710.5's, and the measurement basis is `deterministic_measurement_validated` with its scope sentence attached permanently. Recording `available` and then failing to supply one would leave the study claiming a basis it never established.",
+   "id": "D9",
+   "value": "unavailable"
+  },
+  {
+   "consequences": [
+    "The class arm is 3 cells and L3e is a single-companion statement.",
+    "No claim generalises from the broad-class companion to its class."
+   ],
+   "decided_by": "researcher, v5 adoption approval 2026-08-23",
+   "decided_on": "2026-08-23",
+   "evidence": "The standing proposal, uncontested. The broad-class arm carries one companion, so no class-level claim is made: one companion identifies Delta_broad and F10 and nothing about the class as a population. Several companions would license a class claim the study has not registered a multiplicity family for.",
+   "id": "D10",
+   "value": "one_companion"
+  },
+  {
+   "consequences": [
+    "The confirmatory set keeps its v4 identity and its \u00a730 classification.",
+    "\u00a76.2's residual statement binds into the manifest; Calibration-B is the only newly authored set (\u00a734 D3)."
+   ],
+   "decided_by": "researcher, v5 adoption approval 2026-08-23",
+   "decided_on": "2026-08-23",
+   "evidence": "The standing proposal, with \u00a76.2's statement of the residual. The 384 confirmatory topics are carried from v4, which makes them not naive with respect to the predecessor study; re-authoring them would cost the comparability \u00a730's reuse ledger records and would not make them naive with respect to v5's own calibration. The residual is declared rather than removed.",
+   "id": "D11",
+   "value": "carry"
+  },
+  {
+   "consequences": [
+    "L3d and L4b are direction-and-SESOI statements; no separate magnitude threshold is registered for either.",
+    "The memo's 0.25 applies where \u00a734 D15 puts it and nowhere else."
+   ],
+   "decided_by": "researcher, v5 adoption approval 2026-08-23",
+   "decided_on": "2026-08-23",
+   "evidence": "The standing proposal, uncontested. delta_difficulty and the F11 order contrasts are read on direction and the registered SESOI; the source memo's 0.25 was defined for a difference of composition losses and is not transferred to a difficulty coordinate or to an order contrast, where it would be a threshold nobody derived for the quantity it bounds.",
+   "id": "D12",
+   "value": "direction_and_sesoi_only"
+  },
+  {
+   "consequences": [
+    "F11 takes a primary-tier simultaneous correction and L4b is emittable.",
+    "The order contrasts are reference-free, so \u00a734 D6's non-identification never reaches them."
+   ],
+   "decided_by": "researcher, v5 adoption approval 2026-08-23",
+   "decided_on": "2026-08-23",
+   "evidence": "The standing proposal, uncontested. F11's order contrasts are primary-tier and license L4b. They are registered prospectively with their own family and their own simultaneous correction, which is what distinguishes a primary-tier family from a secondary one; demoting them would leave a registered claim level with no family to control it.",
+   "id": "D13",
+   "value": "primary_tier"
+  },
+  {
+   "consequences": [
+    "\u00a713.8's caliper and \u00a711.8's difficulty axis both read iota.",
+    "A disagreement between the two coordinates is recorded as a status rather than resolved silently in favour of either."
+   ],
+   "decided_by": "researcher, v5 adoption approval 2026-08-23",
+   "decided_on": "2026-08-23",
+   "evidence": "The standing proposal, uncontested. Instructed compliance iota remains the difficulty coordinate, with raw solo compliance secondary and `DIFFICULTY_COORDINATE_DEPENDENT` recorded when the two disagree. The core pool being chance-free removes one motivation for iota but not the coordinate's role in \u00a713.8's caliper, and switching to raw would change which references match A on difficulty --- a change to the selection rule, not to a reporting convention.",
+   "id": "D14",
+   "value": "iota_primary"
+  },
+  {
+   "consequences": [
+    "Delta_R's SESOI is 0.10 and its material-excess threshold 0.25.",
+    "R2 is recorded as adopted-over-objection; `neither_transfers` and `generic_only` stay constructed and non-adopted.",
+    "`REFERENCE_POOL_SAME_FORM` is carried by every L3 statement, so a reader of a Delta_R verdict sees the pool it was computed over."
+   ],
+   "decided_by": "researcher, v5 adoption approval 2026-08-23",
+   "decided_on": "2026-08-23",
+   "evidence": "The standing proposal, registered as contestable, with R2's objection on the record. The memo's 0.10 and 0.25 transfer to a same-form Delta_R on the ground that the memo defined them for the *shape* of the contrast --- a difference of composition losses between the pair and a companion --- rather than for a particular companion pool. R2 holds that a same-form pool makes them a different quantity. The researcher adopts the transfer and records the disagreement rather than suppressing it.",
+   "id": "D15",
+   "value": "both_transfer"
+  },
+  {
+   "consequences": [
+    "`stages.stability.calibration_b_population` returns the carried set, not the A-survivors.",
+    "The additional cost is accepted, but repeated identical measurement is not: a row whose complete scientific identity already exists is reused rather than regenerated (\u00a726, `run/execute.py`).",
+    "Reuse never crosses the two calibration splits. The split is part of a row's scientific identity and \u00a713.7's two estimates are independent only if their rows are."
+   ],
+   "decided_by": "researcher, v5 adoption brief 2026-08-22",
+   "decided_on": "2026-08-22",
+   "evidence": "R11 observes that restricting Calibration-B to Calibration-A's survivors makes \u00a713.7 a re-confirmation of an already-selected set rather than a test of the candidate landscape's stability, and that calling the two splits independent then overstates what the second buys. The researcher accepts the additional generation and measures the complete registered carried population on both splits.",
+   "id": "D16",
+   "value": "complete_population"
+  },
+  {
+   "consequences": [
+    "`stages.regime.assert_construct_floor` applies the floor and a m* that fails it ends the replication at `FOCAL_RANGE_EXHAUSTED` before any confirmatory generation --- the accepted cost of the rule.",
+    "On the development curve the floor admits m* <= 12 and refuses m* >= 13; all four v4r4 operating points (10, 10, 12, 10) survive it, so it excludes the region the grid extension opened and does not retrospectively invalidate the predecessor's severities.",
+    "The refusal reads the POINT estimate. The Wilson interval is reported beside it and `CONSTRUCT_FLOOR_MARGINAL` is recorded when the interval straddles 0.50 --- the same point-and-Wilson convention \u00a713.5 uses for the reference chance ceiling and \u00a734 D8 for the chance ceiling.",
+    "`no_floor` stays constructed and non-adopted; R14's mitigation is now the floor rather than the report alone."
+   ],
+   "decided_by": "researcher, v5 adoption approval 2026-08-23",
+   "decided_on": "2026-08-23",
+   "evidence": "`d17_b_strength_decision.md`. The researcher took D17 in principle and has now approved the recommended rule: C1, the chance-compliance ceiling kappa_B(m*) <= 0.50. The quantity is the only candidate that is already registered, already reported at m*, computable with no new generation, defined at the same granularity as B's own verdict, and non-degenerate over the region v5's grid extension opened. The value sits in the widest gap in the whole measured curve: no development model's kappa_B falls between 0.398 (m=12) and 0.586 (m=13), a separation of 0.188 against a next-largest adjacent gap of 0.104, and any theta in [0.40, 0.58) has the same effect on all four. That 0.50 is a round number inside an observed gap is recorded as a coincidence and is NOT offered as support for it --- the derivation is the separation. The threshold is fitted to four models of one predecessor study on one task (DEVELOPMENT_EVIDENCE, \u00a730) and a fifth model could sit anywhere on this curve.",
+   "id": "D17",
+   "spec": {
+    "decided_by": "researcher, v5 adoption approval 2026-08-23",
+    "decided_on": "2026-08-23",
+    "derivation": "the widest separation in the measured kappa_B curve: no development model falls between 0.398 (m=12) and 0.586 (m=13), a gap of 0.188 against a next-largest adjacent gap of 0.104, and any theta in [0.40, 0.58) separates the two rungs on all four models. 0.50 is the approximate midpoint of that interval. The roundness of the number and the existence of the gap are recorded and neither is offered as evidence for the value. Source: dci1/reports/dci1v5/d17_b_strength_decision.md, machine-readable evidence dci1/reports/dci1v5/development/d7_b_construct_strength.json (DEVELOPMENT_EVIDENCE, \u00a730).",
+    "marginal_status": "CONSTRUCT_FLOOR_MARGINAL",
+    "quantity": "chance_compliance",
+    "semantics": "point_estimate_refuses_wilson_reported",
+    "value": 0.5
+   },
+   "value": "floor"
+  },
+  {
+   "consequences": [
+    "L3c carries a registered claim_scope. `strong` requires the near-form arm to have run and produced a Delta_near interval; `same_form_only` is what the same-form pool alone licenses.",
+    "A replication without the near-form arm cannot emit the strong conclusion at all --- not as a qualified sentence, not as a footnote.",
+    "D1 inherits this: the near-form arm is scientifically essential to any design that keeps the strong L3c as a target."
+   ],
+   "decided_by": "researcher, v5 adoption brief 2026-08-22",
+   "decided_on": "2026-08-22",
+   "evidence": "R1 observes that v5's core reference pool is same-form with A by construction, so Delta_R near zero is a plausible consequence of the DESIGN, and L3c is the source memo's refutation verdict. The researcher takes the strong version: the strong L3c conclusion --- no pair-specific excess --- requires the near-form arm. Same-form Tier-1 references alone justify only the narrower conclusion, no excess relative to same-form exact-count companions.",
+   "id": "D18",
+   "value": "precondition"
+  }
+ ],
+ "open_items": [
+  {
+   "consequences": [
+    "alpha_f in \u00a711.8's secondary fit ranges over the THREE CORE families; a Tier-2 point sits at the unweighted mean core intercept plus gamma, so the design matrix is 5 parameters over 12 points and full rank.",
+    "gamma_tier is the Tier-2 offset from the difficulty line the three core families define, at equal weight over them.",
+    "Nothing primary moves: sampling, reference selection, the arm set and every primary claim are unchanged. gamma licenses no claim level and F8 is a secondary family.",
+    "A1, A3 and A4 are non-adopted. A4 remains constructed for historical characterisation and is refused in adopted mode; A1 is refused by name as singular; A3 is not constructed.",
+    "\u00a711.8's sentence is amended to name the three core families explicitly, which is the amendment U2 recorded as outstanding."
+   ],
+   "evidence": "`u2_tier_model_decision.md`, with the comparison computed rather than argued: on twelve noiseless points generated from beta = 0.300 and gamma = 0.080 with correlated family levels --- a configuration \u00a713.8 permits, because its caliper matches each reference to A and not the references to each other --- A2 recovers both parameters exactly while A4 inflates beta by 63% and returns a gamma that moves from 0.024 to 0.134 with where the near-form controls happen to sit in difficulty, a quantity \u00a713.9 selects on closeness to A. A1 is not identified at all; A3 would delete gamma_tier, a registered F8 member, which is a \u00a732 amendment to \u00a715 for no gain. Both demonstrations are executed by tests_v5/test_tier_fit.py on every run.",
+   "id": "U2",
+   "resolution": "A2",
+   "resolved_by": "researcher, v5 adoption approval 2026-08-23",
+   "resolved_on": "2026-08-23"
+  },
+  {
+   "consequences": [
+    "The candidate population is NOT altered to make Tier 3 spectrum-eligible; doing so would be a \u00a732 amendment to the population, to \u00a711.8's fit structure and to the derived cell set.",
+    "CL7 and CL8 are count lower bounds and \u00a713.10 admits budget class to the broad-class slot only, so with the spectrum closed to Tier 3 they are admissible to no design slot. They remain in the instrument population \u00a710.2 measures."
+   ],
+   "evidence": "The researcher confirms the corrected \u00a77.10 wording. Tier 1 and Tier 2 take the core, near-form and spectrum roles the adopted design gives them; Tier 3 takes the broad-class role only and does not become a core-family spectrum rung. This is documentation reconciliation: \u00a77.4's slot table, \u00a713.12's spectrum rule and \u00a711.8's three-families-of-three fit all already excluded a Tier-3 spectrum rung, `taxonomy.assert_tier_admits_slot` already required the core family's tier, and reference_design_spec.json already carried `broad_class_control` alone for Tier 3. Nothing executable changed and no verdict moves.",
+   "id": "P1",
+   "resolution": "confirmed",
+   "resolved_by": "researcher, v5 adoption approval 2026-08-23",
+   "resolved_on": "2026-08-23"
+  },
+  {
+   "consequences": [
+    "\u00a712.6's eligibility predicate is the band \u00a713.4 actually registers, applied to the quantity \u00a713.4 states it on: a pre-screen rung is eligible when its raw solo compliance p_solo(R) lies in [0.10, 0.90] AND its pre-screen solo vacuity is at most 0.10.",
+    "The coverage criterion itself is unchanged and continues to operate on the difficulty coordinate iota, including C1-C4's span and bracketing relative to iota_A. Eligibility selects the rungs; iota positions them.",
+    "E1 is non-adopted. It would have applied \u00a713's band NUMBERS to a quantity \u00a713 does not band, which is a new absolute threshold on iota and therefore a \u00a732 amendment, not a reading.",
+    "The eligible set is now determined, so \u00a712.6's C1-C8 evaluate over a non-empty set, the reserve-expansion loop has a defined trigger, and REFERENCE_SUPPORT_NOT_IDENTIFIED can be reached under a rule the researcher chose.",
+    "No claim level moves and no sampling changes. The two readings could have differed in the admitted arm set and therefore in whether Delta_R is identified, which is why this blocked adoption; under E2 that set is determined by a registered band."
+   ],
+   "evidence": "\u00a713.4's table registers the headroom band V_head on the raw solo compliance p_solo(R) and registers no band on iota; \u00a713.8 constrains iota only through calipers relative to iota_A, which are relative and not absolute. \u00a712.6's sentence 'eligibility as \u00a713's band on iota and its vacuity ceiling' names a band \u00a713 does not carry on iota, so the reading that preserves every registered threshold is the one that applies \u00a713's registered band to \u00a713's registered quantity. Choosing E1 would invent an absolute iota threshold that no section registers. `stages.regime.coverage_eligibility` constructs both formulations by name and `tests_v5/test_execution_path.py` exercises the adopted one on the production path.",
+   "id": "U4",
+   "resolution": "E2",
+   "resolved_by": "researcher, v5 pre-Gate-2.5 amendment approval 2026-08-24",
+   "resolved_on": "2026-08-24"
+  }
+ ],
+ "recorded_on": "2026-08-24",
+ "source": "the v5 adoption brief of 2026-08-22, which took D3, D6, D16 and D18; and the v5 adoption approval of 2026-08-23, which took the remaining fifteen \u00a734 decisions, resolved U2 at A2 and confirmed P1; and the pre-Gate-2.5 engineering amendment approval of 2026-08-24, which resolved U4 at E2"
+}

@@ -1,0 +1,215 @@
+"""The v5 command line: one stage, one command, in registered order.
+
+    python -m dci1v5.run.cli status  --model <key>
+    python -m dci1v5.run.cli plan
+    python -m dci1v5.run.cli run     --stage <STAGE> --model <key> [--device N]
+    python -m dci1v5.run.cli audit   [--matrix]
+
+**Every command refuses before it does anything.** ``run`` goes through
+``run/lifecycle.run_stage``, which asserts the transition --- order, once,
+predecessor passed, no open decision --- and logs the refusal.
+
+``run`` passes **no** generation callable, and that is deliberate: in the
+registered namespace ``execute.resolve_generate`` turns its absence into the
+pinned backend and refuses a substitute outright. Four runners used to read
+``generate or fake_backend(...)`` instead, so this command would have signed
+fabricated text into the registered evidence tree.
+
+``--supersedes`` carries §32's chain link into the replacement manifest. ``build_manifest`` folds it in before the hash, so without it a re-registration is signed unlinked and the chain stops being readable from the payload; ``manifest.assert_links_supersession`` now refuses that outright.
+
+``--device`` selects which card a generating stage runs on. It is placement
+and nothing else: the runners already threaded ``device`` down to
+``backend_env``, which clears inherited ``ROCR_``/``HIP_``/``CUDA_``
+visibility variables and sets ``HIP_VISIBLE_DEVICES`` itself --- so a shell
+export cannot move a lane, and before this flag existed the documented entry
+point could only ever reach card 0. It changes no measured quantity: the
+prompts, decoding policy, cap, seeds and verifiers are all read from the
+signed records. On a stage that generates nothing it is **refused** rather
+than ignored, so a mistyped lane cannot look like it was honoured. Two TP=1
+lanes are how this host uses both cards; the backend's per-device flock keeps
+them independent.
+
+``plan`` and ``status`` and ``audit`` write nothing and are safe now: they are
+how a researcher sees what adoption would bind, how far a replication has got,
+and whether every artifact field has a producer.
+"""
+from __future__ import annotations
+
+import argparse
+import inspect
+import json
+import sys
+from pathlib import Path
+from typing import Any, Callable, Sequence
+
+from dci1v5.engine import transitions
+from dci1v5.engine.context import registered_context, synthetic_context
+from dci1v5.engine.paths import ModelTree, model_tree
+from dci1v5.protocol import constants as C
+from dci1v5.protocol import decisions, open_items
+from dci1v5.run import (analysis_run, confirmatory_run, freeze_run, gates_run,
+                        prefreeze_run, qualification_run, regime_run,
+                        registration_run)
+from dci1v5.run.contracts import audit_contracts, matrix_markdown
+
+__all__ = ["RUNNERS", "main"]
+
+#: stage -> the runner that produces its record. Every registered stage has
+#: one, and ``assert_every_stage_has_a_runner`` is what stops a stage being
+#: added to §18 without one.
+RUNNERS: dict[str, Callable[..., Any]] = {
+    C.STAGE_REGISTERED: registration_run.run_registration,
+    C.STAGE_QUALIFIED: qualification_run.run_qualification,
+    C.STAGE_GATE0: qualification_run.run_gate0,
+    C.STAGE_REGIME: regime_run.run_regime_screen,
+    C.STAGE_GATE1: regime_run.run_gate1,
+    C.STAGE_GATE2: gates_run.run_gate2,
+    C.STAGE_GATE2_5: gates_run.run_gate2_5,
+    C.STAGE_GATE3A: gates_run.run_gate3a,
+    C.STAGE_GATE3B: gates_run.run_gate3b,
+    C.STAGE_GATE3C: gates_run.run_gate3c,
+    C.STAGE_GATE4: gates_run.run_gate4,
+    C.STAGE_PREFREEZE_AUDIT: prefreeze_run.run_prefreeze_audit_stage,
+    C.STAGE_GATE5: freeze_run.run_freeze,
+    C.STAGE_CONFIRMATORY: confirmatory_run.run_confirmatory,
+    C.STAGE_MASKED_ANALYSIS: analysis_run.run_masked_analysis,
+    C.STAGE_UNMASKING: analysis_run.run_unmasking,
+    C.STAGE_UNMASKED_ANALYSIS: analysis_run.run_unmasked_analysis,
+    C.STAGE_FINAL_REPORT: analysis_run.run_final_report,
+}
+
+
+def assert_every_stage_has_a_runner() -> None:
+    """§18: a stage with no runner is a lifecycle with a hole in it."""
+    missing = [s for s in C.STAGE_SEQUENCE if s not in RUNNERS]
+    extra = [s for s in RUNNERS if s not in C.STAGE_SEQUENCE]
+    if missing or extra:
+        raise AssertionError(
+            f"stages without a runner: {missing}; runners without a stage: "
+            f"{extra}")
+
+
+assert_every_stage_has_a_runner()
+
+
+def _tree(model_key: str, root: str | None) -> ModelTree:
+    context = (synthetic_context(Path(root)) if root
+               else registered_context())
+    return model_tree(context, model_key)
+
+
+def status(args: argparse.Namespace) -> dict[str, Any]:
+    tree = _tree(args.model, args.root)
+    reached = transitions.stage_reached(tree)
+    return {
+        "model_key": args.model,
+        "study_id": tree.context.study_id,
+        "stage_reached": reached,
+        "next_stage": (C.STAGE_SEQUENCE[C.STAGE_SEQUENCE.index(reached) + 1]
+                       if reached and reached != C.STAGE_SEQUENCE[-1]
+                       else C.STAGE_SEQUENCE[0] if reached is None else None),
+        "terminal_status": transitions.terminal_status(tree),
+        "open_decisions": list(decisions.open_decisions()),
+        "blocking_specification_questions": list(open_items.blocking_items()),
+        "transitions_logged": len(transitions.transition_rows(tree)),
+    }
+
+
+def plan(args: argparse.Namespace) -> dict[str, Any]:
+    return registration_run.plan_registration(repo_root=args.repo_root)
+
+
+def audit(args: argparse.Namespace) -> Any:
+    if args.matrix:
+        return matrix_markdown()
+    return audit_contracts()
+
+
+def stages_accepting(parameter: str) -> tuple[str, ...]:
+    """The stages whose runner takes ``parameter``, in registered order.
+
+    Derived from the signatures rather than listed, so a runner that gains or
+    loses one cannot leave a stale list behind.
+    """
+    return tuple(
+        stage for stage in C.STAGE_SEQUENCE
+        if parameter in inspect.signature(RUNNERS[stage]).parameters)
+
+
+def generating_stages() -> tuple[str, ...]:
+    """The stages with a generative seam: the ones that can be given a card."""
+    return stages_accepting("device")
+
+
+#: CLI flag -> the runner keyword it forwards. Both are refused on a stage
+#: whose runner does not take them, rather than dropped: a flag that looks
+#: honoured and did nothing is worse than one that failed.
+FORWARDED = {"device": "device", "supersedes": "supersedes"}
+
+
+def run(args: argparse.Namespace) -> dict[str, Any]:
+    tree = _tree(args.model, args.root)
+    runner = RUNNERS[args.stage]
+    forwarded: dict[str, Any] = {}
+    for flag, parameter in FORWARDED.items():
+        value = getattr(args, flag)
+        if value is None:
+            continue
+        accepted = stages_accepting(parameter)
+        if args.stage not in accepted:
+            raise ValueError(
+                f"--{flag} was passed to {args.stage}, whose runner does not "
+                f"take {parameter!r}. Accepting it silently would make a "
+                f"mistyped invocation look honoured. Stages that take it: "
+                f"{', '.join(accepted) or 'none'}")
+        forwarded[parameter] = value
+    outcome = runner(tree, producing_commit=args.commit,
+                     environment_digest=args.environment or "", **forwarded)
+    return {"stage": outcome.stage, "outcome": outcome.outcome,
+            "record": str(outcome.record_path)}
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(prog="dci1v5", description=__doc__)
+    parser.add_argument("--repo-root", default=".")
+    sub = parser.add_subparsers(dest="command", required=True)
+
+    p_status = sub.add_parser("status")
+    p_status.add_argument("--model", required=True)
+    p_status.add_argument("--root", default=None)
+    p_status.set_defaults(func=status)
+
+    p_plan = sub.add_parser("plan")
+    p_plan.set_defaults(func=plan)
+
+    p_audit = sub.add_parser("audit")
+    p_audit.add_argument("--matrix", action="store_true")
+    p_audit.set_defaults(func=audit)
+
+    p_run = sub.add_parser("run")
+    p_run.add_argument("--stage", required=True, choices=list(C.STAGE_SEQUENCE))
+    p_run.add_argument("--model", required=True)
+    p_run.add_argument("--root", default=None)
+    p_run.add_argument("--commit", default=None)
+    p_run.add_argument("--environment", default=None)
+    p_run.add_argument("--device", type=int, default=None,
+                       help="card for a generating stage; refused elsewhere")
+    p_run.add_argument("--supersedes", default=None,
+                       help="manifest hash this registration replaces (§32); "
+                            "refused outside PROTOCOL_REGISTERED")
+    p_run.set_defaults(func=run)
+
+    args = parser.parse_args(argv)
+    try:
+        result = args.func(args)
+    except Exception as error:
+        print(json.dumps({"error": type(error).__name__,
+                          "message": str(error)}, indent=2))
+        return 1
+    print(result if isinstance(result, str)
+          else json.dumps(result, indent=2, default=str))
+    return 0
+
+
+if __name__ == "__main__":                                  # pragma: no cover
+    sys.exit(main())

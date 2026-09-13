@@ -1,0 +1,1421 @@
+{
+ "_classification": "DEVELOPMENT_EVIDENCE",
+ "_not_a_re_verdict": "v5's records, verdicts and terminal statuses stand exactly as signed. This applies a v6 rule to a v5 measurement and says nothing about what v5 should have done",
+ "_scope_limit": "solo:B is one of the six determinate entries and is the only one v5 measured on the calibration split: there is no composed A+B cell there. These verdicts are therefore a LOWER bound on how often the determinate rule bites, and the other five entries are measured for the first time when GATE_2_75 runs",
+ "_the_per_severity_column_is_counterfactual": "v6 measures composed headroom at the frozen m* only. The other severities are shown so a reader can see where m* sat on its own curve, and NO v6 rule reads them",
+ "_what": "\u00a734 D23's reading x \u00a734 D26's magnitude, costed on the closed v5 solo-B curves under the frozen-m* rule",
+ "measured_residual_sd": 0.0142,
+ "median_s2_topic": 0.07197845086169286,
+ "n_composed_topics": 24,
+ "n_probe_topics": 192,
+ "operating_point_rule": "frozen_at_gate2",
+ "operating_point_rule_is": "the researcher's 2026-08-26 decision: m* is selected once by \u00a712.3 at GATE_2_FOCAL_CALIBRATION, GATE_2_75_COMPOSED_PROBE measures composed headroom at m* alone, and only determinate entries may fail the verdict. A failure terminates the replication COMPOSED_HEADROOM_UNREACHABLE; no other severity is measured or offered",
+ "policies": [
+  {
+   "band_width_consumed_by_one_entry": 0.22769315493768774,
+   "evaluated_band": [
+    0.05,
+    0.95
+   ],
+   "every_frozen_m_star_passes": false,
+   "half_width_at_median_s2": 0.11384657746884387,
+   "magnitude": 0.0,
+   "magnitude_is": "the withdrawn 2026-08-25 derivation: the transfer's DISPERSION is consistent with sampling, so nothing is left for a constant",
+   "n_replications_terminating_here": 1,
+   "per_model": {
+    "gemma-3n-e2b-it": {
+     "counterfactual_n_passing_severities": 4,
+     "counterfactual_passing_severities": [
+      7,
+      8,
+      9,
+      10
+     ],
+     "m_star": 10,
+     "m_star_half_width": 0.11925689952024562,
+     "m_star_passes": true,
+     "per_severity": {
+      "10": {
+       "compliance": 0.8059895833333334,
+       "half_width": 0.11925689952024562,
+       "passes": true
+      },
+      "11": {
+       "compliance": 0.8815104166666666,
+       "half_width": 0.10237482081508797,
+       "passes": false
+      },
+      "12": {
+       "compliance": 0.9440104166666666,
+       "half_width": 0.06751927497270428,
+       "passes": false
+      },
+      "13": {
+       "compliance": 0.9739583333333334,
+       "half_width": 0.052014835918508626,
+       "passes": false
+      },
+      "14": {
+       "compliance": 0.984375,
+       "half_width": 0.042910845052966946,
+       "passes": false
+      },
+      "7": {
+       "compliance": 0.44921875,
+       "half_width": 0.16446949390245028,
+       "passes": true
+      },
+      "8": {
+       "compliance": 0.5859375,
+       "half_width": 0.1506775692781098,
+       "passes": true
+      },
+      "9": {
+       "compliance": 0.6848958333333334,
+       "half_width": 0.14339757501099004,
+       "passes": true
+      }
+     }
+    },
+    "gemma-3n-e4b-it": {
+     "counterfactual_n_passing_severities": 3,
+     "counterfactual_passing_severities": [
+      7,
+      8,
+      9
+     ],
+     "m_star": 10,
+     "m_star_half_width": 0.10958660294145363,
+     "m_star_passes": false,
+     "per_severity": {
+      "10": {
+       "compliance": 0.8671875,
+       "half_width": 0.10958660294145363,
+       "passes": false
+      },
+      "11": {
+       "compliance": 0.9075520833333334,
+       "half_width": 0.09486920509786587,
+       "passes": false
+      },
+      "12": {
+       "compliance": 0.9296875,
+       "half_width": 0.08506743589069657,
+       "passes": false
+      },
+      "13": {
+       "compliance": 0.9817708333333334,
+       "half_width": 0.050323524688284306,
+       "passes": false
+      },
+      "14": {
+       "compliance": 0.98828125,
+       "half_width": 0.04381321261496384,
+       "passes": false
+      },
+      "7": {
+       "compliance": 0.5169270833333334,
+       "half_width": 0.1624946695925955,
+       "passes": true
+      },
+      "8": {
+       "compliance": 0.6653645833333334,
+       "half_width": 0.1556181383569827,
+       "passes": true
+      },
+      "9": {
+       "compliance": 0.7291666666666666,
+       "half_width": 0.1383123331963359,
+       "passes": true
+      }
+     }
+    },
+    "qwen3-4b": {
+     "counterfactual_n_passing_severities": 4,
+     "counterfactual_passing_severities": [
+      9,
+      10,
+      11,
+      12
+     ],
+     "m_star": 12,
+     "m_star_half_width": 0.14066970891697375,
+     "m_star_passes": true,
+     "per_severity": {
+      "10": {
+       "compliance": 0.4049479166666667,
+       "half_width": 0.1725412655139135,
+       "passes": true
+      },
+      "11": {
+       "compliance": 0.5872395833333334,
+       "half_width": 0.1616767286787798,
+       "passes": true
+      },
+      "12": {
+       "compliance": 0.76953125,
+       "half_width": 0.14066970891697375,
+       "passes": true
+      },
+      "13": {
+       "compliance": 0.9283854166666666,
+       "half_width": 0.07949323322510138,
+       "passes": false
+      },
+      "14": {
+       "compliance": 0.9739583333333334,
+       "half_width": 0.05086941473761176,
+       "passes": false
+      },
+      "7": {
+       "compliance": 0.033854166666666664,
+       "half_width": 0.0644425083732231,
+       "passes": false
+      },
+      "8": {
+       "compliance": 0.10286458333333333,
+       "half_width": 0.09416787961419457,
+       "passes": false
+      },
+      "9": {
+       "compliance": 0.22526041666666666,
+       "half_width": 0.13712572170677312,
+       "passes": true
+      }
+     }
+    },
+    "qwen3-4b-instruct-2507": {
+     "counterfactual_n_passing_severities": 4,
+     "counterfactual_passing_severities": [
+      8,
+      9,
+      10,
+      11
+     ],
+     "m_star": 11,
+     "m_star_half_width": 0.1411890703501065,
+     "m_star_passes": true,
+     "per_severity": {
+      "10": {
+       "compliance": 0.6770833333333334,
+       "half_width": 0.1638572592426099,
+       "passes": true
+      },
+      "11": {
+       "compliance": 0.7734375,
+       "half_width": 0.1411890703501065,
+       "passes": true
+      },
+      "12": {
+       "compliance": 0.8932291666666666,
+       "half_width": 0.10153954859698312,
+       "passes": false
+      },
+      "13": {
+       "compliance": 0.9557291666666666,
+       "half_width": 0.06778464896266165,
+       "passes": false
+      },
+      "14": {
+       "compliance": 0.984375,
+       "half_width": 0.035385189327579156,
+       "passes": false
+      },
+      "7": {
+       "compliance": 0.14973958333333334,
+       "half_width": 0.11795279928213287,
+       "passes": false
+      },
+      "8": {
+       "compliance": 0.3776041666666667,
+       "half_width": 0.16391343694990798,
+       "passes": true
+      },
+      "9": {
+       "compliance": 0.5013020833333334,
+       "half_width": 0.17249857269020374,
+       "passes": true
+      }
+     }
+    }
+   },
+   "projection_residual_sd": 0.0,
+   "reading": "projection_sd",
+   "replications_whose_frozen_m_star_fails": [
+    "gemma-3n-e4b-it"
+   ]
+  },
+  {
+   "band_width_consumed_by_one_entry": 0.2343982504881317,
+   "evaluated_band": [
+    0.05,
+    0.95
+   ],
+   "every_frozen_m_star_passes": false,
+   "half_width_at_median_s2": 0.11719912524406585,
+   "magnitude": 0.0142,
+   "magnitude_is": "the measured authored-sub-split residual carried by a pooled probe: half of 0.0284, paired by instrument on the closed v5 record",
+   "n_replications_terminating_here": 1,
+   "per_model": {
+    "gemma-3n-e2b-it": {
+     "counterfactual_n_passing_severities": 4,
+     "counterfactual_passing_severities": [
+      7,
+      8,
+      9,
+      10
+     ],
+     "m_star": 10,
+     "m_star_half_width": 0.12246142184290823,
+     "m_star_passes": true,
+     "per_severity": {
+      "10": {
+       "compliance": 0.8059895833333334,
+       "half_width": 0.12246142184290823,
+       "passes": true
+      },
+      "11": {
+       "compliance": 0.8815104166666666,
+       "half_width": 0.10609050708487604,
+       "passes": false
+      },
+      "12": {
+       "compliance": 0.9440104166666666,
+       "half_width": 0.07303043372077435,
+       "passes": false
+      },
+      "13": {
+       "compliance": 0.9739583333333334,
+       "half_width": 0.058992668292205085,
+       "passes": false
+      },
+      "14": {
+       "compliance": 0.984375,
+       "half_width": 0.051146186365793704,
+       "passes": false
+      },
+      "7": {
+       "compliance": 0.44921875,
+       "half_width": 0.1668076922121186,
+       "passes": true
+      },
+      "8": {
+       "compliance": 0.5859375,
+       "half_width": 0.15322637384002907,
+       "passes": true
+      },
+      "9": {
+       "compliance": 0.6848958333333334,
+       "half_width": 0.1460734619143302,
+       "passes": true
+      }
+     }
+    },
+    "gemma-3n-e4b-it": {
+     "counterfactual_n_passing_severities": 3,
+     "counterfactual_passing_severities": [
+      7,
+      8,
+      9
+     ],
+     "m_star": 10,
+     "m_star_half_width": 0.11306553542460486,
+     "m_star_passes": false,
+     "per_severity": {
+      "10": {
+       "compliance": 0.8671875,
+       "half_width": 0.11306553542460486,
+       "passes": false
+      },
+      "11": {
+       "compliance": 0.9075520833333334,
+       "half_width": 0.09886737496518101,
+       "passes": false
+      },
+      "12": {
+       "compliance": 0.9296875,
+       "half_width": 0.08950452729120764,
+       "passes": false
+      },
+      "13": {
+       "compliance": 0.9817708333333334,
+       "half_width": 0.05750694648176969,
+       "passes": false
+      },
+      "14": {
+       "compliance": 0.98828125,
+       "half_width": 0.05190558116666059,
+       "passes": false
+      },
+      "7": {
+       "compliance": 0.5169270833333334,
+       "half_width": 0.16486087893315246,
+       "passes": true
+      },
+      "8": {
+       "compliance": 0.6653645833333334,
+       "half_width": 0.1580873073409051,
+       "passes": true
+      },
+      "9": {
+       "compliance": 0.7291666666666666,
+       "half_width": 0.14108470246918695,
+       "passes": true
+      }
+     }
+    },
+    "qwen3-4b": {
+     "counterfactual_n_passing_severities": 4,
+     "counterfactual_passing_severities": [
+      9,
+      10,
+      11,
+      12
+     ],
+     "m_star": 12,
+     "m_star_half_width": 0.14339650889540823,
+     "m_star_passes": true,
+     "per_severity": {
+      "10": {
+       "compliance": 0.4049479166666667,
+       "half_width": 0.17477150815206566,
+       "passes": true
+      },
+      "11": {
+       "compliance": 0.5872395833333334,
+       "half_width": 0.16405473584409733,
+       "passes": true
+      },
+      "12": {
+       "compliance": 0.76953125,
+       "half_width": 0.14339650889540823,
+       "passes": true
+      },
+      "13": {
+       "compliance": 0.9283854166666666,
+       "half_width": 0.08422449694230963,
+       "passes": false
+      },
+      "14": {
+       "compliance": 0.9739583333333334,
+       "half_width": 0.057985249092781486,
+       "passes": false
+      },
+      "7": {
+       "compliance": 0.033854166666666664,
+       "half_width": 0.07019564546350217,
+       "passes": false
+      },
+      "8": {
+       "compliance": 0.10286458333333333,
+       "half_width": 0.0981946093614013,
+       "passes": false
+      },
+      "9": {
+       "compliance": 0.22526041666666666,
+       "half_width": 0.1399216041582148,
+       "passes": true
+      }
+     }
+    },
+    "qwen3-4b-instruct-2507": {
+     "counterfactual_n_passing_severities": 4,
+     "counterfactual_passing_severities": [
+      8,
+      9,
+      10,
+      11
+     ],
+     "m_star": 11,
+     "m_star_half_width": 0.14390602955724993,
+     "m_star_passes": true,
+     "per_severity": {
+      "10": {
+       "compliance": 0.6770833333333334,
+       "half_width": 0.16620407083794497,
+       "passes": true
+      },
+      "11": {
+       "compliance": 0.7734375,
+       "half_width": 0.14390602955724993,
+       "passes": true
+      },
+      "12": {
+       "compliance": 0.8932291666666666,
+       "half_width": 0.10528471724748972,
+       "passes": false
+      },
+      "13": {
+       "compliance": 0.9557291666666666,
+       "half_width": 0.07327585135360784,
+       "passes": false
+      },
+      "14": {
+       "compliance": 0.984375,
+       "half_width": 0.04501892246992797,
+       "passes": false
+      },
+      "7": {
+       "compliance": 0.14973958333333334,
+       "half_width": 0.12119180919144613,
+       "passes": false
+      },
+      "8": {
+       "compliance": 0.3776041666666667,
+       "half_width": 0.16625945557873162,
+       "passes": true
+      },
+      "9": {
+       "compliance": 0.5013020833333334,
+       "half_width": 0.174729360259695,
+       "passes": true
+      }
+     }
+    }
+   },
+   "projection_residual_sd": 0.0142,
+   "reading": "projection_sd",
+   "replications_whose_frozen_m_star_fails": [
+    "gemma-3n-e4b-it"
+   ]
+  },
+  {
+   "band_width_consumed_by_one_entry": 0.3526558548092535,
+   "evaluated_band": [
+    0.05,
+    0.95
+   ],
+   "every_frozen_m_star_passes": false,
+   "half_width_at_median_s2": 0.17632792740462674,
+   "magnitude": 0.0687,
+   "magnitude_is": "precision_design.json's own 95% upper bound on a residual sd thirteen observations could have missed --- 4.8x the measured value",
+   "n_replications_terminating_here": 4,
+   "per_model": {
+    "gemma-3n-e2b-it": {
+     "counterfactual_n_passing_severities": 3,
+     "counterfactual_passing_severities": [
+      7,
+      8,
+      9
+     ],
+     "m_star": 10,
+     "m_star_half_width": 0.17986857108629015,
+     "m_star_passes": false,
+     "per_severity": {
+      "10": {
+       "compliance": 0.8059895833333334,
+       "half_width": 0.17986857108629015,
+       "passes": false
+      },
+      "11": {
+       "compliance": 0.8815104166666666,
+       "half_width": 0.16914815611872103,
+       "passes": false
+      },
+      "12": {
+       "compliance": 0.9440104166666666,
+       "half_width": 0.15062983527270254,
+       "passes": false
+      },
+      "13": {
+       "compliance": 0.9739583333333334,
+       "half_width": 0.14434693601552903,
+       "passes": false
+      },
+      "14": {
+       "compliance": 0.984375,
+       "half_width": 0.14132174427384342,
+       "passes": false
+      },
+      "7": {
+       "compliance": 0.44921875,
+       "half_width": 0.21255754328174287,
+       "passes": true
+      },
+      "8": {
+       "compliance": 0.5859375,
+       "half_width": 0.2020747996782415,
+       "passes": true
+      },
+      "9": {
+       "compliance": 0.6848958333333334,
+       "half_width": 0.19670627671854898,
+       "passes": true
+      }
+     }
+    },
+    "gemma-3n-e4b-it": {
+     "counterfactual_n_passing_severities": 3,
+     "counterfactual_passing_severities": [
+      7,
+      8,
+      9
+     ],
+     "m_star": 10,
+     "m_star_half_width": 0.17360794430465923,
+     "m_star_passes": false,
+     "per_severity": {
+      "10": {
+       "compliance": 0.8671875,
+       "half_width": 0.17360794430465923,
+       "passes": false
+      },
+      "11": {
+       "compliance": 0.9075520833333334,
+       "half_width": 0.16471387572801144,
+       "passes": false
+      },
+      "12": {
+       "compliance": 0.9296875,
+       "half_width": 0.15927009584495022,
+       "passes": false
+      },
+      "13": {
+       "compliance": 0.9817708333333334,
+       "half_width": 0.14374613705590217,
+       "passes": false
+      },
+      "14": {
+       "compliance": 0.98828125,
+       "half_width": 0.14159834879364194,
+       "passes": false
+      },
+      "7": {
+       "compliance": 0.5169270833333334,
+       "half_width": 0.21103320219209262,
+       "passes": true
+      },
+      "8": {
+       "compliance": 0.6653645833333334,
+       "half_width": 0.20578508149799118,
+       "passes": true
+      },
+      "9": {
+       "compliance": 0.7291666666666666,
+       "half_width": 0.19303055793230275,
+       "passes": true
+      }
+     }
+    },
+    "qwen3-4b": {
+     "counterfactual_n_passing_severities": 2,
+     "counterfactual_passing_severities": [
+      10,
+      11
+     ],
+     "m_star": 12,
+     "m_star_half_width": 0.19472663348455438,
+     "m_star_passes": false,
+     "per_severity": {
+      "10": {
+       "compliance": 0.4049479166666667,
+       "half_width": 0.21886293218949765,
+       "passes": true
+      },
+      "11": {
+       "compliance": 0.5872395833333334,
+       "half_width": 0.21040403840638047,
+       "passes": true
+      },
+      "12": {
+       "compliance": 0.76953125,
+       "half_width": 0.19472663348455438,
+       "passes": false
+      },
+      "13": {
+       "compliance": 0.9283854166666666,
+       "half_width": 0.15636389899852912,
+       "passes": false
+      },
+      "14": {
+       "compliance": 0.9739583333333334,
+       "half_width": 0.14393815386195907,
+       "passes": false
+      },
+      "7": {
+       "compliance": 0.033854166666666664,
+       "half_width": 0.14927602509068488,
+       "passes": false
+      },
+      "8": {
+       "compliance": 0.10286458333333333,
+       "half_width": 0.1643109379575057,
+       "passes": false
+      },
+      "9": {
+       "compliance": 0.22526041666666666,
+       "half_width": 0.19218209681196957,
+       "passes": false
+      }
+     }
+    },
+    "qwen3-4b-instruct-2507": {
+     "counterfactual_n_passing_severities": 3,
+     "counterfactual_passing_severities": [
+      8,
+      9,
+      10
+     ],
+     "m_star": 11,
+     "m_star_half_width": 0.19510214854729094,
+     "m_star_passes": false,
+     "per_severity": {
+      "10": {
+       "compliance": 0.6770833333333334,
+       "half_width": 0.21208417241261007,
+       "passes": true
+      },
+      "11": {
+       "compliance": 0.7734375,
+       "half_width": 0.19510214854729094,
+       "passes": false
+      },
+      "12": {
+       "compliance": 0.8932291666666666,
+       "half_width": 0.16864392876922948,
+       "passes": false
+      },
+      "13": {
+       "compliance": 0.9557291666666666,
+       "half_width": 0.150748974843722,
+       "passes": false
+      },
+      "14": {
+       "compliance": 0.984375,
+       "half_width": 0.13922142940363197,
+       "passes": false
+      },
+      "7": {
+       "compliance": 0.14973958333333334,
+       "half_width": 0.1790065854652643,
+       "passes": false
+      },
+      "8": {
+       "compliance": 0.3776041666666667,
+       "half_width": 0.2121275785799039,
+       "passes": true
+      },
+      "9": {
+       "compliance": 0.5013020833333334,
+       "half_width": 0.218829276746964,
+       "passes": true
+      }
+     }
+    }
+   },
+   "projection_residual_sd": 0.0687,
+   "reading": "projection_sd",
+   "replications_whose_frozen_m_star_fails": [
+    "gemma-3n-e2b-it",
+    "gemma-3n-e4b-it",
+    "qwen3-4b",
+    "qwen3-4b-instruct-2507"
+   ]
+  },
+  {
+   "band_width_consumed_by_one_entry": 0.2343982504881317,
+   "evaluated_band": [
+    0.05,
+    0.95
+   ],
+   "every_frozen_m_star_passes": false,
+   "half_width_at_median_s2": 0.11719912524406585,
+   "magnitude": 0.0,
+   "magnitude_is": "the withdrawn 2026-08-25 derivation: the transfer's DISPERSION is consistent with sampling, so nothing is left for a constant",
+   "n_replications_terminating_here": 1,
+   "per_model": {
+    "gemma-3n-e2b-it": {
+     "counterfactual_n_passing_severities": 4,
+     "counterfactual_passing_severities": [
+      7,
+      8,
+      9,
+      10
+     ],
+     "m_star": 10,
+     "m_star_half_width": 0.12246142184290823,
+     "m_star_passes": true,
+     "per_severity": {
+      "10": {
+       "compliance": 0.8059895833333334,
+       "half_width": 0.12246142184290823,
+       "passes": true
+      },
+      "11": {
+       "compliance": 0.8815104166666666,
+       "half_width": 0.10609050708487604,
+       "passes": false
+      },
+      "12": {
+       "compliance": 0.9440104166666666,
+       "half_width": 0.07303043372077435,
+       "passes": false
+      },
+      "13": {
+       "compliance": 0.9739583333333334,
+       "half_width": 0.058992668292205085,
+       "passes": false
+      },
+      "14": {
+       "compliance": 0.984375,
+       "half_width": 0.051146186365793704,
+       "passes": false
+      },
+      "7": {
+       "compliance": 0.44921875,
+       "half_width": 0.1668076922121186,
+       "passes": true
+      },
+      "8": {
+       "compliance": 0.5859375,
+       "half_width": 0.15322637384002907,
+       "passes": true
+      },
+      "9": {
+       "compliance": 0.6848958333333334,
+       "half_width": 0.1460734619143302,
+       "passes": true
+      }
+     }
+    },
+    "gemma-3n-e4b-it": {
+     "counterfactual_n_passing_severities": 3,
+     "counterfactual_passing_severities": [
+      7,
+      8,
+      9
+     ],
+     "m_star": 10,
+     "m_star_half_width": 0.11306553542460486,
+     "m_star_passes": false,
+     "per_severity": {
+      "10": {
+       "compliance": 0.8671875,
+       "half_width": 0.11306553542460486,
+       "passes": false
+      },
+      "11": {
+       "compliance": 0.9075520833333334,
+       "half_width": 0.09886737496518101,
+       "passes": false
+      },
+      "12": {
+       "compliance": 0.9296875,
+       "half_width": 0.08950452729120764,
+       "passes": false
+      },
+      "13": {
+       "compliance": 0.9817708333333334,
+       "half_width": 0.05750694648176969,
+       "passes": false
+      },
+      "14": {
+       "compliance": 0.98828125,
+       "half_width": 0.05190558116666059,
+       "passes": false
+      },
+      "7": {
+       "compliance": 0.5169270833333334,
+       "half_width": 0.16486087893315246,
+       "passes": true
+      },
+      "8": {
+       "compliance": 0.6653645833333334,
+       "half_width": 0.1580873073409051,
+       "passes": true
+      },
+      "9": {
+       "compliance": 0.7291666666666666,
+       "half_width": 0.14108470246918695,
+       "passes": true
+      }
+     }
+    },
+    "qwen3-4b": {
+     "counterfactual_n_passing_severities": 4,
+     "counterfactual_passing_severities": [
+      9,
+      10,
+      11,
+      12
+     ],
+     "m_star": 12,
+     "m_star_half_width": 0.14339650889540823,
+     "m_star_passes": true,
+     "per_severity": {
+      "10": {
+       "compliance": 0.4049479166666667,
+       "half_width": 0.17477150815206566,
+       "passes": true
+      },
+      "11": {
+       "compliance": 0.5872395833333334,
+       "half_width": 0.16405473584409733,
+       "passes": true
+      },
+      "12": {
+       "compliance": 0.76953125,
+       "half_width": 0.14339650889540823,
+       "passes": true
+      },
+      "13": {
+       "compliance": 0.9283854166666666,
+       "half_width": 0.08422449694230963,
+       "passes": false
+      },
+      "14": {
+       "compliance": 0.9739583333333334,
+       "half_width": 0.057985249092781486,
+       "passes": false
+      },
+      "7": {
+       "compliance": 0.033854166666666664,
+       "half_width": 0.07019564546350217,
+       "passes": false
+      },
+      "8": {
+       "compliance": 0.10286458333333333,
+       "half_width": 0.0981946093614013,
+       "passes": false
+      },
+      "9": {
+       "compliance": 0.22526041666666666,
+       "half_width": 0.1399216041582148,
+       "passes": true
+      }
+     }
+    },
+    "qwen3-4b-instruct-2507": {
+     "counterfactual_n_passing_severities": 4,
+     "counterfactual_passing_severities": [
+      8,
+      9,
+      10,
+      11
+     ],
+     "m_star": 11,
+     "m_star_half_width": 0.14390602955724993,
+     "m_star_passes": true,
+     "per_severity": {
+      "10": {
+       "compliance": 0.6770833333333334,
+       "half_width": 0.16620407083794497,
+       "passes": true
+      },
+      "11": {
+       "compliance": 0.7734375,
+       "half_width": 0.14390602955724993,
+       "passes": true
+      },
+      "12": {
+       "compliance": 0.8932291666666666,
+       "half_width": 0.10528471724748972,
+       "passes": false
+      },
+      "13": {
+       "compliance": 0.9557291666666666,
+       "half_width": 0.07327585135360784,
+       "passes": false
+      },
+      "14": {
+       "compliance": 0.984375,
+       "half_width": 0.04501892246992797,
+       "passes": false
+      },
+      "7": {
+       "compliance": 0.14973958333333334,
+       "half_width": 0.12119180919144613,
+       "passes": false
+      },
+      "8": {
+       "compliance": 0.3776041666666667,
+       "half_width": 0.16625945557873162,
+       "passes": true
+      },
+      "9": {
+       "compliance": 0.5013020833333334,
+       "half_width": 0.174729360259695,
+       "passes": true
+      }
+     }
+    }
+   },
+   "projection_residual_sd": 0.0142,
+   "reading": "beyond_the_measured_sd",
+   "replications_whose_frozen_m_star_fails": [
+    "gemma-3n-e4b-it"
+   ]
+  },
+  {
+   "band_width_consumed_by_one_entry": 0.26279825048813166,
+   "evaluated_band": [
+    0.06420000000000001,
+    0.9358
+   ],
+   "every_frozen_m_star_passes": false,
+   "half_width_at_median_s2": 0.11719912524406585,
+   "magnitude": 0.0142,
+   "magnitude_is": "the measured authored-sub-split residual carried by a pooled probe: half of 0.0284, paired by instrument on the closed v5 record",
+   "n_replications_terminating_here": 1,
+   "per_model": {
+    "gemma-3n-e2b-it": {
+     "counterfactual_n_passing_severities": 4,
+     "counterfactual_passing_severities": [
+      7,
+      8,
+      9,
+      10
+     ],
+     "m_star": 10,
+     "m_star_half_width": 0.12246142184290823,
+     "m_star_passes": true,
+     "per_severity": {
+      "10": {
+       "compliance": 0.8059895833333334,
+       "half_width": 0.12246142184290823,
+       "passes": true
+      },
+      "11": {
+       "compliance": 0.8815104166666666,
+       "half_width": 0.10609050708487604,
+       "passes": false
+      },
+      "12": {
+       "compliance": 0.9440104166666666,
+       "half_width": 0.07303043372077435,
+       "passes": false
+      },
+      "13": {
+       "compliance": 0.9739583333333334,
+       "half_width": 0.058992668292205085,
+       "passes": false
+      },
+      "14": {
+       "compliance": 0.984375,
+       "half_width": 0.051146186365793704,
+       "passes": false
+      },
+      "7": {
+       "compliance": 0.44921875,
+       "half_width": 0.1668076922121186,
+       "passes": true
+      },
+      "8": {
+       "compliance": 0.5859375,
+       "half_width": 0.15322637384002907,
+       "passes": true
+      },
+      "9": {
+       "compliance": 0.6848958333333334,
+       "half_width": 0.1460734619143302,
+       "passes": true
+      }
+     }
+    },
+    "gemma-3n-e4b-it": {
+     "counterfactual_n_passing_severities": 3,
+     "counterfactual_passing_severities": [
+      7,
+      8,
+      9
+     ],
+     "m_star": 10,
+     "m_star_half_width": 0.11306553542460486,
+     "m_star_passes": false,
+     "per_severity": {
+      "10": {
+       "compliance": 0.8671875,
+       "half_width": 0.11306553542460486,
+       "passes": false
+      },
+      "11": {
+       "compliance": 0.9075520833333334,
+       "half_width": 0.09886737496518101,
+       "passes": false
+      },
+      "12": {
+       "compliance": 0.9296875,
+       "half_width": 0.08950452729120764,
+       "passes": false
+      },
+      "13": {
+       "compliance": 0.9817708333333334,
+       "half_width": 0.05750694648176969,
+       "passes": false
+      },
+      "14": {
+       "compliance": 0.98828125,
+       "half_width": 0.05190558116666059,
+       "passes": false
+      },
+      "7": {
+       "compliance": 0.5169270833333334,
+       "half_width": 0.16486087893315246,
+       "passes": true
+      },
+      "8": {
+       "compliance": 0.6653645833333334,
+       "half_width": 0.1580873073409051,
+       "passes": true
+      },
+      "9": {
+       "compliance": 0.7291666666666666,
+       "half_width": 0.14108470246918695,
+       "passes": true
+      }
+     }
+    },
+    "qwen3-4b": {
+     "counterfactual_n_passing_severities": 4,
+     "counterfactual_passing_severities": [
+      9,
+      10,
+      11,
+      12
+     ],
+     "m_star": 12,
+     "m_star_half_width": 0.14339650889540823,
+     "m_star_passes": true,
+     "per_severity": {
+      "10": {
+       "compliance": 0.4049479166666667,
+       "half_width": 0.17477150815206566,
+       "passes": true
+      },
+      "11": {
+       "compliance": 0.5872395833333334,
+       "half_width": 0.16405473584409733,
+       "passes": true
+      },
+      "12": {
+       "compliance": 0.76953125,
+       "half_width": 0.14339650889540823,
+       "passes": true
+      },
+      "13": {
+       "compliance": 0.9283854166666666,
+       "half_width": 0.08422449694230963,
+       "passes": false
+      },
+      "14": {
+       "compliance": 0.9739583333333334,
+       "half_width": 0.057985249092781486,
+       "passes": false
+      },
+      "7": {
+       "compliance": 0.033854166666666664,
+       "half_width": 0.07019564546350217,
+       "passes": false
+      },
+      "8": {
+       "compliance": 0.10286458333333333,
+       "half_width": 0.0981946093614013,
+       "passes": false
+      },
+      "9": {
+       "compliance": 0.22526041666666666,
+       "half_width": 0.1399216041582148,
+       "passes": true
+      }
+     }
+    },
+    "qwen3-4b-instruct-2507": {
+     "counterfactual_n_passing_severities": 4,
+     "counterfactual_passing_severities": [
+      8,
+      9,
+      10,
+      11
+     ],
+     "m_star": 11,
+     "m_star_half_width": 0.14390602955724993,
+     "m_star_passes": true,
+     "per_severity": {
+      "10": {
+       "compliance": 0.6770833333333334,
+       "half_width": 0.16620407083794497,
+       "passes": true
+      },
+      "11": {
+       "compliance": 0.7734375,
+       "half_width": 0.14390602955724993,
+       "passes": true
+      },
+      "12": {
+       "compliance": 0.8932291666666666,
+       "half_width": 0.10528471724748972,
+       "passes": false
+      },
+      "13": {
+       "compliance": 0.9557291666666666,
+       "half_width": 0.07327585135360784,
+       "passes": false
+      },
+      "14": {
+       "compliance": 0.984375,
+       "half_width": 0.04501892246992797,
+       "passes": false
+      },
+      "7": {
+       "compliance": 0.14973958333333334,
+       "half_width": 0.12119180919144613,
+       "passes": false
+      },
+      "8": {
+       "compliance": 0.3776041666666667,
+       "half_width": 0.16625945557873162,
+       "passes": true
+      },
+      "9": {
+       "compliance": 0.5013020833333334,
+       "half_width": 0.174729360259695,
+       "passes": true
+      }
+     }
+    }
+   },
+   "projection_residual_sd": 0.0142,
+   "reading": "beyond_the_measured_sd",
+   "replications_whose_frozen_m_star_fails": [
+    "gemma-3n-e4b-it"
+   ]
+  },
+  {
+   "band_width_consumed_by_one_entry": 0.37179825048813164,
+   "evaluated_band": [
+    0.1187,
+    0.8813
+   ],
+   "every_frozen_m_star_passes": false,
+   "half_width_at_median_s2": 0.11719912524406585,
+   "magnitude": 0.0687,
+   "magnitude_is": "precision_design.json's own 95% upper bound on a residual sd thirteen observations could have missed --- 4.8x the measured value",
+   "n_replications_terminating_here": 4,
+   "per_model": {
+    "gemma-3n-e2b-it": {
+     "counterfactual_n_passing_severities": 3,
+     "counterfactual_passing_severities": [
+      7,
+      8,
+      9
+     ],
+     "m_star": 10,
+     "m_star_half_width": 0.12246142184290823,
+     "m_star_passes": false,
+     "per_severity": {
+      "10": {
+       "compliance": 0.8059895833333334,
+       "half_width": 0.12246142184290823,
+       "passes": false
+      },
+      "11": {
+       "compliance": 0.8815104166666666,
+       "half_width": 0.10609050708487604,
+       "passes": false
+      },
+      "12": {
+       "compliance": 0.9440104166666666,
+       "half_width": 0.07303043372077435,
+       "passes": false
+      },
+      "13": {
+       "compliance": 0.9739583333333334,
+       "half_width": 0.058992668292205085,
+       "passes": false
+      },
+      "14": {
+       "compliance": 0.984375,
+       "half_width": 0.051146186365793704,
+       "passes": false
+      },
+      "7": {
+       "compliance": 0.44921875,
+       "half_width": 0.1668076922121186,
+       "passes": true
+      },
+      "8": {
+       "compliance": 0.5859375,
+       "half_width": 0.15322637384002907,
+       "passes": true
+      },
+      "9": {
+       "compliance": 0.6848958333333334,
+       "half_width": 0.1460734619143302,
+       "passes": true
+      }
+     }
+    },
+    "gemma-3n-e4b-it": {
+     "counterfactual_n_passing_severities": 3,
+     "counterfactual_passing_severities": [
+      7,
+      8,
+      9
+     ],
+     "m_star": 10,
+     "m_star_half_width": 0.11306553542460486,
+     "m_star_passes": false,
+     "per_severity": {
+      "10": {
+       "compliance": 0.8671875,
+       "half_width": 0.11306553542460486,
+       "passes": false
+      },
+      "11": {
+       "compliance": 0.9075520833333334,
+       "half_width": 0.09886737496518101,
+       "passes": false
+      },
+      "12": {
+       "compliance": 0.9296875,
+       "half_width": 0.08950452729120764,
+       "passes": false
+      },
+      "13": {
+       "compliance": 0.9817708333333334,
+       "half_width": 0.05750694648176969,
+       "passes": false
+      },
+      "14": {
+       "compliance": 0.98828125,
+       "half_width": 0.05190558116666059,
+       "passes": false
+      },
+      "7": {
+       "compliance": 0.5169270833333334,
+       "half_width": 0.16486087893315246,
+       "passes": true
+      },
+      "8": {
+       "compliance": 0.6653645833333334,
+       "half_width": 0.1580873073409051,
+       "passes": true
+      },
+      "9": {
+       "compliance": 0.7291666666666666,
+       "half_width": 0.14108470246918695,
+       "passes": true
+      }
+     }
+    },
+    "qwen3-4b": {
+     "counterfactual_n_passing_severities": 2,
+     "counterfactual_passing_severities": [
+      10,
+      11
+     ],
+     "m_star": 12,
+     "m_star_half_width": 0.14339650889540823,
+     "m_star_passes": false,
+     "per_severity": {
+      "10": {
+       "compliance": 0.4049479166666667,
+       "half_width": 0.17477150815206566,
+       "passes": true
+      },
+      "11": {
+       "compliance": 0.5872395833333334,
+       "half_width": 0.16405473584409733,
+       "passes": true
+      },
+      "12": {
+       "compliance": 0.76953125,
+       "half_width": 0.14339650889540823,
+       "passes": false
+      },
+      "13": {
+       "compliance": 0.9283854166666666,
+       "half_width": 0.08422449694230963,
+       "passes": false
+      },
+      "14": {
+       "compliance": 0.9739583333333334,
+       "half_width": 0.057985249092781486,
+       "passes": false
+      },
+      "7": {
+       "compliance": 0.033854166666666664,
+       "half_width": 0.07019564546350217,
+       "passes": false
+      },
+      "8": {
+       "compliance": 0.10286458333333333,
+       "half_width": 0.0981946093614013,
+       "passes": false
+      },
+      "9": {
+       "compliance": 0.22526041666666666,
+       "half_width": 0.1399216041582148,
+       "passes": false
+      }
+     }
+    },
+    "qwen3-4b-instruct-2507": {
+     "counterfactual_n_passing_severities": 3,
+     "counterfactual_passing_severities": [
+      8,
+      9,
+      10
+     ],
+     "m_star": 11,
+     "m_star_half_width": 0.14390602955724993,
+     "m_star_passes": false,
+     "per_severity": {
+      "10": {
+       "compliance": 0.6770833333333334,
+       "half_width": 0.16620407083794497,
+       "passes": true
+      },
+      "11": {
+       "compliance": 0.7734375,
+       "half_width": 0.14390602955724993,
+       "passes": false
+      },
+      "12": {
+       "compliance": 0.8932291666666666,
+       "half_width": 0.10528471724748972,
+       "passes": false
+      },
+      "13": {
+       "compliance": 0.9557291666666666,
+       "half_width": 0.07327585135360784,
+       "passes": false
+      },
+      "14": {
+       "compliance": 0.984375,
+       "half_width": 0.04501892246992797,
+       "passes": false
+      },
+      "7": {
+       "compliance": 0.14973958333333334,
+       "half_width": 0.12119180919144613,
+       "passes": false
+      },
+      "8": {
+       "compliance": 0.3776041666666667,
+       "half_width": 0.16625945557873162,
+       "passes": true
+      },
+      "9": {
+       "compliance": 0.5013020833333334,
+       "half_width": 0.174729360259695,
+       "passes": true
+      }
+     }
+    }
+   },
+   "projection_residual_sd": 0.0142,
+   "reading": "beyond_the_measured_sd",
+   "replications_whose_frozen_m_star_fails": [
+    "gemma-3n-e2b-it",
+    "gemma-3n-e4b-it",
+    "qwen3-4b",
+    "qwen3-4b-instruct-2507"
+   ]
+  }
+ ],
+ "registered_band": [
+  0.05,
+  0.95
+ ]
+}

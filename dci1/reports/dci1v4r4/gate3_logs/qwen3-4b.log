@@ -1,0 +1,32 @@
+{
+ "model": "qwen3-4b",
+ "stage": "GATE_3_REFERENCES",
+ "outcome": "PASS",
+ "design": "reduced",
+ "design_variant": "reduced",
+ "class_arm": true,
+ "core_references": [
+  {
+   "slot": "R1",
+   "family": "RF11",
+   "severity": 21,
+   "iota": 0.7142857142857142,
+   "distance": 0.012628255722178294,
+   "feature_group": "vowel_initial"
+  },
+  {
+   "slot": "R2",
+   "family": "CR5",
+   "severity": 8,
+   "iota": 0.6762295081967213,
+   "distance": 0.025427950366814556,
+   "feature_group": "comma"
+  }
+ ],
+ "spectrum": [],
+ "identification_statuses": [
+  "COMPANION_CLASS_NOT_MATCHED",
+  "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+  "EXCESS_NOT_IDENTIFIED"
+ ]
+}

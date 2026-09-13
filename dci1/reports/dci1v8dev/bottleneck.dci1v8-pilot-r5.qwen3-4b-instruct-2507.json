@@ -1,0 +1,830 @@
+{
+ "by_frame": {
+  "0": {
+   "bottleneck": {
+    "local": {
+     "counterfactual_meets_minima": false,
+     "dominant_non_precision_failure": "V_diff",
+     "dominant_share_of_failures": 0.4805194805194805,
+     "n_failing_only_on_precision": 2,
+     "verdict": "MIXED",
+     "vocabulary": [
+      "PRECISION_LIMITED",
+      "REFERENCE_POOL_LIMITED",
+      "MIXED",
+      "OTHER_REGISTERED_RULE",
+      "IDENTIFIED"
+     ],
+     "why": "2 candidate(s) fail only on precision, but even with precision free the registered minima are not met: both repairs are needed. 8 rungs from 6 families lie inside the 0.1 caliper"
+    },
+    "spectrum": {
+     "counterfactual_meets_minima": true,
+     "dominant_non_precision_failure": "V_coord",
+     "dominant_share_of_failures": 0.3108108108108108,
+     "n_failing_only_on_precision": 42,
+     "verdict": "PRECISION_LIMITED",
+     "vocabulary": [
+      "PRECISION_LIMITED",
+      "REFERENCE_POOL_LIMITED",
+      "MIXED",
+      "OTHER_REGISTERED_RULE",
+      "IDENTIFIED"
+     ],
+     "why": "42 candidate(s) fail only on precision components, and with those satisfied the registered minima would be met: more calibration, not more candidates"
+    }
+   },
+   "counterfactual_if_precision_were_free": {
+    "families_above": [
+     "MK2",
+     "MK3",
+     "MK8"
+    ],
+    "families_below": [
+     "CL8",
+     "MK1",
+     "MK2",
+     "MK3",
+     "MK4",
+     "MK5",
+     "MK6",
+     "MK7",
+     "MK8",
+     "XC1"
+    ],
+    "local_families": [
+     "MK4",
+     "MK7"
+    ],
+    "meets_min_local_families": false,
+    "meets_spectrum_shape": true,
+    "n_above": 5,
+    "n_below": 40,
+    "n_local_families": 2,
+    "rule": "candidates whose every non-precision component passes; a diagnosis, read by nothing"
+   },
+   "frame": 0,
+   "iota_a": 0.8072916666666666,
+   "local": {
+    "every_failing_component": {
+     "V_chance": 1,
+     "V_diff": 70,
+     "V_head": 32,
+     "V_inter": 31,
+     "V_stab": 77,
+     "V_struct": 18
+    },
+    "first_candidate_failure": {
+     "V_diff": 37,
+     "V_head": 32,
+     "V_struct": 6
+    },
+    "first_failing": {
+     "V_head": 32,
+     "V_stab": 39,
+     "V_struct": 6
+    },
+    "n": 77,
+    "n_failing_only_on_precision": 2,
+    "n_passed": 0,
+    "passed": [],
+    "would_pass_if_precision_were_free": [
+     "MK4:4",
+     "MK7:4"
+    ]
+   },
+   "m_star": 11,
+   "n_star": 4,
+   "n_topics_a": 48,
+   "pool_structure": {
+    "caliper": 0.1,
+    "families_above": [
+     "CL7",
+     "CL8",
+     "MK2",
+     "MK3",
+     "MK4",
+     "MK5",
+     "MK7",
+     "MK8",
+     "XC1"
+    ],
+    "families_below": [
+     "CL7",
+     "CL8",
+     "MK1",
+     "MK2",
+     "MK3",
+     "MK4",
+     "MK5",
+     "MK6",
+     "MK7",
+     "MK8",
+     "RF11",
+     "RF3",
+     "XC1"
+    ],
+    "families_within_local_caliper": [
+     "CL7",
+     "CL8",
+     "MK3",
+     "MK4",
+     "MK7",
+     "MK8"
+    ],
+    "n_above_iota_a": 24,
+    "n_below_iota_a": 53,
+    "n_calibrated_rungs": 77,
+    "n_within_local_caliper": 8,
+    "reading": "where the calibrated rungs sit relative to iota_A, before any validity rule: a fact about the reference pool that no allocation changes"
+   },
+   "realised": {
+    "core_identified": false,
+    "coverage_identified": false,
+    "coverage_reasons": [
+     "0 points below A; 2 required",
+     "0 points above A; 2 required",
+     "0 families below A; 2 required",
+     "0 families above A; 2 required",
+     "no point at or beyond 0.1 below A",
+     "no point at or beyond 0.1 above A",
+     "total span 0.000 below 0.2",
+     "projected SE(beta) None above 0.05 (within-family leverage 0.0000)"
+    ],
+    "local_valid_families": [],
+    "n_backups": 0,
+    "n_local_valid_families": 0,
+    "n_spectrum_above": 3,
+    "n_spectrum_below": 0,
+    "projected_se_beta": null
+   },
+   "se_iota": {
+    "floor": 0.05,
+    "median": 0.04586052546044664,
+    "n": 77,
+    "n_within_floor": 54
+   },
+   "spectrum": {
+    "every_failing_component": {
+     "V_chance": 1,
+     "V_coord": 41,
+     "V_inter_s": 27,
+     "V_pos": 4,
+     "V_stab": 74
+    },
+    "first_candidate_failure": {
+     "V_coord": 23,
+     "V_inter_s": 7,
+     "V_pos": 2
+    },
+    "first_failing": {
+     "PASSED": 3,
+     "V_coord": 41,
+     "V_inter_s": 2,
+     "V_stab": 31
+    },
+    "n": 77,
+    "n_failing_only_on_precision": 42,
+    "n_passed": 3,
+    "passed": [
+     "MK2:4",
+     "MK2:5",
+     "MK8:5"
+    ],
+    "would_pass_if_precision_were_free": [
+     "CL8:10",
+     "CL8:11",
+     "MK1:10",
+     "MK1:7",
+     "MK1:8",
+     "MK1:9",
+     "MK2:10",
+     "MK2:11",
+     "MK2:12",
+     "MK2:4",
+     "MK2:5",
+     "MK2:7",
+     "MK2:8",
+     "MK2:9",
+     "MK3:2",
+     "MK3:3",
+     "MK3:4",
+     "MK3:5",
+     "MK4:5",
+     "MK4:6",
+     "MK4:8",
+     "MK5:10",
+     "MK5:5",
+     "MK5:6",
+     "MK5:7",
+     "MK5:8",
+     "MK5:9",
+     "MK6:10",
+     "MK6:7",
+     "MK6:8",
+     "MK6:9",
+     "MK7:10",
+     "MK7:4",
+     "MK7:5",
+     "MK7:6",
+     "MK7:7",
+     "MK7:8",
+     "MK8:10",
+     "MK8:5",
+     "MK8:6",
+     "MK8:7",
+     "MK8:8",
+     "MK8:9",
+     "XC1:5",
+     "XC1:6"
+    ]
+   },
+   "state": "NEITHER"
+  },
+  "1": {
+   "bottleneck": {
+    "local": {
+     "counterfactual_meets_minima": true,
+     "dominant_non_precision_failure": "V_head",
+     "dominant_share_of_failures": 0.40789473684210525,
+     "n_failing_only_on_precision": 19,
+     "verdict": "PRECISION_LIMITED",
+     "vocabulary": [
+      "PRECISION_LIMITED",
+      "REFERENCE_POOL_LIMITED",
+      "MIXED",
+      "OTHER_REGISTERED_RULE",
+      "IDENTIFIED"
+     ],
+     "why": "19 candidate(s) fail only on precision components, and with those satisfied the registered minima would be met: more calibration, not more candidates"
+    },
+    "spectrum": {
+     "counterfactual_meets_minima": true,
+     "dominant_non_precision_failure": "V_coord",
+     "dominant_share_of_failures": 0.1891891891891892,
+     "n_failing_only_on_precision": 39,
+     "verdict": "PRECISION_LIMITED",
+     "vocabulary": [
+      "PRECISION_LIMITED",
+      "REFERENCE_POOL_LIMITED",
+      "MIXED",
+      "OTHER_REGISTERED_RULE",
+      "IDENTIFIED"
+     ],
+     "why": "39 candidate(s) fail only on precision components, and with those satisfied the registered minima would be met: more calibration, not more candidates"
+    }
+   },
+   "counterfactual_if_precision_were_free": {
+    "families_above": [
+     "CL7",
+     "MK2",
+     "MK4",
+     "MK5",
+     "MK7",
+     "MK8"
+    ],
+    "families_below": [
+     "CL7",
+     "CL8",
+     "MK1",
+     "MK2",
+     "MK3",
+     "MK4",
+     "MK6",
+     "MK7",
+     "MK8",
+     "XC1"
+    ],
+    "local_families": [
+     "MK1",
+     "MK2",
+     "MK3",
+     "MK4",
+     "MK5",
+     "MK6",
+     "MK7",
+     "MK8"
+    ],
+    "meets_min_local_families": true,
+    "meets_spectrum_shape": true,
+    "n_above": 13,
+    "n_below": 29,
+    "n_local_families": 8,
+    "rule": "candidates whose every non-precision component passes; a diagnosis, read by nothing"
+   },
+   "frame": 1,
+   "iota_a": 0.6822916666666666,
+   "local": {
+    "every_failing_component": {
+     "V_chance": 1,
+     "V_diff": 52,
+     "V_head": 31,
+     "V_inter": 30,
+     "V_stab": 76,
+     "V_struct": 18
+    },
+    "first_candidate_failure": {
+     "V_diff": 20,
+     "V_head": 31,
+     "V_struct": 6
+    },
+    "first_failing": {
+     "PASSED": 1,
+     "V_head": 31,
+     "V_stab": 39,
+     "V_struct": 6
+    },
+    "n": 77,
+    "n_failing_only_on_precision": 19,
+    "n_passed": 1,
+    "passed": [
+     "MK5:5"
+    ],
+    "would_pass_if_precision_were_free": [
+     "MK1:10",
+     "MK1:7",
+     "MK1:9",
+     "MK2:11",
+     "MK2:7",
+     "MK2:8",
+     "MK2:9",
+     "MK3:1",
+     "MK3:2",
+     "MK4:4",
+     "MK5:10",
+     "MK5:5",
+     "MK5:6",
+     "MK5:7",
+     "MK5:8",
+     "MK5:9",
+     "MK6:10",
+     "MK6:9",
+     "MK7:4",
+     "MK8:8"
+    ]
+   },
+   "m_star": 10,
+   "n_star": 5,
+   "n_topics_a": 48,
+   "pool_structure": {
+    "caliper": 0.1,
+    "families_above": [
+     "CL7",
+     "CL8",
+     "MK2",
+     "MK3",
+     "MK4",
+     "MK5",
+     "MK7",
+     "MK8",
+     "RF11",
+     "XC1"
+    ],
+    "families_below": [
+     "CL7",
+     "CL8",
+     "MK1",
+     "MK2",
+     "MK3",
+     "MK4",
+     "MK5",
+     "MK6",
+     "MK7",
+     "MK8",
+     "RF11",
+     "RF3",
+     "XC1"
+    ],
+    "families_within_local_caliper": [
+     "CL8",
+     "MK1",
+     "MK2",
+     "MK3",
+     "MK4",
+     "MK5",
+     "MK6",
+     "MK7",
+     "MK8",
+     "RF11"
+    ],
+    "n_above_iota_a": 34,
+    "n_below_iota_a": 41,
+    "n_calibrated_rungs": 77,
+    "n_within_local_caliper": 28,
+    "reading": "where the calibrated rungs sit relative to iota_A, before any validity rule: a fact about the reference pool that no allocation changes"
+   },
+   "realised": {
+    "core_identified": false,
+    "coverage_identified": false,
+    "coverage_reasons": [
+     "0 points below A; 2 required",
+     "0 families below A; 2 required",
+     "1 families above A; 2 required",
+     "no point at or beyond 0.1 below A",
+     "total span 0.000 below 0.2",
+     "projected SE(beta) 0.372081711455965 above 0.05 (within-family leverage 0.0020)"
+    ],
+    "local_valid_families": [
+     "MK5"
+    ],
+    "n_backups": 0,
+    "n_local_valid_families": 1,
+    "n_spectrum_above": 3,
+    "n_spectrum_below": 0,
+    "projected_se_beta": 0.372081711455965
+   },
+   "se_iota": {
+    "floor": 0.05,
+    "median": 0.04766256243799769,
+    "n": 77,
+    "n_within_floor": 46
+   },
+   "spectrum": {
+    "every_failing_component": {
+     "V_chance": 1,
+     "V_coord": 42,
+     "V_inter_s": 21,
+     "V_pos": 16,
+     "V_stab": 74
+    },
+    "first_candidate_failure": {
+     "V_coord": 14,
+     "V_inter_s": 9,
+     "V_pos": 12
+    },
+    "first_failing": {
+     "PASSED": 3,
+     "V_coord": 42,
+     "V_inter_s": 1,
+     "V_stab": 31
+    },
+    "n": 77,
+    "n_failing_only_on_precision": 39,
+    "n_passed": 3,
+    "passed": [
+     "MK5:1",
+     "MK8:2",
+     "MK8:6"
+    ],
+    "would_pass_if_precision_were_free": [
+     "CL7:45",
+     "CL7:60",
+     "CL8:10",
+     "MK1:10",
+     "MK1:7",
+     "MK1:8",
+     "MK1:9",
+     "MK2:10",
+     "MK2:11",
+     "MK2:12",
+     "MK2:4",
+     "MK2:5",
+     "MK3:3",
+     "MK3:4",
+     "MK4:2",
+     "MK4:3",
+     "MK4:4",
+     "MK4:5",
+     "MK4:6",
+     "MK4:8",
+     "MK5:1",
+     "MK5:8",
+     "MK6:10",
+     "MK6:7",
+     "MK6:8",
+     "MK6:9",
+     "MK7:1",
+     "MK7:10",
+     "MK7:2",
+     "MK7:5",
+     "MK7:6",
+     "MK7:7",
+     "MK7:8",
+     "MK8:1",
+     "MK8:10",
+     "MK8:2",
+     "MK8:5",
+     "MK8:6",
+     "MK8:7",
+     "MK8:8",
+     "MK8:9",
+     "XC1:2"
+    ]
+   },
+   "state": "NEITHER"
+  },
+  "3": {
+   "bottleneck": {
+    "local": {
+     "counterfactual_meets_minima": true,
+     "dominant_non_precision_failure": "V_head",
+     "dominant_share_of_failures": 0.4675324675324675,
+     "n_failing_only_on_precision": 13,
+     "verdict": "PRECISION_LIMITED",
+     "vocabulary": [
+      "PRECISION_LIMITED",
+      "REFERENCE_POOL_LIMITED",
+      "MIXED",
+      "OTHER_REGISTERED_RULE",
+      "IDENTIFIED"
+     ],
+     "why": "13 candidate(s) fail only on precision components, and with those satisfied the registered minima would be met: more calibration, not more candidates"
+    },
+    "spectrum": {
+     "counterfactual_meets_minima": true,
+     "dominant_non_precision_failure": "V_coord",
+     "dominant_share_of_failures": 0.34210526315789475,
+     "n_failing_only_on_precision": 37,
+     "verdict": "PRECISION_LIMITED",
+     "vocabulary": [
+      "PRECISION_LIMITED",
+      "REFERENCE_POOL_LIMITED",
+      "MIXED",
+      "OTHER_REGISTERED_RULE",
+      "IDENTIFIED"
+     ],
+     "why": "37 candidate(s) fail only on precision components, and with those satisfied the registered minima would be met: more calibration, not more candidates"
+    }
+   },
+   "counterfactual_if_precision_were_free": {
+    "families_above": [
+     "MK4",
+     "MK5",
+     "MK7",
+     "MK8",
+     "XC1"
+    ],
+    "families_below": [
+     "MK1",
+     "MK2",
+     "MK3",
+     "MK4",
+     "MK5",
+     "MK6",
+     "MK7",
+     "MK8",
+     "XC1"
+    ],
+    "local_families": [
+     "MK1",
+     "MK2",
+     "MK5",
+     "MK6",
+     "MK7",
+     "MK8",
+     "XC1"
+    ],
+    "meets_min_local_families": true,
+    "meets_spectrum_shape": true,
+    "n_above": 9,
+    "n_below": 29,
+    "n_local_families": 7,
+    "rule": "candidates whose every non-precision component passes; a diagnosis, read by nothing"
+   },
+   "frame": 3,
+   "iota_a": 0.6822916666666666,
+   "local": {
+    "every_failing_component": {
+     "V_chance": 2,
+     "V_diff": 61,
+     "V_head": 36,
+     "V_inter": 31,
+     "V_stab": 77,
+     "V_struct": 18
+    },
+    "first_candidate_failure": {
+     "V_diff": 24,
+     "V_head": 36,
+     "V_struct": 4
+    },
+    "first_failing": {
+     "V_head": 36,
+     "V_stab": 37,
+     "V_struct": 4
+    },
+    "n": 77,
+    "n_failing_only_on_precision": 13,
+    "n_passed": 0,
+    "passed": [],
+    "would_pass_if_precision_were_free": [
+     "MK1:10",
+     "MK1:7",
+     "MK1:8",
+     "MK2:10",
+     "MK2:11",
+     "MK2:7",
+     "MK2:8",
+     "MK2:9",
+     "MK5:5",
+     "MK6:10",
+     "MK7:6",
+     "MK8:5",
+     "XC1:2"
+    ]
+   },
+   "m_star": 12,
+   "n_star": 6,
+   "n_topics_a": 48,
+   "pool_structure": {
+    "caliper": 0.1,
+    "families_above": [
+     "MK1",
+     "MK2",
+     "MK3",
+     "MK4",
+     "MK5",
+     "MK7",
+     "MK8",
+     "RF11",
+     "XC1"
+    ],
+    "families_below": [
+     "CL7",
+     "CL8",
+     "MK1",
+     "MK2",
+     "MK3",
+     "MK4",
+     "MK5",
+     "MK6",
+     "MK7",
+     "MK8",
+     "RF11",
+     "RF3",
+     "XC1"
+    ],
+    "families_within_local_caliper": [
+     "CL8",
+     "MK1",
+     "MK2",
+     "MK5",
+     "MK6",
+     "MK7",
+     "MK8",
+     "RF11",
+     "XC1"
+    ],
+    "n_above_iota_a": 28,
+    "n_below_iota_a": 49,
+    "n_calibrated_rungs": 77,
+    "n_within_local_caliper": 17,
+    "reading": "where the calibrated rungs sit relative to iota_A, before any validity rule: a fact about the reference pool that no allocation changes"
+   },
+   "realised": {
+    "core_identified": false,
+    "coverage_identified": false,
+    "coverage_reasons": [
+     "0 points below A; 2 required",
+     "0 points above A; 2 required",
+     "0 families below A; 2 required",
+     "0 families above A; 2 required",
+     "no point at or beyond 0.1 below A",
+     "no point at or beyond 0.1 above A",
+     "total span 0.000 below 0.2",
+     "projected SE(beta) None above 0.05 (within-family leverage 0.0000)"
+    ],
+    "local_valid_families": [],
+    "n_backups": 0,
+    "n_local_valid_families": 0,
+    "n_spectrum_above": 1,
+    "n_spectrum_below": 0,
+    "projected_se_beta": null
+   },
+   "se_iota": {
+    "floor": 0.05,
+    "median": 0.045252403185795945,
+    "n": 77,
+    "n_within_floor": 57
+   },
+   "spectrum": {
+    "every_failing_component": {
+     "V_chance": 2,
+     "V_coord": 42,
+     "V_inter_s": 27,
+     "V_pos": 10,
+     "V_stab": 76
+    },
+    "first_candidate_failure": {
+     "V_coord": 26,
+     "V_inter_s": 6,
+     "V_pos": 7
+    },
+    "first_failing": {
+     "PASSED": 1,
+     "V_coord": 42,
+     "V_inter_s": 1,
+     "V_stab": 33
+    },
+    "n": 77,
+    "n_failing_only_on_precision": 37,
+    "n_passed": 1,
+    "passed": [
+     "MK5:3"
+    ],
+    "would_pass_if_precision_were_free": [
+     "MK1:10",
+     "MK1:7",
+     "MK1:9",
+     "MK2:8",
+     "MK3:3",
+     "MK4:3",
+     "MK4:4",
+     "MK4:5",
+     "MK4:6",
+     "MK4:8",
+     "MK5:10",
+     "MK5:2",
+     "MK5:3",
+     "MK5:4",
+     "MK5:6",
+     "MK5:7",
+     "MK5:8",
+     "MK5:9",
+     "MK6:10",
+     "MK6:7",
+     "MK6:8",
+     "MK6:9",
+     "MK7:10",
+     "MK7:4",
+     "MK7:5",
+     "MK7:7",
+     "MK7:8",
+     "MK8:1",
+     "MK8:10",
+     "MK8:2",
+     "MK8:5",
+     "MK8:6",
+     "MK8:7",
+     "MK8:8",
+     "MK8:9",
+     "XC1:1",
+     "XC1:2",
+     "XC1:6"
+    ]
+   },
+   "state": "NEITHER"
+  }
+ },
+ "calibration_allocation": null,
+ "model_key": "qwen3-4b-instruct-2507",
+ "precision_components": {
+  "always": [
+   "V_stab"
+  ],
+  "caveat": "V_head, V_chance and V_diff are interval tests formed at the row's topic count, so their bounds also tighten with the allocation even though their points do not. Counting them as candidate failures makes REFERENCE_POOL_LIMITED and OTHER_REGISTERED_RULE the conservative readings and never inflates PRECISION_LIMITED",
+  "conditional": "V_coord, when every problem in its reason is the SE(iota) clause",
+  "why": "these are the only components whose failure is a statement about how well the coordinate is pinned; every other component states something about the candidate"
+ },
+ "reads_no_composed_outcome": true,
+ "root": "/home/cnm13ryan/git/dci-v8-canonical/dci1/evidence/dci1v8-pilot-r5",
+ "stages_read": [
+  "GATE_2_CALIBRATION",
+  "GATE_3_REFERENCES"
+ ],
+ "summary": {
+  "local": {
+   "0": "MIXED",
+   "1": "PRECISION_LIMITED",
+   "3": "PRECISION_LIMITED"
+  },
+  "spectrum": {
+   "0": "PRECISION_LIMITED",
+   "1": "PRECISION_LIMITED",
+   "3": "PRECISION_LIMITED"
+  }
+ },
+ "supported_frames": [
+  0,
+  1,
+  3
+ ],
+ "unsupported_frames": {
+  "2": {
+   "constraint": "A",
+   "criterion": "\u00a712.3: two adjacent registered severities lie on opposite sides of a whole band",
+   "curve": {
+    "1": 0.9895833333333334,
+    "2": 1.0,
+    "3": 0.9895833333333334,
+    "4": 0.9635416666666666,
+    "5": 0.4114583333333333,
+    "6": 0.3125,
+    "7": 0.16145833333333334,
+    "8": 0.2552083333333333
+   },
+   "status": "GRID_RESOLUTION_INSUFFICIENT",
+   "step": 1,
+   "straddling_pairs": [
+    {
+     "compliance": [
+      0.9635416666666666,
+      0.4114583333333333
+     ],
+     "severities": [
+      4,
+      5
+     ]
+    }
+   ]
+  }
+ }
+}

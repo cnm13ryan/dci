@@ -1,0 +1,3817 @@
+{
+ "arms": [
+  {
+   "arm": "instruction_only",
+   "condition": "mc-medium",
+   "config": {
+    "condition": "mc-medium",
+    "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+    "generator_hash": "2c82b709de3ee9edc616b32501e1fd5535244d24f32a36cffec5b5e56315503a",
+    "judge_model_key": "gpt-oss-20b",
+    "judge_revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+    "output_cap": 3584,
+    "parser_version": "microcase-parse/1.0.0",
+    "prompt_hashes": {
+     "microcase-conventions/1.0.0": "9aca25784abf2964d769587867202e844eed5784ebed41024081ea259878f450",
+     "microcase/1.0.0": "4ef84f07e6d8a8ec6cc438a6fc78df0ce80c70ec13baacb82734577741e948db"
+    },
+    "prompts": {
+     "instruction_only": "microcase/1.0.0",
+     "with_conventions": "microcase-conventions/1.0.0"
+    },
+    "reasoning_effort": "medium",
+    "temperature": 0.0,
+    "thresholds": {
+     "parse_validity_min": 0.95,
+     "per_kind_min_items": 4,
+     "repeatability_min": 0.95,
+     "sensitivity_min": 0.8,
+     "sensitivity_per_kind_min": 0.5,
+     "specificity_min": 0.9,
+     "truncation_group_max": 0.2,
+     "truncation_pooled_max": 0.1
+    },
+    "verifier_hash": "41edc84c8c1381c698aa3ea62265ef11ff1162993fa2f68d1245dbce10096074"
+   },
+   "items": 84,
+   "phase": "development",
+   "replicate": 0,
+   "run_dir": "reports/dci1v4r3/microcase_runs/development-mc-medium-instruction_only-rep0/eb9da5230122-e3b8fa1e6ba4",
+   "seconds": 1617.7,
+   "seconds_per_item": 19.26
+  },
+  {
+   "arm": "with_conventions",
+   "condition": "mc-medium",
+   "config": {
+    "condition": "mc-medium",
+    "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+    "generator_hash": "2c82b709de3ee9edc616b32501e1fd5535244d24f32a36cffec5b5e56315503a",
+    "judge_model_key": "gpt-oss-20b",
+    "judge_revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+    "output_cap": 3584,
+    "parser_version": "microcase-parse/1.0.0",
+    "prompt_hashes": {
+     "microcase-conventions/1.0.0": "9aca25784abf2964d769587867202e844eed5784ebed41024081ea259878f450",
+     "microcase/1.0.0": "4ef84f07e6d8a8ec6cc438a6fc78df0ce80c70ec13baacb82734577741e948db"
+    },
+    "prompts": {
+     "instruction_only": "microcase/1.0.0",
+     "with_conventions": "microcase-conventions/1.0.0"
+    },
+    "reasoning_effort": "medium",
+    "temperature": 0.0,
+    "thresholds": {
+     "parse_validity_min": 0.95,
+     "per_kind_min_items": 4,
+     "repeatability_min": 0.95,
+     "sensitivity_min": 0.8,
+     "sensitivity_per_kind_min": 0.5,
+     "specificity_min": 0.9,
+     "truncation_group_max": 0.2,
+     "truncation_pooled_max": 0.1
+    },
+    "verifier_hash": "41edc84c8c1381c698aa3ea62265ef11ff1162993fa2f68d1245dbce10096074"
+   },
+   "items": 84,
+   "phase": "development",
+   "replicate": 0,
+   "run_dir": "reports/dci1v4r3/microcase_runs/development-mc-medium-with_conventions-rep0/eb9da5230122-e3b8fa1e6ba4",
+   "seconds": 1853.1,
+   "seconds_per_item": 22.06
+  }
+ ],
+ "artifact_type": "v4r3-microcase-run",
+ "case_set_hash": "141525355353ed04789af15f317f8a8f2750a353bd2108b2178bde6e7509b73b",
+ "classification": "DCI-1 PROTOCOL v4 REVISION 3 (ADOPTED, NOT FROZEN)",
+ "condition": "mc-medium",
+ "config": {
+  "condition": "mc-medium",
+  "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+  "generator_hash": "2c82b709de3ee9edc616b32501e1fd5535244d24f32a36cffec5b5e56315503a",
+  "judge_model_key": "gpt-oss-20b",
+  "judge_revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+  "output_cap": 3584,
+  "parser_version": "microcase-parse/1.0.0",
+  "prompt_hashes": {
+   "microcase-conventions/1.0.0": "9aca25784abf2964d769587867202e844eed5784ebed41024081ea259878f450",
+   "microcase/1.0.0": "4ef84f07e6d8a8ec6cc438a6fc78df0ce80c70ec13baacb82734577741e948db"
+  },
+  "prompts": {
+   "instruction_only": "microcase/1.0.0",
+   "with_conventions": "microcase-conventions/1.0.0"
+  },
+  "reasoning_effort": "medium",
+  "temperature": 0.0,
+  "thresholds": {
+   "parse_validity_min": 0.95,
+   "per_kind_min_items": 4,
+   "repeatability_min": 0.95,
+   "sensitivity_min": 0.8,
+   "sensitivity_per_kind_min": 0.5,
+   "specificity_min": 0.9,
+   "truncation_group_max": 0.2,
+   "truncation_pooled_max": 0.1
+  },
+  "verifier_hash": "41edc84c8c1381c698aa3ea62265ef11ff1162993fa2f68d1245dbce10096074"
+ },
+ "metrics": {
+  "by_arm": {
+   "instruction_only": {
+    "agreement": 0.8192771084337349,
+    "n": 84,
+    "parsed": 83
+   },
+   "with_conventions": {
+    "agreement": 0.9036144578313253,
+    "n": 84,
+    "parsed": 83
+   }
+  },
+  "composition": {
+   "not_satisfied": 88,
+   "satisfied": 80
+  },
+  "n": 168,
+  "parse_validity": 0.9880952380952381,
+  "sensitivity": {
+   "by_defect": {
+    "denominator_swap": {
+     "agreed": 3,
+     "arm": "instruction_only",
+     "n": 13,
+     "sensitivity": 0.23076923076923078
+    },
+    "inequality_flip": {
+     "agreed": 60,
+     "arm": "instruction_only",
+     "n": 75,
+     "sensitivity": 0.8
+    },
+    "numerator_swap": {
+     "agreed": 22,
+     "arm": "instruction_only",
+     "n": 25,
+     "sensitivity": 0.88
+    },
+    "off_by_one": {
+     "agreed": 19,
+     "arm": "instruction_only",
+     "n": 19,
+     "sensitivity": 1.0
+    },
+    "segmentation_drift": {
+     "agreed": 7,
+     "arm": "with_conventions",
+     "n": 8,
+     "sensitivity": 0.875
+    },
+    "vacuity_ignored": {
+     "agreed": 8,
+     "arm": "with_conventions",
+     "n": 12,
+     "sensitivity": 0.6666666666666666
+    }
+   },
+   "definition": "agreement with the registered verdict on cases the verifier records as not satisfied --- the detection side",
+   "n": 86,
+   "value": 0.813953488372093
+  },
+  "specificity": {
+   "definition": "agreement with the registered verdict on cases the verifier records as satisfied --- the false-alarm side",
+   "n": 80,
+   "value": 0.9125
+  },
+  "status_counts": {
+   "invalid_output": 2,
+   "refusal": 0,
+   "valid": 166
+  },
+  "truncation": {
+   "by_group": {
+    "instruction_only:count_budget": {
+     "n": 31,
+     "rate": 0.0,
+     "truncated": 0
+    },
+    "instruction_only:count_lower_bound": {
+     "n": 4,
+     "rate": 0.0,
+     "truncated": 0
+    },
+    "instruction_only:exact_count": {
+     "n": 9,
+     "rate": 0.0,
+     "truncated": 0
+    },
+    "instruction_only:rate_budget": {
+     "n": 34,
+     "rate": 0.029411764705882353,
+     "truncated": 1
+    },
+    "instruction_only:rate_lower_bound": {
+     "n": 6,
+     "rate": 0.0,
+     "truncated": 0
+    },
+    "with_conventions:count_budget": {
+     "n": 31,
+     "rate": 0.0,
+     "truncated": 0
+    },
+    "with_conventions:count_lower_bound": {
+     "n": 4,
+     "rate": 0.0,
+     "truncated": 0
+    },
+    "with_conventions:exact_count": {
+     "n": 9,
+     "rate": 0.0,
+     "truncated": 0
+    },
+    "with_conventions:rate_budget": {
+     "n": 34,
+     "rate": 0.029411764705882353,
+     "truncated": 1
+    },
+    "with_conventions:rate_lower_bound": {
+     "n": 6,
+     "rate": 0.0,
+     "truncated": 0
+    }
+   },
+   "pooled": 0.011904761904761904
+  }
+ },
+ "phase": "development",
+ "prompt_fit": {
+  "cap": 3584,
+  "estimated_tokens": 421,
+  "headroom": 512,
+  "longest_prompt_chars": 1263
+ },
+ "replicate": 0,
+ "rows": [
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cl7-04-0725886e",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "case-folding-split;longer",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "count_lower_bound",
+   "justification": "Not enough words with 'a'.",
+   "kind": "CL7",
+   "label": false,
+   "prompt_hash": "330c8e17d604acbe6555454485a26123e63132064d1811bc038b8f36f2a28b2d",
+   "severity": 5,
+   "status": "valid",
+   "tokens": 308,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cl7-16-d587656f",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "empty-output;whitespace",
+   "discriminates": [
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "count_lower_bound",
+   "justification": "Not enough words with 'a'.",
+   "kind": "CL7",
+   "label": false,
+   "prompt_hash": "23cedfae63852191774d223b6e9e86902b59081faab9dc6957c7169b5bf063f8",
+   "severity": 5,
+   "status": "valid",
+   "tokens": 189,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cl8-01-847da076",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "exact-threshold",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip",
+    "off_by_one"
+   ],
+   "form": "count_lower_bound",
+   "justification": null,
+   "kind": "CL8",
+   "label": true,
+   "prompt_hash": "b708ead85f88c0be15ef8b21265bf607293cd537010b7729043e74bd8fae32a9",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 83,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cl8-15-d8a8b32e",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "empty-output",
+   "discriminates": [
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "count_lower_bound",
+   "justification": "Missing word ending with y",
+   "kind": "CL8",
+   "label": false,
+   "prompt_hash": "64d4705b3fb7c9cf4d34a22f50538a1540cc290e46ce8f0bb1a58b4e2b11192a",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 262,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cp4-01-c83ed175",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "exact-threshold;rate",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "rate_lower_bound",
+   "justification": "No doubled letters",
+   "kind": "CP4",
+   "label": false,
+   "prompt_hash": "8c18d987a0826bb9fbff4d426b164cead05080cf22df650c5ee00bcc1838183e",
+   "severity": 2,
+   "status": "valid",
+   "tokens": 323,
+   "truncated": false
+  },
+  {
+   "agrees": false,
+   "arm": "instruction_only",
+   "case_id": "mc-cp4-02-4128be6f",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "threshold-plus-one;rate",
+   "discriminates": [
+    "numerator_swap",
+    "denominator_swap",
+    "inequality_flip"
+   ],
+   "form": "rate_lower_bound",
+   "justification": "Missing 2% of words with doubled letters",
+   "kind": "CP4",
+   "label": false,
+   "prompt_hash": "b5ae17dba8afc75dc76031e6c919aaaba43f61e7e0791ec32da0f845951ba526",
+   "severity": 2,
+   "status": "valid",
+   "tokens": 598,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cp4-03-f2128ec2",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "case-folding-split",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "rate_lower_bound",
+   "justification": "Not enough words",
+   "kind": "CP4",
+   "label": false,
+   "prompt_hash": "ffbb53f50ba8312e0524e13ed39f3a038eb405eda78f33b380f3ec42ad9747ba",
+   "severity": 2,
+   "status": "valid",
+   "tokens": 475,
+   "truncated": false
+  },
+  {
+   "agrees": false,
+   "arm": "instruction_only",
+   "case_id": "mc-cp4-07-27eb33db",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "hyphenated-form",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "rate_lower_bound",
+   "justification": "Wrong percentage of doubled letters.",
+   "kind": "CP4",
+   "label": false,
+   "prompt_hash": "84274f9abd4c85c1e2f65e4324808a6b7fe656c5b62f72bdd19eb5e8a03cf679",
+   "severity": 2,
+   "status": "valid",
+   "tokens": 457,
+   "truncated": false
+  },
+  {
+   "agrees": false,
+   "arm": "instruction_only",
+   "case_id": "mc-cp7-04-0bcd53b4",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "case-folding-split;longer",
+   "discriminates": [
+    "denominator_swap",
+    "inequality_flip"
+   ],
+   "form": "rate_lower_bound",
+   "justification": "No words contain 'a'.",
+   "kind": "CP7",
+   "label": false,
+   "prompt_hash": "c032dd5bb899efb44147d52ba810ca34b0d87b4b0b0e7d122f6143877da9af01",
+   "severity": 20,
+   "status": "valid",
+   "tokens": 354,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cp7-08-2abad409",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "hyphenated-form;two",
+   "discriminates": [
+    "denominator_swap",
+    "inequality_flip"
+   ],
+   "form": "rate_lower_bound",
+   "justification": null,
+   "kind": "CP7",
+   "label": true,
+   "prompt_hash": "527607aa8f0532843045c3dddd772e9f44da44e70d1041e9f957f13c7707095c",
+   "severity": 20,
+   "status": "valid",
+   "tokens": 152,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cr1-00-922d37b2",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "threshold-minus-one;rate",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR1",
+   "label": true,
+   "prompt_hash": "f69b1d60fd0ca8b94ceda2cbf5bf1ad6afd99c3db6529b4a0a5dccc7428c1268",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 160,
+   "truncated": false
+  },
+  {
+   "agrees": false,
+   "arm": "instruction_only",
+   "case_id": "mc-cr1-16-9f5e45ab",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "empty-output;whitespace",
+   "discriminates": [
+    "denominator_swap",
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR1",
+   "label": true,
+   "prompt_hash": "13af533ba34f5270bd09fdbc7ad8c2e9d6a3b224add37bf489d397cc5b5d8b60",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 110,
+   "truncated": false
+  },
+  {
+   "agrees": false,
+   "arm": "instruction_only",
+   "case_id": "mc-cr1-18-30ca3167",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "wordless;semicolons",
+   "discriminates": [
+    "denominator_swap",
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR1",
+   "label": true,
+   "prompt_hash": "c0160554d50d785dc51aa9990400b5808e0d3baac7a24c580c6ac1f998c981cc",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 196,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cr10-02-687ce5bf",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "threshold-plus-one;rate",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "justification": "Too many words ending with s",
+   "kind": "CR10",
+   "label": false,
+   "prompt_hash": "8559b22a8880f3729c02abe9c70559e28cb63b71c736d92e6b6997ffe6b13e83",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 2868,
+   "truncated": false
+  },
+  {
+   "agrees": null,
+   "arm": "instruction_only",
+   "case_id": "mc-cr10-19-796b0a6d",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "wordless;terminators",
+   "discriminates": [
+    "denominator_swap",
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR10",
+   "label": null,
+   "prompt_hash": "23eabf907a4ae41032a151ddcf6ec80fad6dbf037529833fae4b3fd7d5199272",
+   "severity": 1,
+   "status": "invalid_output",
+   "tokens": 3584,
+   "truncated": true
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cr11-02-a3798dff",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "threshold-plus-one;rate",
+   "discriminates": [
+    "numerator_swap",
+    "denominator_swap",
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "justification": "Too many vowel-starting words",
+   "kind": "CR11",
+   "label": false,
+   "prompt_hash": "5eb802eb3fd84f4d1d57f9b6f0a4d39ae7e5cc9a2042b4b9c9caccf343fc8827",
+   "severity": 2,
+   "status": "valid",
+   "tokens": 317,
+   "truncated": false
+  },
+  {
+   "agrees": false,
+   "arm": "instruction_only",
+   "case_id": "mc-cr11-17-e446ed54",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "wordless",
+   "discriminates": [
+    "denominator_swap",
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR11",
+   "label": true,
+   "prompt_hash": "667f8602cdca7a845152ae555f1bfe47ebc858a0bb3a498c3b1d4a5e2583bcd4",
+   "severity": 2,
+   "status": "valid",
+   "tokens": 114,
+   "truncated": false
+  },
+  {
+   "agrees": false,
+   "arm": "instruction_only",
+   "case_id": "mc-cr11-18-6cc25945",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "wordless;semicolons",
+   "discriminates": [
+    "denominator_swap",
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR11",
+   "label": true,
+   "prompt_hash": "6f4269adb3a0f67ef63552fc4d6ab9fe8fb3e5fa59bf07e9d10e15da7de9949a",
+   "severity": 2,
+   "status": "valid",
+   "tokens": 89,
+   "truncated": false
+  },
+  {
+   "agrees": false,
+   "arm": "instruction_only",
+   "case_id": "mc-cr12-15-27853ef0",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "empty-output",
+   "discriminates": [
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR12",
+   "label": true,
+   "prompt_hash": "9d81d16a95df57a3784920554524724afe41dcc03b54e96f02d28b45f331b070",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 585,
+   "truncated": false
+  },
+  {
+   "agrees": false,
+   "arm": "instruction_only",
+   "case_id": "mc-cr12-16-d5fab8cd",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "empty-output;whitespace",
+   "discriminates": [
+    "denominator_swap",
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR12",
+   "label": true,
+   "prompt_hash": "97264cb05093f2c440cb8ccfbc21ca9040c19c9c207b89ef153317fd677ceb87",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 478,
+   "truncated": false
+  },
+  {
+   "agrees": false,
+   "arm": "instruction_only",
+   "case_id": "mc-cr12-19-06488836",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "wordless;terminators",
+   "discriminates": [
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR12",
+   "label": true,
+   "prompt_hash": "5f4f34eb843047c3d2fca23ef643b16157dda366ae90133ceefe47a1a1aeaf90",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 752,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cr2-01-c25e0d77",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "exact-threshold;rate",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR2",
+   "label": true,
+   "prompt_hash": "1ad25937a39800148908a009bb4478b1c4fc90516010b6ff3c2d629837074950",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 138,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cr2-02-bab8b507",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "threshold-plus-one;rate",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "justification": "Too many ing words",
+   "kind": "CR2",
+   "label": false,
+   "prompt_hash": "4132aa6777ea2c16050da3255a255aa4f4c5da5a10672cf828bf1bd655cedc50",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 442,
+   "truncated": false
+  },
+  {
+   "agrees": false,
+   "arm": "instruction_only",
+   "case_id": "mc-cr2-15-e5b23589",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "empty-output",
+   "discriminates": [
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR2",
+   "label": true,
+   "prompt_hash": "aef24e9fb80b05f00e1df52d1bedcc609edeea9c2e52c2768f956c6c04a18855",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 131,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cr3-00-18204ca0",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "threshold-minus-one;rate",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR3",
+   "label": true,
+   "prompt_hash": "b4f3065110e67b0c8e93d99eae10deb04fdfdf02df42b62219209a46e7926854",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 172,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cr3-03-db89122b",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "case-folding-split",
+   "discriminates": [
+    "inequality_flip",
+    "segmentation_drift"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR3",
+   "label": true,
+   "prompt_hash": "122d280ad83f9f90682d0dc596cf552b2691eb4d4c31cd612d2c5314d4e1c2eb",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 353,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cr3-04-0754243a",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "case-folding-split;longer",
+   "discriminates": [
+    "inequality_flip",
+    "segmentation_drift"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR3",
+   "label": true,
+   "prompt_hash": "3da496c1c04a4bc81b177f61a988791da95642653a4ded8c35dce55729ece204",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 266,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cr3-06-ab3b04cc",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "case-folding-split;initial",
+   "discriminates": [
+    "inequality_flip",
+    "segmentation_drift"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR3",
+   "label": true,
+   "prompt_hash": "602b683d0ed8ebff833eeaa434f8bb5c1a16b61b445c3d3c37463e92ce0aa802",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 134,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cr4-02-c6b29f91",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "threshold-plus-one;rate",
+   "discriminates": [
+    "numerator_swap",
+    "denominator_swap",
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "justification": "Too many doubled-letter words",
+   "kind": "CR4",
+   "label": false,
+   "prompt_hash": "0723adf6ba088661fa8b2d38bb64391e2c0175ad873da5a8c9084e823765081e",
+   "severity": 2,
+   "status": "valid",
+   "tokens": 602,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cr4-08-102e9691",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "hyphenated-form;two",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "justification": "Too many doubled letters",
+   "kind": "CR4",
+   "label": false,
+   "prompt_hash": "608a88bbffacca0f3012209c706fe98f9ec47089b81db9670bbb112cfba3002d",
+   "severity": 2,
+   "status": "valid",
+   "tokens": 194,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cr5-02-e5c2bbc6",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "threshold-plus-one;rate",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "justification": "Too many commas",
+   "kind": "CR5",
+   "label": false,
+   "prompt_hash": "5ef0f91887c0d719bfe08aa035c744dbdc72d30b6fad73e9b71defe46bc7c62c",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 560,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cr5-13-a05aeaba",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "adjacent-punctuation",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "justification": "Too many commas",
+   "kind": "CR5",
+   "label": false,
+   "prompt_hash": "5215addf935878e25d5848d5e15307b2a90b071cf6b27ed9c5a0d869270c36da",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 298,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cr5-14-dfd56a46",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "adjacent-punctuation;semicolon",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR5",
+   "label": true,
+   "prompt_hash": "84bbed204330d1793745b697c58bfe6ea3dc71844c3bd76086cc5dafe31d47dc",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 156,
+   "truncated": false
+  },
+  {
+   "agrees": false,
+   "arm": "instruction_only",
+   "case_id": "mc-cr5-16-e3bfa9d7",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "empty-output;whitespace",
+   "discriminates": [
+    "denominator_swap",
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR5",
+   "label": true,
+   "prompt_hash": "687f0a0206ad0f9dae93956648953f8bf02a212dfa0b3a0dbd8f93a3315d69cd",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 98,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cr6-04-df246ab1",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "case-folding-split;longer",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip",
+    "segmentation_drift"
+   ],
+   "form": "rate_budget",
+   "justification": "Too many capitalized words",
+   "kind": "CR6",
+   "label": false,
+   "prompt_hash": "cd9e32cc5c0ea2e573404e4e75723728609441773964c5ac54c8ec838dcbd0ec",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 325,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cr6-05-0b5ed3c3",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "case-folding-split;repeated",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip",
+    "segmentation_drift"
+   ],
+   "form": "rate_budget",
+   "justification": "Too many capital words",
+   "kind": "CR6",
+   "label": false,
+   "prompt_hash": "3b1384330cceda316b86d86fd01180501e391ebcf24128644ac5799d54654415",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 300,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cr7-01-ca9c560f",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "exact-threshold;rate",
+   "discriminates": [
+    "inequality_flip",
+    "off_by_one"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR7",
+   "label": true,
+   "prompt_hash": "ad5872243bc52c772dfea6684637008c3f12573b09fd40c73e630d4e75bd37f1",
+   "severity": 20,
+   "status": "valid",
+   "tokens": 170,
+   "truncated": false
+  },
+  {
+   "agrees": false,
+   "arm": "instruction_only",
+   "case_id": "mc-cr7-04-f28cc0d3",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "case-folding-split;longer",
+   "discriminates": [
+    "denominator_swap",
+    "inequality_flip",
+    "segmentation_drift"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR7",
+   "label": true,
+   "prompt_hash": "9e637678ef02f0be7c12bf2a4dee067a300558f8e22b0f86026cf1ab0167371e",
+   "severity": 20,
+   "status": "valid",
+   "tokens": 109,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cr7-05-4b2ca4f0",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "case-folding-split;repeated",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR7",
+   "label": true,
+   "prompt_hash": "d348a5890465ebfffb23179d1c2769c253128b0e74c31504e816a937ca7df901",
+   "severity": 20,
+   "status": "valid",
+   "tokens": 112,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cr8-00-3b8cc75c",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "threshold-minus-one;rate",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR8",
+   "label": true,
+   "prompt_hash": "4776823c484e3311cfc16cba41f0c2337e22d4e4eaa473479eaabff8c944d5a7",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 252,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cr8-02-346c2a0b",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "threshold-plus-one;rate",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "justification": "Wrong: y word present",
+   "kind": "CR8",
+   "label": false,
+   "prompt_hash": "2908ad00a831908aa1c5b7d63d3c1ec5f7b472905c9f9219a8f05bd1099c4e7f",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 489,
+   "truncated": false
+  },
+  {
+   "agrees": false,
+   "arm": "instruction_only",
+   "case_id": "mc-cr8-16-58ca3b26",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "empty-output;whitespace",
+   "discriminates": [
+    "denominator_swap",
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR8",
+   "label": true,
+   "prompt_hash": "655e1546760a9209de75a4d02520d87b2a3ec1dd53d73a46e4a7dac1b3939117",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 147,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cr9-01-a6449414",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "exact-threshold;rate",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR9",
+   "label": true,
+   "prompt_hash": "70011e195fc53766d6f79729e2fcc88e55b81cc018971d49e9c2aa08fb87dfb5",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 187,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cr9-04-4857819e",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "case-folding-split;longer",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR9",
+   "label": true,
+   "prompt_hash": "1994e430776ff38248397e1803ac0114482cd8e756deb8ee5016dd738e2c1dde",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 119,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cx1-00-9e9ebc6d",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "threshold-minus-one",
+   "discriminates": [
+    "off_by_one"
+   ],
+   "form": "exact_count",
+   "justification": "Missing thus",
+   "kind": "CX1",
+   "label": false,
+   "prompt_hash": "1f8cc7abb863dba242cad704a99f03f95551ea7406a002890ddcad03892a2985",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 178,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cx1-04-c46b582f",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "case-folding-split;longer",
+   "discriminates": [
+    "off_by_one"
+   ],
+   "form": "exact_count",
+   "justification": "Missing thus",
+   "kind": "CX1",
+   "label": false,
+   "prompt_hash": "1444c4e05ce66acbcd6d0b8818ee5c498249006ce27cafd1c101bdf593f58bd0",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 191,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cx1-06-65d85fcd",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "case-folding-split;initial",
+   "discriminates": [
+    "off_by_one"
+   ],
+   "form": "exact_count",
+   "justification": "Missing 'thus'",
+   "kind": "CX1",
+   "label": false,
+   "prompt_hash": "9654a652e0c5357e6f0fd0910213ba1729ba565d8131d02800c5543385dac92f",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 283,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cx1-07-05a7dbd4",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "hyphenated-form",
+   "discriminates": [
+    "off_by_one"
+   ],
+   "form": "exact_count",
+   "justification": "missing thus",
+   "kind": "CX1",
+   "label": false,
+   "prompt_hash": "37a5c0031745c6c43407a836a97bbc1b76c0168df670f7b3f7e1aacbef1de671",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 200,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cx1-11-7a0afb7f",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "capitalisation",
+   "discriminates": [
+    "off_by_one"
+   ],
+   "form": "exact_count",
+   "justification": null,
+   "kind": "CX1",
+   "label": true,
+   "prompt_hash": "c063c11c4a76c85f4cc1aaad08ff1903b3d5127ef202c2be2a708ae751c8c75c",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 156,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cx1-12-ade5b656",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "capitalisation;shout",
+   "discriminates": [
+    "off_by_one"
+   ],
+   "form": "exact_count",
+   "justification": null,
+   "kind": "CX1",
+   "label": true,
+   "prompt_hash": "9f4fce78bfb3ad8d5c6fcc8214cd3ba22ce6bc016dc05d3ef700e5bc11d6a670",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 202,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cx2-01-5a43f4cc",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "exact-threshold",
+   "discriminates": [
+    "numerator_swap",
+    "off_by_one"
+   ],
+   "form": "exact_count",
+   "justification": null,
+   "kind": "CX2",
+   "label": true,
+   "prompt_hash": "e9d692b7d70ed3e7912456de60fba06effcb38f9c363ee5dc83dc324d2691ea1",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 116,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cx2-02-606f0274",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "threshold-plus-one",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "exact_count",
+   "justification": "Too many semicolons",
+   "kind": "CX2",
+   "label": false,
+   "prompt_hash": "e6a6cc3c8953af83960e1654d03c4d2fea914dd18cb3d46dffaf939ae95cde64",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 253,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-cx2-04-20da5aeb",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "case-folding-split;longer",
+   "discriminates": [
+    "off_by_one"
+   ],
+   "form": "exact_count",
+   "justification": "Missing semicolon",
+   "kind": "CX2",
+   "label": false,
+   "prompt_hash": "66c7317c7487e665569815154a0c81c0ff59b585bc77994c563739f68d8a7779",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 215,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-rf1-00-bb3c1fe4",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "threshold-minus-one",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF1",
+   "label": true,
+   "prompt_hash": "a9c1b9712e3e03bb13838e0af9ca25f43b7904d8bfd3247e04b63a06a4be7fc3",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 131,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-rf1-01-05aacf14",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "exact-threshold",
+   "discriminates": [
+    "inequality_flip",
+    "off_by_one"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF1",
+   "label": true,
+   "prompt_hash": "f510bbdece861d1a9a9fd99fadddad7604ca297d809d8dd958b0ec2a7db8e04d",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 151,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-rf1-04-9406fa97",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "case-folding-split;longer",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF1",
+   "label": true,
+   "prompt_hash": "793aab6ddad0cf9bb149eb3f3238d5a55101d6e73d69815fed14564a7c93ee48",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 169,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-rf10-02-8a05c6ee",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "threshold-plus-one",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": "More than one word ends in s",
+   "kind": "RF10",
+   "label": false,
+   "prompt_hash": "5dbb20c24623297dcb0d8d15e51ab10d565e70bb41592c1e8e0d8d6529606d24",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 389,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-rf10-04-ea266438",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "case-folding-split;longer",
+   "discriminates": [
+    "inequality_flip",
+    "off_by_one"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF10",
+   "label": true,
+   "prompt_hash": "d311638da258a48022aafb8da455ce5056473031ef22cdb9fc06d2a1f1bf709e",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 140,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-rf10-11-15594dd9",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "capitalisation",
+   "discriminates": [
+    "inequality_flip",
+    "off_by_one"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF10",
+   "label": true,
+   "prompt_hash": "449995dae54b0a5507b4e097fa42c94121352e12198ca9cb0e88a05f2a262ca1",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 170,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-rf11-00-045c2bd7",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "threshold-minus-one",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF11",
+   "label": true,
+   "prompt_hash": "f49010d8e5e8d9ca6aadb2109b3599332bbf962cf34fd6e25c5f751561c4a785",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 133,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-rf11-02-9239bd2b",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "threshold-plus-one",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": "More than one word starts with a vowel.",
+   "kind": "RF11",
+   "label": false,
+   "prompt_hash": "3a6cc9e5bd7cf8e3cea66c1143142d74f769db9fd84607c206858d60ddedccac",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 325,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-rf11-04-1793fef8",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "case-folding-split;longer",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": "Too many vowel-starting words.",
+   "kind": "RF11",
+   "label": false,
+   "prompt_hash": "44148d3bb557cc6a79534176a536ea5e5b228f65fa1db9c092d23fb81760bf81",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 235,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-rf11-05-d825f816",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "case-folding-split;repeated",
+   "discriminates": [
+    "inequality_flip",
+    "off_by_one",
+    "segmentation_drift"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF11",
+   "label": true,
+   "prompt_hash": "e4c18cbc08152a3d61a5ae3422c7e1c95a9e408316d1434294a7ebdc4504931c",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 177,
+   "truncated": false
+  },
+  {
+   "agrees": false,
+   "arm": "instruction_only",
+   "case_id": "mc-rf12-01-6302db3e",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "exact-threshold",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF12",
+   "label": true,
+   "prompt_hash": "97251c9d930bce7a0831d84147a21eb92e6596889e3920bfa3e05936ad31f17d",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 242,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-rf2-02-b680cafd",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "threshold-plus-one",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": "Too many ing words",
+   "kind": "RF2",
+   "label": false,
+   "prompt_hash": "1de84c360ed24029eb32ec5fae69ebcad4ffc0e3976b0810fee39deca6cff65b",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 252,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-rf2-04-7b41225f",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "case-folding-split;longer",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF2",
+   "label": true,
+   "prompt_hash": "870890812722f219635bddc2381736f619d5bae18381a3bc071da73a36d574ed",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 107,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-rf3-01-36307f8c",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "exact-threshold",
+   "discriminates": [
+    "inequality_flip",
+    "off_by_one"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF3",
+   "label": true,
+   "prompt_hash": "75767a2105537cd20e03ea08a8edae86de70f47b8348cd838f404ee7111f30e7",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 313,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-rf3-03-82dbb88d",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "case-folding-split",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF3",
+   "label": true,
+   "prompt_hash": "57095c92e60b557783c26f26367010fe46e6a8dbc60fec22f2545b5129b91659",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 150,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-rf3-05-b1a10804",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "case-folding-split;repeated",
+   "discriminates": [
+    "inequality_flip",
+    "segmentation_drift"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF3",
+   "label": true,
+   "prompt_hash": "471254e028b7dd2dc9183e91b1167bd2977128229d9314ca025eaee5ccfc0995",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 330,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-rf4-02-5edfc2ff",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "threshold-plus-one",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": "Too many doubled letters.",
+   "kind": "RF4",
+   "label": false,
+   "prompt_hash": "76e587144cd450f08f86b1d322709563e909337b246ee770da28186a85484715",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 333,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-rf5-00-90c316ee",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "threshold-minus-one",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF5",
+   "label": true,
+   "prompt_hash": "10af4b472feeaa2bdc6d5cfd0c280761eac225ceb9669d32e0eff5f20f4f9f74",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 105,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-rf5-01-100c5ce1",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "exact-threshold",
+   "discriminates": [
+    "inequality_flip",
+    "off_by_one"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF5",
+   "label": true,
+   "prompt_hash": "cd71b1f2d16f460f0e14003793a6572335febbad1777c0a33b39221176d453ad",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 95,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-rf5-17-4c03353c",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "wordless",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": "Too many commas",
+   "kind": "RF5",
+   "label": false,
+   "prompt_hash": "0b46990e684e0b05d570397ab7332410ada8f1d8e22752c00a0192fbc606398d",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 165,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-rf6-00-96a86cb6",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "threshold-minus-one",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF6",
+   "label": true,
+   "prompt_hash": "78893a090b4c1ec4f343653f3ff85f6905976eeca6e88d8f10236d3addb39710",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 83,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-rf6-01-f02f9a76",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "exact-threshold",
+   "discriminates": [
+    "inequality_flip",
+    "off_by_one"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF6",
+   "label": true,
+   "prompt_hash": "b661e82eb4db8f1e204ea9009a0973defafec5bbba0e0d9749a7e5f0ddf14707",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 170,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-rf6-11-3990333f",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "capitalisation",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": "Too many uppercase letters.",
+   "kind": "RF6",
+   "label": false,
+   "prompt_hash": "41732f7a82ed2a9268767552e1a5d2ab0f732ce90ee59d31defaf1265a822e2c",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 450,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-rf6-12-dc311971",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "capitalisation;shout",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": "Too many uppercase letters.",
+   "kind": "RF6",
+   "label": false,
+   "prompt_hash": "8ece7eb8058389ef12f35d4c1a181e76de0afc182c06dc11234b2f24ec8e5e4c",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 207,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-rf7-00-24665440",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "threshold-minus-one",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF7",
+   "label": true,
+   "prompt_hash": "56a3f9b02cd74d2e9383d2dd86052e92cbdb51dd92d10f2f18bec8c217b84b45",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 151,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-rf7-02-2ce9b43e",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "threshold-plus-one",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": "Too many words contain 'a'.",
+   "kind": "RF7",
+   "label": false,
+   "prompt_hash": "dc80bb65d3ac7af9528a7199928897d3113f2d42cda23b8050ae88939498e9d9",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 387,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-rf8-00-61bc0e62",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "threshold-minus-one",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF8",
+   "label": true,
+   "prompt_hash": "c7e27845604a2e7f36d44f2e881691e61be637b3cd8cf83baf0bb0ef5a4d716c",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 114,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-rf8-01-02fb901d",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "exact-threshold",
+   "discriminates": [
+    "inequality_flip",
+    "off_by_one"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF8",
+   "label": true,
+   "prompt_hash": "0f1f9d5da113a83fa6e3da2cb45536f9dd8734cb4a91bd4df9f0b10dad513c45",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 139,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-rf8-02-c768cea1",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "threshold-plus-one",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": "Two words end in y",
+   "kind": "RF8",
+   "label": false,
+   "prompt_hash": "d9b103be7da317ee33c9bf31051c23e0176dd7ed121d64719541c957efb2957f",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 270,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-rf9-01-13498d00",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "exact-threshold",
+   "discriminates": [
+    "inequality_flip",
+    "off_by_one"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF9",
+   "label": true,
+   "prompt_hash": "5de1a23e6b8487dc9040170270b2de90f3de08adee12bf8388ca7364de97156c",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 149,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "instruction_only",
+   "case_id": "mc-rf9-03-4a62b96f",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "case-folding-split",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF9",
+   "label": true,
+   "prompt_hash": "096dc43c3fc65c87fdaccbf30226398397fcc1d072042925b23919278b903798",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 121,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cl7-04-0725886e",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "case-folding-split;longer",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "count_lower_bound",
+   "justification": "Not enough words with 'a'.",
+   "kind": "CL7",
+   "label": false,
+   "prompt_hash": "e64f7756a25f9e2503b89b8fd8eb8e7179ee34db22e63c264714655aacd082ed",
+   "severity": 5,
+   "status": "valid",
+   "tokens": 351,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cl7-16-d587656f",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "empty-output;whitespace",
+   "discriminates": [
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "count_lower_bound",
+   "justification": "Not enough words with a",
+   "kind": "CL7",
+   "label": false,
+   "prompt_hash": "a2c0e2e2cf0b520a50332497b235037eef8cef667f09249bdb3af4da6293b1f3",
+   "severity": 5,
+   "status": "valid",
+   "tokens": 229,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cl8-01-847da076",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "exact-threshold",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip",
+    "off_by_one"
+   ],
+   "form": "count_lower_bound",
+   "justification": null,
+   "kind": "CL8",
+   "label": true,
+   "prompt_hash": "7bf786d4134b27491b0beaf6bf791696f273b8f455c35274851c775b91d2fff6",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 99,
+   "truncated": false
+  },
+  {
+   "agrees": false,
+   "arm": "with_conventions",
+   "case_id": "mc-cl8-15-d8a8b32e",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "empty-output",
+   "discriminates": [
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "count_lower_bound",
+   "justification": "[begin answer]",
+   "kind": "CL8",
+   "label": true,
+   "prompt_hash": "73a544605af33bddfbc499e4f18f52f12965b197f0a82a875094ec788f066ba0",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 940,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cp4-01-c83ed175",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "exact-threshold;rate",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "rate_lower_bound",
+   "justification": "No words with doubled letters",
+   "kind": "CP4",
+   "label": false,
+   "prompt_hash": "8e005bf3a7fcc8869e4433cfa4c2e023687ef2f9cb5227646b7af1855e3d5ba7",
+   "severity": 2,
+   "status": "valid",
+   "tokens": 475,
+   "truncated": false
+  },
+  {
+   "agrees": false,
+   "arm": "with_conventions",
+   "case_id": "mc-cp4-02-4128be6f",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "threshold-plus-one;rate",
+   "discriminates": [
+    "numerator_swap",
+    "denominator_swap",
+    "inequality_flip"
+   ],
+   "form": "rate_lower_bound",
+   "justification": "percentage of doubled-letter words is 10%, not 2%",
+   "kind": "CP4",
+   "label": false,
+   "prompt_hash": "d66824ebe52e59fdd6813358536b7c7fef57b1506cfdc028f42ebd417e0d079b",
+   "severity": 2,
+   "status": "valid",
+   "tokens": 843,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cp4-03-f2128ec2",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "case-folding-split",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "rate_lower_bound",
+   "justification": "Wrong percentage",
+   "kind": "CP4",
+   "label": false,
+   "prompt_hash": "d8c96e3881aab9d5a6c511b68d0897c32906f8cf246337d04f1e59c9293db8c7",
+   "severity": 2,
+   "status": "valid",
+   "tokens": 374,
+   "truncated": false
+  },
+  {
+   "agrees": false,
+   "arm": "with_conventions",
+   "case_id": "mc-cp4-07-27eb33db",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "hyphenated-form",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "rate_lower_bound",
+   "justification": "percentage wrong",
+   "kind": "CP4",
+   "label": false,
+   "prompt_hash": "b23d3b8fc873620ef4564b79296de1d345703c4ec9a7220851b3045fbf153f17",
+   "severity": 2,
+   "status": "valid",
+   "tokens": 514,
+   "truncated": false
+  },
+  {
+   "agrees": false,
+   "arm": "with_conventions",
+   "case_id": "mc-cp7-04-0bcd53b4",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "case-folding-split;longer",
+   "discriminates": [
+    "denominator_swap",
+    "inequality_flip"
+   ],
+   "form": "rate_lower_bound",
+   "justification": "Less than 20% words contain a",
+   "kind": "CP7",
+   "label": false,
+   "prompt_hash": "5e27e5dbf63b779eac2867821fde6fb350025d82ee1ccabf20495bdff7a29264",
+   "severity": 20,
+   "status": "valid",
+   "tokens": 375,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cp7-08-2abad409",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "hyphenated-form;two",
+   "discriminates": [
+    "denominator_swap",
+    "inequality_flip"
+   ],
+   "form": "rate_lower_bound",
+   "justification": null,
+   "kind": "CP7",
+   "label": true,
+   "prompt_hash": "1167c4989c20345f2ca457e11bb77a6adc035f548f6acf1a3764bf48d341207f",
+   "severity": 20,
+   "status": "valid",
+   "tokens": 404,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cr1-00-922d37b2",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "threshold-minus-one;rate",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR1",
+   "label": true,
+   "prompt_hash": "c2c706543a292963f3438c550958725c1b6aef2e7a8e08e3ccfeea5c7ffb6f22",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 257,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cr1-16-9f5e45ab",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "empty-output;whitespace",
+   "discriminates": [
+    "denominator_swap",
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "rate_budget",
+   "justification": "No words",
+   "kind": "CR1",
+   "label": false,
+   "prompt_hash": "3d03d2a49bd9d8378077a4b9ea242596ebce4cecb36a40a5e040dc2c5d889e4c",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 254,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cr1-18-30ca3167",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "wordless;semicolons",
+   "discriminates": [
+    "denominator_swap",
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "rate_budget",
+   "justification": "No words",
+   "kind": "CR1",
+   "label": false,
+   "prompt_hash": "8895348d9da0d438e4395c9679f49478fc2fe7313680145e8e99c7ad0077a0bc",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 479,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cr10-02-687ce5bf",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "threshold-plus-one;rate",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "justification": "Percentage too high",
+   "kind": "CR10",
+   "label": false,
+   "prompt_hash": "1d43cc0271ebaf56a779744683e1d05566814fd04820114302ecc6b0366b446c",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 449,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cr10-19-796b0a6d",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "wordless;terminators",
+   "discriminates": [
+    "denominator_swap",
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "rate_budget",
+   "justification": "No words",
+   "kind": "CR10",
+   "label": false,
+   "prompt_hash": "f56ec3edc8c5b37d120715a6e6976e068c36088f22c81c000305347bdad8c487",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 623,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cr11-02-a3798dff",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "threshold-plus-one;rate",
+   "discriminates": [
+    "numerator_swap",
+    "denominator_swap",
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "justification": "Too many vowel-starting words",
+   "kind": "CR11",
+   "label": false,
+   "prompt_hash": "d63679714918f6e4e0505798c585e42030e04d9d94a7ca79e7e565d3f9e3ca1b",
+   "severity": 2,
+   "status": "valid",
+   "tokens": 431,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cr11-17-e446ed54",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "wordless",
+   "discriminates": [
+    "denominator_swap",
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "rate_budget",
+   "justification": "no words",
+   "kind": "CR11",
+   "label": false,
+   "prompt_hash": "5b9a6291f305f9f29e33d4bf8f1aad41ef9e361b6507e6eb6db5caa4fc0d3859",
+   "severity": 2,
+   "status": "valid",
+   "tokens": 386,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cr11-18-6cc25945",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "wordless;semicolons",
+   "discriminates": [
+    "denominator_swap",
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "rate_budget",
+   "justification": "No words",
+   "kind": "CR11",
+   "label": false,
+   "prompt_hash": "6d6da14978a4d8dac8eecb2e88553fb5caaec70d55140e23c9d1e9600fd6e836",
+   "severity": 2,
+   "status": "valid",
+   "tokens": 401,
+   "truncated": false
+  },
+  {
+   "agrees": false,
+   "arm": "with_conventions",
+   "case_id": "mc-cr12-15-27853ef0",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "empty-output",
+   "discriminates": [
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR12",
+   "label": true,
+   "prompt_hash": "57e042623e95c63d992af2802da7cb5588fce6f7e3442fa99fe95c287f1c1a45",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 1340,
+   "truncated": false
+  },
+  {
+   "agrees": false,
+   "arm": "with_conventions",
+   "case_id": "mc-cr12-16-d5fab8cd",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "empty-output;whitespace",
+   "discriminates": [
+    "denominator_swap",
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR12",
+   "label": true,
+   "prompt_hash": "e4ee23fc1462e5081abeb1b366a9afab645a86cc590e169417281f07fb72d1f4",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 603,
+   "truncated": false
+  },
+  {
+   "agrees": null,
+   "arm": "with_conventions",
+   "case_id": "mc-cr12-19-06488836",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "wordless;terminators",
+   "discriminates": [
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR12",
+   "label": null,
+   "prompt_hash": "2035555b98b790b0fc7e56063b9369fd05c5288b1085558e6020cfb1e89172bc",
+   "severity": 1,
+   "status": "invalid_output",
+   "tokens": 3584,
+   "truncated": true
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cr2-01-c25e0d77",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "exact-threshold;rate",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR2",
+   "label": true,
+   "prompt_hash": "8855dab5e4f24f29fcd9695f12811aa941e8c33237af1dc7a959f078bf65bb72",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 159,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cr2-02-bab8b507",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "threshold-plus-one;rate",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "justification": "Too many ing words",
+   "kind": "CR2",
+   "label": false,
+   "prompt_hash": "8bbe3fbc8c852e59805740d028d2a9c67d020384d19b5ffe9d22539913d51ffc",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 468,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cr2-15-e5b23589",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "empty-output",
+   "discriminates": [
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "rate_budget",
+   "justification": "No words",
+   "kind": "CR2",
+   "label": false,
+   "prompt_hash": "41ad460762b8061ca7ae9c8a7899bfe276b23db3cccd9f5b411581470fd045e4",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 318,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cr3-00-18204ca0",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "threshold-minus-one;rate",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR3",
+   "label": true,
+   "prompt_hash": "5bab63e47407158a6507b5685d308d7e4329290a9c068ac908424a68a1b5c6d2",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 177,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cr3-03-db89122b",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "case-folding-split",
+   "discriminates": [
+    "inequality_flip",
+    "segmentation_drift"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR3",
+   "label": true,
+   "prompt_hash": "a670a79a7ba97c715b88bdcc9ce14bf4aa6662b206fc7a86d85024eeda5c1524",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 217,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cr3-04-0754243a",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "case-folding-split;longer",
+   "discriminates": [
+    "inequality_flip",
+    "segmentation_drift"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR3",
+   "label": true,
+   "prompt_hash": "557a72cdfd613ca0ee195f0186b0187aa49f8dfe4bf4fc00c6437bd4aea7fcb1",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 285,
+   "truncated": false
+  },
+  {
+   "agrees": false,
+   "arm": "with_conventions",
+   "case_id": "mc-cr3-06-ab3b04cc",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "case-folding-split;initial",
+   "discriminates": [
+    "inequality_flip",
+    "segmentation_drift"
+   ],
+   "form": "rate_budget",
+   "justification": "Wrong percentage of one-letter words",
+   "kind": "CR3",
+   "label": false,
+   "prompt_hash": "88c4f7ba95a10ff2ebfe67afe799eaf325b6205dbe4e0d8b2f5229ab2b61b14d",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 452,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cr4-02-c6b29f91",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "threshold-plus-one;rate",
+   "discriminates": [
+    "numerator_swap",
+    "denominator_swap",
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "justification": "Percentage too high",
+   "kind": "CR4",
+   "label": false,
+   "prompt_hash": "75a0948d06ff5aeb81ab62fe199b315eb5ccb20dcc62d88a21afe8d505f0b719",
+   "severity": 2,
+   "status": "valid",
+   "tokens": 546,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cr4-08-102e9691",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "hyphenated-form;two",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "justification": "Too many doubled letters",
+   "kind": "CR4",
+   "label": false,
+   "prompt_hash": "7321525ec8473cc041a67849e6d361e256a8fa639c97be588ba08416df2b5ad5",
+   "severity": 2,
+   "status": "valid",
+   "tokens": 376,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cr5-02-e5c2bbc6",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "threshold-plus-one;rate",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "justification": "Too many commas",
+   "kind": "CR5",
+   "label": false,
+   "prompt_hash": "c0fe9d56676eb7647790ca46ef1687bace057e38b408fdfac6f47bdb01967d5d",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 605,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cr5-13-a05aeaba",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "adjacent-punctuation",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "justification": "Too many commas",
+   "kind": "CR5",
+   "label": false,
+   "prompt_hash": "dfd27646335a8be2eedb8bd7d4477b2594fa4e890c1576173da3bbe8eb7948f3",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 423,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cr5-14-dfd56a46",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "adjacent-punctuation;semicolon",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR5",
+   "label": true,
+   "prompt_hash": "695fda11d15558a4077dac0f288746efab28f331a81b9fbef471f48c2c9044ac",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 353,
+   "truncated": false
+  },
+  {
+   "agrees": false,
+   "arm": "with_conventions",
+   "case_id": "mc-cr5-16-e3bfa9d7",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "empty-output;whitespace",
+   "discriminates": [
+    "denominator_swap",
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR5",
+   "label": true,
+   "prompt_hash": "9c83d275e86b1c6da35035b0d09090c536c62a1cc1a3bea842baa339e6744d3e",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 426,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cr6-04-df246ab1",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "case-folding-split;longer",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip",
+    "segmentation_drift"
+   ],
+   "form": "rate_budget",
+   "justification": "Too many capitalized words",
+   "kind": "CR6",
+   "label": false,
+   "prompt_hash": "a6674e7090dc38ca9193be7bcbcb4b40d0766387789f9238e44bef9c83049b02",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 522,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cr6-05-0b5ed3c3",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "case-folding-split;repeated",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip",
+    "segmentation_drift"
+   ],
+   "form": "rate_budget",
+   "justification": "Too many capital words",
+   "kind": "CR6",
+   "label": false,
+   "prompt_hash": "927f8aed02ded0599d64616834cae609aca5753e1aec2e21e5f12138ac032af4",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 356,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cr7-01-ca9c560f",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "exact-threshold;rate",
+   "discriminates": [
+    "inequality_flip",
+    "off_by_one"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR7",
+   "label": true,
+   "prompt_hash": "f54421867368ea184099eafc4f98f65427dbf1d7c71945f51bb20fe9444a8ea3",
+   "severity": 20,
+   "status": "valid",
+   "tokens": 189,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cr7-04-f28cc0d3",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "case-folding-split;longer",
+   "discriminates": [
+    "denominator_swap",
+    "inequality_flip",
+    "segmentation_drift"
+   ],
+   "form": "rate_budget",
+   "justification": "exceeds 20%",
+   "kind": "CR7",
+   "label": false,
+   "prompt_hash": "144319cb3daaafffe12dda0bedfc71119f0705812412a196ba650ce095e95872",
+   "severity": 20,
+   "status": "valid",
+   "tokens": 362,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cr7-05-4b2ca4f0",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "case-folding-split;repeated",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR7",
+   "label": true,
+   "prompt_hash": "1a82e3093a23918e39b120eef730db7d758ad7fa2db7b986f4c0c075aba04ff7",
+   "severity": 20,
+   "status": "valid",
+   "tokens": 314,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cr8-00-3b8cc75c",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "threshold-minus-one;rate",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR8",
+   "label": true,
+   "prompt_hash": "956b8740a9e4f02431d2696385cfe1557e75b5ecfd8e49af58a4f5f31a5323d3",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 244,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cr8-02-346c2a0b",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "threshold-plus-one;rate",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "justification": "Wrong percentage",
+   "kind": "CR8",
+   "label": false,
+   "prompt_hash": "e11861875cac7c33879c30632486d95089dabcd7d7759d1ef0b07f0bafa655a4",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 414,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cr8-16-58ca3b26",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "empty-output;whitespace",
+   "discriminates": [
+    "denominator_swap",
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "rate_budget",
+   "justification": "No words",
+   "kind": "CR8",
+   "label": false,
+   "prompt_hash": "4b3c613b94bd032bcc7468594ebb17a21489d9395352026d8feac3a06ff4929a",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 221,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cr9-01-a6449414",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "exact-threshold;rate",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR9",
+   "label": true,
+   "prompt_hash": "2876d9ca9a4fb253bc280cbd6021e900670be5bff034bf33137f02d4d6520429",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 164,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cr9-04-4857819e",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "case-folding-split;longer",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "justification": null,
+   "kind": "CR9",
+   "label": true,
+   "prompt_hash": "599d046395eb13e885f4d2077e8ebf627eaa5841b4ef6a0a956c1f70e289952f",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 257,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cx1-00-9e9ebc6d",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "threshold-minus-one",
+   "discriminates": [
+    "off_by_one"
+   ],
+   "form": "exact_count",
+   "justification": "missing thus",
+   "kind": "CX1",
+   "label": false,
+   "prompt_hash": "8f9397947b6ab8a2da090aa02928f63e5048f6920cc486674c856cd31aea3ceb",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 193,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cx1-04-c46b582f",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "case-folding-split;longer",
+   "discriminates": [
+    "off_by_one"
+   ],
+   "form": "exact_count",
+   "justification": "Missing 'thus'.",
+   "kind": "CX1",
+   "label": false,
+   "prompt_hash": "cfcd4fb271b96e5a5b10dea3d50220eb1e7c069306b26221da0a3ca0f5382885",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 232,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cx1-06-65d85fcd",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "case-folding-split;initial",
+   "discriminates": [
+    "off_by_one"
+   ],
+   "form": "exact_count",
+   "justification": "Missing thus",
+   "kind": "CX1",
+   "label": false,
+   "prompt_hash": "689f7cb7fa57c61dab418dfec41ce5a65dc84c09dcb4e0fb8210e17635746a92",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 221,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cx1-07-05a7dbd4",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "hyphenated-form",
+   "discriminates": [
+    "off_by_one"
+   ],
+   "form": "exact_count",
+   "justification": "missing thus",
+   "kind": "CX1",
+   "label": false,
+   "prompt_hash": "e5b03d9ba5cb563949b27ec255cae5550d5f49e8c7f934bc31be2042c65a4fc4",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 236,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cx1-11-7a0afb7f",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "capitalisation",
+   "discriminates": [
+    "off_by_one"
+   ],
+   "form": "exact_count",
+   "justification": null,
+   "kind": "CX1",
+   "label": true,
+   "prompt_hash": "f7f535c19fefebfe9b645bf1a9012ec6174c66e32b2b58c562c0bc7bce61de6c",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 192,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cx1-12-ade5b656",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "capitalisation;shout",
+   "discriminates": [
+    "off_by_one"
+   ],
+   "form": "exact_count",
+   "justification": null,
+   "kind": "CX1",
+   "label": true,
+   "prompt_hash": "9920a8a8dc9339275c6ec1053c2a2b9231bfad3ec19a294cadcbcf6ddda5408f",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 181,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cx2-01-5a43f4cc",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "exact-threshold",
+   "discriminates": [
+    "numerator_swap",
+    "off_by_one"
+   ],
+   "form": "exact_count",
+   "justification": null,
+   "kind": "CX2",
+   "label": true,
+   "prompt_hash": "295ec4f5ea03fef2aac28850bd74c884b8d56f466e8460555f1b51bfb957fb8a",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 99,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cx2-02-606f0274",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "threshold-plus-one",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "exact_count",
+   "justification": "Too many semicolons",
+   "kind": "CX2",
+   "label": false,
+   "prompt_hash": "a1c0965675c9c96ebbdbc578324a8fca7423382138876203205067227ba9e099",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 230,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-cx2-04-20da5aeb",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "case-folding-split;longer",
+   "discriminates": [
+    "off_by_one"
+   ],
+   "form": "exact_count",
+   "justification": "Missing semicolon",
+   "kind": "CX2",
+   "label": false,
+   "prompt_hash": "e6e171da61e53ab0834bde51f682b30b643e8e4a13b13f08960f045af2107397",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 252,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-rf1-00-bb3c1fe4",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "threshold-minus-one",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF1",
+   "label": true,
+   "prompt_hash": "e469813a671e7c76fa600789dba4ae2303b692b772cdb0c4986bc9a8d04ad0cb",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 110,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-rf1-01-05aacf14",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "exact-threshold",
+   "discriminates": [
+    "inequality_flip",
+    "off_by_one"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF1",
+   "label": true,
+   "prompt_hash": "42716fdb095119f7f5185bb0ef0dbb85dec30dec98e5a48a1b682298d2c0c417",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 113,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-rf1-04-9406fa97",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "case-folding-split;longer",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF1",
+   "label": true,
+   "prompt_hash": "1a9dfb05f33b5c2ac77177322fd209c03a6c16af89188d11e65455e7ebd377f8",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 239,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-rf10-02-8a05c6ee",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "threshold-plus-one",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": "Too many words end in s.",
+   "kind": "RF10",
+   "label": false,
+   "prompt_hash": "c689fbe473b1bee2bac35bffe7f40949a856bc125f68e05e79b927f4003644a8",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 405,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-rf10-04-ea266438",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "case-folding-split;longer",
+   "discriminates": [
+    "inequality_flip",
+    "off_by_one"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF10",
+   "label": true,
+   "prompt_hash": "6a658d4565dbfced39d5897dc2dad0e420e16cafdf0b78fc730f5995bf30fb75",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 227,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-rf10-11-15594dd9",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "capitalisation",
+   "discriminates": [
+    "inequality_flip",
+    "off_by_one"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF10",
+   "label": true,
+   "prompt_hash": "7728754e2338a10bb5562c99a3b79b48ac06c2c9dc5ab4c071b41786c9b37a87",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 316,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-rf11-00-045c2bd7",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "threshold-minus-one",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF11",
+   "label": true,
+   "prompt_hash": "430e1823d45d10c20ec7369fc11a7595e58968c30f91494ba78db4cb7140554f",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 153,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-rf11-02-9239bd2b",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "threshold-plus-one",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": "Too many words start with vowels.",
+   "kind": "RF11",
+   "label": false,
+   "prompt_hash": "840dc6cdddbadb5c12b36d93f160585c9d448b69b11d51f9e0eac2e3e6dc1aad",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 371,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-rf11-04-1793fef8",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "case-folding-split;longer",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": "Too many vowel-starting words",
+   "kind": "RF11",
+   "label": false,
+   "prompt_hash": "0bd1095bec7aeffc6d27b61d76086d430739f81f598af31662858e1585034537",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 462,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-rf11-05-d825f816",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "case-folding-split;repeated",
+   "discriminates": [
+    "inequality_flip",
+    "off_by_one",
+    "segmentation_drift"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF11",
+   "label": true,
+   "prompt_hash": "bc96ab7e2232051c443466d804fcb66931bfba260e0e93b70710d9260c61ce00",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 337,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-rf12-01-6302db3e",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "exact-threshold",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": "too many sentences",
+   "kind": "RF12",
+   "label": false,
+   "prompt_hash": "12b33278b9c9ef4fd07afc8709b9daed44fefb4929a4df37c4ffa207c10bd247",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 370,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-rf2-02-b680cafd",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "threshold-plus-one",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": "Too many words ending in ing",
+   "kind": "RF2",
+   "label": false,
+   "prompt_hash": "7625b9821f3814436a6a112203cd46e0e957d8291d07b06b2dff37b3cae13fbe",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 283,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-rf2-04-7b41225f",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "case-folding-split;longer",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF2",
+   "label": true,
+   "prompt_hash": "19c9354dae0df828ae4daa77ce53763067bd47aba2f8d21096cd18df166563c4",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 197,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-rf3-01-36307f8c",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "exact-threshold",
+   "discriminates": [
+    "inequality_flip",
+    "off_by_one"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF3",
+   "label": true,
+   "prompt_hash": "f7078d69c87ca55122100be345f035409d78816fd41160e8d4208c1305be73d4",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 191,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-rf3-03-82dbb88d",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "case-folding-split",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF3",
+   "label": true,
+   "prompt_hash": "fd9cb21f3881b14272869dba0983908f3ccae0343bb210adbe25e39d9932adad",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 477,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-rf3-05-b1a10804",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "case-folding-split;repeated",
+   "discriminates": [
+    "inequality_flip",
+    "segmentation_drift"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF3",
+   "label": true,
+   "prompt_hash": "35bc835fa5536579d19f2bbaad209f422c0c33439b93272487bb30c48b074599",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 340,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-rf4-02-5edfc2ff",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "threshold-plus-one",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": "Too many doubled letters",
+   "kind": "RF4",
+   "label": false,
+   "prompt_hash": "061c4e19f538414873f2c37e7a8fb2e2cc87f33e9094399019bcf63cf7a963ed",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 423,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-rf5-00-90c316ee",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "threshold-minus-one",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF5",
+   "label": true,
+   "prompt_hash": "fc92f9bdc7c5bc28c74e43f3545f07ad5f67fa94f0e4c8e64421dcfb1000036e",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 125,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-rf5-01-100c5ce1",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "exact-threshold",
+   "discriminates": [
+    "inequality_flip",
+    "off_by_one"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF5",
+   "label": true,
+   "prompt_hash": "8c2753742bbddb45f72c507584c8235d7ca6c56db28f8b29de1f1dc81ccef2f0",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 98,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-rf5-17-4c03353c",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "wordless",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": "Too many commas",
+   "kind": "RF5",
+   "label": false,
+   "prompt_hash": "7b18ecbace13c856d4986f545eb0494537525a4dd2913d820b1b1601382565f8",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 176,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-rf6-00-96a86cb6",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "threshold-minus-one",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF6",
+   "label": true,
+   "prompt_hash": "9b9335c2b7a3527200699f69f44b711030a8904b966732212ac57e1ffd8e319f",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 109,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-rf6-01-f02f9a76",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "exact-threshold",
+   "discriminates": [
+    "inequality_flip",
+    "off_by_one"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF6",
+   "label": true,
+   "prompt_hash": "ea4cbc1028f028abc5915949175ceb52eb23208609b9cfa69e2301d40fce3526",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 164,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-rf6-11-3990333f",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "capitalisation",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": "Too many uppercase letters.",
+   "kind": "RF6",
+   "label": false,
+   "prompt_hash": "792e4e8df0192ad4048f20aa9e693707ca09403560a1fc7008dc08f2d0f0fd72",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 259,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-rf6-12-dc311971",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "capitalisation;shout",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": "Too many uppercase letters.",
+   "kind": "RF6",
+   "label": false,
+   "prompt_hash": "4a0ca37ff73060cebc05e56308b1a283951a04614395319c79a322b50267bb06",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 254,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-rf7-00-24665440",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "threshold-minus-one",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF7",
+   "label": true,
+   "prompt_hash": "0cf9a1f385560aad83f2101f8d825c2d6c087e036dec6182d6dfbfb5b78cfb3e",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 237,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-rf7-02-2ce9b43e",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "threshold-plus-one",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": "Too many words contain 'a'.",
+   "kind": "RF7",
+   "label": false,
+   "prompt_hash": "22e8a0ef24fbdb10450224bf9f7a49c08e4230f902360c4001164a67c1029aff",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 305,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-rf8-00-61bc0e62",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "threshold-minus-one",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF8",
+   "label": true,
+   "prompt_hash": "dee89025f101394d092441c73e7e8fc155f86b63ad473f62a047d1e813925f11",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 109,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-rf8-01-02fb901d",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "exact-threshold",
+   "discriminates": [
+    "inequality_flip",
+    "off_by_one"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF8",
+   "label": true,
+   "prompt_hash": "3c10ce43900d7cc974e21e77a10a13464c5581a2b7f78e62285dd04f48daf7b4",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 136,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-rf8-02-c768cea1",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": false,
+   "covers": "threshold-plus-one",
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": "Too many words end in y.",
+   "kind": "RF8",
+   "label": false,
+   "prompt_hash": "54eb958900eb0c69219aac2cc1c8161194c8ab2c9ba0d0e29bde4e3e5d18d00c",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 270,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-rf9-01-13498d00",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "exact-threshold",
+   "discriminates": [
+    "inequality_flip",
+    "off_by_one"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF9",
+   "label": true,
+   "prompt_hash": "83a241b25fb242f82ae53569c57c6b5ca6880f9e462d5e95d331593c8147e196",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 113,
+   "truncated": false
+  },
+  {
+   "agrees": true,
+   "arm": "with_conventions",
+   "case_id": "mc-rf9-03-4a62b96f",
+   "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+   "correct": true,
+   "covers": "case-folding-split",
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "count_budget",
+   "justification": null,
+   "kind": "RF9",
+   "label": true,
+   "prompt_hash": "42efacf8699a75d1f5737741e6da87268bd2aec6fb87f8f4dd1a42a57ffb5181",
+   "severity": 1,
+   "status": "valid",
+   "tokens": 120,
+   "truncated": false
+  }
+ ],
+ "split_hash": "e3b8fa1e6ba45071717bd440ff30a15bfe80ff841bfbc64739338fed91b71555",
+ "verdict": {
+  "checks": [
+   {
+    "criterion": "2 adequate output cap and absence of problematic truncation",
+    "observed": {
+     "pooled": 0.011904761904761904,
+     "worst_group": "instruction_only:rate_budget",
+     "worst_group_rate": 0.029411764705882353
+    },
+    "passed": true,
+    "threshold": {
+     "per_group": 0.2,
+     "pooled": 0.1
+    }
+   },
+   {
+    "criterion": "3 valid parsing and coverage",
+    "observed": 0.9880952380952381,
+    "passed": true,
+    "threshold": 0.95
+   },
+   {
+    "criterion": "4 specificity on cases the verifier records as satisfied",
+    "observed": 0.9125,
+    "passed": true,
+    "threshold": 0.9
+   },
+   {
+    "criterion": "5 sensitivity, overall and per defect kind",
+    "observed": {
+     "by_defect": {
+      "denominator_swap": 0.23076923076923078,
+      "inequality_flip": 0.8,
+      "numerator_swap": 0.88,
+      "off_by_one": 1.0,
+      "segmentation_drift": 0.875,
+      "vacuity_ignored": 0.6666666666666666
+     },
+     "kinds_below_floor": {
+      "denominator_swap": 0.23076923076923078
+     },
+     "kinds_with_too_few_items": [],
+     "overall": 0.813953488372093
+    },
+    "passed": false,
+    "threshold": {
+     "overall": 0.8,
+     "per_kind": 0.5,
+     "per_kind_min_items": 4
+    }
+   }
+  ],
+  "failed": [
+   "5 sensitivity, overall and per defect kind"
+  ],
+  "outcome": "FAIL",
+  "thresholds_registered_at": "\u00a710.4-R2 and DECISIONS A7, before any microcase was judged; criteria 2 to 5 carried unchanged from \u00a710.4-R"
+ }
+}

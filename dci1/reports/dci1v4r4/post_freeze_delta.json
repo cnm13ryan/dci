@@ -1,0 +1,234 @@
+{
+  "artifact_type": "v4r4-post-freeze-delta",
+  "change": "§21's assert_generation_licensed asked for a freeze field named verifier_source_hash; §18.1 binds canonical_verifier_hash. The licence check refused every valid freeze record. Also: §21's assert_no_selective_rerun was documented and not called, and is now called",
+  "frozen_replications": [
+    "gemma-3n-e4b-it",
+    "qwen3-4b"
+  ],
+  "passed": true,
+  "per_model": {
+    "gemma-3n-e4b-it": {
+      "accretive_fields_re_compared": {
+        "durability_record": {
+          "checked": true,
+          "recomputed": {
+            "critical_matched": true,
+            "manifest_tracked_in_git": true,
+            "n_critical_diverged": 0,
+            "n_critical_missing": 0,
+            "off_machine_copy": false,
+            "passed": true,
+            "restore_failures": [],
+            "roots_on_one_device": true
+          },
+          "sealed": {
+            "critical_matched": true,
+            "manifest_tracked_in_git": true,
+            "n_critical_diverged": 0,
+            "n_critical_missing": 0,
+            "off_machine_copy": false,
+            "passed": true,
+            "restore_failures": [],
+            "roots_on_one_device": true
+          },
+          "substantively_unchanged": true,
+          "what_was_compared": "whether §26's gate still passes with no critical artifact missing from or diverged in the mirror"
+        },
+        "environment_digest": {
+          "checked": true,
+          "recomputed": "749af053e0fcc173d4485f4031ef53a58b85215ab32881f1405a0d71272448f0",
+          "sealed": "749af053e0fcc173d4485f4031ef53a58b85215ab32881f1405a0d71272448f0",
+          "substantively_unchanged": true,
+          "what_was_compared": "the environment digest recomputed over the provenance record with the accreting `hardware` sub-record removed"
+        },
+        "hardware_record": {
+          "checked": true,
+          "recomputed": {
+            "device_count_per_run": [
+              1
+            ],
+            "device_names": [
+              "Radeon RX 7900 XTX"
+            ],
+            "gcn_archs": [
+              "gfx1100"
+            ],
+            "note": "the hardware the evidence came off, read from the backend's own provenance sidecars, not the machine that ran the freeze",
+            "platform_class": "RocmPlatform",
+            "torch_hip": "7.2.26015-fc0010cf6a",
+            "torch_version": "2.9.1+rocm7.2.0.git7e1940d4",
+            "total_vram_gib": [
+              23.98
+            ],
+            "vllm_version": "0.15.1"
+          },
+          "sealed": {
+            "device_count_per_run": [
+              1
+            ],
+            "device_names": [
+              "Radeon RX 7900 XTX"
+            ],
+            "gcn_archs": [
+              "gfx1100"
+            ],
+            "note": "the hardware the evidence came off, read from the backend's own provenance sidecars, not the machine that ran the freeze",
+            "platform_class": "RocmPlatform",
+            "torch_hip": "7.2.26015-fc0010cf6a",
+            "torch_version": "2.9.1+rocm7.2.0.git7e1940d4",
+            "total_vram_gib": [
+              23.98
+            ],
+            "vllm_version": "0.15.1"
+          },
+          "substantively_unchanged": true,
+          "what_was_compared": "the hardware the evidence came off, with the backend-sidecar list and the visible-device list set aside as enumerations"
+        }
+      },
+      "current_commit": "b1ae6b929a9336c0928b44207b12bf28c941780a",
+      "expected_to_move": [
+        "producing_commit"
+      ],
+      "fields_compared": 66,
+      "fields_that_moved": {
+        "durability_record": {
+          "recomputed": "f654f86670c307f3",
+          "sealed": "59c8cb90d03ff413"
+        },
+        "environment_digest": {
+          "recomputed": "24ade666d9717bcc",
+          "sealed": "473f96785e2842ce"
+        },
+        "hardware_record": {
+          "recomputed": "a6cd0e0cfb928d97",
+          "sealed": "75b241d73a2cfd48"
+        },
+        "producing_commit": {
+          "recomputed": "42ee6f0f9e7a8cae",
+          "sealed": "1af4cbf63c125e9b"
+        }
+      },
+      "moved_only_where_they_enumerate": [
+        "durability_record",
+        "environment_digest",
+        "hardware_record"
+      ],
+      "scientific_state_unchanged": true,
+      "sealed_producing_commit": "450a0499e05fc780d20b8f3a8139a2879a8589c2",
+      "sealed_record_still_verifies": true,
+      "unexpectedly_moved": []
+    },
+    "qwen3-4b": {
+      "accretive_fields_re_compared": {
+        "durability_record": {
+          "checked": true,
+          "recomputed": {
+            "critical_matched": true,
+            "manifest_tracked_in_git": true,
+            "n_critical_diverged": 0,
+            "n_critical_missing": 0,
+            "off_machine_copy": false,
+            "passed": true,
+            "restore_failures": [],
+            "roots_on_one_device": true
+          },
+          "sealed": {
+            "critical_matched": true,
+            "manifest_tracked_in_git": true,
+            "n_critical_diverged": 0,
+            "n_critical_missing": 0,
+            "off_machine_copy": false,
+            "passed": true,
+            "restore_failures": [],
+            "roots_on_one_device": true
+          },
+          "substantively_unchanged": true,
+          "what_was_compared": "whether §26's gate still passes with no critical artifact missing from or diverged in the mirror"
+        },
+        "environment_digest": {
+          "checked": true,
+          "recomputed": "749af053e0fcc173d4485f4031ef53a58b85215ab32881f1405a0d71272448f0",
+          "sealed": "749af053e0fcc173d4485f4031ef53a58b85215ab32881f1405a0d71272448f0",
+          "substantively_unchanged": true,
+          "what_was_compared": "the environment digest recomputed over the provenance record with the accreting `hardware` sub-record removed"
+        },
+        "hardware_record": {
+          "checked": true,
+          "recomputed": {
+            "device_count_per_run": [
+              1
+            ],
+            "device_names": [
+              "Radeon RX 7900 XTX"
+            ],
+            "gcn_archs": [
+              "gfx1100"
+            ],
+            "note": "the hardware the evidence came off, read from the backend's own provenance sidecars, not the machine that ran the freeze",
+            "platform_class": "RocmPlatform",
+            "torch_hip": "7.2.26015-fc0010cf6a",
+            "torch_version": "2.9.1+rocm7.2.0.git7e1940d4",
+            "total_vram_gib": [
+              23.98
+            ],
+            "vllm_version": "0.15.1"
+          },
+          "sealed": {
+            "device_count_per_run": [
+              1
+            ],
+            "device_names": [
+              "Radeon RX 7900 XTX"
+            ],
+            "gcn_archs": [
+              "gfx1100"
+            ],
+            "note": "the hardware the evidence came off, read from the backend's own provenance sidecars, not the machine that ran the freeze",
+            "platform_class": "RocmPlatform",
+            "torch_hip": "7.2.26015-fc0010cf6a",
+            "torch_version": "2.9.1+rocm7.2.0.git7e1940d4",
+            "total_vram_gib": [
+              23.98
+            ],
+            "vllm_version": "0.15.1"
+          },
+          "substantively_unchanged": true,
+          "what_was_compared": "the hardware the evidence came off, with the backend-sidecar list and the visible-device list set aside as enumerations"
+        }
+      },
+      "current_commit": "b1ae6b929a9336c0928b44207b12bf28c941780a",
+      "expected_to_move": [
+        "producing_commit"
+      ],
+      "fields_compared": 66,
+      "fields_that_moved": {
+        "durability_record": {
+          "recomputed": "f654f86670c307f3",
+          "sealed": "59c8cb90d03ff413"
+        },
+        "environment_digest": {
+          "recomputed": "24ade666d9717bcc",
+          "sealed": "473f96785e2842ce"
+        },
+        "hardware_record": {
+          "recomputed": "45946ecd47561204",
+          "sealed": "18f2b91fb1b7c177"
+        },
+        "producing_commit": {
+          "recomputed": "42ee6f0f9e7a8cae",
+          "sealed": "1af4cbf63c125e9b"
+        }
+      },
+      "moved_only_where_they_enumerate": [
+        "durability_record",
+        "environment_digest",
+        "hardware_record"
+      ],
+      "scientific_state_unchanged": true,
+      "sealed_producing_commit": "450a0499e05fc780d20b8f3a8139a2879a8589c2",
+      "sealed_record_still_verifies": true,
+      "unexpectedly_moved": []
+    }
+  },
+  "why": "§18.1 forbids changing the scientific state after the freeze and the machinery refuses to supersede a passed GATE_5_FREEZE, so a defect found below the freeze is answered by showing that nothing the freeze bound moved -- not by re-freezing"
+}

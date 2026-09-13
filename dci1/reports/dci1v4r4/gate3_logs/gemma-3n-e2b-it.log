@@ -1,0 +1,87 @@
+{
+ "model": "gemma-3n-e2b-it",
+ "stage": "GATE_3_REFERENCES",
+ "outcome": "PASS",
+ "design": "full",
+ "design_variant": "full",
+ "class_arm": true,
+ "core_references": [
+  {
+   "slot": "R1",
+   "family": "RF9",
+   "severity": 10,
+   "iota": 0.5342465753424658,
+   "distance": 0.03966646813579511,
+   "feature_group": "t_initial"
+  },
+  {
+   "slot": "R2",
+   "family": "CR5",
+   "severity": 2,
+   "iota": 0.6318537859007833,
+   "distance": 0.05794074242252245,
+   "feature_group": "comma"
+  },
+  {
+   "slot": "R3",
+   "family": "RF11",
+   "severity": 26,
+   "iota": 0.6330275229357798,
+   "distance": 0.05911447945751891,
+   "feature_group": "vowel_initial"
+  }
+ ],
+ "spectrum": [
+  {
+   "slot": "R1-",
+   "family": "RF9",
+   "severity": 8,
+   "iota": 0.431547619047619,
+   "target": 0.3739130434782609,
+   "side": "lower"
+  },
+  {
+   "slot": "R1+",
+   "family": "RF9",
+   "severity": 13,
+   "iota": 0.642512077294686,
+   "target": 0.7739130434782608,
+   "side": "upper"
+  },
+  {
+   "slot": "R2-",
+   "family": "CR5",
+   "severity": 3,
+   "iota": 0.35543766578249336,
+   "target": 0.3739130434782609,
+   "side": "lower"
+  },
+  {
+   "slot": "R2+",
+   "family": "CR5",
+   "severity": 1,
+   "iota": 0.6822916666666666,
+   "target": 0.7739130434782608,
+   "side": "upper"
+  },
+  {
+   "slot": "R3-",
+   "family": "RF11",
+   "severity": 21,
+   "iota": 0.3359580052493438,
+   "target": 0.3739130434782609,
+   "side": "lower"
+  },
+  {
+   "slot": "R3+",
+   "family": "RF11",
+   "severity": 32,
+   "iota": 0.8544600938967137,
+   "target": 0.7739130434782608,
+   "side": "upper"
+  }
+ ],
+ "identification_statuses": [
+  "COMPANION_CLASS_NOT_MATCHED"
+ ]
+}

@@ -1,0 +1,3 @@
+tee: .venv/bin/python: Text file busy
+2026-08-28T07:24:22Z [qwen3-4b-instruct-2507 gpu1] START GATE_2_FOCAL_CALIBRATION (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/qwen3-4b-instruct-2507.GATE_2_FOCAL_CALIBRATION.20260828T072422Z.out
+_: line 4: -m: command not found

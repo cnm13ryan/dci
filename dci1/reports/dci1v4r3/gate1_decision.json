@@ -1,0 +1,597 @@
+{
+ "artifact_type": "v4r3-gate1-decision",
+ "canonical_verifier_hash": "41edc84c8c1381c698aa3ea62265ef11ff1162993fa2f68d1245dbce10096074",
+ "classification": "DCI-1 PROTOCOL v4 REVISION 3 (ADOPTED, NOT FROZEN)",
+ "decision": "GATE_1_BLOCKED_MEASUREMENT",
+ "evidence_matrix": [
+  {
+   "answers": "does each program compute the verdict its registered rule defines, on frozen cases and on real responses",
+   "does_not_answer": "whether the registered rule means what a reader of the prose would take it to mean",
+   "independence": "same author, two routes",
+   "population": "all 584 registered instruments over 164 frozen boundary cases",
+   "result": {
+    "boundary_agreement": 1.0,
+    "three_process_determinism": 1.0,
+    "witness_pairs": 92988,
+    "wording_verdicts": 46720
+   },
+   "satisfied": true,
+   "source": "\u00a710.2 deterministic implementation correctness",
+   "standing": "REGISTERED GATE-1 PREREQUISITE",
+   "tier": "implementation"
+  },
+  {
+   "answers": "do two implementations written by different routes agree on every verdict",
+   "does_not_answer": "whether both share a misreading of the prose",
+   "independence": "prose-only second implementation",
+   "population": "37700 real responses, 700800 verdicts",
+   "result": {
+    "per_instrument_min": 1.0,
+    "segmenter_differential": 1.0
+   },
+   "satisfied": true,
+   "source": "\u00a710.2 independent reimplementation",
+   "standing": "REGISTERED GATE-1 PREREQUISITE",
+   "tier": "implementation"
+  },
+  {
+   "answers": "is every registered phenomenon exercised somewhere, and does \u00a77.5's non-entailment hold on every realisable pair",
+   "does_not_answer": "whether the verdict on a phenomenon is the one a human would give",
+   "independence": "author-designed",
+   "population": "164 cases over 18 phenomena; 92988 witness pairs",
+   "result": {
+    "never_observed_in_real_generations": [
+     "case_folding_split",
+     "combining_mark",
+     "empty",
+     "fullwidth",
+     "non_breaking_space",
+     "single_word",
+     "soft_hyphen",
+     "wordless",
+     "zero_width"
+    ],
+    "uncovered_by_corpus": []
+   },
+   "satisfied": true,
+   "source": "\u00a724 adversarial, boundary and witness corpora",
+   "standing": "REGISTERED GATE-1 PREREQUISITE",
+   "tier": "implementation"
+  },
+  {
+   "answers": "on 25 blinded microcases over eight of the ten families \u00a77.0-R3 added, does a person read the instruction the way the verifier scores it",
+   "does_not_answer": "anything \u00a710.3 asks: the annotator is the researcher, the unit is a microcase rather than a natural response, and 25 items cannot reach the registered bound",
+   "independence": "AUTHOR-PERFORMED --- not independent",
+   "population": "25 microcases, families ['CR10', 'CR11', 'CR12', 'CR9', 'CX1', 'CX2', 'RF11', 'RF12']",
+   "result": {
+    "agreement": 0.92,
+    "threshold": 0.1,
+    "wilson_upper_on_disagreement": 0.2151924157913751
+   },
+   "satisfied": false,
+   "source": "\u00a710.3 human semantic annotations",
+   "standing": "SUPPLEMENTARY. \u00a710.3 is a registered Gate-1 pathway and this does not complete it",
+   "tier": "semantic, diagnostic"
+  },
+  {
+   "answers": "does an external validator, given the instruction and the answer and never the verdict, agree with the registered reading on cases where a defective reading would not",
+   "does_not_answer": "whether the registered reading is the correct one; it measures a second reader, not a truth",
+   "independence": "external judge, registry disjoint from the study's models",
+   "population": "84 development microcases per arm over all thirty families; the 76-case calibration half is untouched",
+   "result": {
+    "failed_criteria": [
+     "5 sensitivity, overall and per defect kind"
+    ],
+    "sensitivity": 0.813953488372093,
+    "specificity": 0.9125
+   },
+   "satisfied": false,
+   "source": "\u00a710.4-R2 microcase semantic audit",
+   "standing": "REGISTERED GATE-1 PATHWAY --- FAILED, and by \u00a710.4-R2's own rule the pathway stops",
+   "tier": "semantic"
+  },
+  {
+   "answers": "how much would each plausible misreading move this study's own numbers, on the responses it has generated",
+   "does_not_answer": "which reading is correct. It sizes the stakes of each semantic choice; it does not settle one",
+   "independence": "read-only, computes no composed estimand",
+   "population": "30720 load-0 and load-1 responses, 27840 stated verdicts per reading",
+   "result": {
+    "denominator_swap": {
+     "change_rate": 0.2183189655172414,
+     "rate_shift": 0.16329022988505748
+    },
+    "inequality_flip": {
+     "change_rate": 0.9547413793103449,
+     "rate_shift": 0.11623563218390809
+    },
+    "numerator_swap": {
+     "change_rate": 0.3276221264367816,
+     "rate_shift": -0.03214798850574713
+    },
+    "off_by_one": {
+     "change_rate": 0.11135057471264367,
+     "rate_shift": -0.08807471264367817
+    },
+    "segmentation_drift": {
+     "change_rate": 0.014655172413793103,
+     "rate_shift": 0.014655172413793105
+    },
+    "vacuity_ignored": {
+     "change_rate": 0.0,
+     "rate_shift": 0.0
+    }
+   },
+   "satisfied": null,
+   "source": "defect-sensitivity diagnostic",
+   "standing": "SUPPLEMENTARY --- not a registered Gate-1 criterion",
+   "tier": "robustness"
+  },
+  {
+   "answers": "nothing that may be cited here",
+   "does_not_answer": "\u00a710.3 says in terms that the v3 record's 120 author-performed blinded labels are diagnostic there and are NOT carried as independent validation. The v3 forensics' 56 human-labelled items are all solo:A:n, so they touch 8 of the 584 instruments and none of the ten families \u00a77.0-R3 added",
+   "independence": "author-performed",
+   "population": "not admissible",
+   "result": null,
+   "satisfied": null,
+   "source": "carried v3 human evidence",
+   "standing": "EXCLUDED BY \u00a710.3",
+   "tier": "not carried"
+  }
+ ],
+ "gate": "GATE_1_MEASUREMENT",
+ "generated_at": "2026-08-21T17:18:39+00:00",
+ "human_annotations": {
+  "agreed": 23,
+  "agreement": 0.92,
+  "annotator": "Bryan (the researcher)",
+  "blinding": "the packet carries item_id, instruction, answer and the answer's sha256 and nothing else; family, severity, predicate form, registered verdict and separated defect live in key.json, which the review command never opens (asserted by an AST test over the tool's source)",
+  "by_family": {
+   "CR10": {
+    "agreed": 4,
+    "agreement": 1.0,
+    "n": 4
+   },
+   "CR11": {
+    "agreed": 4,
+    "agreement": 1.0,
+    "n": 4
+   },
+   "CR12": {
+    "agreed": 2,
+    "agreement": 1.0,
+    "n": 2
+   },
+   "CR9": {
+    "agreed": 3,
+    "agreement": 0.75,
+    "n": 4
+   },
+   "CX1": {
+    "agreed": 4,
+    "agreement": 1.0,
+    "n": 4
+   },
+   "CX2": {
+    "agreed": 3,
+    "agreement": 0.75,
+    "n": 4
+   },
+   "RF11": {
+    "agreed": 1,
+    "agreement": 1.0,
+    "n": 1
+   },
+   "RF12": {
+    "agreed": 2,
+    "agreement": 1.0,
+    "n": 2
+   }
+  },
+  "by_numerator": {
+   "marker_thus": {
+    "agreed": 4,
+    "agreement": 1.0,
+    "n": 4
+   },
+   "s_final": {
+    "agreed": 4,
+    "agreement": 1.0,
+    "n": 4
+   },
+   "semicolon": {
+    "agreed": 3,
+    "agreement": 0.75,
+    "n": 4
+   },
+   "sentence": {
+    "agreed": 4,
+    "agreement": 1.0,
+    "n": 4
+   },
+   "t_initial": {
+    "agreed": 3,
+    "agreement": 0.75,
+    "n": 4
+   },
+   "vowel_initial": {
+    "agreed": 5,
+    "agreement": 1.0,
+    "n": 5
+   }
+  },
+  "by_predicate_form": {
+   "count_budget": {
+    "agreed": 3,
+    "agreement": 1.0,
+    "n": 3
+   },
+   "exact_count": {
+    "agreed": 7,
+    "agreement": 0.875,
+    "n": 8
+   },
+   "rate_budget": {
+    "agreed": 13,
+    "agreement": 0.9285714285714286,
+    "n": 14
+   }
+  },
+  "by_registered_verdict": {
+   "SATISFIES": {
+    "agreed": 11,
+    "agreement": 0.9166666666666666,
+    "n": 12
+   },
+   "VIOLATES": {
+    "agreed": 12,
+    "agreement": 0.9230769230769231,
+    "n": 13
+   }
+  },
+  "by_severity": {
+   "1": {
+    "agreed": 19,
+    "agreement": 0.9047619047619048,
+    "n": 21
+   },
+   "2": {
+    "agreed": 4,
+    "agreement": 1.0,
+    "n": 4
+   }
+  },
+  "category": "HUMAN SEMANTIC EVIDENCE",
+  "cr6_capital_word_items": 0,
+  "defects_separated": {
+   "denominator_swap": 1,
+   "inequality_flip": 19,
+   "numerator_swap": 6,
+   "off_by_one": 9,
+   "segmentation_drift": 1,
+   "vacuity_ignored": 2
+  },
+  "disagreements": 2,
+  "discordant": [
+   {
+    "agrees": false,
+    "answer": "point; clue; point clue form step field cloud",
+    "classification": {
+     "not": "likely deterministic-verifier defect",
+     "verdict": "ambiguous natural-language instruction",
+     "why": "the frozen wording is 'Exactly 1 semicolons must appear in your answer' and the answer carries two semicolons. The numeral 1 with a plural noun is the wording a reader can take as *at least* one, and SATISFIES is exactly the label the registered `inequality_flip` reading of an exact count gives --- 2 >= 1. The verifier's S == q is the only reading of 'Exactly 1' and is not a defect. CX2:1 is an eligible rung on all four models, so this wording is live."
+    },
+    "covers": "threshold-plus-one",
+    "family": "CX2",
+    "form": "exact_count",
+    "human": "SATISFIES",
+    "instruction": "Exactly 1 semicolons must appear in your answer.",
+    "item_id": "hr-11-a7198420",
+    "separates": [
+     "inequality_flip"
+    ],
+    "severity": 1,
+    "statistic": "semicolon",
+    "verifier": "VIOLATES"
+   },
+   {
+    "agrees": false,
+    "answer": "point clue form step field cloud north guide point clue",
+    "classification": {
+     "not": "likely deterministic-verifier defect",
+     "verdict": "likely human annotation error",
+     "why": "the wording is 'At most 1 percent of words begin with t' and the answer has ten words, none beginning with t: 0.0% <= 1%, so the registered verdict is SATISFIES. A budget wording admits no second reading here; VIOLATES is what the `inequality_flip` reading gives --- 0 >= 1 is false. That both disagreements coincide with the same defective reading is the diagnostic signal, and it is a signal about how the wordings read at q = 1, not about the verifier."
+    },
+    "covers": "exact-threshold;rate",
+    "family": "CR9",
+    "form": "rate_budget",
+    "human": "VIOLATES",
+    "instruction": "At most 1 percent of words begin with t.",
+    "item_id": "hr-15-79d60ac5",
+    "separates": [
+     "inequality_flip"
+    ],
+    "severity": 1,
+    "statistic": "t_initial",
+    "verifier": "SATISFIES"
+   }
+  ],
+  "fails_section_10_3_on": [
+   "independence --- \u00a710.3 requires an annotator independent of the design and analysis team and says in terms that author-performed labels are never described as independent validation",
+   "unit --- \u00a710.3's sample is natural responses; these are microcases of at most fourteen words",
+   "size and stratification --- \u00a710.3 requires min(150, N_c) per verifier class with the fail class split by realised margin; this is one packet of 25",
+   "criterion --- the one-sided 95% Wilson upper bound on disagreement is 0.2152 against a threshold of 0.10. At 25 items the bound clears 0.10 only at zero disagreements (0.0977, which is why 25 rather than 24), so it is the two disagreements that fail it and not the sample size"
+  ],
+  "families_covered": [
+   "CR10",
+   "CR11",
+   "CR12",
+   "CR9",
+   "CX1",
+   "CX2",
+   "RF11",
+   "RF12"
+  ],
+  "independent_of_design_team": false,
+  "labels_before_verifier_output": true,
+  "n": 25,
+  "not": "REGISTERED INDEPENDENT HUMAN VALIDATION",
+  "unsure": 0,
+  "why": "the packet was built at 16:00:19Z and the labels appended one at a time between 16:05:44Z and 16:12Z; the report that compares them was generated at 16:13:47Z",
+  "wilson_upper_on_disagreement": 0.2151924157913751,
+  "wordless_or_empty_items": 2
+ },
+ "instrument_population": 584,
+ "localised": {
+  "segmentation_drift": {
+   "change_rate": 0.014655172413793103,
+   "cr6_on_any_reference_shortlist": false,
+   "cr6_semantic_coverage": {
+    "agreement": 1.0,
+    "human_annotations": 0,
+    "microcases_in_the_development_half": 2,
+    "microcases_sealed_in_the_calibration_half": 5
+   },
+   "every_change_is_family": "CR6"
+  }
+ },
+ "measurement_basis": "human_validation_unavailable",
+ "not_a_governance_block": "a researcher signature cannot be applied to \u00a710.4 because \u00a710.4-R2's criteria failed; the missing thing is evidence, not authorisation",
+ "not_testable_on_natural_responses": {
+  "vacuity_ignored": {
+   "change_rate": 0.0,
+   "reading": "natural-response agreement cannot validate the vacuity convention because the relevant counterfactual case does not occur in this corpus. Absence of a natural example is not successful validation; the convention has to be evaluated on designed boundary and microcases, which is where \u00a710.2's 164-case suite and \u00a710.4-R2's 12 vacuity-separating microcases already put it."
+  }
+ },
+ "objective_10_2_prerequisites_all_satisfied": true,
+ "producing_commit": "d33551b3f635565aac2be086adefb49650e825d2",
+ "r2": {
+  "artifact": "reports/dci1v4r3/section_10_4R2_outcome.json",
+  "failed": [
+   "5 sensitivity, overall and per defect kind"
+  ],
+  "outcome": "FAIL"
+ },
+ "registered_rule": "\u00a718 stage 4: \u00a710.2 for every verifier in the final instrument population, plus \u00a710.3 or \u00a710.4; verifier hash frozen",
+ "semantic_choices_that_are_load_bearing": {
+  "denominator_swap": {
+   "band": "consequential",
+   "change_rate": 0.2183189655172414,
+   "rate_shift": 0.16329022988505748
+  },
+  "inequality_flip": {
+   "band": "consequential",
+   "change_rate": 0.9547413793103449,
+   "rate_shift": 0.11623563218390809
+  },
+  "numerator_swap": {
+   "band": "detectable",
+   "change_rate": 0.3276221264367816,
+   "rate_shift": -0.03214798850574713
+  },
+  "off_by_one": {
+   "band": "detectable",
+   "change_rate": 0.11135057471264367,
+   "rate_shift": -0.08807471264367817
+  }
+ },
+ "smallest_remaining_blocker": "\u00a710.3, performed by at least one annotator independent of the design and analysis team, on a seeded stratified sample of min(150, N_c) natural responses per verifier class, meeting a one-sided 95% Wilson upper bound on disagreement of 0.10 in each class, with the fail class split by realised margin. Nothing else in Gate 1 is outstanding.",
+ "status_written_by_the_gate": "MEASUREMENT_EVIDENCE_INSUFFICIENT",
+ "verifier_hash_matches_gate1_evidence": true,
+ "why": "\u00a710.4-R2's development half returned FAIL on registered criterion 5 --- per-kind sensitivity 0.231 on denominator_swap against a floor of 0.50 registered before any microcase was judged --- and \u00a710.4-R2 states that on failure the LLM-validator pathway stops. \u00a710.3 is then the only remaining registered route, and no independent annotator has completed it. Both Gate-1 pathways are therefore unavailable, and the gate refuses on the measurement basis alone.",
+ "wording_number_agreement": {
+  "by_family": {
+   "CL8": {
+    "exact_form": false,
+    "form": "count_lower_bound",
+    "rung_is_live_on": [],
+    "wordings": [
+     "At least 1 words must end with y.",
+     "Include at least 1 words ending with y.",
+     "Your answer needs 1 words ending with y."
+    ]
+   },
+   "CR12": {
+    "exact_form": false,
+    "form": "rate_budget",
+    "rung_is_live_on": [],
+    "wordings": [
+     "At most 1 sentences per hundred words.",
+     "Use at most 1 sentences per hundred words."
+    ]
+   },
+   "CR5": {
+    "exact_form": false,
+    "form": "rate_budget",
+    "rung_is_live_on": [
+     "gemma-3n-e2b-it",
+     "qwen3-4b"
+    ],
+    "wordings": [
+     "At most 1 commas per hundred words.",
+     "Use at most 1 commas per hundred words."
+    ]
+   },
+   "CX1": {
+    "exact_form": true,
+    "form": "exact_count",
+    "rung_is_live_on": [
+     "gemma-3n-e2b-it",
+     "gemma-3n-e4b-it"
+    ],
+    "wordings": [
+     "Include thus exactly 1 times in your answer.",
+     "The word thus must appear exactly 1 times.",
+     "Use the word thus exactly 1 times.",
+     "Your answer must contain thus exactly 1 times."
+    ]
+   },
+   "CX2": {
+    "exact_form": true,
+    "form": "exact_count",
+    "rung_is_live_on": [
+     "gemma-3n-e2b-it",
+     "gemma-3n-e4b-it",
+     "qwen3-4b",
+     "qwen3-4b-instruct-2507"
+    ],
+    "wordings": [
+     "Exactly 1 semicolons must appear in your answer.",
+     "Your answer must use exactly 1 semicolons."
+    ]
+   },
+   "RF1": {
+    "exact_form": false,
+    "form": "count_budget",
+    "rung_is_live_on": [
+     "gemma-3n-e4b-it"
+    ],
+    "wordings": [
+     "At most 1 words may begin with b.",
+     "No more than 1 words may start with b.",
+     "Use at most 1 words beginning with b."
+    ]
+   },
+   "RF10": {
+    "exact_form": false,
+    "form": "count_budget",
+    "rung_is_live_on": [],
+    "wordings": [
+     "At most 1 words may end with s.",
+     "No more than 1 words may end in s.",
+     "Use at most 1 words ending with s."
+    ]
+   },
+   "RF11": {
+    "exact_form": false,
+    "form": "count_budget",
+    "rung_is_live_on": [],
+    "wordings": [
+     "At most 1 words may begin with vowels.",
+     "No more than 1 words may start with vowels."
+    ]
+   },
+   "RF12": {
+    "exact_form": false,
+    "form": "count_budget",
+    "rung_is_live_on": [],
+    "wordings": [
+     "Do not write more than 1 sentences.",
+     "No more than 1 sentences may appear.",
+     "Your answer may use at most 1 sentences.",
+     "Your answer must have at most 1 sentences."
+    ]
+   },
+   "RF2": {
+    "exact_form": false,
+    "form": "count_budget",
+    "rung_is_live_on": [
+     "qwen3-4b"
+    ],
+    "wordings": [
+     "At most 1 words may end with ing.",
+     "No more than 1 words may end in ing.",
+     "Use at most 1 words ending with ing."
+    ]
+   },
+   "RF3": {
+    "exact_form": false,
+    "form": "count_budget",
+    "rung_is_live_on": [
+     "gemma-3n-e2b-it",
+     "gemma-3n-e4b-it",
+     "qwen3-4b"
+    ],
+    "wordings": [
+     "At most 1 words may have one letter.",
+     "No more than 1 words may have one letter.",
+     "Use at most 1 words of one letter."
+    ]
+   },
+   "RF4": {
+    "exact_form": false,
+    "form": "count_budget",
+    "rung_is_live_on": [],
+    "wordings": [
+     "At most 1 words contain a doubled letter.",
+     "No more than 1 words contain a doubled letter.",
+     "Use at most 1 words with a doubled letter."
+    ]
+   },
+   "RF5": {
+    "exact_form": false,
+    "form": "count_budget",
+    "rung_is_live_on": [],
+    "wordings": [
+     "No more than 1 commas may appear.",
+     "Your answer may contain at most 1 commas."
+    ]
+   },
+   "RF7": {
+    "exact_form": false,
+    "form": "count_budget",
+    "rung_is_live_on": [],
+    "wordings": [
+     "At most 1 words contain the letter a.",
+     "No more than 1 words contain the letter a.",
+     "Use at most 1 words containing the letter a."
+    ]
+   },
+   "RF8": {
+    "exact_form": false,
+    "form": "count_budget",
+    "rung_is_live_on": [],
+    "wordings": [
+     "At most 1 words may end with y.",
+     "No more than 1 words may end in y.",
+     "Use at most 1 words ending with y."
+    ]
+   },
+   "RF9": {
+    "exact_form": false,
+    "form": "count_budget",
+    "rung_is_live_on": [],
+    "wordings": [
+     "At most 1 words may begin with t.",
+     "No more than 1 words may start with t.",
+     "Use at most 1 words beginning with t."
+    ]
+   }
+  },
+  "families_admitting_severity_one": 24,
+  "families_with_a_number_disagreeing_wording": 16,
+  "live_and_exact_form": [
+   "CX1",
+   "CX2"
+  ],
+  "live_eligible_rungs_affected": [
+   "CR5",
+   "CX1",
+   "CX2",
+   "RF1",
+   "RF2",
+   "RF3"
+  ],
+  "precedent": "dci1v4.protocol.wordings.target_wordings writes 'time' if n == 1 else 'times' for A; no family template does",
+  "standing": "a \u00a77.5 wording observation for the researcher. Changing a template changes the prompt text of live rungs, re-opens a coverage result that currently passes on all four models, and is an amendment rather than a fix"
+ }
+}

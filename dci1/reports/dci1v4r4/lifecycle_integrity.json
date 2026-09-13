@@ -1,0 +1,662 @@
+{
+  "artifact_type": "v4r4-lifecycle-integrity",
+  "evidence_root": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4",
+  "foreign_record_refused": {
+    "holds": true,
+    "refusal": "gemma-3n-e2b-it: the QUALIFIED record declares study_id 'dci1v4r3' and this study is 'dci1v4r4'. A record from another revision is evidence of that revision and never a predecessor here; v4r3 evidence"
+  },
+  "gate_2_may_run": true,
+  "historical_evidence_untouched": {
+    "closure_hash": "930720a0945e06dd960a877cc1cb23ff9af4ef7048e9456525d18958b7f1b264",
+    "drifted": {},
+    "holds": true,
+    "note": "the closure record hashes the superseded study's reports. Its stage records are not rewritten by anything in v4r4: no v4r4 code path opens that tree for writing, and `engine/context.py` refuses a study root that overlaps it",
+    "reports_checked": 6,
+    "superseded_stage_records_present": 22
+  },
+  "integer_key_canonicalisation": {
+    "hashes_differ_before_canonicalisation": true,
+    "holds": true,
+    "in_memory_key_order": [
+      "512",
+      "768",
+      "1024"
+    ],
+    "what_is_signed": "the wire form. `write_stage_record` canonicalises before signing, so what is hashed is what is stored, whatever the payload holds",
+    "wire_form_is_idempotent": true,
+    "wire_key_order": [
+      "512",
+      "768",
+      "1024"
+    ]
+  },
+  "models": {
+    "gemma-3n-e2b-it": {
+      "furthest_stage": "GATE_3_REFERENCES",
+      "ordering": {
+        "GATE_0_APPARATUS": {
+          "holds": true,
+          "predecessor": "QUALIFIED",
+          "predecessor_outcome": "PASS"
+        },
+        "GATE_1_MEASUREMENT": {
+          "holds": true,
+          "predecessor": "REGIME_SCREEN",
+          "predecessor_outcome": "PASS"
+        },
+        "GATE_2_REGIME": {
+          "holds": true,
+          "predecessor": "GATE_1_MEASUREMENT",
+          "predecessor_outcome": "PASS"
+        },
+        "GATE_3_REFERENCES": {
+          "holds": true,
+          "predecessor": "GATE_2_REGIME",
+          "predecessor_outcome": "PASS"
+        },
+        "QUALIFIED": {
+          "holds": true,
+          "predecessor": null
+        },
+        "REGIME_SCREEN": {
+          "holds": true,
+          "predecessor": "GATE_0_APPARATUS",
+          "predecessor_outcome": "PASS"
+        }
+      },
+      "problems": [],
+      "records": {
+        "GATE_0_APPARATUS": {
+          "content_hash_recomputes": true,
+          "durable_mirror_matches": true,
+          "durable_present": true,
+          "outcome": "PASS",
+          "path": "evidence/dci1v4r4/gemma-3n-e2b-it/GATE_0_APPARATUS/records/gate0_apparatus.json",
+          "producing_commit": null,
+          "reader_copy_matches": true,
+          "round_trips": true,
+          "signature_verifies": true,
+          "study_binding_holds": true,
+          "study_id": "dci1v4r4",
+          "write_once_enforced": true
+        },
+        "GATE_1_MEASUREMENT": {
+          "content_hash_recomputes": true,
+          "durable_mirror_matches": true,
+          "durable_present": true,
+          "outcome": "PASS",
+          "path": "evidence/dci1v4r4/gemma-3n-e2b-it/GATE_1_MEASUREMENT/records/gate1_measurement.json",
+          "producing_commit": null,
+          "reader_copy_matches": true,
+          "round_trips": true,
+          "signature_verifies": true,
+          "study_binding_holds": true,
+          "study_id": "dci1v4r4",
+          "write_once_enforced": true
+        },
+        "GATE_2_REGIME": {
+          "content_hash_recomputes": true,
+          "durable_mirror_matches": true,
+          "durable_present": true,
+          "outcome": "PASS",
+          "path": "evidence/dci1v4r4/gemma-3n-e2b-it/GATE_2_REGIME/records/gate2_regime.json",
+          "producing_commit": null,
+          "reader_copy_matches": true,
+          "round_trips": true,
+          "signature_verifies": true,
+          "study_binding_holds": true,
+          "study_id": "dci1v4r4",
+          "write_once_enforced": true
+        },
+        "GATE_3_REFERENCES": {
+          "content_hash_recomputes": true,
+          "durable_mirror_matches": true,
+          "durable_present": true,
+          "outcome": "PASS",
+          "path": "evidence/dci1v4r4/gemma-3n-e2b-it/GATE_3_REFERENCES/records/gate3_references.json",
+          "producing_commit": null,
+          "reader_copy_matches": true,
+          "round_trips": true,
+          "signature_verifies": true,
+          "study_binding_holds": true,
+          "study_id": "dci1v4r4",
+          "write_once_enforced": true
+        },
+        "QUALIFIED": {
+          "content_hash_recomputes": true,
+          "durable_mirror_matches": true,
+          "durable_present": true,
+          "outcome": "PASS",
+          "path": "evidence/dci1v4r4/gemma-3n-e2b-it/QUALIFIED/records/qualification_record.json",
+          "producing_commit": "d11e41c7104775890cf7420062c02531ffa33966",
+          "reader_copy_matches": true,
+          "round_trips": true,
+          "signature_verifies": true,
+          "study_binding_holds": true,
+          "study_id": "dci1v4r4",
+          "write_once_enforced": true
+        },
+        "REGIME_SCREEN": {
+          "content_hash_recomputes": true,
+          "durable_mirror_matches": true,
+          "durable_present": true,
+          "outcome": "PASS",
+          "path": "evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/records/regime_record.json",
+          "producing_commit": null,
+          "reader_copy_matches": true,
+          "round_trips": true,
+          "signature_verifies": true,
+          "study_binding_holds": true,
+          "study_id": "dci1v4r4",
+          "write_once_enforced": true
+        }
+      },
+      "transition_log": {
+        "outcomes": [
+          "PASS",
+          "SUPERSEDED",
+          "TERMINAL"
+        ],
+        "producing_commits": [
+          "1f32dea619bb10e2492f506e9cad4085b392cc03",
+          "5bd947b17db46c762eda75785325a263c1805b5f",
+          "7eb19472dfc43c46ff6765a492ff9796a50d9316",
+          "aff97aca81732226ea86179f6f7fd1eee36c9ed8",
+          "d11e41c7104775890cf7420062c02531ffa33966"
+        ],
+        "row_hashes_verify": true,
+        "rows": 8,
+        "stages": [
+          "GATE_0_APPARATUS",
+          "REGIME_SCREEN",
+          "GATE_1_MEASUREMENT",
+          "GATE_2_REGIME",
+          "GATE_3_REFERENCES",
+          "GATE_3_REFERENCES",
+          "GATE_3_REFERENCES",
+          "GATE_4_COMPOSED_HEADROOM"
+        ]
+      }
+    },
+    "gemma-3n-e4b-it": {
+      "furthest_stage": "GATE_4_COMPOSED_HEADROOM",
+      "ordering": {
+        "GATE_0_APPARATUS": {
+          "holds": true,
+          "predecessor": "QUALIFIED",
+          "predecessor_outcome": "PASS"
+        },
+        "GATE_1_MEASUREMENT": {
+          "holds": true,
+          "predecessor": "REGIME_SCREEN",
+          "predecessor_outcome": "PASS"
+        },
+        "GATE_2_REGIME": {
+          "holds": true,
+          "predecessor": "GATE_1_MEASUREMENT",
+          "predecessor_outcome": "PASS"
+        },
+        "GATE_3_REFERENCES": {
+          "holds": true,
+          "predecessor": "GATE_2_REGIME",
+          "predecessor_outcome": "PASS"
+        },
+        "GATE_4_COMPOSED_HEADROOM": {
+          "holds": true,
+          "predecessor": "GATE_3_REFERENCES",
+          "predecessor_outcome": "PASS"
+        },
+        "QUALIFIED": {
+          "holds": true,
+          "predecessor": null
+        },
+        "REGIME_SCREEN": {
+          "holds": true,
+          "predecessor": "GATE_0_APPARATUS",
+          "predecessor_outcome": "PASS"
+        }
+      },
+      "problems": [],
+      "records": {
+        "GATE_0_APPARATUS": {
+          "content_hash_recomputes": true,
+          "durable_mirror_matches": true,
+          "durable_present": true,
+          "outcome": "PASS",
+          "path": "evidence/dci1v4r4/gemma-3n-e4b-it/GATE_0_APPARATUS/records/gate0_apparatus.json",
+          "producing_commit": null,
+          "reader_copy_matches": true,
+          "round_trips": true,
+          "signature_verifies": true,
+          "study_binding_holds": true,
+          "study_id": "dci1v4r4",
+          "write_once_enforced": true
+        },
+        "GATE_1_MEASUREMENT": {
+          "content_hash_recomputes": true,
+          "durable_mirror_matches": true,
+          "durable_present": true,
+          "outcome": "PASS",
+          "path": "evidence/dci1v4r4/gemma-3n-e4b-it/GATE_1_MEASUREMENT/records/gate1_measurement.json",
+          "producing_commit": null,
+          "reader_copy_matches": true,
+          "round_trips": true,
+          "signature_verifies": true,
+          "study_binding_holds": true,
+          "study_id": "dci1v4r4",
+          "write_once_enforced": true
+        },
+        "GATE_2_REGIME": {
+          "content_hash_recomputes": true,
+          "durable_mirror_matches": true,
+          "durable_present": true,
+          "outcome": "PASS",
+          "path": "evidence/dci1v4r4/gemma-3n-e4b-it/GATE_2_REGIME/records/gate2_regime.json",
+          "producing_commit": null,
+          "reader_copy_matches": true,
+          "round_trips": true,
+          "signature_verifies": true,
+          "study_binding_holds": true,
+          "study_id": "dci1v4r4",
+          "write_once_enforced": true
+        },
+        "GATE_3_REFERENCES": {
+          "content_hash_recomputes": true,
+          "durable_mirror_matches": true,
+          "durable_present": true,
+          "outcome": "PASS",
+          "path": "evidence/dci1v4r4/gemma-3n-e4b-it/GATE_3_REFERENCES/records/gate3_references.json",
+          "producing_commit": null,
+          "reader_copy_matches": true,
+          "round_trips": true,
+          "signature_verifies": true,
+          "study_binding_holds": true,
+          "study_id": "dci1v4r4",
+          "write_once_enforced": true
+        },
+        "GATE_4_COMPOSED_HEADROOM": {
+          "content_hash_recomputes": true,
+          "durable_mirror_matches": true,
+          "durable_present": true,
+          "outcome": "PASS",
+          "path": "evidence/dci1v4r4/gemma-3n-e4b-it/GATE_4_COMPOSED_HEADROOM/records/gate4_composed.json",
+          "producing_commit": null,
+          "reader_copy_matches": true,
+          "round_trips": true,
+          "signature_verifies": true,
+          "study_binding_holds": true,
+          "study_id": "dci1v4r4",
+          "write_once_enforced": true
+        },
+        "QUALIFIED": {
+          "content_hash_recomputes": true,
+          "durable_mirror_matches": true,
+          "durable_present": true,
+          "outcome": "PASS",
+          "path": "evidence/dci1v4r4/gemma-3n-e4b-it/QUALIFIED/records/qualification_record.json",
+          "producing_commit": "d11e41c7104775890cf7420062c02531ffa33966",
+          "reader_copy_matches": true,
+          "round_trips": true,
+          "signature_verifies": true,
+          "study_binding_holds": true,
+          "study_id": "dci1v4r4",
+          "write_once_enforced": true
+        },
+        "REGIME_SCREEN": {
+          "content_hash_recomputes": true,
+          "durable_mirror_matches": true,
+          "durable_present": true,
+          "outcome": "PASS",
+          "path": "evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/records/regime_record.json",
+          "producing_commit": null,
+          "reader_copy_matches": true,
+          "round_trips": true,
+          "signature_verifies": true,
+          "study_binding_holds": true,
+          "study_id": "dci1v4r4",
+          "write_once_enforced": true
+        }
+      },
+      "transition_log": {
+        "outcomes": [
+          "PASS",
+          "SUPERSEDED"
+        ],
+        "producing_commits": [
+          "1f32dea619bb10e2492f506e9cad4085b392cc03",
+          "7eb19472dfc43c46ff6765a492ff9796a50d9316",
+          "aff97aca81732226ea86179f6f7fd1eee36c9ed8",
+          "d11e41c7104775890cf7420062c02531ffa33966"
+        ],
+        "row_hashes_verify": true,
+        "rows": 8,
+        "stages": [
+          "GATE_0_APPARATUS",
+          "REGIME_SCREEN",
+          "GATE_1_MEASUREMENT",
+          "GATE_2_REGIME",
+          "GATE_3_REFERENCES",
+          "GATE_3_REFERENCES",
+          "GATE_3_REFERENCES",
+          "GATE_4_COMPOSED_HEADROOM"
+        ]
+      }
+    },
+    "qwen3-4b": {
+      "furthest_stage": "GATE_4_COMPOSED_HEADROOM",
+      "ordering": {
+        "GATE_0_APPARATUS": {
+          "holds": true,
+          "predecessor": "QUALIFIED",
+          "predecessor_outcome": "PASS"
+        },
+        "GATE_1_MEASUREMENT": {
+          "holds": true,
+          "predecessor": "REGIME_SCREEN",
+          "predecessor_outcome": "PASS"
+        },
+        "GATE_2_REGIME": {
+          "holds": true,
+          "predecessor": "GATE_1_MEASUREMENT",
+          "predecessor_outcome": "PASS"
+        },
+        "GATE_3_REFERENCES": {
+          "holds": true,
+          "predecessor": "GATE_2_REGIME",
+          "predecessor_outcome": "PASS"
+        },
+        "GATE_4_COMPOSED_HEADROOM": {
+          "holds": true,
+          "predecessor": "GATE_3_REFERENCES",
+          "predecessor_outcome": "PASS"
+        },
+        "QUALIFIED": {
+          "holds": true,
+          "predecessor": null
+        },
+        "REGIME_SCREEN": {
+          "holds": true,
+          "predecessor": "GATE_0_APPARATUS",
+          "predecessor_outcome": "PASS"
+        }
+      },
+      "problems": [],
+      "records": {
+        "GATE_0_APPARATUS": {
+          "content_hash_recomputes": true,
+          "durable_mirror_matches": true,
+          "durable_present": true,
+          "outcome": "PASS",
+          "path": "evidence/dci1v4r4/qwen3-4b/GATE_0_APPARATUS/records/gate0_apparatus.json",
+          "producing_commit": null,
+          "reader_copy_matches": true,
+          "round_trips": true,
+          "signature_verifies": true,
+          "study_binding_holds": true,
+          "study_id": "dci1v4r4",
+          "write_once_enforced": true
+        },
+        "GATE_1_MEASUREMENT": {
+          "content_hash_recomputes": true,
+          "durable_mirror_matches": true,
+          "durable_present": true,
+          "outcome": "PASS",
+          "path": "evidence/dci1v4r4/qwen3-4b/GATE_1_MEASUREMENT/records/gate1_measurement.json",
+          "producing_commit": null,
+          "reader_copy_matches": true,
+          "round_trips": true,
+          "signature_verifies": true,
+          "study_binding_holds": true,
+          "study_id": "dci1v4r4",
+          "write_once_enforced": true
+        },
+        "GATE_2_REGIME": {
+          "content_hash_recomputes": true,
+          "durable_mirror_matches": true,
+          "durable_present": true,
+          "outcome": "PASS",
+          "path": "evidence/dci1v4r4/qwen3-4b/GATE_2_REGIME/records/gate2_regime.json",
+          "producing_commit": null,
+          "reader_copy_matches": true,
+          "round_trips": true,
+          "signature_verifies": true,
+          "study_binding_holds": true,
+          "study_id": "dci1v4r4",
+          "write_once_enforced": true
+        },
+        "GATE_3_REFERENCES": {
+          "content_hash_recomputes": true,
+          "durable_mirror_matches": true,
+          "durable_present": true,
+          "outcome": "PASS",
+          "path": "evidence/dci1v4r4/qwen3-4b/GATE_3_REFERENCES/records/gate3_references.json",
+          "producing_commit": null,
+          "reader_copy_matches": true,
+          "round_trips": true,
+          "signature_verifies": true,
+          "study_binding_holds": true,
+          "study_id": "dci1v4r4",
+          "write_once_enforced": true
+        },
+        "GATE_4_COMPOSED_HEADROOM": {
+          "content_hash_recomputes": true,
+          "durable_mirror_matches": true,
+          "durable_present": true,
+          "outcome": "PASS",
+          "path": "evidence/dci1v4r4/qwen3-4b/GATE_4_COMPOSED_HEADROOM/records/gate4_composed.json",
+          "producing_commit": null,
+          "reader_copy_matches": true,
+          "round_trips": true,
+          "signature_verifies": true,
+          "study_binding_holds": true,
+          "study_id": "dci1v4r4",
+          "write_once_enforced": true
+        },
+        "QUALIFIED": {
+          "content_hash_recomputes": true,
+          "durable_mirror_matches": true,
+          "durable_present": true,
+          "outcome": "PASS",
+          "path": "evidence/dci1v4r4/qwen3-4b/QUALIFIED/records/qualification_record.json",
+          "producing_commit": "d11e41c7104775890cf7420062c02531ffa33966",
+          "reader_copy_matches": true,
+          "round_trips": true,
+          "signature_verifies": true,
+          "study_binding_holds": true,
+          "study_id": "dci1v4r4",
+          "write_once_enforced": true
+        },
+        "REGIME_SCREEN": {
+          "content_hash_recomputes": true,
+          "durable_mirror_matches": true,
+          "durable_present": true,
+          "outcome": "PASS",
+          "path": "evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/records/regime_record.json",
+          "producing_commit": null,
+          "reader_copy_matches": true,
+          "round_trips": true,
+          "signature_verifies": true,
+          "study_binding_holds": true,
+          "study_id": "dci1v4r4",
+          "write_once_enforced": true
+        }
+      },
+      "transition_log": {
+        "outcomes": [
+          "PASS",
+          "SUPERSEDED"
+        ],
+        "producing_commits": [
+          "1f32dea619bb10e2492f506e9cad4085b392cc03",
+          "7eb19472dfc43c46ff6765a492ff9796a50d9316",
+          "aff97aca81732226ea86179f6f7fd1eee36c9ed8",
+          "d11e41c7104775890cf7420062c02531ffa33966"
+        ],
+        "row_hashes_verify": true,
+        "rows": 8,
+        "stages": [
+          "GATE_0_APPARATUS",
+          "REGIME_SCREEN",
+          "GATE_1_MEASUREMENT",
+          "GATE_2_REGIME",
+          "GATE_3_REFERENCES",
+          "GATE_3_REFERENCES",
+          "GATE_3_REFERENCES",
+          "GATE_4_COMPOSED_HEADROOM"
+        ]
+      }
+    },
+    "qwen3-4b-instruct-2507": {
+      "furthest_stage": "GATE_3_REFERENCES",
+      "ordering": {
+        "GATE_0_APPARATUS": {
+          "holds": true,
+          "predecessor": "QUALIFIED",
+          "predecessor_outcome": "PASS"
+        },
+        "GATE_1_MEASUREMENT": {
+          "holds": true,
+          "predecessor": "REGIME_SCREEN",
+          "predecessor_outcome": "PASS"
+        },
+        "GATE_2_REGIME": {
+          "holds": true,
+          "predecessor": "GATE_1_MEASUREMENT",
+          "predecessor_outcome": "PASS"
+        },
+        "GATE_3_REFERENCES": {
+          "holds": true,
+          "predecessor": "GATE_2_REGIME",
+          "predecessor_outcome": "PASS"
+        },
+        "QUALIFIED": {
+          "holds": true,
+          "predecessor": null
+        },
+        "REGIME_SCREEN": {
+          "holds": true,
+          "predecessor": "GATE_0_APPARATUS",
+          "predecessor_outcome": "PASS"
+        }
+      },
+      "problems": [],
+      "records": {
+        "GATE_0_APPARATUS": {
+          "content_hash_recomputes": true,
+          "durable_mirror_matches": true,
+          "durable_present": true,
+          "outcome": "PASS",
+          "path": "evidence/dci1v4r4/qwen3-4b-instruct-2507/GATE_0_APPARATUS/records/gate0_apparatus.json",
+          "producing_commit": null,
+          "reader_copy_matches": true,
+          "round_trips": true,
+          "signature_verifies": true,
+          "study_binding_holds": true,
+          "study_id": "dci1v4r4",
+          "write_once_enforced": true
+        },
+        "GATE_1_MEASUREMENT": {
+          "content_hash_recomputes": true,
+          "durable_mirror_matches": true,
+          "durable_present": true,
+          "outcome": "PASS",
+          "path": "evidence/dci1v4r4/qwen3-4b-instruct-2507/GATE_1_MEASUREMENT/records/gate1_measurement.json",
+          "producing_commit": null,
+          "reader_copy_matches": true,
+          "round_trips": true,
+          "signature_verifies": true,
+          "study_binding_holds": true,
+          "study_id": "dci1v4r4",
+          "write_once_enforced": true
+        },
+        "GATE_2_REGIME": {
+          "content_hash_recomputes": true,
+          "durable_mirror_matches": true,
+          "durable_present": true,
+          "outcome": "PASS",
+          "path": "evidence/dci1v4r4/qwen3-4b-instruct-2507/GATE_2_REGIME/records/gate2_regime.json",
+          "producing_commit": null,
+          "reader_copy_matches": true,
+          "round_trips": true,
+          "signature_verifies": true,
+          "study_binding_holds": true,
+          "study_id": "dci1v4r4",
+          "write_once_enforced": true
+        },
+        "GATE_3_REFERENCES": {
+          "content_hash_recomputes": true,
+          "durable_mirror_matches": true,
+          "durable_present": true,
+          "outcome": "PASS",
+          "path": "evidence/dci1v4r4/qwen3-4b-instruct-2507/GATE_3_REFERENCES/records/gate3_references.json",
+          "producing_commit": null,
+          "reader_copy_matches": true,
+          "round_trips": true,
+          "signature_verifies": true,
+          "study_binding_holds": true,
+          "study_id": "dci1v4r4",
+          "write_once_enforced": true
+        },
+        "QUALIFIED": {
+          "content_hash_recomputes": true,
+          "durable_mirror_matches": true,
+          "durable_present": true,
+          "outcome": "PASS",
+          "path": "evidence/dci1v4r4/qwen3-4b-instruct-2507/QUALIFIED/records/qualification_record.json",
+          "producing_commit": "d11e41c7104775890cf7420062c02531ffa33966",
+          "reader_copy_matches": true,
+          "round_trips": true,
+          "signature_verifies": true,
+          "study_binding_holds": true,
+          "study_id": "dci1v4r4",
+          "write_once_enforced": true
+        },
+        "REGIME_SCREEN": {
+          "content_hash_recomputes": true,
+          "durable_mirror_matches": true,
+          "durable_present": true,
+          "outcome": "PASS",
+          "path": "evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/records/regime_record.json",
+          "producing_commit": null,
+          "reader_copy_matches": true,
+          "round_trips": true,
+          "signature_verifies": true,
+          "study_binding_holds": true,
+          "study_id": "dci1v4r4",
+          "write_once_enforced": true
+        }
+      },
+      "transition_log": {
+        "outcomes": [
+          "PASS",
+          "TERMINAL"
+        ],
+        "producing_commits": [
+          "1f32dea619bb10e2492f506e9cad4085b392cc03",
+          "7eb19472dfc43c46ff6765a492ff9796a50d9316",
+          "aff97aca81732226ea86179f6f7fd1eee36c9ed8",
+          "d11e41c7104775890cf7420062c02531ffa33966"
+        ],
+        "row_hashes_verify": true,
+        "rows": 6,
+        "stages": [
+          "GATE_0_APPARATUS",
+          "REGIME_SCREEN",
+          "GATE_1_MEASUREMENT",
+          "GATE_2_REGIME",
+          "GATE_3_REFERENCES",
+          "GATE_4_COMPOSED_HEADROOM"
+        ]
+      }
+    }
+  },
+  "passed": true,
+  "problems": [],
+  "study_id": "dci1v4r4",
+  "working_tree": {
+    "changed_paths": 8,
+    "clean": false,
+    "head": "bbe5b8f24fd3974a507ea509a24accb9176e2216",
+    "protocol_position": "§18 stage 1 checks `clean_worktree` and fails closed on it. Reports are written after qualification by design, so a dirty tree here is expected and is not a finding; a dirty tree at qualification is"
+  }
+}

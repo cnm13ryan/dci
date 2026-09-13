@@ -1,0 +1,243 @@
+{
+ "_note": "one replication, 20 rate checks. A threshold chosen to sit inside an observed gap on 20 points is fitted to those 20 points; v5 \u00a79.3 chooses it from the band and a registered error allowance instead, and records that the two happen to coincide.",
+ "_status": "DEVELOPMENT ONLY \u2014 design fitting on completed v4r4 evidence; not preregistered, not confirmatory, not validation",
+ "absolute_error": {
+  "max": 0.3129559018567639,
+  "median": 0.06658716581879998,
+  "min": 0.005306142410015702,
+  "n": 20,
+  "p75": 0.12245802238805964,
+  "p90": 0.20579135572139295
+ },
+ "ceiling_sweep": {
+  "0.85": {
+   "caught": 4,
+   "false_alarms": 2,
+   "missed": 0
+  },
+  "0.875": {
+   "caught": 4,
+   "false_alarms": 2,
+   "missed": 0
+  },
+  "0.9": {
+   "caught": 4,
+   "false_alarms": 0,
+   "missed": 0
+  },
+  "0.92": {
+   "caught": 4,
+   "false_alarms": 0,
+   "missed": 0
+  },
+  "0.95": {
+   "caught": 2,
+   "false_alarms": 0,
+   "missed": 2
+  }
+ },
+ "model": "gemma-3n-e2b-it",
+ "n_rate_checks": 20,
+ "rows": [
+  {
+   "cell": "pair:B+R3+",
+   "companion": "RF11:32",
+   "error": -0.005306142410015702,
+   "gate4_failed": true,
+   "iota": 0.8544600938967137,
+   "kappa_under_b": 0.9635416666666666,
+   "observed_gate4": 1.0,
+   "projected": 0.9946938575899843
+  },
+  {
+   "cell": "pair:R3++B",
+   "companion": "RF11:32",
+   "error": -0.005306142410015702,
+   "gate4_failed": true,
+   "iota": 0.8544600938967137,
+   "kappa_under_b": 0.9635416666666666,
+   "observed_gate4": 1.0,
+   "projected": 0.9946938575899843
+  },
+  {
+   "cell": "pair:B+R3",
+   "companion": "RF11:26",
+   "error": -0.029912079510703293,
+   "gate4_failed": true,
+   "iota": 0.6330275229357798,
+   "kappa_under_b": 0.8333333333333334,
+   "observed_gate4": 0.96875,
+   "projected": 0.9388379204892967
+  },
+  {
+   "cell": "pair:R3+B",
+   "companion": "RF11:26",
+   "error": -0.019495412844036664,
+   "gate4_failed": true,
+   "iota": 0.6330275229357798,
+   "kappa_under_b": 0.8333333333333334,
+   "observed_gate4": 0.9583333333333334,
+   "projected": 0.9388379204892967
+  },
+  {
+   "cell": "pair:B+R1+",
+   "companion": "RF9:13",
+   "error": 0.07113023349436387,
+   "gate4_failed": false,
+   "iota": 0.642512077294686,
+   "kappa_under_b": 0.6744791666666666,
+   "observed_gate4": 0.8125,
+   "projected": 0.8836302334943639
+  },
+  {
+   "cell": "pair:R1++B",
+   "companion": "RF9:13",
+   "error": 0.02946356682769724,
+   "gate4_failed": false,
+   "iota": 0.642512077294686,
+   "kappa_under_b": 0.6744791666666666,
+   "observed_gate4": 0.8541666666666666,
+   "projected": 0.8836302334943639
+  },
+  {
+   "cell": "pair:B+R3-",
+   "companion": "RF11:21",
+   "error": -0.07884951881014868,
+   "gate4_failed": false,
+   "iota": 0.3359580052493438,
+   "kappa_under_b": 0.6145833333333334,
+   "observed_gate4": 0.8229166666666666,
+   "projected": 0.744067147856518
+  },
+  {
+   "cell": "pair:R3-+B",
+   "companion": "RF11:21",
+   "error": -0.016349518810148678,
+   "gate4_failed": false,
+   "iota": 0.3359580052493438,
+   "kappa_under_b": 0.6145833333333334,
+   "observed_gate4": 0.7604166666666666,
+   "projected": 0.744067147856518
+  },
+  {
+   "cell": "pair:B+R1",
+   "companion": "RF9:10",
+   "error": -0.018550228310502348,
+   "gate4_failed": false,
+   "iota": 0.5342465753424658,
+   "kappa_under_b": 0.4010416666666667,
+   "observed_gate4": 0.7395833333333334,
+   "projected": 0.721033105022831
+  },
+  {
+   "cell": "pair:R1+B",
+   "companion": "RF9:10",
+   "error": -0.09146689497716898,
+   "gate4_failed": false,
+   "iota": 0.5342465753424658,
+   "kappa_under_b": 0.4010416666666667,
+   "observed_gate4": 0.8125,
+   "projected": 0.721033105022831
+  },
+  {
+   "cell": "pair:B+R2+",
+   "companion": "CR5:1",
+   "error": -0.2014702690972222,
+   "gate4_failed": false,
+   "iota": 0.6822916666666666,
+   "kappa_under_b": 0.005208333333333333,
+   "observed_gate4": 0.8854166666666666,
+   "projected": 0.6839463975694444
+  },
+  {
+   "cell": "pair:R2++B",
+   "companion": "CR5:1",
+   "error": -0.03480360243055558,
+   "gate4_failed": false,
+   "iota": 0.6822916666666666,
+   "kappa_under_b": 0.005208333333333333,
+   "observed_gate4": 0.71875,
+   "projected": 0.6839463975694444
+  },
+  {
+   "cell": "pair:B+R2",
+   "companion": "CR5:2",
+   "error": -0.15776626414273287,
+   "gate4_failed": false,
+   "iota": 0.6318537859007833,
+   "kappa_under_b": 0.033854166666666664,
+   "observed_gate4": 0.8020833333333334,
+   "projected": 0.6443170691906005
+  },
+  {
+   "cell": "pair:R2+B",
+   "companion": "CR5:2",
+   "error": 0.07140040252393387,
+   "gate4_failed": false,
+   "iota": 0.6318537859007833,
+   "kappa_under_b": 0.033854166666666664,
+   "observed_gate4": 0.5729166666666666,
+   "projected": 0.6443170691906005
+  },
+  {
+   "cell": "pair:B+CL",
+   "companion": "CX2:1",
+   "error": 0.20579135572139295,
+   "gate4_failed": false,
+   "iota": 0.5731343283582089,
+   "kappa_under_b": 0.09114583333333333,
+   "observed_gate4": 0.40625,
+   "projected": 0.612041355721393
+  },
+  {
+   "cell": "pair:CL+B",
+   "companion": "CX2:1",
+   "error": 0.12245802238805964,
+   "gate4_failed": false,
+   "iota": 0.5731343283582089,
+   "kappa_under_b": 0.09114583333333333,
+   "observed_gate4": 0.4895833333333333,
+   "projected": 0.612041355721393
+  },
+  {
+   "cell": "pair:B+R1-",
+   "companion": "RF9:8",
+   "error": -0.03933376736111116,
+   "gate4_failed": false,
+   "iota": 0.431547619047619,
+   "kappa_under_b": 0.21614583333333334,
+   "observed_gate4": 0.59375,
+   "projected": 0.5544162326388888
+  },
+  {
+   "cell": "pair:R1-+B",
+   "companion": "RF9:8",
+   "error": -0.11225043402777779,
+   "gate4_failed": false,
+   "iota": 0.431547619047619,
+   "kappa_under_b": 0.21614583333333334,
+   "observed_gate4": 0.6666666666666666,
+   "projected": 0.5544162326388888
+  },
+  {
+   "cell": "pair:B+R2-",
+   "companion": "CR5:3",
+   "error": -0.3129559018567639,
+   "gate4_failed": false,
+   "iota": 0.35543766578249336,
+   "kappa_under_b": 0.078125,
+   "observed_gate4": 0.71875,
+   "projected": 0.4057940981432361
+  },
+  {
+   "cell": "pair:R2-+B",
+   "companion": "CR5:3",
+   "error": 0.06204409814323608,
+   "gate4_failed": false,
+   "iota": 0.35543766578249336,
+   "kappa_under_b": 0.078125,
+   "observed_gate4": 0.34375,
+   "projected": 0.4057940981432361
+  }
+ ]
+}

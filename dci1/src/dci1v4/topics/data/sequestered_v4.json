@@ -1,0 +1,482 @@
+[
+  {
+    "topic_id": "art-and-design-07",
+    "area": "art and design",
+    "sha256": "9a07c69524ffc471e5524719cfd4ad58c36fb7dd2849e41fbd619e8f34e6fa7a"
+  },
+  {
+    "topic_id": "art-and-design-09",
+    "area": "art and design",
+    "sha256": "debac93cc3bce2c01aac20fc8ec960ee8911ddfc03b27ff8fec33cddf8cdc38c"
+  },
+  {
+    "topic_id": "art-and-design-14",
+    "area": "art and design",
+    "sha256": "5f282673efdc87b9bffa03cb5c600ad15fc4e66b71c85220a2cc7e88d981ffd5"
+  },
+  {
+    "topic_id": "art-and-design-18",
+    "area": "art and design",
+    "sha256": "6192bb59b04cd62c6275d8408c99f358da5a198b56b9ca373bc3e4b7e9d6f1c7"
+  },
+  {
+    "topic_id": "art-and-design-25",
+    "area": "art and design",
+    "sha256": "b449a987e0b7628706c4cfc96fe41b495247c6e7194073f88f0e1fa1d3b71f2b"
+  },
+  {
+    "topic_id": "art-and-design-27",
+    "area": "art and design",
+    "sha256": "195092e9b315d406bfc1d4c2447312d85bc172b2b67df61debd1f9e3d74a5b0b"
+  },
+  {
+    "topic_id": "art-and-design-34",
+    "area": "art and design",
+    "sha256": "272dc67f29ddcf5e2f540872ad8ea985898a411b96ece6916bc251d90c9a97fd"
+  },
+  {
+    "topic_id": "art-and-design-40",
+    "area": "art and design",
+    "sha256": "7fb3afd6843dadef8af38806960a128dd49c4945392ec5f8c87d7d5d7aac46b5"
+  },
+  {
+    "topic_id": "everyday-science-06",
+    "area": "everyday science",
+    "sha256": "72bf18c973c5d0cba3bf37257c165289dffeff840c516f0678a2ae21505e7ce6"
+  },
+  {
+    "topic_id": "everyday-science-08",
+    "area": "everyday science",
+    "sha256": "ca3c55585f10ebfa8135a02f9a959f515bf25cab04ba83dea282f65382ce07d5"
+  },
+  {
+    "topic_id": "everyday-science-13",
+    "area": "everyday science",
+    "sha256": "2ef5c80f1675d07610286c49264d7f7364df86656862b30fda04ba34f00175b7"
+  },
+  {
+    "topic_id": "everyday-science-20",
+    "area": "everyday science",
+    "sha256": "341542c70b7fec75f18ce7c60a95e3035ba32afb8f185d08be10edcb33ba3f53"
+  },
+  {
+    "topic_id": "everyday-science-28",
+    "area": "everyday science",
+    "sha256": "5208f5f3932694042af15a24556089ab62dbe5c932366009b88a74af9a70474c"
+  },
+  {
+    "topic_id": "everyday-science-29",
+    "area": "everyday science",
+    "sha256": "9cfd3957709bdc1beb30d783c0bad5aeb5bb2a8e5b9f1108f9331188f4dbf674"
+  },
+  {
+    "topic_id": "everyday-science-37",
+    "area": "everyday science",
+    "sha256": "73bf47368e8eb2daa80bb1a786b7b34a8ad90c51079a03fa2f25b7f608964c4a"
+  },
+  {
+    "topic_id": "everyday-science-49",
+    "area": "everyday science",
+    "sha256": "7b1b8db7c9e9953710350f83714a618b7fa8b958695d6c36f0c7f229f8755287"
+  },
+  {
+    "topic_id": "food-07",
+    "area": "food",
+    "sha256": "10b01826bbb4da05b9756242ab82105b251aed64e0357874b2311ede18ce0192"
+  },
+  {
+    "topic_id": "food-08",
+    "area": "food",
+    "sha256": "bf4d976241e9c3ac22dfb3f5911625fe6d0753a9770ca82d2c71d239a7f23b4d"
+  },
+  {
+    "topic_id": "food-14",
+    "area": "food",
+    "sha256": "f96b205afa4e398ab4450c5619513b5cb777d678b75ec7c1aeebd05ae3508a2b"
+  },
+  {
+    "topic_id": "food-27",
+    "area": "food",
+    "sha256": "4a85274af5bf0aafdcb2ba8c381776597b15da628788da9eedbdb8c681b6ae12"
+  },
+  {
+    "topic_id": "food-29",
+    "area": "food",
+    "sha256": "08b5cd3e86b4a7420ba39d9f160a9781b77a9340ca22d88c0a848fc780257226"
+  },
+  {
+    "topic_id": "food-30",
+    "area": "food",
+    "sha256": "38e83cea3ada595ef040888b65b36193388536ff6176a166ed49f160fb16763d"
+  },
+  {
+    "topic_id": "food-39",
+    "area": "food",
+    "sha256": "4bc41c334387ecdb9f841589d491d4959b34bc8886e6f4a5de788c3343bcf1b5"
+  },
+  {
+    "topic_id": "food-49",
+    "area": "food",
+    "sha256": "759ccfb05ddea817cf795dae07b82a1fba4ae600601c1a8c3b8d8497fb4c09fb"
+  },
+  {
+    "topic_id": "geography-04",
+    "area": "geography",
+    "sha256": "5469642722eff341da2fb2998fb9351ed83354356b7dd4dd8f65182071aa167b"
+  },
+  {
+    "topic_id": "geography-06",
+    "area": "geography",
+    "sha256": "1b7911ed6a4151f8cfa5854eb9bfa3bc664d39fab23a719be271cda1fb3105e5"
+  },
+  {
+    "topic_id": "geography-09",
+    "area": "geography",
+    "sha256": "915e279165ff6473292e6c944a210bb6c023f5bfbd0ea477a3702c35d0368ed8"
+  },
+  {
+    "topic_id": "geography-19",
+    "area": "geography",
+    "sha256": "098941a96596ab22efd3327c4ddb7d1bb85521266eea409671b27002fbf6e0c0"
+  },
+  {
+    "topic_id": "geography-20",
+    "area": "geography",
+    "sha256": "da5cb7964707c7b9928f25e06224c54aaf3f897d0c6407aa6517f74c759de5a4"
+  },
+  {
+    "topic_id": "geography-32",
+    "area": "geography",
+    "sha256": "691ee10043042537a22f88db08d7f9355babc9639eea3e2c036c8fbf4791a6ef"
+  },
+  {
+    "topic_id": "geography-48",
+    "area": "geography",
+    "sha256": "c1ffbea43daa34c4a67017c1dde04a555fa81380edc75f0f705cf80bfe88e23c"
+  },
+  {
+    "topic_id": "geography-51",
+    "area": "geography",
+    "sha256": "592c6f7c103e45d441e71a6e5955b954f53ad9fbd5fce52269a8da62a20a1e98"
+  },
+  {
+    "topic_id": "health-and-the-body-07",
+    "area": "health and the body",
+    "sha256": "7d2d9821fa7cf790620566ef9b9c9c6facba28a480435eaa91027a3f94eb3d81"
+  },
+  {
+    "topic_id": "health-and-the-body-08",
+    "area": "health and the body",
+    "sha256": "cbdf403551fdd8bfef43555e55789b37333d76968fe0fceb72dc70ad4b6d736c"
+  },
+  {
+    "topic_id": "health-and-the-body-10",
+    "area": "health and the body",
+    "sha256": "5a49b9a397ab1bc703b99b3f5d7f8fd4f34fb2e9fd9a477835e64773bd299302"
+  },
+  {
+    "topic_id": "health-and-the-body-20",
+    "area": "health and the body",
+    "sha256": "091c3d84a70cfb2cff6477187e3e89f1ffee0d3c991e415ad9f474c3c18b4b96"
+  },
+  {
+    "topic_id": "health-and-the-body-35",
+    "area": "health and the body",
+    "sha256": "3a4a91e9da584df5ef1e918d6e3845cf3b65783320b2f7a8db3cae9d20b3bc59"
+  },
+  {
+    "topic_id": "health-and-the-body-36",
+    "area": "health and the body",
+    "sha256": "7d54e832de16c3c719b23150aab0f7f9cab121d1ddf13d9163d6f2854142f5a0"
+  },
+  {
+    "topic_id": "health-and-the-body-40",
+    "area": "health and the body",
+    "sha256": "943ce7698f68d642646ad66ff6aab07340a8d04c34e38b8f0dc13d95550b25a5"
+  },
+  {
+    "topic_id": "health-and-the-body-45",
+    "area": "health and the body",
+    "sha256": "b8e0105d83476c0914cd83886d0538172286d63cbfd026a9f7c179178b2da735"
+  },
+  {
+    "topic_id": "history-05",
+    "area": "history",
+    "sha256": "80836feb14c9f96b5505566febe32b1ee5fe31914a68bf97f624316e709b6681"
+  },
+  {
+    "topic_id": "history-08",
+    "area": "history",
+    "sha256": "4f6f8859b1f34ab0d1f5f4fc48f4f314602e8f68be4791c88fafa8f44c28ae12"
+  },
+  {
+    "topic_id": "history-28",
+    "area": "history",
+    "sha256": "e2f903e6108a1339ba42a59a704d573ad1fddb94c0092ad0918f0834aaf53147"
+  },
+  {
+    "topic_id": "history-40",
+    "area": "history",
+    "sha256": "1165d561de8795aef2cb110dab644ce414f90168de062a262ce33a3542f3e2bc"
+  },
+  {
+    "topic_id": "history-42",
+    "area": "history",
+    "sha256": "560a45f974856749c51fb8fd5509dc9f247c6ee7d6f89e004ed05880e32457d7"
+  },
+  {
+    "topic_id": "history-46",
+    "area": "history",
+    "sha256": "48a2d01bc53af0bcb9de4e852971d7ace8d2379e1c7a4a185ae3f572755a75a7"
+  },
+  {
+    "topic_id": "history-47",
+    "area": "history",
+    "sha256": "d8426bf354dcb63db2c0e8fa1d639f5f22647c0b81656baca60ebf9bf9b7388f"
+  },
+  {
+    "topic_id": "history-49",
+    "area": "history",
+    "sha256": "e866b133f1bc1cae76f972b8ec5d6c1eba86eb7fd94b0ed6ac6f1aaad04ebb25"
+  },
+  {
+    "topic_id": "language-and-writing-04",
+    "area": "language and writing",
+    "sha256": "ef9268950c428ca31cb4111173b0d8eb7cfa42e3a6a65a643fda0f4dff585b5d"
+  },
+  {
+    "topic_id": "language-and-writing-14",
+    "area": "language and writing",
+    "sha256": "0b94c13156e9959f4613ad01e364ede8a02a6b4d2a1f3e0a3b7372c1f27d07a3"
+  },
+  {
+    "topic_id": "language-and-writing-16",
+    "area": "language and writing",
+    "sha256": "8c7dc87edfdbf79d779350e2526025b1e8ed8be3108b6bae36d90b4804bc4d54"
+  },
+  {
+    "topic_id": "language-and-writing-19",
+    "area": "language and writing",
+    "sha256": "2891d5e88dae403a9572cbbf05e27ad2cf481e9a57a2e253bc6ea7d7577c82cf"
+  },
+  {
+    "topic_id": "language-and-writing-20",
+    "area": "language and writing",
+    "sha256": "881ded16dc41b81838e93cecaa86b8619bcf423e460ac75deb6bf7e52e69deb9"
+  },
+  {
+    "topic_id": "language-and-writing-35",
+    "area": "language and writing",
+    "sha256": "929c9cc95a2522e2da86ad9f5a8f207c6e8ffdcac46ee4d90d8df7b3d318cc2e"
+  },
+  {
+    "topic_id": "language-and-writing-39",
+    "area": "language and writing",
+    "sha256": "083daa60876257cae72d7013792aa098b219019468ab34f282787d0b5f67830b"
+  },
+  {
+    "topic_id": "language-and-writing-49",
+    "area": "language and writing",
+    "sha256": "67fac8392c82e64d683f4aa7812b755552b4df66034803b9239ab537aa9c504d"
+  },
+  {
+    "topic_id": "music-02",
+    "area": "music",
+    "sha256": "5387b80c6531d80e5a45f4e11084c112ba5ebb3464a3b42e7dce63d5a16545e7"
+  },
+  {
+    "topic_id": "music-08",
+    "area": "music",
+    "sha256": "e13d23ad37110dea8688b2745d81b196f2d4b4952f3997350dfeec7f158ae7d9"
+  },
+  {
+    "topic_id": "music-12",
+    "area": "music",
+    "sha256": "90fc5377db92dbeb1489a9f021082d31babf75edceb6db682be29bc467dcd105"
+  },
+  {
+    "topic_id": "music-14",
+    "area": "music",
+    "sha256": "0ed9a77ecfc2ae959df694b42e31a30b5b03fd4719d12fbfe6e8fd0b013fa7d5"
+  },
+  {
+    "topic_id": "music-24",
+    "area": "music",
+    "sha256": "59d84e79f946b1b916661d3cf75d453afcf4cb1e26becc64be125f026aec8327"
+  },
+  {
+    "topic_id": "music-31",
+    "area": "music",
+    "sha256": "1ae8e82e1f4cc39267ac6ad40382de5846407965abe791b34c6ef4f3a8456cce"
+  },
+  {
+    "topic_id": "music-35",
+    "area": "music",
+    "sha256": "d36cbdb8b2e4e3a09848276f4d49c4629e8a742c95454376950e64e3d061707e"
+  },
+  {
+    "topic_id": "music-42",
+    "area": "music",
+    "sha256": "82102d811cc4cfd8f99eae8c2781d7231dcbc322d266faab6df13b12f67db77d"
+  },
+  {
+    "topic_id": "sport-06",
+    "area": "sport",
+    "sha256": "54e696ed0db01242c250e92221b834e376ce9d660e582abdb80cd4e1496ab083"
+  },
+  {
+    "topic_id": "sport-07",
+    "area": "sport",
+    "sha256": "4bdc7dfbb75e9e99088c800a5cf3de28e098a363642dc84ee05588795c20544d"
+  },
+  {
+    "topic_id": "sport-08",
+    "area": "sport",
+    "sha256": "fa06f99d438ff77dc4491a60be6f60631e000a81c46c669f850979d9a4febbf9"
+  },
+  {
+    "topic_id": "sport-13",
+    "area": "sport",
+    "sha256": "b3bfe74c9ba76b41e0c9356c7d4f671c13a811892efcda562318e217daf89a1d"
+  },
+  {
+    "topic_id": "sport-35",
+    "area": "sport",
+    "sha256": "3779f32c663030cacc2a6e5d8faf3c2a302008adcb8843194bb720f62a2e832a"
+  },
+  {
+    "topic_id": "sport-39",
+    "area": "sport",
+    "sha256": "b5c2c13b71c798ecb952c50ce1f7966759a165541a9b1055ea2f4cb75bd12d0c"
+  },
+  {
+    "topic_id": "sport-42",
+    "area": "sport",
+    "sha256": "d2fade5d270641950b20c2e132de72d2697694433e52d6a157dcb30069dc749b"
+  },
+  {
+    "topic_id": "sport-50",
+    "area": "sport",
+    "sha256": "ac2c55eb66d205734ab306daf0f55389416917c0ad5963f14b6232a8c2b58b69"
+  },
+  {
+    "topic_id": "technology-01",
+    "area": "technology",
+    "sha256": "ccd5fcfaec36dd0165618f4689e39e406dc487d6a99962f167703db05b93a060"
+  },
+  {
+    "topic_id": "technology-04",
+    "area": "technology",
+    "sha256": "76c7e2fcf20a2205461ed6b48ae94c1a007edbc28770903d80b3a13773b7839c"
+  },
+  {
+    "topic_id": "technology-09",
+    "area": "technology",
+    "sha256": "f1b3a4a07bfc85ad4b74b0faa9797a337d0f107056eae79bc099bc78747c27cb"
+  },
+  {
+    "topic_id": "technology-11",
+    "area": "technology",
+    "sha256": "e856ff1fc14fe72014919b1be49e3d43462d7e38165e2c0fbe5e8c381c64973d"
+  },
+  {
+    "topic_id": "technology-25",
+    "area": "technology",
+    "sha256": "ba46ecfe4858f8287694711317150dfa2e98b1bccb476294a70d99b4d94b684a"
+  },
+  {
+    "topic_id": "technology-29",
+    "area": "technology",
+    "sha256": "855df7b7d329e2218c500f90b166acc80731f6db4c1d20df94505136d4d82263"
+  },
+  {
+    "topic_id": "technology-34",
+    "area": "technology",
+    "sha256": "eb25e3c94e42e6cb0fc47a7721c6fa287ab4d3bbfa45a29019b0c80c1474e81d"
+  },
+  {
+    "topic_id": "technology-38",
+    "area": "technology",
+    "sha256": "0d3ca699336fcc6b916c4199296fe1fa2bd64b3b2ba3df701ce3a361e48405bb"
+  },
+  {
+    "topic_id": "the-natural-world-01",
+    "area": "the natural world",
+    "sha256": "d2ef4124bbd1f28bada524c03cb9e04a2117036511912a5f9d90c4b6b0cd0f7b"
+  },
+  {
+    "topic_id": "the-natural-world-06",
+    "area": "the natural world",
+    "sha256": "2451d4f0aa66629c7c4befd5ce1dc92daacf03f04941d156c65b0441d2461fbc"
+  },
+  {
+    "topic_id": "the-natural-world-07",
+    "area": "the natural world",
+    "sha256": "4a1f9463b168b240907e779e94fd86a59b874d7e020bfe95e58f1d40784bff13"
+  },
+  {
+    "topic_id": "the-natural-world-12",
+    "area": "the natural world",
+    "sha256": "b37501f2d06e5f3197b1fd4d0bf19eb0058cb810fe7abbafe3595b3fcccdfcf7"
+  },
+  {
+    "topic_id": "the-natural-world-22",
+    "area": "the natural world",
+    "sha256": "d76f8914e7332889634b79da7cae79b62e2fd8086fda319252db5779f6305851"
+  },
+  {
+    "topic_id": "the-natural-world-25",
+    "area": "the natural world",
+    "sha256": "1461c9614a5aad28c7f8d4e739127b8cd8b95904bfac952a7713f1b0f452ba88"
+  },
+  {
+    "topic_id": "the-natural-world-32",
+    "area": "the natural world",
+    "sha256": "00bbcc23d5d709a18a89bf758a9e341f997dcca10c572f529963b1053402a312"
+  },
+  {
+    "topic_id": "the-natural-world-36",
+    "area": "the natural world",
+    "sha256": "0522ea59fc8216513173f7e12e37ada0a91f47ed8360ddb3ae8e9cd310978c54"
+  },
+  {
+    "topic_id": "work-and-organisations-04",
+    "area": "work and organisations",
+    "sha256": "f408b6c4f399a27a1f76dd039cd110aaa88edbbb5af00e51c060052d07344fea"
+  },
+  {
+    "topic_id": "work-and-organisations-07",
+    "area": "work and organisations",
+    "sha256": "cc1216a5ddf067af61dd1f794855b7c1992568defd3c81c0b7003473b797ec6b"
+  },
+  {
+    "topic_id": "work-and-organisations-19",
+    "area": "work and organisations",
+    "sha256": "a284fd4d35be953ab19fd2636187e299703074b9a0a68c65581fbbe8e474a3c7"
+  },
+  {
+    "topic_id": "work-and-organisations-21",
+    "area": "work and organisations",
+    "sha256": "f468d81f9d39a263bcf340211a3aed30e9eef10743000e53448c4c30db80ed8e"
+  },
+  {
+    "topic_id": "work-and-organisations-23",
+    "area": "work and organisations",
+    "sha256": "ad81e18e8faca383f4ce3c624c307b316501859cace4c0cf8e6c327f4ab76dad"
+  },
+  {
+    "topic_id": "work-and-organisations-28",
+    "area": "work and organisations",
+    "sha256": "7e94543be5f13b13d18ef11f10a525bd4f0bcca4e9f3170cfccb4acda07d6761"
+  },
+  {
+    "topic_id": "work-and-organisations-34",
+    "area": "work and organisations",
+    "sha256": "905846be46d0f45cbaf7bd3754b36a8d8af338dbd0567cdf8976f7625c68527a"
+  },
+  {
+    "topic_id": "work-and-organisations-51",
+    "area": "work and organisations",
+    "sha256": "3824a2f402c9ebe2b1071666a6d69f336c174cf7e7c2e793fd3a0ae7aca03a85"
+  }
+]

@@ -1,0 +1,414 @@
+{
+ "amended_blocks_per_frame": 288,
+ "amended_passes": 3,
+ "by_root": {
+  "dci1v8-pilot-r10": {
+   "qwen3-4b-instruct-2507": [
+    {
+     "frame": 0,
+     "note": "no operating point",
+     "recorded_status": null,
+     "state": "UNSUPPORTED"
+    },
+    {
+     "amended_identified": true,
+     "amended_n_blocks": 288,
+     "amended_se_beta": 0.017561855732974144,
+     "condition_4_at_amended": true,
+     "frame": 1,
+     "local_supported": true,
+     "reasons_not_about_the_allocation": [],
+     "recorded_identified": true,
+     "recorded_n_blocks": 288,
+     "recorded_reasons": [],
+     "recorded_se_beta": 0.017561855732974144,
+     "recorded_status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "state": "LOCAL_AND_SPECTRUM",
+     "status_changes": false
+    },
+    {
+     "frame": 2,
+     "note": "no operating point",
+     "recorded_status": null,
+     "state": "UNSUPPORTED"
+    },
+    {
+     "amended_identified": true,
+     "amended_n_blocks": 288,
+     "amended_se_beta": 0.016620739925632337,
+     "condition_4_at_amended": true,
+     "frame": 3,
+     "local_supported": false,
+     "reasons_not_about_the_allocation": [],
+     "recorded_identified": true,
+     "recorded_n_blocks": 288,
+     "recorded_reasons": [],
+     "recorded_se_beta": 0.016620739925632337,
+     "recorded_status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "state": "LOCAL_AND_SPECTRUM",
+     "status_changes": false
+    }
+   ]
+  },
+  "dci1v8-pilot-r11": {
+   "gemma-3n-e4b-it": [
+    {
+     "amended_identified": true,
+     "amended_n_blocks": 288,
+     "amended_se_beta": 0.014314470985757447,
+     "condition_4_at_amended": true,
+     "frame": 0,
+     "local_supported": false,
+     "reasons_not_about_the_allocation": [],
+     "recorded_identified": true,
+     "recorded_n_blocks": 288,
+     "recorded_reasons": [],
+     "recorded_se_beta": 0.014314470985757447,
+     "recorded_status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "state": "LOCAL_AND_SPECTRUM",
+     "status_changes": false
+    },
+    {
+     "amended_identified": true,
+     "amended_n_blocks": 288,
+     "amended_se_beta": 0.013989588618537047,
+     "condition_4_at_amended": true,
+     "frame": 1,
+     "local_supported": false,
+     "reasons_not_about_the_allocation": [],
+     "recorded_identified": true,
+     "recorded_n_blocks": 288,
+     "recorded_reasons": [],
+     "recorded_se_beta": 0.013989588618537047,
+     "recorded_status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "state": "LOCAL_AND_SPECTRUM",
+     "status_changes": false
+    },
+    {
+     "amended_identified": true,
+     "amended_n_blocks": 288,
+     "amended_se_beta": 0.019960865265773342,
+     "condition_4_at_amended": true,
+     "frame": 2,
+     "local_supported": false,
+     "reasons_not_about_the_allocation": [],
+     "recorded_identified": true,
+     "recorded_n_blocks": 288,
+     "recorded_reasons": [],
+     "recorded_se_beta": 0.019960865265773342,
+     "recorded_status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "state": "LOCAL_AND_SPECTRUM",
+     "status_changes": false
+    },
+    {
+     "amended_identified": true,
+     "amended_n_blocks": 288,
+     "amended_se_beta": 0.017248418561764345,
+     "condition_4_at_amended": true,
+     "frame": 3,
+     "local_supported": true,
+     "reasons_not_about_the_allocation": [],
+     "recorded_identified": true,
+     "recorded_n_blocks": 288,
+     "recorded_reasons": [],
+     "recorded_se_beta": 0.017248418561764345,
+     "recorded_status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "state": "LOCAL_AND_SPECTRUM",
+     "status_changes": false
+    }
+   ]
+  },
+  "dci1v8-pilot-r8": {
+   "gemma-3n-e2b-it": [
+    {
+     "amended_identified": true,
+     "amended_n_blocks": 288,
+     "amended_se_beta": 0.018863639015869557,
+     "condition_4_at_amended": true,
+     "frame": 0,
+     "local_supported": false,
+     "reasons_not_about_the_allocation": [],
+     "recorded_identified": true,
+     "recorded_n_blocks": 96,
+     "recorded_reasons": [],
+     "recorded_se_beta": 0.03267278119112465,
+     "recorded_status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "state": "LOCAL_AND_SPECTRUM",
+     "status_changes": false
+    },
+    {
+     "amended_identified": true,
+     "amended_n_blocks": 288,
+     "amended_se_beta": 0.017760528186930767,
+     "condition_4_at_amended": true,
+     "frame": 1,
+     "local_supported": true,
+     "reasons_not_about_the_allocation": [],
+     "recorded_identified": true,
+     "recorded_n_blocks": 96,
+     "recorded_reasons": [],
+     "recorded_se_beta": 0.030762137189023247,
+     "recorded_status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "state": "LOCAL_AND_SPECTRUM",
+     "status_changes": false
+    },
+    {
+     "amended_identified": true,
+     "amended_n_blocks": 288,
+     "amended_se_beta": 0.022891970507510125,
+     "condition_4_at_amended": true,
+     "frame": 2,
+     "local_supported": false,
+     "reasons_not_about_the_allocation": [],
+     "recorded_identified": true,
+     "recorded_n_blocks": 96,
+     "recorded_reasons": [],
+     "recorded_se_beta": 0.039650056004375836,
+     "recorded_status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "state": "SPECTRUM_ONLY",
+     "status_changes": false
+    },
+    {
+     "amended_identified": true,
+     "amended_n_blocks": 288,
+     "amended_se_beta": 0.0165460078061956,
+     "condition_4_at_amended": true,
+     "frame": 3,
+     "local_supported": true,
+     "reasons_not_about_the_allocation": [],
+     "recorded_identified": true,
+     "recorded_n_blocks": 96,
+     "recorded_reasons": [],
+     "recorded_se_beta": 0.02865852618276204,
+     "recorded_status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "state": "LOCAL_AND_SPECTRUM",
+     "status_changes": false
+    }
+   ],
+   "qwen3-4b": [
+    {
+     "amended_identified": false,
+     "amended_n_blocks": 288,
+     "amended_se_beta": 0.042964295253927615,
+     "condition_4_at_amended": true,
+     "frame": 0,
+     "local_supported": false,
+     "reasons_not_about_the_allocation": [
+      "1 points below A; 2 required",
+      "1 points above A; 2 required",
+      "1 families below A; 2 required",
+      "1 families above A; 2 required"
+     ],
+     "recorded_identified": false,
+     "recorded_n_blocks": 96,
+     "recorded_reasons": [
+      "1 points below A; 2 required",
+      "1 points above A; 2 required",
+      "1 families below A; 2 required",
+      "1 families above A; 2 required",
+      "projected SE(beta) 0.07441634229119301 above 0.05 (within-family leverage 0.0488)"
+     ],
+     "recorded_se_beta": 0.07441634229119301,
+     "recorded_status": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+     "state": "LOCAL_ONLY",
+     "status_changes": false
+    },
+    {
+     "amended_identified": false,
+     "amended_n_blocks": 288,
+     "amended_se_beta": 0.02977249201044825,
+     "condition_4_at_amended": true,
+     "frame": 1,
+     "local_supported": false,
+     "reasons_not_about_the_allocation": [
+      "1 points below A; 2 required",
+      "1 families below A; 2 required"
+     ],
+     "recorded_identified": false,
+     "recorded_n_blocks": 96,
+     "recorded_reasons": [
+      "1 points below A; 2 required",
+      "1 families below A; 2 required",
+      "projected SE(beta) 0.051567468830034845 above 0.05 (within-family leverage 0.1017)"
+     ],
+     "recorded_se_beta": 0.051567468830034845,
+     "recorded_status": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+     "state": "NEITHER",
+     "status_changes": false
+    },
+    {
+     "amended_identified": true,
+     "amended_n_blocks": 288,
+     "amended_se_beta": 0.01818742837671356,
+     "condition_4_at_amended": true,
+     "frame": 2,
+     "local_supported": false,
+     "reasons_not_about_the_allocation": [],
+     "recorded_identified": true,
+     "recorded_n_blocks": 96,
+     "recorded_reasons": [],
+     "recorded_se_beta": 0.03150155000748784,
+     "recorded_status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "state": "SPECTRUM_ONLY",
+     "status_changes": false
+    },
+    {
+     "amended_identified": true,
+     "amended_n_blocks": 288,
+     "amended_se_beta": 0.03690759855636932,
+     "condition_4_at_amended": true,
+     "frame": 3,
+     "local_supported": false,
+     "reasons_not_about_the_allocation": [],
+     "recorded_identified": false,
+     "recorded_n_blocks": 96,
+     "recorded_reasons": [
+      "projected SE(beta) 0.06392583588498742 above 0.05 (within-family leverage 0.0662)"
+     ],
+     "recorded_se_beta": 0.06392583588498742,
+     "recorded_status": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+     "state": "LOCAL_ONLY",
+     "status_changes": true
+    }
+   ],
+   "qwen3-4b-instruct-2507": [
+    {
+     "amended_identified": false,
+     "amended_n_blocks": 288,
+     "amended_se_beta": 0.030116927663316383,
+     "condition_4_at_amended": true,
+     "frame": 0,
+     "local_supported": false,
+     "reasons_not_about_the_allocation": [
+      "0 points above A; 2 required",
+      "0 families above A; 2 required",
+      "no point at or beyond 0.1 above A",
+      "total span 0.000 below 0.2"
+     ],
+     "recorded_identified": false,
+     "recorded_n_blocks": 96,
+     "recorded_reasons": [
+      "0 points above A; 2 required",
+      "0 families above A; 2 required",
+      "no point at or beyond 0.1 above A",
+      "total span 0.000 below 0.2",
+      "projected SE(beta) 0.0521640488807406 above 0.05 (within-family leverage 0.0994)"
+     ],
+     "recorded_se_beta": 0.0521640488807406,
+     "recorded_status": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+     "state": "NEITHER",
+     "status_changes": false
+    },
+    {
+     "amended_identified": true,
+     "amended_n_blocks": 288,
+     "amended_se_beta": 0.020811061932115463,
+     "condition_4_at_amended": true,
+     "frame": 1,
+     "local_supported": true,
+     "reasons_not_about_the_allocation": [],
+     "recorded_identified": true,
+     "recorded_n_blocks": 96,
+     "recorded_reasons": [],
+     "recorded_se_beta": 0.03604581662588651,
+     "recorded_status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "state": "LOCAL_AND_SPECTRUM",
+     "status_changes": false
+    },
+    {
+     "frame": 2,
+     "note": "no operating point",
+     "recorded_status": null,
+     "state": "UNSUPPORTED"
+    },
+    {
+     "amended_identified": true,
+     "amended_n_blocks": 288,
+     "amended_se_beta": 0.0143009760261673,
+     "condition_4_at_amended": true,
+     "frame": 3,
+     "local_supported": false,
+     "reasons_not_about_the_allocation": [],
+     "recorded_identified": true,
+     "recorded_n_blocks": 96,
+     "recorded_reasons": [],
+     "recorded_se_beta": 0.024770017075146224,
+     "recorded_status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "state": "LOCAL_AND_SPECTRUM",
+     "status_changes": false
+    }
+   ]
+  },
+  "dci1v8-pilot-r9": {
+   "qwen3-4b": [
+    {
+     "amended_identified": true,
+     "amended_n_blocks": 288,
+     "amended_se_beta": 0.014675048209974012,
+     "condition_4_at_amended": true,
+     "frame": 0,
+     "local_supported": true,
+     "reasons_not_about_the_allocation": [],
+     "recorded_identified": true,
+     "recorded_n_blocks": 96,
+     "recorded_reasons": [],
+     "recorded_se_beta": 0.025417929103197696,
+     "recorded_status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "state": "LOCAL_AND_SPECTRUM",
+     "status_changes": false
+    },
+    {
+     "amended_identified": true,
+     "amended_n_blocks": 288,
+     "amended_se_beta": 0.014133220892868876,
+     "condition_4_at_amended": true,
+     "frame": 1,
+     "local_supported": false,
+     "reasons_not_about_the_allocation": [],
+     "recorded_identified": true,
+     "recorded_n_blocks": 96,
+     "recorded_reasons": [],
+     "recorded_se_beta": 0.024479456661042866,
+     "recorded_status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "state": "LOCAL_AND_SPECTRUM",
+     "status_changes": false
+    },
+    {
+     "amended_identified": true,
+     "amended_n_blocks": 288,
+     "amended_se_beta": 0.015233188972305635,
+     "condition_4_at_amended": true,
+     "frame": 2,
+     "local_supported": false,
+     "reasons_not_about_the_allocation": [],
+     "recorded_identified": true,
+     "recorded_n_blocks": 96,
+     "recorded_reasons": [],
+     "recorded_se_beta": 0.026384657261331292,
+     "recorded_status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "state": "LOCAL_AND_SPECTRUM",
+     "status_changes": false
+    },
+    {
+     "amended_identified": true,
+     "amended_n_blocks": 288,
+     "amended_se_beta": 0.01578562709442026,
+     "condition_4_at_amended": true,
+     "frame": 3,
+     "local_supported": true,
+     "reasons_not_about_the_allocation": [],
+     "recorded_identified": true,
+     "recorded_n_blocks": 96,
+     "recorded_reasons": [],
+     "recorded_se_beta": 0.027341508156871763,
+     "recorded_status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "state": "LOCAL_AND_SPECTRUM",
+     "status_changes": false
+    }
+   ]
+  }
+ },
+ "label": "PROJECTION_NOT_REGISTERED_FOR_INFERENCE",
+ "max_se_beta": 0.05,
+ "single_pass_blocks_per_frame": 96
+}

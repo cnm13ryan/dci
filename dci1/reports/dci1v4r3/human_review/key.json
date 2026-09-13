@@ -1,0 +1,372 @@
+{
+ "artifact_type": "v4r3-human-review-key",
+ "classification": "DCI-1 PROTOCOL v4 REVISION 3 (ADOPTED, NOT FROZEN)",
+ "verifier_hash": "41edc84c8c1381c698aa3ea62265ef11ff1162993fa2f68d1245dbce10096074",
+ "packet_hash": "bfec2e05d99ae619c4a68f85fca875a03a74901793fab44cf412288fb046bfd9",
+ "key_hash": "a27e6acdc837cbeaef75b6d27b016c987edd253c4e51dff22f4ecf9b11b5ed6a",
+ "key": [
+  {
+   "item_id": "hr-00-4bb27dee",
+   "case_id": "mc-cr11-01-d35d1dd8",
+   "family": "CR11",
+   "statistic": "vowel_initial",
+   "form": "rate_budget",
+   "severity": 2,
+   "verdict": "SATISFIES",
+   "correct": true,
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "covers": "exact-threshold;rate"
+  },
+  {
+   "item_id": "hr-01-baeba5f2",
+   "case_id": "mc-cx2-01-5a43f4cc",
+   "family": "CX2",
+   "statistic": "semicolon",
+   "form": "exact_count",
+   "severity": 1,
+   "verdict": "SATISFIES",
+   "correct": true,
+   "discriminates": [
+    "numerator_swap",
+    "off_by_one"
+   ],
+   "covers": "exact-threshold"
+  },
+  {
+   "item_id": "hr-02-32658392",
+   "case_id": "mc-cr11-07-1abd2ae5",
+   "family": "CR11",
+   "statistic": "vowel_initial",
+   "form": "rate_budget",
+   "severity": 2,
+   "verdict": "SATISFIES",
+   "correct": true,
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "covers": "hyphenated-form"
+  },
+  {
+   "item_id": "hr-03-657385c4",
+   "case_id": "mc-cr10-02-687ce5bf",
+   "family": "CR10",
+   "statistic": "s_final",
+   "form": "rate_budget",
+   "severity": 1,
+   "verdict": "VIOLATES",
+   "correct": false,
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "covers": "threshold-plus-one;rate"
+  },
+  {
+   "item_id": "hr-04-1fd6e3df",
+   "case_id": "mc-cr9-02-00fa8365",
+   "family": "CR9",
+   "statistic": "t_initial",
+   "form": "rate_budget",
+   "severity": 1,
+   "verdict": "VIOLATES",
+   "correct": false,
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "covers": "threshold-plus-one;rate"
+  },
+  {
+   "item_id": "hr-05-305fa0a4",
+   "case_id": "mc-cx1-11-7a0afb7f",
+   "family": "CX1",
+   "statistic": "marker_thus",
+   "form": "exact_count",
+   "severity": 1,
+   "verdict": "SATISFIES",
+   "correct": true,
+   "discriminates": [
+    "off_by_one"
+   ],
+   "covers": "capitalisation"
+  },
+  {
+   "item_id": "hr-06-36be9fc4",
+   "case_id": "mc-cx2-04-20da5aeb",
+   "family": "CX2",
+   "statistic": "semicolon",
+   "form": "exact_count",
+   "severity": 1,
+   "verdict": "VIOLATES",
+   "correct": false,
+   "discriminates": [
+    "off_by_one"
+   ],
+   "covers": "case-folding-split;longer"
+  },
+  {
+   "item_id": "hr-07-6388b504",
+   "case_id": "mc-rf12-06-8fad23f1",
+   "family": "RF12",
+   "statistic": "sentence",
+   "form": "count_budget",
+   "severity": 1,
+   "verdict": "SATISFIES",
+   "correct": true,
+   "discriminates": [
+    "inequality_flip",
+    "off_by_one"
+   ],
+   "covers": "case-folding-split;initial"
+  },
+  {
+   "item_id": "hr-08-ec8d833b",
+   "case_id": "mc-cx1-12-ade5b656",
+   "family": "CX1",
+   "statistic": "marker_thus",
+   "form": "exact_count",
+   "severity": 1,
+   "verdict": "SATISFIES",
+   "correct": true,
+   "discriminates": [
+    "off_by_one"
+   ],
+   "covers": "capitalisation;shout"
+  },
+  {
+   "item_id": "hr-09-c4e77469",
+   "case_id": "mc-cr9-04-4857819e",
+   "family": "CR9",
+   "statistic": "t_initial",
+   "form": "rate_budget",
+   "severity": 1,
+   "verdict": "SATISFIES",
+   "correct": true,
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "covers": "case-folding-split;longer"
+  },
+  {
+   "item_id": "hr-10-ecf193ac",
+   "case_id": "mc-cx1-02-af896e62",
+   "family": "CX1",
+   "statistic": "marker_thus",
+   "form": "exact_count",
+   "severity": 1,
+   "verdict": "VIOLATES",
+   "correct": false,
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "covers": "threshold-plus-one"
+  },
+  {
+   "item_id": "hr-11-a7198420",
+   "case_id": "mc-cx2-02-606f0274",
+   "family": "CX2",
+   "statistic": "semicolon",
+   "form": "exact_count",
+   "severity": 1,
+   "verdict": "VIOLATES",
+   "correct": false,
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "covers": "threshold-plus-one"
+  },
+  {
+   "item_id": "hr-12-99139fb2",
+   "case_id": "mc-cr12-01-a594e70e",
+   "family": "CR12",
+   "statistic": "sentence",
+   "form": "rate_budget",
+   "severity": 1,
+   "verdict": "VIOLATES",
+   "correct": false,
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "covers": "exact-threshold;rate"
+  },
+  {
+   "item_id": "hr-13-75406125",
+   "case_id": "mc-cr11-04-2f5b5904",
+   "family": "CR11",
+   "statistic": "vowel_initial",
+   "form": "rate_budget",
+   "severity": 2,
+   "verdict": "VIOLATES",
+   "correct": false,
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "covers": "case-folding-split;longer"
+  },
+  {
+   "item_id": "hr-14-999723cb",
+   "case_id": "mc-cr10-01-d1986459",
+   "family": "CR10",
+   "statistic": "s_final",
+   "form": "rate_budget",
+   "severity": 1,
+   "verdict": "SATISFIES",
+   "correct": true,
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "covers": "exact-threshold;rate"
+  },
+  {
+   "item_id": "hr-15-79d60ac5",
+   "case_id": "mc-cr9-01-a6449414",
+   "family": "CR9",
+   "statistic": "t_initial",
+   "form": "rate_budget",
+   "severity": 1,
+   "verdict": "SATISFIES",
+   "correct": true,
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "covers": "exact-threshold;rate"
+  },
+  {
+   "item_id": "hr-16-872f3b98",
+   "case_id": "mc-cr11-03-09c65f82",
+   "family": "CR11",
+   "statistic": "vowel_initial",
+   "form": "rate_budget",
+   "severity": 2,
+   "verdict": "VIOLATES",
+   "correct": false,
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "covers": "case-folding-split"
+  },
+  {
+   "item_id": "hr-17-cd227ae4",
+   "case_id": "mc-cx1-00-9e9ebc6d",
+   "family": "CX1",
+   "statistic": "marker_thus",
+   "form": "exact_count",
+   "severity": 1,
+   "verdict": "VIOLATES",
+   "correct": false,
+   "discriminates": [
+    "off_by_one"
+   ],
+   "covers": "threshold-minus-one"
+  },
+  {
+   "item_id": "hr-18-6fab77c2",
+   "case_id": "mc-cr12-00-7f2653a1",
+   "family": "CR12",
+   "statistic": "sentence",
+   "form": "rate_budget",
+   "severity": 1,
+   "verdict": "VIOLATES",
+   "correct": false,
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "covers": "threshold-minus-one;rate"
+  },
+  {
+   "item_id": "hr-19-7d818bd5",
+   "case_id": "mc-cr10-00-17f64f6f",
+   "family": "CR10",
+   "statistic": "s_final",
+   "form": "rate_budget",
+   "severity": 1,
+   "verdict": "SATISFIES",
+   "correct": true,
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "covers": "threshold-minus-one;rate"
+  },
+  {
+   "item_id": "hr-20-06893951",
+   "case_id": "mc-rf11-05-d825f816",
+   "family": "RF11",
+   "statistic": "vowel_initial",
+   "form": "count_budget",
+   "severity": 1,
+   "verdict": "SATISFIES",
+   "correct": true,
+   "discriminates": [
+    "inequality_flip",
+    "off_by_one",
+    "segmentation_drift"
+   ],
+   "covers": "case-folding-split;repeated"
+  },
+  {
+   "item_id": "hr-21-d843b413",
+   "case_id": "mc-rf12-07-a78afb46",
+   "family": "RF12",
+   "statistic": "sentence",
+   "form": "count_budget",
+   "severity": 1,
+   "verdict": "SATISFIES",
+   "correct": true,
+   "discriminates": [
+    "inequality_flip",
+    "off_by_one"
+   ],
+   "covers": "hyphenated-form"
+  },
+  {
+   "item_id": "hr-22-ba252e85",
+   "case_id": "mc-cr10-19-796b0a6d",
+   "family": "CR10",
+   "statistic": "s_final",
+   "form": "rate_budget",
+   "severity": 1,
+   "verdict": "VIOLATES",
+   "correct": false,
+   "discriminates": [
+    "denominator_swap",
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "covers": "wordless;terminators"
+  },
+  {
+   "item_id": "hr-23-0beae5e3",
+   "case_id": "mc-cr9-09-ada95564",
+   "family": "CR9",
+   "statistic": "t_initial",
+   "form": "rate_budget",
+   "severity": 1,
+   "verdict": "VIOLATES",
+   "correct": false,
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "covers": "apostrophised-form"
+  },
+  {
+   "item_id": "hr-24-d8079c8c",
+   "case_id": "mc-cx2-15-b30b2d05",
+   "family": "CX2",
+   "statistic": "semicolon",
+   "form": "exact_count",
+   "severity": 1,
+   "verdict": "VIOLATES",
+   "correct": false,
+   "discriminates": [
+    "off_by_one",
+    "vacuity_ignored"
+   ],
+   "covers": "empty-output"
+  }
+ ]
+}

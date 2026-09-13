@@ -1,0 +1,3200 @@
+{
+ "_provenance": "POST-HOC DIAGNOSTIC; verdicts computed by the registered stages.selection functions on the signed Gate-2 table",
+ "models": {
+  "gemma-3n-e2b-it": {
+   "a_chance_compliance": 0.1015625,
+   "a_solo_compliance": 0.6171875,
+   "class_companion": {
+    "constraint_class": "production",
+    "distance": 0.0007787151200520093,
+    "family": "CX2",
+    "iota": 0.5731343283582089,
+    "severity": 1,
+    "slot": "CL"
+   },
+   "core_references_admitted": [
+    {
+     "distance": 0.03966646813579511,
+     "family": "RF9",
+     "feature_group": "t_initial",
+     "iota": 0.5342465753424658,
+     "severity": 10,
+     "slot": "R1"
+    },
+    {
+     "distance": 0.05794074242252245,
+     "family": "CR5",
+     "feature_group": "comma",
+     "iota": 0.6318537859007833,
+     "severity": 2,
+     "slot": "R2"
+    },
+    {
+     "distance": 0.05911447945751891,
+     "family": "RF11",
+     "feature_group": "vowel_initial",
+     "iota": 0.6330275229357798,
+     "severity": 26,
+     "slot": "R3"
+    }
+   ],
+   "design": "full",
+   "design_variant": "full",
+   "dropped_for_no_triple": [
+    {
+     "family": "RF6",
+     "reason": "no eligible severity strictly on one side of A: the family cannot straddle"
+    }
+   ],
+   "families": {
+    "CL7": {
+     "admitted": false,
+     "constraint_class": "production",
+     "refused_before_measurement": "InstrumentError: CL7 is a production-class class_control family: \u00a713.7 admits it to the class arm only, never to a core reference or spectrum slot"
+    },
+    "CL8": {
+     "admitted": false,
+     "constraint_class": "production",
+     "refused_before_measurement": "InstrumentError: CL8 is a production-class class_control family: \u00a713.7 admits it to the class arm only, never to a core reference or spectrum slot"
+    },
+    "CR5": {
+     "admitted": true,
+     "can_straddle_A": true,
+     "chosen_distance": 0.05794074242252245,
+     "chosen_iota": 0.6318537859007833,
+     "chosen_severity": 2,
+     "constraint_class": "budget",
+     "n_rungs_admissible": 1,
+     "n_rungs_measured": 4,
+     "rungs": [
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.0,
+       "distance_from_iota_A": 0.10837862318840574,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.7603725679702241,
+       "iota": 0.6822916666666666,
+       "label": "CR5:1",
+       "median_words": 98.0,
+       "newcombe_interval": [
+        -0.06903755954230628,
+        0.19604616232134903
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.0,
+       "prescreen_distance_from_A": 0.11111111111111116,
+       "prescreen_iota": 0.6666666666666666,
+       "prescreen_solo_compliance": 0.6666666666666666,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.108 above the 0.1 caliper"
+       ],
+       "severity": 1,
+       "solo_compliance": 0.6822916666666666,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": true,
+       "chance_compliance": 0.0026041666666666665,
+       "distance_from_iota_A": 0.05794074242252245,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.7381091242380305,
+       "iota": 0.6318537859007833,
+       "label": "CR5:2",
+       "median_words": 98.0,
+       "newcombe_interval": [
+        -0.11939580772209393,
+        0.14985100663052495
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.0,
+       "prescreen_distance_from_A": 0.11111111111111116,
+       "prescreen_iota": 0.6666666666666666,
+       "prescreen_solo_compliance": 0.6666666666666666,
+       "rejection_reasons": [],
+       "severity": 2,
+       "solo_compliance": 0.6328125,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.018229166666666668,
+       "distance_from_iota_A": 0.21847537769576753,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.6289347866085422,
+       "iota": 0.35543766578249336,
+       "label": "CR5:3",
+       "median_words": 100.0,
+       "newcombe_interval": [
+        -0.37765236162520965,
+        -0.1087480479943336
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.0,
+       "prescreen_distance_from_A": 0.18055555555555547,
+       "prescreen_iota": 0.375,
+       "prescreen_solo_compliance": 0.375,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.218 above the 0.1 caliper",
+        "the Newcombe interval [-0.378, -0.109] does not intersect +/-0.05",
+        "pre-screen distance 0.181 above the 0.15 caliper"
+       ],
+       "severity": 3,
+       "solo_compliance": 0.3671875,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.03125,
+       "distance_from_iota_A": 0.2809022907900888,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.6594633171257349,
+       "iota": 0.29301075268817206,
+       "label": "CR5:4",
+       "median_words": 101.0,
+       "newcombe_interval": [
+        -0.4260782783653546,
+        -0.1617368238941535
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.041666666666666664,
+       "prescreen_distance_from_A": 0.12077294685990336,
+       "prescreen_iota": 0.4347826086956521,
+       "prescreen_solo_compliance": 0.4583333333333333,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.281 above the 0.1 caliper",
+        "the Newcombe interval [-0.426, -0.162] does not intersect +/-0.05"
+       ],
+       "severity": 4,
+       "solo_compliance": 0.3151041666666667,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      }
+     ],
+     "spectrum_triple": {
+      "core_severity": 2,
+      "family": "CR5",
+      "lower": {
+       "iota": 0.35543766578249336,
+       "severity": 3,
+       "target": 0.3739130434782609
+      },
+      "upper": {
+       "iota": 0.6822916666666666,
+       "severity": 1,
+       "target": 0.7739130434782608
+      }
+     }
+    },
+    "CX1": {
+     "admitted": false,
+     "constraint_class": "production",
+     "refused_before_measurement": "InstrumentError: CX1 is a production-class class_control family: \u00a713.7 admits it to the class arm only, never to a core reference or spectrum slot"
+    },
+    "CX2": {
+     "admitted": false,
+     "constraint_class": "production",
+     "refused_before_measurement": "InstrumentError: CX2 is a production-class class_control family: \u00a713.7 admits it to the class arm only, never to a core reference or spectrum slot"
+    },
+    "RF11": {
+     "admitted": true,
+     "can_straddle_A": true,
+     "chosen_distance": 0.05911447945751891,
+     "chosen_iota": 0.6330275229357798,
+     "chosen_severity": 26,
+     "constraint_class": "budget",
+     "n_rungs_admissible": 1,
+     "n_rungs_measured": 3,
+     "rungs": [
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.0078125,
+       "distance_from_iota_A": 0.23795503822891706,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.8581551613339532,
+       "iota": 0.3359580052493438,
+       "label": "RF11:21",
+       "median_words": 81.0,
+       "newcombe_interval": [
+        -0.4019539399588119,
+        -0.13513803375764047
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.08333333333333333,
+       "prescreen_distance_from_A": 0.2828282828282827,
+       "prescreen_iota": 0.27272727272727276,
+       "prescreen_solo_compliance": 0.3333333333333333,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.238 above the 0.1 caliper",
+        "the Newcombe interval [-0.402, -0.135] does not intersect +/-0.05",
+        "pre-screen distance 0.283 above the 0.15 caliper"
+       ],
+       "severity": 21,
+       "solo_compliance": 0.3411458333333333,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": true,
+       "chance_compliance": 0.1484375,
+       "distance_from_iota_A": 0.05911447945751891,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9514167505235761,
+       "iota": 0.6330275229357798,
+       "label": "RF11:26",
+       "median_words": 81.0,
+       "newcombe_interval": [
+        -0.0636900637013991,
+        0.2008740517438061
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.125,
+       "prescreen_distance_from_A": 0.0793650793650793,
+       "prescreen_iota": 0.47619047619047616,
+       "prescreen_solo_compliance": 0.5416666666666666,
+       "rejection_reasons": [],
+       "severity": 26,
+       "solo_compliance": 0.6875,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.4453125,
+       "distance_from_iota_A": 0.28054705041845285,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9918597409473485,
+       "iota": 0.8544600938967137,
+       "label": "RF11:32",
+       "median_words": 81.0,
+       "newcombe_interval": [
+        0.1861217152452624,
+        0.4096327490545286
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.2916666666666667,
+       "prescreen_distance_from_A": 0.38562091503268003,
+       "prescreen_iota": 0.9411764705882355,
+       "prescreen_solo_compliance": 0.9583333333333334,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.281 above the 0.1 caliper",
+        "the Newcombe interval [0.186, 0.410] does not intersect +/-0.05",
+        "pre-screen distance 0.386 above the 0.15 caliper"
+       ],
+       "severity": 32,
+       "solo_compliance": 0.9192708333333334,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      }
+     ],
+     "spectrum_triple": {
+      "core_severity": 26,
+      "family": "RF11",
+      "lower": {
+       "iota": 0.3359580052493438,
+       "severity": 21,
+       "target": 0.3739130434782609
+      },
+      "upper": {
+       "iota": 0.8544600938967137,
+       "severity": 32,
+       "target": 0.7739130434782608
+      }
+     }
+    },
+    "RF3": {
+     "admitted": false,
+     "can_straddle_A": false,
+     "chosen_distance": null,
+     "chosen_iota": null,
+     "chosen_severity": null,
+     "constraint_class": "budget",
+     "n_rungs_admissible": 0,
+     "n_rungs_measured": 4,
+     "rungs": [
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.4036458333333333,
+       "distance_from_iota_A": 0.4298082399848111,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.765173216540404,
+       "iota": 0.14410480349344976,
+       "label": "RF3:3",
+       "median_words": 83.0,
+       "newcombe_interval": [
+        -0.2610465572535906,
+        0.012701088658346238
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.2916666666666667,
+       "prescreen_distance_from_A": 0.20261437908496727,
+       "prescreen_iota": 0.3529411764705882,
+       "prescreen_solo_compliance": 0.5416666666666666,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.430 above the 0.1 caliper",
+        "pre-screen distance 0.203 above the 0.15 caliper"
+       ],
+       "severity": 3,
+       "solo_compliance": 0.4895833333333333,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.5989583333333334,
+       "distance_from_iota_A": 0.2167701863354038,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9217245066854441,
+       "iota": 0.3571428571428571,
+       "label": "RF3:5",
+       "median_words": 83.0,
+       "newcombe_interval": [
+        -0.006964707958347527,
+        0.2511714230881903
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.5,
+       "prescreen_distance_from_A": 0.02777777777777779,
+       "prescreen_iota": 0.5833333333333333,
+       "prescreen_solo_compliance": 0.7916666666666666,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.217 above the 0.1 caliper"
+       ],
+       "severity": 5,
+       "solo_compliance": 0.7421875,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.7083333333333334,
+       "distance_from_iota_A": 0.17212732919254653,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9497393665362415,
+       "iota": 0.40178571428571436,
+       "label": "RF3:6",
+       "median_words": 81.0,
+       "newcombe_interval": [
+        0.08177504289092599,
+        0.32647124251079745
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.6666666666666666,
+       "prescreen_distance_from_A": 0.05555555555555536,
+       "prescreen_iota": 0.5000000000000001,
+       "prescreen_solo_compliance": 0.8333333333333334,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.172 above the 0.1 caliper",
+        "the Newcombe interval [0.082, 0.326] does not intersect +/-0.05"
+       ],
+       "severity": 6,
+       "solo_compliance": 0.8255208333333334,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.8411458333333334,
+       "distance_from_iota_A": 0.08182466143977185,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9893983909608909,
+       "iota": 0.6557377049180327,
+       "label": "RF3:8",
+       "median_words": 80.0,
+       "newcombe_interval": [
+        0.21639407414130904,
+        0.43267607274190956
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.7916666666666666,
+       "prescreen_distance_from_A": 0.2444444444444448,
+       "prescreen_iota": 0.8000000000000003,
+       "prescreen_solo_compliance": 0.9583333333333334,
+       "rejection_reasons": [
+        "the Newcombe interval [0.216, 0.433] does not intersect +/-0.05",
+        "pre-screen distance 0.244 above the 0.15 caliper"
+       ],
+       "severity": 8,
+       "solo_compliance": 0.9453125,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      }
+     ],
+     "spectrum_triple": null
+    },
+    "RF6": {
+     "admitted": true,
+     "can_straddle_A": false,
+     "chosen_distance": 0.006204710144927517,
+     "chosen_iota": 0.5677083333333334,
+     "chosen_severity": 1,
+     "constraint_class": "budget",
+     "n_rungs_admissible": 1,
+     "n_rungs_measured": 2,
+     "rungs": [
+      {
+       "admissible_13_4": true,
+       "chance_compliance": 0.0,
+       "distance_from_iota_A": 0.006204710144927517,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.6315713978812404,
+       "iota": 0.5677083333333334,
+       "label": "RF6:1",
+       "median_words": 95.0,
+       "newcombe_interval": [
+        -0.18450873027963693,
+        0.08814906668031125
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.0,
+       "prescreen_distance_from_A": 0.06944444444444453,
+       "prescreen_iota": 0.625,
+       "prescreen_solo_compliance": 0.625,
+       "rejection_reasons": [],
+       "severity": 1,
+       "solo_compliance": 0.5677083333333334,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.0,
+       "distance_from_iota_A": 0.5009963768115943,
+       "eligibility_reasons": [
+        "instructed compliance 0.073 outside the registered band [0.1, 0.95]"
+       ],
+       "eligible_13_5": false,
+       "graded_mean": 0.32858041522478926,
+       "iota": 0.07291666666666667,
+       "label": "RF6:2",
+       "median_words": 91.0,
+       "newcombe_interval": [
+        -0.6425076981390827,
+        -0.42223053802812954
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.0,
+       "prescreen_distance_from_A": 0.43055555555555547,
+       "prescreen_iota": 0.125,
+       "prescreen_solo_compliance": 0.125,
+       "rejection_reasons": [
+        "instructed compliance 0.073 outside the registered band [0.1, 0.95]",
+        "instructed-compliance distance 0.501 above the 0.1 caliper",
+        "the Newcombe interval [-0.643, -0.422] does not intersect +/-0.05",
+        "pre-screen distance 0.431 above the 0.15 caliper"
+       ],
+       "severity": 2,
+       "solo_compliance": 0.07291666666666667,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      }
+     ],
+     "spectrum_triple": null
+    },
+    "RF8": {
+     "admitted": false,
+     "can_straddle_A": false,
+     "chosen_distance": null,
+     "chosen_iota": null,
+     "chosen_severity": null,
+     "constraint_class": "budget",
+     "n_rungs_admissible": 0,
+     "n_rungs_measured": 4,
+     "rungs": [
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.1171875,
+       "distance_from_iota_A": 0.36152366294728744,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.728007495976246,
+       "iota": 0.21238938053097345,
+       "label": "RF8:4",
+       "median_words": 87.0,
+       "newcombe_interval": [
+        -0.43567842614411345,
+        -0.1724369745617105
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.20833333333333334,
+       "prescreen_distance_from_A": 0.23976608187134496,
+       "prescreen_iota": 0.3157894736842105,
+       "prescreen_solo_compliance": 0.4583333333333333,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.362 above the 0.1 caliper",
+        "the Newcombe interval [-0.436, -0.172] does not intersect +/-0.05",
+        "pre-screen distance 0.240 above the 0.15 caliper"
+       ],
+       "severity": 4,
+       "solo_compliance": 0.3046875,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.2421875,
+       "distance_from_iota_A": 0.21652472732705808,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.8410380851787101,
+       "iota": 0.3573883161512028,
+       "label": "RF8:5",
+       "median_words": 87.0,
+       "newcombe_interval": [
+        -0.23826193040749594,
+        0.03549922470012237
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.3333333333333333,
+       "prescreen_distance_from_A": 0.24305555555555552,
+       "prescreen_iota": 0.31249999999999994,
+       "prescreen_solo_compliance": 0.5416666666666666,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.217 above the 0.1 caliper",
+        "pre-screen distance 0.243 above the 0.15 caliper"
+       ],
+       "severity": 5,
+       "solo_compliance": 0.5130208333333334,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.3385416666666667,
+       "distance_from_iota_A": 0.12509414584046563,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.8980191466519591,
+       "iota": 0.44881889763779526,
+       "label": "RF8:6",
+       "median_words": 86.0,
+       "newcombe_interval": [
+        -0.11676477176152097,
+        0.15229728653781405
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.5416666666666666,
+       "prescreen_distance_from_A": 0.10101010101010088,
+       "prescreen_iota": 0.4545454545454546,
+       "prescreen_solo_compliance": 0.75,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.125 above the 0.1 caliper"
+       ],
+       "severity": 6,
+       "solo_compliance": 0.6354166666666666,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.6276041666666666,
+       "distance_from_iota_A": 0.028458498023715473,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9659298456173456,
+       "iota": 0.5454545454545454,
+       "label": "RF8:8",
+       "median_words": 85.0,
+       "newcombe_interval": [
+        0.08742888661793755,
+        0.3311271925799449
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.75,
+       "prescreen_distance_from_A": 0.277777777777778,
+       "prescreen_iota": 0.8333333333333335,
+       "prescreen_solo_compliance": 0.9583333333333334,
+       "rejection_reasons": [
+        "the Newcombe interval [0.087, 0.331] does not intersect +/-0.05",
+        "pre-screen distance 0.278 above the 0.15 caliper"
+       ],
+       "severity": 8,
+       "solo_compliance": 0.8307291666666666,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      }
+     ],
+     "spectrum_triple": null
+    },
+    "RF9": {
+     "admitted": true,
+     "can_straddle_A": true,
+     "chosen_distance": 0.03966646813579511,
+     "chosen_iota": 0.5342465753424658,
+     "chosen_severity": 10,
+     "constraint_class": "budget",
+     "n_rungs_admissible": 1,
+     "n_rungs_measured": 4,
+     "rungs": [
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.125,
+       "distance_from_iota_A": 0.14236542443064187,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.838093574811841,
+       "iota": 0.431547619047619,
+       "label": "RF9:8",
+       "median_words": 82.0,
+       "newcombe_interval": [
+        -0.24840686165298068,
+        0.025384252412071984
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.16666666666666666,
+       "prescreen_distance_from_A": 0.2555555555555555,
+       "prescreen_iota": 0.3,
+       "prescreen_solo_compliance": 0.4166666666666667,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.142 above the 0.1 caliper",
+        "pre-screen distance 0.256 above the 0.15 caliper"
+       ],
+       "severity": 8,
+       "solo_compliance": 0.5026041666666666,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": true,
+       "chance_compliance": 0.23958333333333334,
+       "distance_from_iota_A": 0.03966646813579511,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9099796528804593,
+       "iota": 0.5342465753424658,
+       "label": "RF9:10",
+       "median_words": 82.0,
+       "newcombe_interval": [
+        -0.10621949540791795,
+        0.16206574369153104
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.20833333333333334,
+       "prescreen_distance_from_A": 0.07602339181286566,
+       "prescreen_iota": 0.6315789473684211,
+       "prescreen_solo_compliance": 0.7083333333333334,
+       "rejection_reasons": [],
+       "severity": 10,
+       "solo_compliance": 0.6458333333333334,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.4609375,
+       "distance_from_iota_A": 0.06859903381642507,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9585396581427935,
+       "iota": 0.642512077294686,
+       "label": "RF9:13",
+       "median_words": 80.0,
+       "newcombe_interval": [
+        0.06209468853950309,
+        0.31013130216395457
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.4583333333333333,
+       "prescreen_distance_from_A": 0.0940170940170939,
+       "prescreen_iota": 0.46153846153846156,
+       "prescreen_solo_compliance": 0.7083333333333334,
+       "rejection_reasons": [
+        "the Newcombe interval [0.062, 0.310] does not intersect +/-0.05"
+       ],
+       "severity": 13,
+       "solo_compliance": 0.8072916666666666,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.6953125,
+       "distance_from_iota_A": 0.058565589000371676,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9815153111304354,
+       "iota": 0.6324786324786326,
+       "label": "RF9:16",
+       "median_words": 80.0,
+       "newcombe_interval": [
+        0.15065789447114217,
+        0.38202580180405865
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.7083333333333334,
+       "prescreen_distance_from_A": 0.015873015873015928,
+       "prescreen_iota": 0.5714285714285714,
+       "prescreen_solo_compliance": 0.875,
+       "rejection_reasons": [
+        "the Newcombe interval [0.151, 0.382] does not intersect +/-0.05"
+       ],
+       "severity": 16,
+       "solo_compliance": 0.8880208333333334,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      }
+     ],
+     "spectrum_triple": {
+      "core_severity": 10,
+      "family": "RF9",
+      "lower": {
+       "iota": 0.431547619047619,
+       "severity": 8,
+       "target": 0.3739130434782609
+      },
+      "upper": {
+       "iota": 0.642512077294686,
+       "severity": 13,
+       "target": 0.7739130434782608
+      }
+     }
+    }
+   },
+   "identification_statuses": [
+    "COMPANION_CLASS_NOT_MATCHED"
+   ],
+   "iota_a": 0.5739130434782609,
+   "n_core_references": 3,
+   "prescreen_iota_a": 0.5555555555555555,
+   "spectrum": [
+    {
+     "family": "RF9",
+     "iota": 0.431547619047619,
+     "severity": 8,
+     "side": "lower",
+     "slot": "R1-",
+     "target": 0.3739130434782609
+    },
+    {
+     "family": "RF9",
+     "iota": 0.642512077294686,
+     "severity": 13,
+     "side": "upper",
+     "slot": "R1+",
+     "target": 0.7739130434782608
+    },
+    {
+     "family": "CR5",
+     "iota": 0.35543766578249336,
+     "severity": 3,
+     "side": "lower",
+     "slot": "R2-",
+     "target": 0.3739130434782609
+    },
+    {
+     "family": "CR5",
+     "iota": 0.6822916666666666,
+     "severity": 1,
+     "side": "upper",
+     "slot": "R2+",
+     "target": 0.7739130434782608
+    },
+    {
+     "family": "RF11",
+     "iota": 0.3359580052493438,
+     "severity": 21,
+     "side": "lower",
+     "slot": "R3-",
+     "target": 0.3739130434782609
+    },
+    {
+     "family": "RF11",
+     "iota": 0.8544600938967137,
+     "severity": 32,
+     "side": "upper",
+     "slot": "R3+",
+     "target": 0.7739130434782608
+    }
+   ],
+   "spectrum_triples_available": [
+    {
+     "core_severity": 10,
+     "family": "RF9",
+     "lower": {
+      "iota": 0.431547619047619,
+      "severity": 8,
+      "target": 0.3739130434782609
+     },
+     "upper": {
+      "iota": 0.642512077294686,
+      "severity": 13,
+      "target": 0.7739130434782608
+     }
+    },
+    {
+     "core_severity": 2,
+     "family": "CR5",
+     "lower": {
+      "iota": 0.35543766578249336,
+      "severity": 3,
+      "target": 0.3739130434782609
+     },
+     "upper": {
+      "iota": 0.6822916666666666,
+      "severity": 1,
+      "target": 0.7739130434782608
+     }
+    },
+    {
+     "core_severity": 26,
+     "family": "RF11",
+     "lower": {
+      "iota": 0.3359580052493438,
+      "severity": 21,
+      "target": 0.3739130434782609
+     },
+     "upper": {
+      "iota": 0.8544600938967137,
+      "severity": 32,
+      "target": 0.7739130434782608
+     }
+    }
+   ]
+  },
+  "gemma-3n-e4b-it": {
+   "a_chance_compliance": 0.10416666666666667,
+   "a_solo_compliance": 0.7265625,
+   "class_companion": {
+    "constraint_class": "production",
+    "distance": 0.013565891472868241,
+    "family": "CL7",
+    "iota": 0.7083333333333334,
+    "severity": 80,
+    "slot": "CL"
+   },
+   "core_references_admitted": [],
+   "design": "reduced",
+   "design_variant": "reduced",
+   "dropped_for_no_triple": [
+    {
+     "family": "RF9",
+     "reason": "no eligible severity strictly on one side of A: the family cannot straddle"
+    }
+   ],
+   "families": {
+    "CL7": {
+     "admitted": false,
+     "constraint_class": "production",
+     "refused_before_measurement": "InstrumentError: CL7 is a production-class class_control family: \u00a713.7 admits it to the class arm only, never to a core reference or spectrum slot"
+    },
+    "CL8": {
+     "admitted": false,
+     "constraint_class": "production",
+     "refused_before_measurement": "InstrumentError: CL8 is a production-class class_control family: \u00a713.7 admits it to the class arm only, never to a core reference or spectrum slot"
+    },
+    "CR3": {
+     "admitted": false,
+     "can_straddle_A": false,
+     "chosen_distance": null,
+     "chosen_iota": null,
+     "chosen_severity": null,
+     "constraint_class": "budget",
+     "n_rungs_admissible": 0,
+     "n_rungs_measured": 1,
+     "rungs": [
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.9114583333333334,
+       "distance_from_iota_A": 0.8712380300957593,
+       "eligibility_reasons": [
+        "instructed compliance -0.176 outside the registered band [0.1, 0.95] (the instruction is anti-productive)"
+       ],
+       "eligible_13_5": false,
+       "graded_mean": 0.9801262553236237,
+       "iota": -0.17647058823529418,
+       "label": "CR3:8",
+       "median_words": 94.0,
+       "newcombe_interval": [
+        0.05881023912176707,
+        0.27650344209814925
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.875,
+       "prescreen_distance_from_A": 3.3306690738754696e-16,
+       "prescreen_iota": 0.666666666666667,
+       "prescreen_solo_compliance": 0.9583333333333334,
+       "rejection_reasons": [
+        "instructed compliance -0.176 outside the registered band [0.1, 0.95] (the instruction is anti-productive)",
+        "instructed-compliance distance 0.871 above the 0.1 caliper",
+        "the Newcombe interval [0.059, 0.277] does not intersect +/-0.05"
+       ],
+       "severity": 8,
+       "solo_compliance": 0.8958333333333334,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      }
+     ],
+     "spectrum_triple": null
+    },
+    "CR5": {
+     "admitted": false,
+     "can_straddle_A": false,
+     "chosen_distance": null,
+     "chosen_iota": null,
+     "chosen_severity": null,
+     "constraint_class": "budget",
+     "n_rungs_admissible": 0,
+     "n_rungs_measured": 4,
+     "rungs": [
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.026041666666666668,
+       "distance_from_iota_A": 0.24106143514488243,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9734119047908111,
+       "iota": 0.9358288770053476,
+       "label": "CR5:4",
+       "median_words": 97.0,
+       "newcombe_interval": [
+        0.10710501013792512,
+        0.3131768297350853
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.041666666666666664,
+       "prescreen_distance_from_A": 0.24637681159420288,
+       "prescreen_iota": 0.9130434782608695,
+       "prescreen_solo_compliance": 0.9166666666666666,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.241 above the 0.1 caliper",
+        "the Newcombe interval [0.107, 0.313] does not intersect +/-0.05",
+        "pre-screen distance 0.246 above the 0.15 caliper"
+       ],
+       "severity": 4,
+       "solo_compliance": 0.9375,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.06770833333333333,
+       "distance_from_iota_A": 0.22422697154735605,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9747361481834139,
+       "iota": 0.9189944134078212,
+       "label": "CR5:5",
+       "median_words": 97.0,
+       "newcombe_interval": [
+        0.09180900262319956,
+        0.30170705719320867
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.125,
+       "prescreen_distance_from_A": 0.19047619047619047,
+       "prescreen_iota": 0.8571428571428571,
+       "prescreen_solo_compliance": 0.875,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.224 above the 0.1 caliper",
+        "the Newcombe interval [0.092, 0.302] does not intersect +/-0.05",
+        "pre-screen distance 0.190 above the 0.15 caliper"
+       ],
+       "severity": 5,
+       "solo_compliance": 0.9244791666666666,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.15885416666666666,
+       "distance_from_iota_A": 0.10399416804665562,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9499031593406593,
+       "iota": 0.7987616099071208,
+       "label": "CR5:6",
+       "median_words": 98.0,
+       "newcombe_interval": [
+        -0.013723451587541693,
+        0.21889312071830624
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.16666666666666666,
+       "prescreen_distance_from_A": 0.13333333333333341,
+       "prescreen_iota": 0.8,
+       "prescreen_solo_compliance": 0.8333333333333334,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.104 above the 0.1 caliper"
+       ],
+       "severity": 6,
+       "solo_compliance": 0.8307291666666666,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.4322916666666667,
+       "distance_from_iota_A": 0.1901802858971623,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9420076665232915,
+       "iota": 0.5045871559633028,
+       "label": "CR5:8",
+       "median_words": 100.0,
+       "newcombe_interval": [
+        -0.13301159077917624,
+        0.11771000573168755
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.5416666666666666,
+       "prescreen_distance_from_A": 0.21212121212121204,
+       "prescreen_iota": 0.4545454545454546,
+       "prescreen_solo_compliance": 0.75,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.190 above the 0.1 caliper",
+        "pre-screen distance 0.212 above the 0.15 caliper"
+       ],
+       "severity": 8,
+       "solo_compliance": 0.71875,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      }
+     ],
+     "spectrum_triple": null
+    },
+    "CX1": {
+     "admitted": false,
+     "constraint_class": "production",
+     "refused_before_measurement": "InstrumentError: CX1 is a production-class class_control family: \u00a713.7 admits it to the class arm only, never to a core reference or spectrum slot"
+    },
+    "CX2": {
+     "admitted": false,
+     "constraint_class": "production",
+     "refused_before_measurement": "InstrumentError: CX2 is a production-class class_control family: \u00a713.7 admits it to the class arm only, never to a core reference or spectrum slot"
+    },
+    "RF1": {
+     "admitted": false,
+     "can_straddle_A": false,
+     "chosen_distance": null,
+     "chosen_iota": null,
+     "chosen_severity": null,
+     "constraint_class": "budget",
+     "n_rungs_admissible": 0,
+     "n_rungs_measured": 4,
+     "rungs": [
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.375,
+       "distance_from_iota_A": 0.24476744186046512,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.8391803075396825,
+       "iota": 0.45,
+       "label": "RF1:2",
+       "median_words": 91.0,
+       "newcombe_interval": [
+        -0.19734953717462533,
+        0.0599067818913
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.375,
+       "prescreen_distance_from_A": 0.1333333333333332,
+       "prescreen_iota": 0.5333333333333334,
+       "prescreen_solo_compliance": 0.7083333333333334,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.245 above the 0.1 caliper"
+       ],
+       "severity": 2,
+       "solo_compliance": 0.65625,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.6822916666666666,
+       "distance_from_iota_A": 0.2357510484178421,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9512693903318903,
+       "iota": 0.459016393442623,
+       "label": "RF1:4",
+       "median_words": 90.0,
+       "newcombe_interval": [
+        -0.016567771434762263,
+        0.21657271062165057
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.6666666666666666,
+       "prescreen_distance_from_A": 0.2916666666666667,
+       "prescreen_iota": 0.37499999999999994,
+       "prescreen_solo_compliance": 0.7916666666666666,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.236 above the 0.1 caliper",
+        "pre-screen distance 0.292 above the 0.15 caliper"
+       ],
+       "severity": 4,
+       "solo_compliance": 0.828125,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.8697916666666666,
+       "distance_from_iota_A": 0.08523255813953468,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9925352858946609,
+       "iota": 0.7799999999999998,
+       "label": "RF1:6",
+       "median_words": 89.0,
+       "newcombe_interval": [
+        0.14809952905217516,
+        0.3432762842513071
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.875,
+       "prescreen_distance_from_A": 3.3306690738754696e-16,
+       "prescreen_iota": 0.666666666666667,
+       "prescreen_solo_compliance": 0.9583333333333334,
+       "rejection_reasons": [
+        "the Newcombe interval [0.148, 0.343] does not intersect +/-0.05"
+       ],
+       "severity": 6,
+       "solo_compliance": 0.9713541666666666,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.9244791666666666,
+       "distance_from_iota_A": 0.10856054530874082,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9951822916666666,
+       "iota": 0.5862068965517243,
+       "label": "RF1:7",
+       "median_words": 89.0,
+       "newcombe_interval": [
+        0.14486432647366998,
+        0.3409330482928973
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.9166666666666666,
+       "prescreen_distance_from_A": 0.16666666666666596,
+       "prescreen_iota": 0.5000000000000007,
+       "prescreen_solo_compliance": 0.9583333333333334,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.109 above the 0.1 caliper",
+        "the Newcombe interval [0.145, 0.341] does not intersect +/-0.05",
+        "pre-screen distance 0.167 above the 0.15 caliper"
+       ],
+       "severity": 7,
+       "solo_compliance": 0.96875,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      }
+     ],
+     "spectrum_triple": null
+    },
+    "RF11": {
+     "admitted": false,
+     "can_straddle_A": false,
+     "chosen_distance": null,
+     "chosen_iota": null,
+     "chosen_severity": null,
+     "constraint_class": "budget",
+     "n_rungs_admissible": 0,
+     "n_rungs_measured": 3,
+     "rungs": [
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.0,
+       "distance_from_iota_A": 0.49164244186046513,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.7376746756556787,
+       "iota": 0.203125,
+       "label": "RF11:16",
+       "median_words": 79.0,
+       "newcombe_interval": [
+        -0.6279901026611433,
+        -0.39062875958349985
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.0,
+       "prescreen_distance_from_A": 0.37499999999999994,
+       "prescreen_iota": 0.2916666666666667,
+       "prescreen_solo_compliance": 0.2916666666666667,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.492 above the 0.1 caliper",
+        "the Newcombe interval [-0.628, -0.391] does not intersect +/-0.05",
+        "pre-screen distance 0.375 above the 0.15 caliper"
+       ],
+       "severity": 16,
+       "solo_compliance": 0.203125,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.010416666666666666,
+       "distance_from_iota_A": 0.25792533659730726,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.877382950029275,
+       "iota": 0.43684210526315786,
+       "label": "RF11:21",
+       "median_words": 80.0,
+       "newcombe_interval": [
+        -0.4076958126201212,
+        -0.1450748561945791
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.041666666666666664,
+       "prescreen_distance_from_A": 0.2753623188405797,
+       "prescreen_iota": 0.3913043478260869,
+       "prescreen_solo_compliance": 0.4166666666666667,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.258 above the 0.1 caliper",
+        "the Newcombe interval [-0.408, -0.145] does not intersect +/-0.05",
+        "pre-screen distance 0.275 above the 0.15 caliper"
+       ],
+       "severity": 21,
+       "solo_compliance": 0.4427083333333333,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.109375,
+       "distance_from_iota_A": 0.004062967496260006,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9602059639089878,
+       "iota": 0.6988304093567251,
+       "label": "RF11:26",
+       "median_words": 78.0,
+       "newcombe_interval": [
+        -0.11942410880892809,
+        0.12963017562195756
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.08333333333333333,
+       "prescreen_distance_from_A": 0.19696969696969702,
+       "prescreen_iota": 0.8636363636363636,
+       "prescreen_solo_compliance": 0.875,
+       "rejection_reasons": [
+        "pre-screen distance 0.197 above the 0.15 caliper"
+       ],
+       "severity": 26,
+       "solo_compliance": 0.7317708333333334,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      }
+     ],
+     "spectrum_triple": null
+    },
+    "RF3": {
+     "admitted": false,
+     "can_straddle_A": false,
+     "chosen_distance": null,
+     "chosen_iota": null,
+     "chosen_severity": null,
+     "constraint_class": "budget",
+     "n_rungs_admissible": 0,
+     "n_rungs_measured": 4,
+     "rungs": [
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.4270833333333333,
+       "distance_from_iota_A": 0.33567653276955606,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.8431667399440838,
+       "iota": 0.35909090909090907,
+       "label": "RF3:3",
+       "median_words": 82.0,
+       "newcombe_interval": [
+        -0.22112450768618797,
+        0.037978600580657745
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.375,
+       "prescreen_distance_from_A": 0.2,
+       "prescreen_iota": 0.4666666666666666,
+       "prescreen_solo_compliance": 0.6666666666666666,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.336 above the 0.1 caliper",
+        "pre-screen distance 0.200 above the 0.15 caliper"
+       ],
+       "severity": 3,
+       "solo_compliance": 0.6328125,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.796875,
+       "distance_from_iota_A": 0.2075879546809778,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9694027326839826,
+       "iota": 0.48717948717948734,
+       "label": "RF3:6",
+       "median_words": 81.0,
+       "newcombe_interval": [
+        0.05881023912176707,
+        0.27650344209814925
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.75,
+       "prescreen_distance_from_A": 0.16666666666666663,
+       "prescreen_iota": 0.5,
+       "prescreen_solo_compliance": 0.875,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.208 above the 0.1 caliper",
+        "the Newcombe interval [0.059, 0.277] does not intersect +/-0.05",
+        "pre-screen distance 0.167 above the 0.15 caliper"
+       ],
+       "severity": 6,
+       "solo_compliance": 0.8958333333333334,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.8411458333333334,
+       "distance_from_iota_A": 0.1701772779260392,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9834367816789692,
+       "iota": 0.5245901639344259,
+       "label": "RF3:7",
+       "median_words": 81.0,
+       "newcombe_interval": [
+        0.09180900262319956,
+        0.30170705719320867
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.7916666666666666,
+       "prescreen_distance_from_A": 0.2666666666666665,
+       "prescreen_iota": 0.40000000000000013,
+       "prescreen_solo_compliance": 0.875,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.170 above the 0.1 caliper",
+        "the Newcombe interval [0.092, 0.302] does not intersect +/-0.05",
+        "pre-screen distance 0.267 above the 0.15 caliper"
+       ],
+       "severity": 7,
+       "solo_compliance": 0.9244791666666666,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.890625,
+       "distance_from_iota_A": 0.12333887043189373,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9912878787878787,
+       "iota": 0.5714285714285714,
+       "label": "RF3:8",
+       "median_words": 80.0,
+       "newcombe_interval": [
+        0.12576928494434414,
+        0.326993292023589
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.875,
+       "prescreen_distance_from_A": 3.3306690738754696e-16,
+       "prescreen_iota": 0.666666666666667,
+       "prescreen_solo_compliance": 0.9583333333333334,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.123 above the 0.1 caliper",
+        "the Newcombe interval [0.126, 0.327] does not intersect +/-0.05"
+       ],
+       "severity": 8,
+       "solo_compliance": 0.953125,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      }
+     ],
+     "spectrum_triple": null
+    },
+    "RF9": {
+     "admitted": true,
+     "can_straddle_A": false,
+     "chosen_distance": 0.009533633408352116,
+     "chosen_iota": 0.7043010752688172,
+     "chosen_severity": 13,
+     "constraint_class": "budget",
+     "n_rungs_admissible": 1,
+     "n_rungs_measured": 4,
+     "rungs": [
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.07291666666666667,
+       "distance_from_iota_A": 0.2678011497256337,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.7859081186682478,
+       "iota": 0.42696629213483145,
+       "label": "RF9:6",
+       "median_words": 85.0,
+       "newcombe_interval": [
+        -0.3827640342422063,
+        -0.11943857653820475
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.08333333333333333,
+       "prescreen_distance_from_A": 0.2575757575757575,
+       "prescreen_iota": 0.4090909090909091,
+       "prescreen_solo_compliance": 0.4583333333333333,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.268 above the 0.1 caliper",
+        "the Newcombe interval [-0.383, -0.119] does not intersect +/-0.05",
+        "pre-screen distance 0.258 above the 0.15 caliper"
+       ],
+       "severity": 6,
+       "solo_compliance": 0.46875,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.14583333333333334,
+       "distance_from_iota_A": 0.15513329551900168,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.8815602087075578,
+       "iota": 0.5396341463414634,
+       "label": "RF9:8",
+       "median_words": 84.0,
+       "newcombe_interval": [
+        -0.2473300673148266,
+        0.013451759567946336
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.125,
+       "prescreen_distance_from_A": 0.04761904761904767,
+       "prescreen_iota": 0.619047619047619,
+       "prescreen_solo_compliance": 0.6666666666666666,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.155 above the 0.1 caliper"
+       ],
+       "severity": 8,
+       "solo_compliance": 0.6067708333333334,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.2682291666666667,
+       "distance_from_iota_A": 0.10402011089961094,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9252015538623027,
+       "iota": 0.5907473309608542,
+       "label": "RF9:10",
+       "median_words": 85.0,
+       "newcombe_interval": [
+        -0.15192408484660022,
+        0.10095126824753084
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.2916666666666667,
+       "prescreen_distance_from_A": 0.03921568627450989,
+       "prescreen_iota": 0.7058823529411765,
+       "prescreen_solo_compliance": 0.7916666666666666,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.104 above the 0.1 caliper"
+       ],
+       "severity": 10,
+       "solo_compliance": 0.7005208333333334,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": true,
+       "chance_compliance": 0.515625,
+       "distance_from_iota_A": 0.009533633408352116,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9710594152301822,
+       "iota": 0.7043010752688172,
+       "label": "RF9:13",
+       "median_words": 83.0,
+       "newcombe_interval": [
+        0.0149426705505432,
+        0.24202235646949855
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.5833333333333334,
+       "prescreen_distance_from_A": 0.06666666666666654,
+       "prescreen_iota": 0.6000000000000001,
+       "prescreen_solo_compliance": 0.8333333333333334,
+       "rejection_reasons": [],
+       "severity": 13,
+       "solo_compliance": 0.8567708333333334,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      }
+     ],
+     "spectrum_triple": null
+    }
+   },
+   "identification_statuses": [
+    "COMPANION_CLASS_NOT_MATCHED",
+    "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+    "EXCESS_NOT_IDENTIFIED"
+   ],
+   "iota_a": 0.6947674418604651,
+   "n_core_references": 0,
+   "prescreen_iota_a": 0.6666666666666666,
+   "spectrum": [],
+   "spectrum_triples_available": []
+  },
+  "qwen3-4b": {
+   "a_chance_compliance": 0.057291666666666664,
+   "a_solo_compliance": 0.71875,
+   "class_companion": {
+    "constraint_class": "production",
+    "distance": 0.006344958563535896,
+    "family": "CX1",
+    "iota": 0.6953125,
+    "severity": 4,
+    "slot": "CL"
+   },
+   "core_references_admitted": [
+    {
+     "distance": 0.012628255722178294,
+     "family": "RF11",
+     "feature_group": "vowel_initial",
+     "iota": 0.7142857142857142,
+     "severity": 21,
+     "slot": "R1"
+    },
+    {
+     "distance": 0.025427950366814556,
+     "family": "CR5",
+     "feature_group": "comma",
+     "iota": 0.6762295081967213,
+     "severity": 8,
+     "slot": "R2"
+    }
+   ],
+   "design": "reduced",
+   "design_variant": "reduced",
+   "dropped_for_no_triple": [],
+   "families": {
+    "CL7": {
+     "admitted": false,
+     "constraint_class": "production",
+     "refused_before_measurement": "InstrumentError: CL7 is a production-class class_control family: \u00a713.7 admits it to the class arm only, never to a core reference or spectrum slot"
+    },
+    "CR5": {
+     "admitted": true,
+     "can_straddle_A": true,
+     "chosen_distance": 0.025427950366814556,
+     "chosen_iota": 0.6762295081967213,
+     "chosen_severity": 8,
+     "constraint_class": "budget",
+     "n_rungs_admissible": 2,
+     "n_rungs_measured": 4,
+     "rungs": [
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.08854166666666667,
+       "distance_from_iota_A": 0.15880031570639308,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.8800680493551587,
+       "iota": 0.5428571428571428,
+       "label": "CR5:5",
+       "median_words": 74.0,
+       "newcombe_interval": [
+        -0.2635607485070647,
+        -0.0006482035465943392
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.125,
+       "prescreen_distance_from_A": 0.1785714285714286,
+       "prescreen_iota": 0.5714285714285714,
+       "prescreen_solo_compliance": 0.625,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.159 above the 0.1 caliper",
+        "pre-screen distance 0.179 above the 0.15 caliper"
+       ],
+       "severity": 5,
+       "solo_compliance": 0.5833333333333334,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": true,
+       "chance_compliance": 0.16145833333333334,
+       "distance_from_iota_A": 0.0650114958306166,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9206482514880953,
+       "iota": 0.6366459627329193,
+       "label": "CR5:6",
+       "median_words": 75.0,
+       "newcombe_interval": [
+        -0.150141494423681,
+        0.1042857797169664
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.20833333333333334,
+       "prescreen_distance_from_A": 0.03947368421052633,
+       "prescreen_iota": 0.7894736842105263,
+       "prescreen_solo_compliance": 0.8333333333333334,
+       "rejection_reasons": [],
+       "severity": 6,
+       "solo_compliance": 0.6953125,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": true,
+       "chance_compliance": 0.3645833333333333,
+       "distance_from_iota_A": 0.025427950366814556,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9608590067340067,
+       "iota": 0.6762295081967213,
+       "label": "CR5:8",
+       "median_words": 77.0,
+       "newcombe_interval": [
+        -0.04607428072244882,
+        0.19443464741744348
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.375,
+       "prescreen_distance_from_A": 0.016666666666666607,
+       "prescreen_iota": 0.7333333333333334,
+       "prescreen_solo_compliance": 0.8333333333333334,
+       "rejection_reasons": [],
+       "severity": 8,
+       "solo_compliance": 0.7942708333333334,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.6276041666666666,
+       "distance_from_iota_A": 0.09554533863926118,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9897405039983166,
+       "iota": 0.7972027972027971,
+       "label": "CR5:10",
+       "median_words": 77.0,
+       "newcombe_interval": [
+        0.09885102945487356,
+        0.30991869539928246
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.75,
+       "prescreen_distance_from_A": 0.08333333333333348,
+       "prescreen_iota": 0.8333333333333335,
+       "prescreen_solo_compliance": 0.9583333333333334,
+       "rejection_reasons": [
+        "the Newcombe interval [0.099, 0.310] does not intersect +/-0.05"
+       ],
+       "severity": 10,
+       "solo_compliance": 0.9244791666666666,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      }
+     ],
+     "spectrum_triple": {
+      "core_severity": 8,
+      "family": "CR5",
+      "lower": {
+       "iota": 0.5428571428571428,
+       "severity": 5,
+       "target": 0.5016574585635358
+      },
+      "upper": {
+       "iota": 0.7972027972027971,
+       "severity": 10,
+       "target": 0.901657458563536
+      }
+     }
+    },
+    "CX1": {
+     "admitted": false,
+     "constraint_class": "production",
+     "refused_before_measurement": "InstrumentError: CX1 is a production-class class_control family: \u00a713.7 admits it to the class arm only, never to a core reference or spectrum slot"
+    },
+    "CX2": {
+     "admitted": false,
+     "constraint_class": "production",
+     "refused_before_measurement": "InstrumentError: CX2 is a production-class class_control family: \u00a713.7 admits it to the class arm only, never to a core reference or spectrum slot"
+    },
+    "RF11": {
+     "admitted": true,
+     "can_straddle_A": true,
+     "chosen_distance": 0.012628255722178294,
+     "chosen_iota": 0.7142857142857142,
+     "chosen_severity": 21,
+     "constraint_class": "budget",
+     "n_rungs_admissible": 1,
+     "n_rungs_measured": 4,
+     "rungs": [
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.0,
+       "distance_from_iota_A": 0.2901991252302026,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.7948956047165224,
+       "iota": 0.4114583333333333,
+       "label": "RF11:12",
+       "median_words": 56.0,
+       "newcombe_interval": [
+        -0.43021672244639336,
+        -0.16797443693076566
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.0,
+       "prescreen_distance_from_A": 0.2916666666666667,
+       "prescreen_iota": 0.4583333333333333,
+       "prescreen_solo_compliance": 0.4583333333333333,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.290 above the 0.1 caliper",
+        "the Newcombe interval [-0.430, -0.168] does not intersect +/-0.05",
+        "pre-screen distance 0.292 above the 0.15 caliper"
+       ],
+       "severity": 12,
+       "solo_compliance": 0.4114583333333333,
+       "solo_vacuity": 0.028645833333333332,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.018229166666666668,
+       "distance_from_iota_A": 0.17380599967759425,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.8801227924684318,
+       "iota": 0.5278514588859416,
+       "label": "RF11:16",
+       "median_words": 58.0,
+       "newcombe_interval": [
+        -0.30986248203924494,
+        -0.045514549437601776
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.041666666666666664,
+       "prescreen_distance_from_A": 0.14130434782608692,
+       "prescreen_iota": 0.6086956521739131,
+       "prescreen_solo_compliance": 0.625,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.174 above the 0.1 caliper"
+       ],
+       "severity": 16,
+       "solo_compliance": 0.5364583333333334,
+       "solo_vacuity": 0.013020833333333334,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": true,
+       "chance_compliance": 0.16145833333333334,
+       "distance_from_iota_A": 0.012628255722178294,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9532741969207105,
+       "iota": 0.7142857142857142,
+       "label": "RF11:21",
+       "median_words": 60.0,
+       "newcombe_interval": [
+        -0.08214085179990202,
+        0.16386075485412163
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.3333333333333333,
+       "prescreen_distance_from_A": 0.0625,
+       "prescreen_iota": 0.8125,
+       "prescreen_solo_compliance": 0.875,
+       "rejection_reasons": [],
+       "severity": 21,
+       "solo_compliance": 0.7604166666666666,
+       "solo_vacuity": 0.0078125,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.5520833333333334,
+       "distance_from_iota_A": 0.08322626236669672,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9868542358864553,
+       "iota": 0.7848837209302326,
+       "label": "RF11:26",
+       "median_words": 62.0,
+       "newcombe_interval": [
+        0.07479570707530893,
+        0.29158136878542573
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.75,
+       "prescreen_distance_from_A": 0.08333333333333348,
+       "prescreen_iota": 0.8333333333333335,
+       "prescreen_solo_compliance": 0.9583333333333334,
+       "rejection_reasons": [
+        "the Newcombe interval [0.075, 0.292] does not intersect +/-0.05"
+       ],
+       "severity": 26,
+       "solo_compliance": 0.9036458333333334,
+       "solo_vacuity": 0.010416666666666666,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      }
+     ],
+     "spectrum_triple": {
+      "core_severity": 21,
+      "family": "RF11",
+      "lower": {
+       "iota": 0.5278514588859416,
+       "severity": 16,
+       "target": 0.5016574585635358
+      },
+      "upper": {
+       "iota": 0.7848837209302326,
+       "severity": 26,
+       "target": 0.901657458563536
+      }
+     }
+    },
+    "RF2": {
+     "admitted": false,
+     "can_straddle_A": false,
+     "chosen_distance": null,
+     "chosen_iota": null,
+     "chosen_severity": null,
+     "constraint_class": "budget",
+     "n_rungs_admissible": 0,
+     "n_rungs_measured": 4,
+     "rungs": [
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.3828125,
+       "distance_from_iota_A": 0.35988530666480173,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.8374754802489178,
+       "iota": 0.34177215189873417,
+       "label": "RF2:3",
+       "median_words": 62.0,
+       "newcombe_interval": [
+        -0.25318113722300695,
+        0.009246108955839244
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.4583333333333333,
+       "prescreen_distance_from_A": 0.05769230769230771,
+       "prescreen_iota": 0.6923076923076923,
+       "prescreen_solo_compliance": 0.8333333333333334,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.360 above the 0.1 caliper"
+       ],
+       "severity": 3,
+       "solo_compliance": 0.59375,
+       "solo_vacuity": 0.005208333333333333,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.5598958333333334,
+       "distance_from_iota_A": 0.20461603844519266,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9295014880952381,
+       "iota": 0.49704142011834324,
+       "label": "RF2:4",
+       "median_words": 58.0,
+       "newcombe_interval": [
+        -0.06278571265797434,
+        0.18035723977852375
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.625,
+       "prescreen_distance_from_A": 0.30555555555555564,
+       "prescreen_iota": 0.44444444444444436,
+       "prescreen_solo_compliance": 0.7916666666666666,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.205 above the 0.1 caliper",
+        "pre-screen distance 0.306 above the 0.15 caliper"
+       ],
+       "severity": 4,
+       "solo_compliance": 0.7786458333333334,
+       "solo_vacuity": 0.015625,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.7239583333333334,
+       "distance_from_iota_A": 0.14505368497863047,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9654017857142857,
+       "iota": 0.5566037735849054,
+       "label": "RF2:5",
+       "median_words": 59.0,
+       "newcombe_interval": [
+        0.04528348403514841,
+        0.26862959248076046
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.7916666666666666,
+       "prescreen_distance_from_A": 0.15000000000000013,
+       "prescreen_iota": 0.5999999999999999,
+       "prescreen_solo_compliance": 0.9166666666666666,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.145 above the 0.1 caliper",
+        "pre-screen distance 0.150 above the 0.15 caliper"
+       ],
+       "severity": 5,
+       "solo_compliance": 0.8776041666666666,
+       "solo_vacuity": 0.015625,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.8203125,
+       "distance_from_iota_A": 0.006005284650492437,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9876493731962482,
+       "iota": 0.6956521739130435,
+       "label": "RF2:6",
+       "median_words": 54.0,
+       "newcombe_interval": [
+        0.12340462909954963,
+        0.32829618615319744
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.875,
+       "prescreen_distance_from_A": 0.08333333333333304,
+       "prescreen_iota": 0.666666666666667,
+       "prescreen_solo_compliance": 0.9583333333333334,
+       "rejection_reasons": [
+        "the Newcombe interval [0.123, 0.328] does not intersect +/-0.05"
+       ],
+       "severity": 6,
+       "solo_compliance": 0.9453125,
+       "solo_vacuity": 0.08333333333333333,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      }
+     ],
+     "spectrum_triple": null
+    },
+    "RF3": {
+     "admitted": false,
+     "can_straddle_A": false,
+     "chosen_distance": null,
+     "chosen_iota": null,
+     "chosen_severity": null,
+     "constraint_class": "budget",
+     "n_rungs_admissible": 0,
+     "n_rungs_measured": 4,
+     "rungs": [
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.3880208333333333,
+       "distance_from_iota_A": 0.2974021394145998,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.7695384837962963,
+       "iota": 0.4042553191489361,
+       "label": "RF3:1",
+       "median_words": 63.0,
+       "newcombe_interval": [
+        -0.21132204356914672,
+        0.04854948151612898
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.375,
+       "prescreen_distance_from_A": 0.15000000000000002,
+       "prescreen_iota": 0.6,
+       "prescreen_solo_compliance": 0.75,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.297 above the 0.1 caliper",
+        "pre-screen distance 0.150 above the 0.15 caliper"
+       ],
+       "severity": 1,
+       "solo_compliance": 0.6354166666666666,
+       "solo_vacuity": 0.005208333333333333,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.6145833333333334,
+       "distance_from_iota_A": 0.20165745856353606,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9097842261904762,
+       "iota": 0.49999999999999983,
+       "label": "RF3:2",
+       "median_words": 63.0,
+       "newcombe_interval": [
+        -0.03205755814785055,
+        0.2061228273282179
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.5416666666666666,
+       "prescreen_distance_from_A": 0.20454545454545459,
+       "prescreen_iota": 0.5454545454545454,
+       "prescreen_solo_compliance": 0.7916666666666666,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.202 above the 0.1 caliper",
+        "pre-screen distance 0.205 above the 0.15 caliper"
+       ],
+       "severity": 2,
+       "solo_compliance": 0.8072916666666666,
+       "solo_vacuity": 0.0078125,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.8776041666666666,
+       "distance_from_iota_A": 0.2761255436699187,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9796048280423281,
+       "iota": 0.4255319148936172,
+       "label": "RF3:4",
+       "median_words": 59.0,
+       "newcombe_interval": [
+        0.10493783905960119,
+        0.31450617374827283
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.8333333333333334,
+       "prescreen_distance_from_A": 2.220446049250313e-16,
+       "prescreen_iota": 0.7500000000000002,
+       "prescreen_solo_compliance": 0.9583333333333334,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.276 above the 0.1 caliper",
+        "the Newcombe interval [0.105, 0.315] does not intersect +/-0.05"
+       ],
+       "severity": 4,
+       "solo_compliance": 0.9296875,
+       "solo_vacuity": 0.018229166666666668,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.9765625,
+       "distance_from_iota_A": 1.2572130141190931,
+       "eligibility_reasons": [
+        "solo vacuity 0.109 above 0.1",
+        "instructed compliance -0.556 outside the registered band [0.1, 0.95] (the instruction is anti-productive)"
+       ],
+       "eligible_13_5": false,
+       "graded_mean": 0.9923983134920635,
+       "iota": -0.5555555555555571,
+       "label": "RF3:6",
+       "median_words": 55.0,
+       "newcombe_interval": [
+        0.14542610548096013,
+        0.34449612547289515
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.9166666666666666,
+       "prescreen_distance_from_A": 0.24999999999999933,
+       "prescreen_iota": 0.5000000000000007,
+       "prescreen_solo_compliance": 0.9583333333333334,
+       "rejection_reasons": [
+        "solo vacuity 0.109 above 0.1",
+        "instructed compliance -0.556 outside the registered band [0.1, 0.95] (the instruction is anti-productive)",
+        "instructed-compliance distance 1.257 above the 0.1 caliper",
+        "the Newcombe interval [0.145, 0.344] does not intersect +/-0.05",
+        "pre-screen distance 0.250 above the 0.15 caliper"
+       ],
+       "severity": 6,
+       "solo_compliance": 0.9635416666666666,
+       "solo_vacuity": 0.109375,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      }
+     ],
+     "spectrum_triple": null
+    },
+    "RF6": {
+     "admitted": false,
+     "can_straddle_A": false,
+     "chosen_distance": null,
+     "chosen_iota": null,
+     "chosen_severity": null,
+     "constraint_class": "budget",
+     "n_rungs_admissible": 0,
+     "n_rungs_measured": 3,
+     "rungs": [
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.0,
+       "distance_from_iota_A": 0.1577175414364641,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.8798896436322942,
+       "iota": 0.859375,
+       "label": "RF6:1",
+       "median_words": 71.0,
+       "newcombe_interval": [
+        0.02493395530891937,
+        0.25251233523604616
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.0,
+       "prescreen_distance_from_A": 0.16666666666666663,
+       "prescreen_iota": 0.9166666666666666,
+       "prescreen_solo_compliance": 0.9166666666666666,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.158 above the 0.1 caliper",
+        "pre-screen distance 0.167 above the 0.15 caliper"
+       ],
+       "severity": 1,
+       "solo_compliance": 0.859375,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.0,
+       "distance_from_iota_A": 0.2641574585635359,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.6219930850131121,
+       "iota": 0.4375,
+       "label": "RF6:2",
+       "median_words": 67.0,
+       "newcombe_interval": [
+        -0.4055086256987077,
+        -0.14211323160834818
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.0,
+       "prescreen_distance_from_A": 0.375,
+       "prescreen_iota": 0.375,
+       "prescreen_solo_compliance": 0.375,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.264 above the 0.1 caliper",
+        "the Newcombe interval [-0.406, -0.142] does not intersect +/-0.05",
+        "pre-screen distance 0.375 above the 0.15 caliper"
+       ],
+       "severity": 2,
+       "solo_compliance": 0.4375,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.0,
+       "distance_from_iota_A": 0.6105116252302025,
+       "eligibility_reasons": [
+        "instructed compliance 0.091 outside the registered band [0.1, 0.95]"
+       ],
+       "eligible_13_5": false,
+       "graded_mean": 0.4904875782941518,
+       "iota": 0.09114583333333333,
+       "label": "RF6:3",
+       "median_words": 65.0,
+       "newcombe_interval": [
+        -0.7185243705014337,
+        -0.505388061217352
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.0,
+       "prescreen_distance_from_A": 0.5833333333333334,
+       "prescreen_iota": 0.16666666666666666,
+       "prescreen_solo_compliance": 0.16666666666666666,
+       "rejection_reasons": [
+        "instructed compliance 0.091 outside the registered band [0.1, 0.95]",
+        "instructed-compliance distance 0.611 above the 0.1 caliper",
+        "the Newcombe interval [-0.719, -0.505] does not intersect +/-0.05",
+        "pre-screen distance 0.583 above the 0.15 caliper"
+       ],
+       "severity": 3,
+       "solo_compliance": 0.09114583333333333,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      }
+     ],
+     "spectrum_triple": null
+    },
+    "RF8": {
+     "admitted": false,
+     "can_straddle_A": false,
+     "chosen_distance": null,
+     "chosen_iota": null,
+     "chosen_severity": null,
+     "constraint_class": "budget",
+     "n_rungs_admissible": 0,
+     "n_rungs_measured": 4,
+     "rungs": [
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.2994791666666667,
+       "distance_from_iota_A": 0.3410626630245024,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.830965648934399,
+       "iota": 0.3605947955390335,
+       "label": "RF8:4",
+       "median_words": 57.0,
+       "newcombe_interval": [
+        -0.29450152345238534,
+        -0.0304966437790328
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.2916666666666667,
+       "prescreen_distance_from_A": 0.3970588235294118,
+       "prescreen_iota": 0.3529411764705882,
+       "prescreen_solo_compliance": 0.5416666666666666,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.341 above the 0.1 caliper",
+        "pre-screen distance 0.397 above the 0.15 caliper"
+       ],
+       "severity": 4,
+       "solo_compliance": 0.5520833333333334,
+       "solo_vacuity": 0.0234375,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.484375,
+       "distance_from_iota_A": 0.39862715553323286,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.8864865241818367,
+       "iota": 0.30303030303030304,
+       "label": "RF8:5",
+       "median_words": 60.0,
+       "newcombe_interval": [
+        -0.20605035962857252,
+        0.053431712360992256
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.375,
+       "prescreen_distance_from_A": 0.21666666666666656,
+       "prescreen_iota": 0.5333333333333334,
+       "prescreen_solo_compliance": 0.7083333333333334,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.399 above the 0.1 caliper",
+        "pre-screen distance 0.217 above the 0.15 caliper"
+       ],
+       "severity": 5,
+       "solo_compliance": 0.640625,
+       "solo_vacuity": 0.0234375,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.625,
+       "distance_from_iota_A": 0.11137968078575822,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9619111357392608,
+       "iota": 0.5902777777777777,
+       "label": "RF8:6",
+       "median_words": 52.0,
+       "newcombe_interval": [
+        0.010535537641240197,
+        0.24096568776570565
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.5416666666666666,
+       "prescreen_distance_from_A": 0.20454545454545459,
+       "prescreen_iota": 0.5454545454545454,
+       "prescreen_solo_compliance": 0.7916666666666666,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.111 above the 0.1 caliper",
+        "pre-screen distance 0.205 above the 0.15 caliper"
+       ],
+       "severity": 6,
+       "solo_compliance": 0.8463541666666666,
+       "solo_vacuity": 0.078125,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.7421875,
+       "distance_from_iota_A": 0.11579887270495015,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9797026252104377,
+       "iota": 0.5858585858585857,
+       "label": "RF8:7",
+       "median_words": 55.0,
+       "newcombe_interval": [
+        0.06292315891043293,
+        0.28240831170296854
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.7083333333333334,
+       "prescreen_distance_from_A": 0.03571428571428592,
+       "prescreen_iota": 0.7142857142857141,
+       "prescreen_solo_compliance": 0.9166666666666666,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.116 above the 0.1 caliper",
+        "the Newcombe interval [0.063, 0.282] does not intersect +/-0.05"
+       ],
+       "severity": 7,
+       "solo_compliance": 0.8932291666666666,
+       "solo_vacuity": 0.0625,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      }
+     ],
+     "spectrum_triple": null
+    }
+   },
+   "identification_statuses": [
+    "COMPANION_CLASS_NOT_MATCHED",
+    "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+    "EXCESS_NOT_IDENTIFIED"
+   ],
+   "iota_a": 0.7016574585635359,
+   "n_core_references": 2,
+   "prescreen_iota_a": 0.75,
+   "spectrum": [],
+   "spectrum_triples_available": [
+    {
+     "core_severity": 21,
+     "family": "RF11",
+     "lower": {
+      "iota": 0.5278514588859416,
+      "severity": 16,
+      "target": 0.5016574585635358
+     },
+     "upper": {
+      "iota": 0.7848837209302326,
+      "severity": 26,
+      "target": 0.901657458563536
+     }
+    },
+    {
+     "core_severity": 8,
+     "family": "CR5",
+     "lower": {
+      "iota": 0.5428571428571428,
+      "severity": 5,
+      "target": 0.5016574585635358
+     },
+     "upper": {
+      "iota": 0.7972027972027971,
+      "severity": 10,
+      "target": 0.901657458563536
+     }
+    }
+   ]
+  },
+  "qwen3-4b-instruct-2507": {
+   "a_chance_compliance": 0.013020833333333334,
+   "a_solo_compliance": 0.6015625,
+   "class_companion": {
+    "constraint_class": "production",
+    "distance": 0.019078546783033112,
+    "family": "CL8",
+    "iota": 0.6153846153846162,
+    "severity": 3,
+    "slot": "CL"
+   },
+   "core_references_admitted": [],
+   "design": "reduced",
+   "design_variant": "reduced",
+   "dropped_for_no_triple": [
+    {
+     "family": "RF7",
+     "reason": "no eligible severity strictly on one side of A: the family cannot straddle"
+    }
+   ],
+   "families": {
+    "CL7": {
+     "admitted": false,
+     "constraint_class": "production",
+     "refused_before_measurement": "InstrumentError: CL7 is a production-class class_control family: \u00a713.7 admits it to the class arm only, never to a core reference or spectrum slot"
+    },
+    "CL8": {
+     "admitted": false,
+     "constraint_class": "production",
+     "refused_before_measurement": "InstrumentError: CL8 is a production-class class_control family: \u00a713.7 admits it to the class arm only, never to a core reference or spectrum slot"
+    },
+    "CR3": {
+     "admitted": false,
+     "can_straddle_A": false,
+     "chosen_distance": null,
+     "chosen_iota": null,
+     "chosen_severity": null,
+     "constraint_class": "budget",
+     "n_rungs_admissible": 0,
+     "n_rungs_measured": 1,
+     "rungs": [
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.9296875,
+       "distance_from_iota_A": 0.8185282908238053,
+       "eligibility_reasons": [
+        "instructed compliance -0.222 outside the registered band [0.1, 0.95] (the instruction is anti-productive)"
+       ],
+       "eligible_13_5": false,
+       "graded_mean": 0.9859142628205128,
+       "iota": -0.2222222222222222,
+       "label": "CR3:6",
+       "median_words": 76.0,
+       "newcombe_interval": [
+        0.19479222574732188,
+        0.42071238115722337
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.875,
+       "prescreen_distance_from_A": 0.04166666666666696,
+       "prescreen_iota": 0.666666666666667,
+       "prescreen_solo_compliance": 0.9583333333333334,
+       "rejection_reasons": [
+        "instructed compliance -0.222 outside the registered band [0.1, 0.95] (the instruction is anti-productive)",
+        "instructed-compliance distance 0.819 above the 0.1 caliper",
+        "the Newcombe interval [0.195, 0.421] does not intersect +/-0.05"
+       ],
+       "severity": 6,
+       "solo_compliance": 0.9140625,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      }
+     ],
+     "spectrum_triple": null
+    },
+    "CX1": {
+     "admitted": false,
+     "constraint_class": "production",
+     "refused_before_measurement": "InstrumentError: CX1 is a production-class class_control family: \u00a713.7 admits it to the class arm only, never to a core reference or spectrum slot"
+    },
+    "CX2": {
+     "admitted": false,
+     "constraint_class": "production",
+     "refused_before_measurement": "InstrumentError: CX2 is a production-class class_control family: \u00a713.7 admits it to the class arm only, never to a core reference or spectrum slot"
+    },
+    "RF10": {
+     "admitted": false,
+     "can_straddle_A": false,
+     "chosen_distance": null,
+     "chosen_iota": null,
+     "chosen_severity": null,
+     "constraint_class": "budget",
+     "n_rungs_admissible": 0,
+     "n_rungs_measured": 3,
+     "rungs": [
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.3072916666666667,
+       "distance_from_iota_A": 0.3970579483008312,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.8566791518418676,
+       "iota": 0.19924812030075187,
+       "label": "RF10:12",
+       "median_words": 64.0,
+       "newcombe_interval": [
+        -0.28892914599011255,
+        -0.015087912773447537
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.2916666666666667,
+       "prescreen_distance_from_A": 0.44852941176470584,
+       "prescreen_iota": 0.17647058823529413,
+       "prescreen_solo_compliance": 0.4166666666666667,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.397 above the 0.1 caliper",
+        "pre-screen distance 0.449 above the 0.15 caliper"
+       ],
+       "severity": 12,
+       "solo_compliance": 0.4453125,
+       "solo_vacuity": 0.033854166666666664,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.59375,
+       "distance_from_iota_A": 0.26938299167850616,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9441547957132722,
+       "iota": 0.3269230769230769,
+       "label": "RF10:15",
+       "median_words": 62.0,
+       "newcombe_interval": [
+        -0.00852583661643444,
+        0.25254519739792025
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.4166666666666667,
+       "prescreen_distance_from_A": 0.1607142857142858,
+       "prescreen_iota": 0.7857142857142858,
+       "prescreen_solo_compliance": 0.875,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.269 above the 0.1 caliper",
+        "pre-screen distance 0.161 above the 0.15 caliper"
+       ],
+       "severity": 15,
+       "solo_compliance": 0.7265625,
+       "solo_vacuity": 0.020833333333333332,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.8932291666666666,
+       "distance_from_iota_A": 0.2792328978698752,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9919449517496393,
+       "iota": 0.3170731707317079,
+       "label": "RF10:19",
+       "median_words": 61.0,
+       "newcombe_interval": [
+        0.20974806285111755,
+        0.43221552939889585
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.9166666666666666,
+       "prescreen_distance_from_A": 0.12499999999999933,
+       "prescreen_iota": 0.5000000000000007,
+       "prescreen_solo_compliance": 0.9583333333333334,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.279 above the 0.1 caliper",
+        "the Newcombe interval [0.210, 0.432] does not intersect +/-0.05"
+       ],
+       "severity": 19,
+       "solo_compliance": 0.9270833333333334,
+       "solo_vacuity": 0.0546875,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      }
+     ],
+     "spectrum_triple": null
+    },
+    "RF11": {
+     "admitted": false,
+     "can_straddle_A": false,
+     "chosen_distance": null,
+     "chosen_iota": null,
+     "chosen_severity": null,
+     "constraint_class": "budget",
+     "n_rungs_admissible": 0,
+     "n_rungs_measured": 4,
+     "rungs": [
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.0,
+       "distance_from_iota_A": 0.39838940193491645,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.7119099370142896,
+       "iota": 0.19791666666666666,
+       "label": "RF11:12",
+       "median_words": 64.0,
+       "newcombe_interval": [
+        -0.5178506742506745,
+        -0.2686702527238828
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.0,
+       "prescreen_distance_from_A": 0.375,
+       "prescreen_iota": 0.25,
+       "prescreen_solo_compliance": 0.25,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.398 above the 0.1 caliper",
+        "the Newcombe interval [-0.518, -0.269] does not intersect +/-0.05",
+        "pre-screen distance 0.375 above the 0.15 caliper"
+       ],
+       "severity": 12,
+       "solo_compliance": 0.19791666666666666,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.005208333333333333,
+       "distance_from_iota_A": 0.16960449792095478,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.8621524958042689,
+       "iota": 0.4267015706806283,
+       "label": "RF11:16",
+       "median_words": 66.0,
+       "newcombe_interval": [
+        -0.30385665279470386,
+        -0.030550536057532718
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.0,
+       "prescreen_distance_from_A": 0.08333333333333337,
+       "prescreen_iota": 0.5416666666666666,
+       "prescreen_solo_compliance": 0.5416666666666666,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.170 above the 0.1 caliper"
+       ],
+       "severity": 16,
+       "solo_compliance": 0.4296875,
+       "solo_vacuity": 0.005208333333333333,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.15625,
+       "distance_from_iota_A": 0.12591615362063913,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9603660434021744,
+       "iota": 0.7222222222222222,
+       "label": "RF11:21",
+       "median_words": 64.0,
+       "newcombe_interval": [
+        0.0324353257311113,
+        0.28818176233051584
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.16666666666666666,
+       "prescreen_distance_from_A": 0.17500000000000004,
+       "prescreen_iota": 0.8,
+       "prescreen_solo_compliance": 0.8333333333333334,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.126 above the 0.1 caliper",
+        "pre-screen distance 0.175 above the 0.15 caliper"
+       ],
+       "severity": 21,
+       "solo_compliance": 0.765625,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.578125,
+       "distance_from_iota_A": 0.18764454868236746,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9884593411219053,
+       "iota": 0.7839506172839505,
+       "label": "RF11:26",
+       "median_words": 67.0,
+       "newcombe_interval": [
+        0.18885408373240015,
+        0.41611268252087363
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.7083333333333334,
+       "prescreen_distance_from_A": 0.2321428571428572,
+       "prescreen_iota": 0.8571428571428572,
+       "prescreen_solo_compliance": 0.9583333333333334,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.188 above the 0.1 caliper",
+        "the Newcombe interval [0.189, 0.416] does not intersect +/-0.05",
+        "pre-screen distance 0.232 above the 0.15 caliper"
+       ],
+       "severity": 26,
+       "solo_compliance": 0.9088541666666666,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      }
+     ],
+     "spectrum_triple": null
+    },
+    "RF7": {
+     "admitted": true,
+     "can_straddle_A": false,
+     "chosen_distance": 0.004306068601583113,
+     "chosen_iota": 0.592,
+     "chosen_severity": 24,
+     "constraint_class": "budget",
+     "n_rungs_admissible": 1,
+     "n_rungs_measured": 4,
+     "rungs": [
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.0,
+       "distance_from_iota_A": 0.23172273526824977,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.8596494837148776,
+       "iota": 0.3645833333333333,
+       "label": "RF7:21",
+       "median_words": 56.0,
+       "newcombe_interval": [
+        -0.3653682685123094,
+        -0.09571119445069351
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.0,
+       "prescreen_distance_from_A": 0.20833333333333331,
+       "prescreen_iota": 0.4166666666666667,
+       "prescreen_solo_compliance": 0.4166666666666667,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.232 above the 0.1 caliper",
+        "the Newcombe interval [-0.365, -0.096] does not intersect +/-0.05",
+        "pre-screen distance 0.208 above the 0.15 caliper"
+       ],
+       "severity": 21,
+       "solo_compliance": 0.3645833333333333,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.0026041666666666665,
+       "distance_from_iota_A": 0.17071860123865884,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.8779790312904118,
+       "iota": 0.42558746736292424,
+       "label": "RF7:22",
+       "median_words": 56.0,
+       "newcombe_interval": [
+        -0.3063383435247041,
+        -0.033134111181054665
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.0,
+       "prescreen_distance_from_A": 0.04166666666666663,
+       "prescreen_iota": 0.5833333333333334,
+       "prescreen_solo_compliance": 0.5833333333333334,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.171 above the 0.1 caliper"
+       ],
+       "severity": 22,
+       "solo_compliance": 0.4270833333333333,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.013020833333333334,
+       "distance_from_iota_A": 0.13192612137203158,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.8908393653405482,
+       "iota": 0.4643799472295515,
+       "label": "RF7:23",
+       "median_words": 58.0,
+       "newcombe_interval": [
+        -0.263906975122643,
+        0.01053721058207438
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.0,
+       "prescreen_distance_from_A": 0.16666666666666669,
+       "prescreen_iota": 0.4583333333333333,
+       "prescreen_solo_compliance": 0.4583333333333333,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.132 above the 0.1 caliper",
+        "pre-screen distance 0.167 above the 0.15 caliper"
+       ],
+       "severity": 23,
+       "solo_compliance": 0.4713541666666667,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": true,
+       "chance_compliance": 0.0234375,
+       "distance_from_iota_A": 0.004306068601583113,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9262345402663574,
+       "iota": 0.592,
+       "label": "RF7:24",
+       "median_words": 54.0,
+       "newcombe_interval": [
+        -0.13603355035921558,
+        0.13603355035921558
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.0,
+       "prescreen_distance_from_A": 0.04166666666666663,
+       "prescreen_iota": 0.5833333333333334,
+       "prescreen_solo_compliance": 0.5833333333333334,
+       "rejection_reasons": [],
+       "severity": 24,
+       "solo_compliance": 0.6015625,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      }
+     ],
+     "spectrum_triple": null
+    },
+    "RF8": {
+     "admitted": false,
+     "can_straddle_A": false,
+     "chosen_distance": null,
+     "chosen_iota": null,
+     "chosen_severity": null,
+     "constraint_class": "budget",
+     "n_rungs_admissible": 0,
+     "n_rungs_measured": 4,
+     "rungs": [
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.18229166666666666,
+       "distance_from_iota_A": 0.5644589348436213,
+       "eligibility_reasons": [
+        "instructed compliance 0.032 outside the registered band [0.1, 0.95]"
+       ],
+       "eligible_13_5": false,
+       "graded_mean": 0.6081070188492064,
+       "iota": 0.031847133757961804,
+       "label": "RF8:3",
+       "median_words": 71.0,
+       "newcombe_interval": [
+        -0.50852673799723,
+        -0.2575570090843497
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.20833333333333334,
+       "prescreen_distance_from_A": 0.4671052631578948,
+       "prescreen_iota": 0.15789473684210523,
+       "prescreen_solo_compliance": 0.3333333333333333,
+       "rejection_reasons": [
+        "instructed compliance 0.032 outside the registered band [0.1, 0.95]",
+        "instructed-compliance distance 0.564 above the 0.1 caliper",
+        "the Newcombe interval [-0.509, -0.258] does not intersect +/-0.05",
+        "pre-screen distance 0.467 above the 0.15 caliper"
+       ],
+       "severity": 3,
+       "solo_compliance": 0.20833333333333334,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.2942708333333333,
+       "distance_from_iota_A": 0.5188152936938341,
+       "eligibility_reasons": [
+        "instructed compliance 0.077 outside the registered band [0.1, 0.95]"
+       ],
+       "eligible_13_5": false,
+       "graded_mean": 0.7485012383449883,
+       "iota": 0.07749077490774907,
+       "label": "RF8:4",
+       "median_words": 70.0,
+       "newcombe_interval": [
+        -0.37996717771270716,
+        -0.11153275832897727
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.2916666666666667,
+       "prescreen_distance_from_A": 0.5073529411764706,
+       "prescreen_iota": 0.1176470588235294,
+       "prescreen_solo_compliance": 0.375,
+       "rejection_reasons": [
+        "instructed compliance 0.077 outside the registered band [0.1, 0.95]",
+        "instructed-compliance distance 0.519 above the 0.1 caliper",
+        "the Newcombe interval [-0.380, -0.112] does not intersect +/-0.05",
+        "pre-screen distance 0.507 above the 0.15 caliper"
+       ],
+       "severity": 4,
+       "solo_compliance": 0.3489583333333333,
+       "solo_vacuity": 0.0,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.7526041666666666,
+       "distance_from_iota_A": 0.2384113317594776,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9562353776737967,
+       "iota": 0.3578947368421055,
+       "label": "RF8:7",
+       "median_words": 67.0,
+       "newcombe_interval": [
+        0.11348559821198281,
+        0.35609862118117946
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.75,
+       "prescreen_distance_from_A": 0.125,
+       "prescreen_iota": 0.5,
+       "prescreen_solo_compliance": 0.875,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.238 above the 0.1 caliper",
+        "the Newcombe interval [0.113, 0.356] does not intersect +/-0.05"
+       ],
+       "severity": 7,
+       "solo_compliance": 0.8411458333333334,
+       "solo_vacuity": 0.010416666666666666,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.8463541666666666,
+       "distance_from_iota_A": 0.18952640758463402,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9756139693639693,
+       "iota": 0.40677966101694907,
+       "label": "RF8:8",
+       "median_words": 67.0,
+       "newcombe_interval": [
+        0.18885408373240015,
+        0.41611268252087363
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.875,
+       "prescreen_distance_from_A": 0.04166666666666696,
+       "prescreen_iota": 0.666666666666667,
+       "prescreen_solo_compliance": 0.9583333333333334,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.190 above the 0.1 caliper",
+        "the Newcombe interval [0.189, 0.416] does not intersect +/-0.05"
+       ],
+       "severity": 8,
+       "solo_compliance": 0.9088541666666666,
+       "solo_vacuity": 0.010416666666666666,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      }
+     ],
+     "spectrum_triple": null
+    },
+    "RF9": {
+     "admitted": false,
+     "can_straddle_A": false,
+     "chosen_distance": null,
+     "chosen_iota": null,
+     "chosen_severity": null,
+     "constraint_class": "budget",
+     "n_rungs_admissible": 0,
+     "n_rungs_measured": 4,
+     "rungs": [
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.125,
+       "distance_from_iota_A": 0.47428225907777355,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.6591904550671029,
+       "iota": 0.12202380952380953,
+       "label": "RF9:6",
+       "median_words": 62.0,
+       "newcombe_interval": [
+        -0.4874501216378772,
+        -0.23271853446831153
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.125,
+       "prescreen_distance_from_A": 0.3869047619047619,
+       "prescreen_iota": 0.23809523809523808,
+       "prescreen_solo_compliance": 0.3333333333333333,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.474 above the 0.1 caliper",
+        "the Newcombe interval [-0.487, -0.233] does not intersect +/-0.05",
+        "pre-screen distance 0.387 above the 0.15 caliper"
+       ],
+       "severity": 6,
+       "solo_compliance": 0.23177083333333334,
+       "solo_vacuity": 0.0390625,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.3046875,
+       "distance_from_iota_A": 0.3603510124218078,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.8288688853368865,
+       "iota": 0.23595505617977527,
+       "label": "RF9:8",
+       "median_words": 60.0,
+       "newcombe_interval": [
+        -0.2664172729444575,
+        0.007982814103223157
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.375,
+       "prescreen_distance_from_A": 0.29166666666666663,
+       "prescreen_iota": 0.33333333333333337,
+       "prescreen_solo_compliance": 0.5833333333333334,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.360 above the 0.1 caliper",
+        "pre-screen distance 0.292 above the 0.15 caliper"
+       ],
+       "severity": 8,
+       "solo_compliance": 0.46875,
+       "solo_vacuity": 0.078125,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.5729166666666666,
+       "distance_from_iota_A": 0.43776948323572934,
+       "eligibility_reasons": [],
+       "eligible_13_5": true,
+       "graded_mean": 0.9106497774434187,
+       "iota": 0.15853658536585374,
+       "label": "RF9:10",
+       "median_words": 60.0,
+       "newcombe_interval": [
+        -0.09672463943174744,
+        0.17285388094277554
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.4583333333333333,
+       "prescreen_distance_from_A": 0.14423076923076916,
+       "prescreen_iota": 0.7692307692307692,
+       "prescreen_solo_compliance": 0.875,
+       "rejection_reasons": [
+        "instructed-compliance distance 0.438 above the 0.1 caliper"
+       ],
+       "severity": 10,
+       "solo_compliance": 0.640625,
+       "solo_vacuity": 0.041666666666666664,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      },
+      {
+       "admissible_13_4": false,
+       "chance_compliance": 0.8307291666666666,
+       "distance_from_iota_A": 0.1193829916785058,
+       "eligibility_reasons": [
+        "solo vacuity 0.193 above 0.1"
+       ],
+       "eligible_13_5": false,
+       "graded_mean": 0.9871367851941502,
+       "iota": 0.4769230769230773,
+       "label": "RF9:13",
+       "median_words": 57.0,
+       "newcombe_interval": [
+        0.19182015777829897,
+        0.4184125306300915
+       ],
+       "parse_independent": true,
+       "prescreen_chance_compliance": 0.7916666666666666,
+       "prescreen_distance_from_A": 0.17500000000000027,
+       "prescreen_iota": 0.8000000000000003,
+       "prescreen_solo_compliance": 0.9583333333333334,
+       "rejection_reasons": [
+        "solo vacuity 0.193 above 0.1",
+        "instructed-compliance distance 0.119 above the 0.1 caliper",
+        "the Newcombe interval [0.192, 0.418] does not intersect +/-0.05",
+        "pre-screen distance 0.175 above the 0.15 caliper"
+       ],
+       "severity": 13,
+       "solo_compliance": 0.9114583333333334,
+       "solo_vacuity": 0.19270833333333334,
+       "witnesses_pass": true,
+       "wording_within_caliper": true
+      }
+     ],
+     "spectrum_triple": null
+    }
+   },
+   "identification_statuses": [
+    "COMPANION_CLASS_NOT_MATCHED",
+    "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+    "EXCESS_NOT_IDENTIFIED"
+   ],
+   "iota_a": 0.5963060686015831,
+   "n_core_references": 0,
+   "prescreen_iota_a": 0.625,
+   "spectrum": [],
+   "spectrum_triples_available": []
+  }
+ },
+ "thresholds": {
+  "CHANCE_DEGENERACY_MAX": 0.99,
+  "M_CAL": 4,
+  "N_CORE_REFERENCES": 3,
+  "N_SOLO": 96,
+  "REFERENCE_CALIPER": 0.1,
+  "REFERENCE_NEWCOMBE_REGION": 0.05,
+  "REFERENCE_PRESCREEN_CALIPER": 0.15,
+  "REFERENCE_VACUITY_MAX": 0.1,
+  "SPECTRUM_ELIGIBILITY_BAND": [
+   0.1,
+   0.95
+  ],
+  "SPECTRUM_OFFSET": 0.2
+ }
+}

@@ -1,0 +1,40 @@
+{
+  "by_stage": {
+    "v4r3-cap-selection-1024": {
+      "prescreen": 384
+    },
+    "v4r3-cap-selection-512": {
+      "prescreen": 384
+    },
+    "v4r3-cap-selection-768": {
+      "prescreen": 384
+    },
+    "v4r3-ladder-screen": {
+      "prescreen": 19680
+    },
+    "v4r3-ladder-screen-r1": {
+      "prescreen": 2664
+    },
+    "v4r3-ladder-screen-r2": {
+      "prescreen": 720
+    }
+  },
+  "reserved": [
+    "composed",
+    "confirmatory",
+    "sequestered"
+  ],
+  "reserved_sets_unspent": true,
+  "resolved_stages": {
+    "v4r3-cap-selection-1024": "REGIME_SCREEN",
+    "v4r3-cap-selection-512": "REGIME_SCREEN",
+    "v4r3-cap-selection-768": "REGIME_SCREEN",
+    "v4r3-ladder-screen": "REGIME_SCREEN",
+    "v4r3-ladder-screen-r1": "REGIME_SCREEN",
+    "v4r3-ladder-screen-r2": "REGIME_SCREEN"
+  },
+  "root": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r3",
+  "rows": 24216,
+  "topics_not_in_released_split": [],
+  "unresolved_stage_labels": []
+}

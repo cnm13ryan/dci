@@ -1,6 +1,23 @@
 # DCI-1 — isolated confirmatory study module
 
-> **This module now holds two protocol versions.** The v2 implementation
+> **The live protocol line is v7** (`src/dci1v7`): adopted, registered and run
+> on 2026-08-28 and closed the same day with zero survivors of four, amended
+> in place (A6–A8) after the closure, with development rehearsals continuing
+> under `evidence/dci1v7-development*`. Start at the repository's
+> `RESEARCH_STATE.md` §4b, then `reports/dci1v7/READINESS.md`,
+> `reports/dci1v7/CLOSURE.md` and `user-notes/DCI1_preregistration_v7.md`.
+> **The prospective v8 candidate** lives in `src/dci1v8dev` (design:
+> `docs/V8_CANDIDATE.md`; its pilot execution layer `src/dci1v8dev/run`,
+> `docs/V8_PILOT.md`, validated without a GPU on 2026-08-30; nothing
+> registered, no v8 evidence, no pilot run). Which
+> definition belongs to which revision — A's wording, the marker counter, the
+> word-list order, wording grammar, family counts, report paths — is in
+> `docs/VERSION_DRIFT.md`. Every earlier line (v2, v3, v4r1–v4r4, v5, v6) is
+> closed and retained unmodified as a design record; v4r3 (`src/dci1v4r3`,
+> `reports/dci1v4r3/REPORT.md`) was the live line when this banner was first
+> written, on 2026-08-21.
+>
+> **This module also holds the earlier protocol versions.** The v2 implementation
 > (`src/dci1`, below) is **closed**: all four model replications reached
 > preregistered terminal outcomes with zero confirmatory generations. The
 > **v3** study (`src/dci1v3`) is also **complete** (2026-08-19): both

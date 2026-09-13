@@ -1,0 +1,5355 @@
+{
+ "basis": "\u00a713.2 unconstrained cell of the grid runs, topic-mean (draws within topic, then topics), absent-scored instances only; arm == 'unconstrained'",
+ "chance": {
+  "A:1": {
+   "calibration_a": {
+    "compliance": 0.010416666666666666,
+    "n_observations": 384,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.052083333333333336,
+    "n_observations": 384,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.03125,
+    "n_observations": 768,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "A:2": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 384,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 384,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "A:3": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 384,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 384,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "A:4": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 384,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 384,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "A:5": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 384,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 384,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "A:6": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 384,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 384,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "A:7": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 384,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 384,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "A:8": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 384,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 384,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "B:10": {
+   "calibration_a": {
+    "compliance": 0.005208333333333333,
+    "n_observations": 384,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.015625,
+    "n_observations": 384,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.010416666666666666,
+    "n_observations": 768,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "B:11": {
+   "calibration_a": {
+    "compliance": 0.08333333333333333,
+    "n_observations": 384,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.06770833333333333,
+    "n_observations": 384,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.07552083333333333,
+    "n_observations": 768,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "B:12": {
+   "calibration_a": {
+    "compliance": 0.3177083333333333,
+    "n_observations": 384,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.3463541666666667,
+    "n_observations": 384,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.33203125,
+    "n_observations": 768,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "B:13": {
+   "calibration_a": {
+    "compliance": 0.671875,
+    "n_observations": 384,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.6640625,
+    "n_observations": 384,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.66796875,
+    "n_observations": 768,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "B:14": {
+   "calibration_a": {
+    "compliance": 0.8567708333333334,
+    "n_observations": 384,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.8854166666666666,
+    "n_observations": 384,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.87109375,
+    "n_observations": 768,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "B:7": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 384,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 384,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "B:8": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 384,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 384,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "B:9": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 384,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 384,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "CL8:1": {
+   "calibration_a": {
+    "compliance": 0.9973958333333334,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.99609375,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.9967447916666666,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "CL8:3": {
+   "calibration_a": {
+    "compliance": 0.9388020833333334,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.9375,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.9381510416666666,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "CL8:5": {
+   "calibration_a": {
+    "compliance": 0.7135416666666666,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.7395833333333334,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.7265625,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "CL8:6": {
+   "calibration_a": {
+    "compliance": 0.5559895833333334,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.6067708333333334,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.5813802083333334,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "CR11:40": {
+   "calibration_a": {
+    "compliance": 0.92578125,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.9309895833333334,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.9283854166666666,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "CR12:13": {
+   "calibration_a": {
+    "compliance": 1.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 1.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 1.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "CR12:14": {
+   "calibration_a": {
+    "compliance": 1.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 1.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 1.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "CR3:8": {
+   "calibration_a": {
+    "compliance": 0.98828125,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.9895833333333334,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.9889322916666666,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "CR6:11": {
+   "calibration_a": {
+    "compliance": 0.96484375,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 1.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.982421875,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "CR6:12": {
+   "calibration_a": {
+    "compliance": 0.97265625,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 1.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.986328125,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "CR6:13": {
+   "calibration_a": {
+    "compliance": 0.9856770833333334,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 1.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.9928385416666666,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "CR6:14": {
+   "calibration_a": {
+    "compliance": 0.9895833333333334,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 1.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.9947916666666666,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "CR6:15": {
+   "calibration_a": {
+    "compliance": 0.9921875,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 1.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.99609375,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "CR6:16": {
+   "calibration_a": {
+    "compliance": 0.99609375,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 1.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.998046875,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "CR8:13": {
+   "calibration_a": {
+    "compliance": 0.9609375,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.9479166666666666,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.9544270833333334,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK1:1": {
+   "calibration_a": {
+    "compliance": 0.049479166666666664,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.05078125,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.050130208333333336,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK1:2": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK1:3": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK1:4": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK1:5": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK1:6": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK1:7": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK1:8": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK2:1": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK2:2": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK2:3": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK2:4": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK2:5": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK2:6": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK2:7": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK2:8": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK3:1": {
+   "calibration_a": {
+    "compliance": 0.0026041666666666665,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.014322916666666666,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.008463541666666666,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK3:2": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK3:3": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK3:4": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK3:5": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK3:6": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK3:7": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK3:8": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK4:1": {
+   "calibration_a": {
+    "compliance": 0.026041666666666668,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0026041666666666665,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.014322916666666666,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK4:2": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK4:3": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK4:4": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK4:5": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK4:6": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK4:7": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK4:8": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK5:1": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK5:2": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK5:3": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK5:4": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK5:5": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK5:6": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK5:7": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK5:8": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK6:1": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK6:2": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK6:3": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK6:4": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK6:5": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK6:6": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK6:7": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK6:8": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK7:1": {
+   "calibration_a": {
+    "compliance": 0.018229166666666668,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.010416666666666666,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.014322916666666666,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK7:2": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK7:3": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK7:4": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK7:5": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK7:6": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK7:7": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK7:8": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK8:1": {
+   "calibration_a": {
+    "compliance": 0.08203125,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0625,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.072265625,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK8:2": {
+   "calibration_a": {
+    "compliance": 0.0013020833333333333,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0006510416666666666,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK8:3": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK8:4": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK8:5": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK8:6": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK8:7": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "MK8:8": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "RF10:19": {
+   "calibration_a": {
+    "compliance": 0.8893229166666666,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.8880208333333334,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.888671875,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "RF11:21": {
+   "calibration_a": {
+    "compliance": 0.16145833333333334,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.11848958333333333,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.13997395833333334,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "RF11:27": {
+   "calibration_a": {
+    "compliance": 0.640625,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.6236979166666666,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.6321614583333334,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "RF12:1": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "RF12:2": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.006510416666666667,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0032552083333333335,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "RF12:3": {
+   "calibration_a": {
+    "compliance": 0.016927083333333332,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.032552083333333336,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.024739583333333332,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "RF5:2": {
+   "calibration_a": {
+    "compliance": 0.005208333333333333,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.005208333333333333,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.005208333333333333,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "RF5:3": {
+   "calibration_a": {
+    "compliance": 0.029947916666666668,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.022135416666666668,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.026041666666666668,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "RF5:9": {
+   "calibration_a": {
+    "compliance": 0.640625,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.6497395833333334,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.6451822916666666,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "XC1:1": {
+   "calibration_a": {
+    "compliance": 0.0234375,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.024739583333333332,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.024088541666666668,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "XC1:2": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0026041666666666665,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0013020833333333333,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "XC1:3": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "XC1:4": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "XC1:5": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "XC1:6": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "XC1:7": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "XC1:8": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "XC2:1": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0013020833333333333,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0006510416666666666,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "XC2:10": {
+   "calibration_a": {
+    "compliance": 0.11979166666666667,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.12239583333333333,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.12109375,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "XC2:12": {
+   "calibration_a": {
+    "compliance": 0.057291666666666664,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0625,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.059895833333333336,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "XC2:14": {
+   "calibration_a": {
+    "compliance": 0.036458333333333336,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.020833333333333332,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.028645833333333332,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "XC2:16": {
+   "calibration_a": {
+    "compliance": 0.00390625,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0026041666666666665,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0032552083333333335,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "XC2:17": {
+   "calibration_a": {
+    "compliance": 0.005208333333333333,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0013020833333333333,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0032552083333333335,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "XC2:18": {
+   "calibration_a": {
+    "compliance": 0.0026041666666666665,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0013020833333333333,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "XC2:19": {
+   "calibration_a": {
+    "compliance": 0.0013020833333333333,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0006510416666666666,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "XC2:2": {
+   "calibration_a": {
+    "compliance": 0.005208333333333333,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.00390625,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.004557291666666667,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "XC2:20": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "XC2:4": {
+   "calibration_a": {
+    "compliance": 0.029947916666666668,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.044270833333333336,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.037109375,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "XC2:6": {
+   "calibration_a": {
+    "compliance": 0.09114583333333333,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.08854166666666667,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.08984375,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "XC2:8": {
+   "calibration_a": {
+    "compliance": 0.15494791666666666,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.16927083333333334,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.162109375,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "XC3:1": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "XC3:10": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "XC3:2": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.006510416666666667,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0032552083333333335,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "XC3:3": {
+   "calibration_a": {
+    "compliance": 0.016927083333333332,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.026041666666666668,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.021484375,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "XC3:4": {
+   "calibration_a": {
+    "compliance": 0.3033854166666667,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.3502604166666667,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.3268229166666667,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "XC3:5": {
+   "calibration_a": {
+    "compliance": 0.5390625,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.49609375,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.517578125,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "XC3:6": {
+   "calibration_a": {
+    "compliance": 0.13151041666666666,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.11328125,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.12239583333333333,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "XC3:7": {
+   "calibration_a": {
+    "compliance": 0.009114583333333334,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.005208333333333333,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.007161458333333333,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "XC3:8": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0026041666666666665,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0013020833333333333,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  },
+  "XC3:9": {
+   "calibration_a": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "calibration_b": {
+    "compliance": 0.0,
+    "n_observations": 768,
+    "n_topics": 96,
+    "vacuity": 0.0
+   },
+   "pooled": {
+    "compliance": 0.0,
+    "n_observations": 1536,
+    "n_topics": 192,
+    "vacuity": 0.0
+   }
+  }
+ },
+ "gate2_record": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v6/qwen3-4b-instruct-2507/GATE_2_FOCAL_CALIBRATION/gate2_focal_calibration.json",
+ "gate2_record_sha256": "b088c88396a4556ac31eaea0a421ca66f24c52b58587b3a8cb14d8abc65e101b",
+ "model": "qwen3-4b-instruct-2507",
+ "model_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v6/qwen3-4b-instruct-2507",
+ "n_unconstrained_rows": 1536,
+ "prescreen": {
+  "basis": "\u00a713.2 unconstrained cell of the regime screen's ladder run (24 pre-screen topics \u00d7 1 draw), topic-mean, absent-scored instances only",
+  "chance": {
+   "A:1": {
+    "compliance": 0.20833333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "A:2": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "A:3": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "A:4": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "A:5": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "A:6": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "A:7": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "A:8": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "B:10": {
+    "compliance": 0.041666666666666664,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "B:11": {
+    "compliance": 0.25,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "B:12": {
+    "compliance": 0.5833333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "B:13": {
+    "compliance": 0.7916666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "B:14": {
+    "compliance": 0.875,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "B:7": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "B:8": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "B:9": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CL7:10": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CL7:100": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CL7:130": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CL7:15": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CL7:20": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CL7:30": {
+    "compliance": 0.7916666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CL7:45": {
+    "compliance": 0.125,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CL7:5": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CL7:60": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CL7:80": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CL8:1": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CL8:10": {
+    "compliance": 0.08333333333333333,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CL8:14": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CL8:19": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CL8:2": {
+    "compliance": 0.9166666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CL8:25": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CL8:3": {
+    "compliance": 0.9166666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CL8:4": {
+    "compliance": 0.7916666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CL8:5": {
+    "compliance": 0.625,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CL8:6": {
+    "compliance": 0.625,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CL8:7": {
+    "compliance": 0.5416666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR10:11": {
+    "compliance": 0.041666666666666664,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR10:14": {
+    "compliance": 0.125,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR10:17": {
+    "compliance": 0.2916666666666667,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR10:2": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR10:21": {
+    "compliance": 0.75,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR10:22": {
+    "compliance": 0.7916666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR10:23": {
+    "compliance": 0.9166666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR10:24": {
+    "compliance": 0.9583333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR10:25": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR10:26": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR10:4": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR10:6": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR10:8": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR11:12": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR11:16": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR11:20": {
+    "compliance": 0.041666666666666664,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR11:24": {
+    "compliance": 0.25,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR11:28": {
+    "compliance": 0.375,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR11:33": {
+    "compliance": 0.625,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR11:34": {
+    "compliance": 0.6666666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR11:35": {
+    "compliance": 0.75,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR11:36": {
+    "compliance": 0.7916666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR11:37": {
+    "compliance": 0.875,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR11:38": {
+    "compliance": 0.9166666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR11:39": {
+    "compliance": 0.9166666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR11:4": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR11:40": {
+    "compliance": 0.9166666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR11:8": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR12:1": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR12:10": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR12:11": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR12:12": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR12:13": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR12:14": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR12:2": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR12:3": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR12:4": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR12:5": {
+    "compliance": 0.25,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR12:6": {
+    "compliance": 0.5416666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR12:8": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR1:1": {
+    "compliance": 0.125,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR1:10": {
+    "compliance": 0.9583333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR1:11": {
+    "compliance": 0.9583333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR1:12": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR1:13": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR1:14": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR1:2": {
+    "compliance": 0.16666666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR1:3": {
+    "compliance": 0.3333333333333333,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR1:4": {
+    "compliance": 0.5416666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR1:5": {
+    "compliance": 0.6666666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR1:6": {
+    "compliance": 0.7916666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR1:8": {
+    "compliance": 0.9166666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR2:1": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR2:10": {
+    "compliance": 0.9166666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR2:11": {
+    "compliance": 0.9583333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR2:12": {
+    "compliance": 0.9583333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR2:13": {
+    "compliance": 0.9583333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR2:14": {
+    "compliance": 0.9583333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR2:2": {
+    "compliance": 0.125,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR2:3": {
+    "compliance": 0.3333333333333333,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR2:4": {
+    "compliance": 0.5,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR2:5": {
+    "compliance": 0.5833333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR2:6": {
+    "compliance": 0.75,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR2:8": {
+    "compliance": 0.8333333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR2:9": {
+    "compliance": 0.9166666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR3:1": {
+    "compliance": 0.25,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR3:10": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR3:11": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR3:12": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR3:13": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR3:14": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR3:2": {
+    "compliance": 0.5,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR3:3": {
+    "compliance": 0.6666666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR3:4": {
+    "compliance": 0.875,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR3:5": {
+    "compliance": 0.9166666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR3:6": {
+    "compliance": 0.9583333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR3:7": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR3:8": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR3:9": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR4:11": {
+    "compliance": 0.5416666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR4:13": {
+    "compliance": 0.8333333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR4:15": {
+    "compliance": 0.8333333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR4:16": {
+    "compliance": 0.8333333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR4:17": {
+    "compliance": 0.875,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR4:18": {
+    "compliance": 0.9166666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR4:19": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR4:20": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR4:3": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR4:5": {
+    "compliance": 0.125,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR4:7": {
+    "compliance": 0.2916666666666667,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR4:9": {
+    "compliance": 0.3333333333333333,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR5:1": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR5:10": {
+    "compliance": 0.375,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR5:11": {
+    "compliance": 0.5,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR5:12": {
+    "compliance": 0.7083333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR5:13": {
+    "compliance": 0.7916666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR5:14": {
+    "compliance": 0.8333333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR5:2": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR5:3": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR5:4": {
+    "compliance": 0.041666666666666664,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR5:5": {
+    "compliance": 0.041666666666666664,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR5:6": {
+    "compliance": 0.16666666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR5:8": {
+    "compliance": 0.25,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR6:10": {
+    "compliance": 0.9583333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR6:11": {
+    "compliance": 0.9583333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR6:12": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR6:13": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR6:14": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR6:15": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR6:16": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR6:3": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR6:4": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR6:5": {
+    "compliance": 0.25,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR6:6": {
+    "compliance": 0.5,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR6:7": {
+    "compliance": 0.75,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR6:8": {
+    "compliance": 0.9583333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR6:9": {
+    "compliance": 0.9583333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR7:24": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR7:28": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR7:32": {
+    "compliance": 0.08333333333333333,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR7:36": {
+    "compliance": 0.2916666666666667,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR7:40": {
+    "compliance": 0.375,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR7:44": {
+    "compliance": 0.6666666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR7:48": {
+    "compliance": 0.7916666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR7:52": {
+    "compliance": 0.9166666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR7:54": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR7:56": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR8:1": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR8:10": {
+    "compliance": 0.7916666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR8:11": {
+    "compliance": 0.9166666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR8:12": {
+    "compliance": 0.9583333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR8:13": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR8:14": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR8:2": {
+    "compliance": 0.08333333333333333,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR8:3": {
+    "compliance": 0.08333333333333333,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR8:4": {
+    "compliance": 0.20833333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR8:5": {
+    "compliance": 0.25,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR8:6": {
+    "compliance": 0.4166666666666667,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR8:8": {
+    "compliance": 0.5416666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR9:1": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR9:10": {
+    "compliance": 0.20833333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR9:12": {
+    "compliance": 0.4583333333333333,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR9:15": {
+    "compliance": 0.7083333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR9:16": {
+    "compliance": 0.8333333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR9:17": {
+    "compliance": 0.9166666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR9:18": {
+    "compliance": 0.9166666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR9:19": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR9:2": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR9:20": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR9:4": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR9:6": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "CR9:8": {
+    "compliance": 0.16666666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK1:1": {
+    "compliance": 0.041666666666666664,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK1:2": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK1:3": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK1:4": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK1:5": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK1:6": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK1:7": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK1:8": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK2:1": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK2:2": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK2:3": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK2:4": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK2:5": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK2:6": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK2:7": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK2:8": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK3:1": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK3:2": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK3:3": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK3:4": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK3:5": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK3:6": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK3:7": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK3:8": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK4:1": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK4:2": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK4:3": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK4:4": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK4:5": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK4:6": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK4:7": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK4:8": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK5:1": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK5:2": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK5:3": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK5:4": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK5:5": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK5:6": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK5:7": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK5:8": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK6:1": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK6:2": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK6:3": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK6:4": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK6:5": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK6:6": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK6:7": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK6:8": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK7:1": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK7:2": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK7:3": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK7:4": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK7:5": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK7:6": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK7:7": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK7:8": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK8:1": {
+    "compliance": 0.08333333333333333,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK8:2": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK8:3": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK8:4": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK8:5": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK8:6": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK8:7": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "MK8:8": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF10:0": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF10:12": {
+    "compliance": 0.16666666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF10:15": {
+    "compliance": 0.5833333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF10:16": {
+    "compliance": 0.7083333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF10:17": {
+    "compliance": 0.875,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF10:18": {
+    "compliance": 0.9166666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF10:19": {
+    "compliance": 0.9166666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF10:2": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF10:20": {
+    "compliance": 0.9583333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF10:21": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF10:22": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF10:23": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF10:24": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF10:4": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF10:6": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF10:9": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF11:0": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF11:12": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF11:16": {
+    "compliance": 0.041666666666666664,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF11:21": {
+    "compliance": 0.3333333333333333,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF11:26": {
+    "compliance": 0.5416666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF11:27": {
+    "compliance": 0.5416666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF11:28": {
+    "compliance": 0.7083333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF11:29": {
+    "compliance": 0.75,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF11:30": {
+    "compliance": 0.75,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF11:31": {
+    "compliance": 0.9166666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF11:32": {
+    "compliance": 0.875,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF11:33": {
+    "compliance": 0.9583333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF11:34": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF11:35": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF11:4": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF11:8": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF12:1": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF12:10": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF12:11": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF12:12": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF12:2": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF12:3": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF12:4": {
+    "compliance": 0.375,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF12:5": {
+    "compliance": 0.7916666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF12:6": {
+    "compliance": 0.9583333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF12:7": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF12:8": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF12:9": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF1:0": {
+    "compliance": 0.125,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF1:1": {
+    "compliance": 0.16666666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF1:2": {
+    "compliance": 0.3333333333333333,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF1:3": {
+    "compliance": 0.5833333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF1:4": {
+    "compliance": 0.7083333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF1:5": {
+    "compliance": 0.7916666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF1:6": {
+    "compliance": 0.9166666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF1:7": {
+    "compliance": 0.9583333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF1:8": {
+    "compliance": 0.9583333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF2:0": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF2:1": {
+    "compliance": 0.125,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF2:2": {
+    "compliance": 0.3333333333333333,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF2:3": {
+    "compliance": 0.5416666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF2:4": {
+    "compliance": 0.7083333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF2:5": {
+    "compliance": 0.7916666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF2:6": {
+    "compliance": 0.7916666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF2:7": {
+    "compliance": 0.9166666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF2:8": {
+    "compliance": 0.9583333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF3:0": {
+    "compliance": 0.25,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF3:1": {
+    "compliance": 0.5,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF3:2": {
+    "compliance": 0.6666666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF3:3": {
+    "compliance": 0.875,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF3:4": {
+    "compliance": 0.9166666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF3:5": {
+    "compliance": 0.9583333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF3:6": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF3:7": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF3:8": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF4:0": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF4:1": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF4:2": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF4:3": {
+    "compliance": 0.041666666666666664,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF4:4": {
+    "compliance": 0.125,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF4:5": {
+    "compliance": 0.25,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF4:6": {
+    "compliance": 0.2916666666666667,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF5:0": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF5:1": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF5:10": {
+    "compliance": 0.75,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF5:11": {
+    "compliance": 0.9166666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF5:12": {
+    "compliance": 0.9166666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF5:2": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF5:3": {
+    "compliance": 0.041666666666666664,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF5:4": {
+    "compliance": 0.125,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF5:5": {
+    "compliance": 0.20833333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF5:6": {
+    "compliance": 0.25,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF5:7": {
+    "compliance": 0.3333333333333333,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF5:8": {
+    "compliance": 0.375,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF5:9": {
+    "compliance": 0.5416666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF6:0": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF6:1": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF6:10": {
+    "compliance": 0.9583333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF6:11": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF6:12": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF6:2": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF6:3": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF6:4": {
+    "compliance": 0.375,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF6:5": {
+    "compliance": 0.75,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF6:6": {
+    "compliance": 0.9166666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF6:7": {
+    "compliance": 0.9583333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF6:8": {
+    "compliance": 0.9583333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF6:9": {
+    "compliance": 0.9583333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF7:0": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF7:1": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF7:10": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF7:11": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF7:12": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF7:13": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF7:14": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF7:15": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF7:16": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF7:17": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF7:18": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF7:19": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF7:2": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF7:20": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF7:21": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF7:22": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF7:23": {
+    "compliance": 0.041666666666666664,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF7:24": {
+    "compliance": 0.041666666666666664,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF7:3": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF7:4": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF7:5": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF7:6": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF7:7": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF7:8": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF7:9": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF8:0": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF8:1": {
+    "compliance": 0.08333333333333333,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF8:2": {
+    "compliance": 0.08333333333333333,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF8:3": {
+    "compliance": 0.20833333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF8:4": {
+    "compliance": 0.375,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF8:5": {
+    "compliance": 0.4166666666666667,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF8:6": {
+    "compliance": 0.4583333333333333,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF8:7": {
+    "compliance": 0.75,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF8:8": {
+    "compliance": 0.875,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF9:0": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF9:10": {
+    "compliance": 0.5833333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF9:11": {
+    "compliance": 0.6666666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF9:12": {
+    "compliance": 0.75,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF9:13": {
+    "compliance": 0.875,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF9:14": {
+    "compliance": 0.9166666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF9:15": {
+    "compliance": 0.9583333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF9:16": {
+    "compliance": 0.9583333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF9:17": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF9:18": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF9:19": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF9:2": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF9:20": {
+    "compliance": 1.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF9:4": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF9:6": {
+    "compliance": 0.16666666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "RF9:8": {
+    "compliance": 0.25,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "XC1:1": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "XC1:2": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "XC1:3": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "XC1:4": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "XC1:5": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "XC1:6": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "XC1:7": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "XC1:8": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "XC2:1": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "XC2:10": {
+    "compliance": 0.20833333333333334,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "XC2:12": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "XC2:14": {
+    "compliance": 0.041666666666666664,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "XC2:16": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "XC2:17": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "XC2:18": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "XC2:19": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "XC2:2": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "XC2:20": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "XC2:4": {
+    "compliance": 0.08333333333333333,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "XC2:6": {
+    "compliance": 0.041666666666666664,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "XC2:8": {
+    "compliance": 0.041666666666666664,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "XC3:1": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "XC3:10": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "XC3:2": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "XC3:3": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "XC3:4": {
+    "compliance": 0.375,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "XC3:5": {
+    "compliance": 0.4166666666666667,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "XC3:6": {
+    "compliance": 0.16666666666666666,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "XC3:7": {
+    "compliance": 0.041666666666666664,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "XC3:8": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   },
+   "XC3:9": {
+    "compliance": 0.0,
+    "n_observations": 24,
+    "n_topics": 24,
+    "vacuity": 0.0
+   }
+  },
+  "n_unconstrained_rows": 72,
+  "runs": [
+   "expansion-0",
+   "expansion-1",
+   "ladder"
+  ]
+ },
+ "read_only": true,
+ "runs": [
+  "grid-A",
+  "grid-B"
+ ],
+ "tree": "v6"
+}

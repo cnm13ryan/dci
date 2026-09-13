@@ -1,0 +1,926 @@
+{
+ "_note": "B suppresses markers: `however` falls from 0.102 to 0.008 under B alone on gemma-3n-e2b-it, because B shortens answers and shifts the register. The displacement is negative and small in absolute terms for every admitted marker.",
+ "_rules": {
+  "frequency": "P(at least one occurrence | unconstrained) <= 0.15 on every registered model, against A's own maximum of 0.104",
+  "length": "at most 7 letters, so the family is jointly satisfiable with B at every admissible m >= 7",
+  "reserved": "however is A's marker and is excluded"
+ },
+ "_status": "DEVELOPMENT ONLY \u2014 design fitting on completed v4r4 evidence; not preregistered, not confirmatory, not validation",
+ "a_marker_benchmark": {
+  "gemma-3n-e2b-it": 0.1015625,
+  "gemma-3n-e4b-it": 0.10416666666666667,
+  "qwen3-4b": 0.057291666666666664,
+  "qwen3-4b-instruct-2507": 0.013020833333333334
+ },
+ "per_model": {
+  "gemma-3n-e2b-it": {
+   "albeit": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.0026041666666666665,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0026041666666666665
+   },
+   "also": {
+    "mean_count_b_solo": 0.5416666666666666,
+    "mean_count_unconstrained": 0.4348958333333333,
+    "p_at_least_one_b_solo": 0.4140625,
+    "p_at_least_one_unconstrained": 0.375
+   },
+   "besides": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "conversely": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.10416666666666667,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.10416666666666667
+   },
+   "equally": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "finally": {
+    "mean_count_b_solo": 0.03125,
+    "mean_count_unconstrained": 0.18489583333333334,
+    "p_at_least_one_b_solo": 0.03125,
+    "p_at_least_one_unconstrained": 0.18489583333333334
+   },
+   "further": {
+    "mean_count_b_solo": 0.005208333333333333,
+    "mean_count_unconstrained": 0.09895833333333333,
+    "p_at_least_one_b_solo": 0.005208333333333333,
+    "p_at_least_one_unconstrained": 0.09635416666666667
+   },
+   "granted": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "hence": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "however": {
+    "mean_count_b_solo": 0.0078125,
+    "mean_count_unconstrained": 0.1015625,
+    "p_at_least_one_b_solo": 0.0078125,
+    "p_at_least_one_unconstrained": 0.1015625
+   },
+   "indeed": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "instead": {
+    "mean_count_b_solo": 0.0078125,
+    "mean_count_unconstrained": 0.020833333333333332,
+    "p_at_least_one_b_solo": 0.0078125,
+    "p_at_least_one_unconstrained": 0.020833333333333332
+   },
+   "likewise": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "meanwhile": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "moreover": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.0026041666666666665,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0026041666666666665
+   },
+   "namely": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "next": {
+    "mean_count_b_solo": 0.026041666666666668,
+    "mean_count_unconstrained": 0.0234375,
+    "p_at_least_one_b_solo": 0.0234375,
+    "p_at_least_one_unconstrained": 0.020833333333333332
+   },
+   "nonetheless": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "notably": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "otherwise": {
+    "mean_count_b_solo": 0.0026041666666666665,
+    "mean_count_unconstrained": 0.015625,
+    "p_at_least_one_b_solo": 0.0026041666666666665,
+    "p_at_least_one_unconstrained": 0.015625
+   },
+   "overall": {
+    "mean_count_b_solo": 0.010416666666666666,
+    "mean_count_unconstrained": 0.08333333333333333,
+    "p_at_least_one_b_solo": 0.010416666666666666,
+    "p_at_least_one_unconstrained": 0.07552083333333333
+   },
+   "rather": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.036458333333333336,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.036458333333333336
+   },
+   "still": {
+    "mean_count_b_solo": 0.033854166666666664,
+    "mean_count_unconstrained": 0.026041666666666668,
+    "p_at_least_one_b_solo": 0.033854166666666664,
+    "p_at_least_one_unconstrained": 0.018229166666666668
+   },
+   "then": {
+    "mean_count_b_solo": 0.14583333333333334,
+    "mean_count_unconstrained": 0.041666666666666664,
+    "p_at_least_one_b_solo": 0.12239583333333333,
+    "p_at_least_one_unconstrained": 0.0390625
+   },
+   "therefore": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.03125,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.03125
+   },
+   "though": {
+    "mean_count_b_solo": 0.015625,
+    "mean_count_unconstrained": 0.0078125,
+    "p_at_least_one_b_solo": 0.015625,
+    "p_at_least_one_unconstrained": 0.0078125
+   },
+   "thus": {
+    "mean_count_b_solo": 0.015625,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.015625,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "whereas": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "yet": {
+    "mean_count_b_solo": 0.013020833333333334,
+    "mean_count_unconstrained": 0.005208333333333333,
+    "p_at_least_one_b_solo": 0.013020833333333334,
+    "p_at_least_one_unconstrained": 0.005208333333333333
+   }
+  },
+  "gemma-3n-e4b-it": {
+   "albeit": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.013020833333333334,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.013020833333333334
+   },
+   "also": {
+    "mean_count_b_solo": 0.40625,
+    "mean_count_unconstrained": 0.4088541666666667,
+    "p_at_least_one_b_solo": 0.34375,
+    "p_at_least_one_unconstrained": 0.3697916666666667
+   },
+   "besides": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "conversely": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.1328125,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.1328125
+   },
+   "equally": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.005208333333333333,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.005208333333333333
+   },
+   "finally": {
+    "mean_count_b_solo": 0.005208333333333333,
+    "mean_count_unconstrained": 0.16927083333333334,
+    "p_at_least_one_b_solo": 0.005208333333333333,
+    "p_at_least_one_unconstrained": 0.16927083333333334
+   },
+   "further": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.08072916666666667,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.08072916666666667
+   },
+   "granted": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.0078125,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0078125
+   },
+   "hence": {
+    "mean_count_b_solo": 0.0026041666666666665,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0026041666666666665,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "however": {
+    "mean_count_b_solo": 0.013020833333333334,
+    "mean_count_unconstrained": 0.10416666666666667,
+    "p_at_least_one_b_solo": 0.013020833333333334,
+    "p_at_least_one_unconstrained": 0.10416666666666667
+   },
+   "indeed": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "instead": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.020833333333333332,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.020833333333333332
+   },
+   "likewise": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "meanwhile": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "moreover": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "namely": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "next": {
+    "mean_count_b_solo": 0.010416666666666666,
+    "mean_count_unconstrained": 0.018229166666666668,
+    "p_at_least_one_b_solo": 0.010416666666666666,
+    "p_at_least_one_unconstrained": 0.015625
+   },
+   "nonetheless": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "notably": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "otherwise": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.0026041666666666665,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0026041666666666665
+   },
+   "overall": {
+    "mean_count_b_solo": 0.010416666666666666,
+    "mean_count_unconstrained": 0.08333333333333333,
+    "p_at_least_one_b_solo": 0.010416666666666666,
+    "p_at_least_one_unconstrained": 0.08072916666666667
+   },
+   "rather": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.0390625,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0390625
+   },
+   "still": {
+    "mean_count_b_solo": 0.0390625,
+    "mean_count_unconstrained": 0.010416666666666666,
+    "p_at_least_one_b_solo": 0.0390625,
+    "p_at_least_one_unconstrained": 0.010416666666666666
+   },
+   "then": {
+    "mean_count_b_solo": 0.125,
+    "mean_count_unconstrained": 0.028645833333333332,
+    "p_at_least_one_b_solo": 0.10677083333333333,
+    "p_at_least_one_unconstrained": 0.028645833333333332
+   },
+   "therefore": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.018229166666666668,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.018229166666666668
+   },
+   "though": {
+    "mean_count_b_solo": 0.018229166666666668,
+    "mean_count_unconstrained": 0.013020833333333334,
+    "p_at_least_one_b_solo": 0.018229166666666668,
+    "p_at_least_one_unconstrained": 0.013020833333333334
+   },
+   "thus": {
+    "mean_count_b_solo": 0.0390625,
+    "mean_count_unconstrained": 0.0078125,
+    "p_at_least_one_b_solo": 0.0390625,
+    "p_at_least_one_unconstrained": 0.0078125
+   },
+   "whereas": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.005208333333333333,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.005208333333333333
+   },
+   "yet": {
+    "mean_count_b_solo": 0.0390625,
+    "mean_count_unconstrained": 0.0026041666666666665,
+    "p_at_least_one_b_solo": 0.0390625,
+    "p_at_least_one_unconstrained": 0.0026041666666666665
+   }
+  },
+  "qwen3-4b": {
+   "albeit": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "also": {
+    "mean_count_b_solo": 0.09375,
+    "mean_count_unconstrained": 0.4296875,
+    "p_at_least_one_b_solo": 0.09375,
+    "p_at_least_one_unconstrained": 0.4192708333333333
+   },
+   "besides": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "conversely": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.015625,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.015625
+   },
+   "equally": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "finally": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "further": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.015625,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.015625
+   },
+   "granted": {
+    "mean_count_b_solo": 0.0026041666666666665,
+    "mean_count_unconstrained": 0.010416666666666666,
+    "p_at_least_one_b_solo": 0.0026041666666666665,
+    "p_at_least_one_unconstrained": 0.010416666666666666
+   },
+   "hence": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "however": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.057291666666666664,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.057291666666666664
+   },
+   "indeed": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "instead": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.010416666666666666,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.010416666666666666
+   },
+   "likewise": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "meanwhile": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "moreover": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "namely": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "next": {
+    "mean_count_b_solo": 0.0078125,
+    "mean_count_unconstrained": 0.013020833333333334,
+    "p_at_least_one_b_solo": 0.0078125,
+    "p_at_least_one_unconstrained": 0.013020833333333334
+   },
+   "nonetheless": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "notably": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "otherwise": {
+    "mean_count_b_solo": 0.0026041666666666665,
+    "mean_count_unconstrained": 0.018229166666666668,
+    "p_at_least_one_b_solo": 0.0026041666666666665,
+    "p_at_least_one_unconstrained": 0.018229166666666668
+   },
+   "overall": {
+    "mean_count_b_solo": 0.028645833333333332,
+    "mean_count_unconstrained": 0.11197916666666667,
+    "p_at_least_one_b_solo": 0.028645833333333332,
+    "p_at_least_one_unconstrained": 0.11197916666666667
+   },
+   "rather": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.036458333333333336,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.03125
+   },
+   "still": {
+    "mean_count_b_solo": 0.015625,
+    "mean_count_unconstrained": 0.013020833333333334,
+    "p_at_least_one_b_solo": 0.013020833333333334,
+    "p_at_least_one_unconstrained": 0.013020833333333334
+   },
+   "then": {
+    "mean_count_b_solo": 0.013020833333333334,
+    "mean_count_unconstrained": 0.0078125,
+    "p_at_least_one_b_solo": 0.013020833333333334,
+    "p_at_least_one_unconstrained": 0.0078125
+   },
+   "therefore": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.0078125,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0078125
+   },
+   "though": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.0026041666666666665,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0026041666666666665
+   },
+   "thus": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.041666666666666664,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.041666666666666664
+   },
+   "whereas": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.013020833333333334,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.013020833333333334
+   },
+   "yet": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   }
+  },
+  "qwen3-4b-instruct-2507": {
+   "albeit": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "also": {
+    "mean_count_b_solo": 0.026041666666666668,
+    "mean_count_unconstrained": 0.3463541666666667,
+    "p_at_least_one_b_solo": 0.026041666666666668,
+    "p_at_least_one_unconstrained": 0.3411458333333333
+   },
+   "besides": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "conversely": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.0078125,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0078125
+   },
+   "equally": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "finally": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "further": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.0234375,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0234375
+   },
+   "granted": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.005208333333333333,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.005208333333333333
+   },
+   "hence": {
+    "mean_count_b_solo": 0.005208333333333333,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.005208333333333333,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "however": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.013020833333333334,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.013020833333333334
+   },
+   "indeed": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "instead": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.013020833333333334,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.010416666666666666
+   },
+   "likewise": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "meanwhile": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "moreover": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "namely": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "next": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.005208333333333333,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.005208333333333333
+   },
+   "nonetheless": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "notably": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "otherwise": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.018229166666666668,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.013020833333333334
+   },
+   "overall": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.07552083333333333,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.07552083333333333
+   },
+   "rather": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.044270833333333336,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.044270833333333336
+   },
+   "still": {
+    "mean_count_b_solo": 0.028645833333333332,
+    "mean_count_unconstrained": 0.015625,
+    "p_at_least_one_b_solo": 0.028645833333333332,
+    "p_at_least_one_unconstrained": 0.015625
+   },
+   "then": {
+    "mean_count_b_solo": 0.0234375,
+    "mean_count_unconstrained": 0.005208333333333333,
+    "p_at_least_one_b_solo": 0.0234375,
+    "p_at_least_one_unconstrained": 0.005208333333333333
+   },
+   "therefore": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0
+   },
+   "though": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.0026041666666666665,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.0026041666666666665
+   },
+   "thus": {
+    "mean_count_b_solo": 0.0078125,
+    "mean_count_unconstrained": 0.057291666666666664,
+    "p_at_least_one_b_solo": 0.0078125,
+    "p_at_least_one_unconstrained": 0.057291666666666664
+   },
+   "whereas": {
+    "mean_count_b_solo": 0,
+    "mean_count_unconstrained": 0.013020833333333334,
+    "p_at_least_one_b_solo": 0.0,
+    "p_at_least_one_unconstrained": 0.013020833333333334
+   },
+   "yet": {
+    "mean_count_b_solo": 0.0026041666666666665,
+    "mean_count_unconstrained": 0.005208333333333333,
+    "p_at_least_one_b_solo": 0.0026041666666666665,
+    "p_at_least_one_unconstrained": 0.005208333333333333
+   }
+  }
+ },
+ "summary": {
+  "albeit": {
+   "discourse_role": "contrastive",
+   "letters": 6,
+   "max_p_at_least_one": 0.013020833333333334,
+   "passes_frequency_rule": true,
+   "passes_length_rule": true
+  },
+  "also": {
+   "discourse_role": "additive",
+   "letters": 4,
+   "max_p_at_least_one": 0.4192708333333333,
+   "passes_frequency_rule": false,
+   "passes_length_rule": true
+  },
+  "besides": {
+   "discourse_role": "additive",
+   "letters": 7,
+   "max_p_at_least_one": 0.0,
+   "passes_frequency_rule": true,
+   "passes_length_rule": true
+  },
+  "conversely": {
+   "discourse_role": "contrastive",
+   "letters": 10,
+   "max_p_at_least_one": 0.1328125,
+   "passes_frequency_rule": true,
+   "passes_length_rule": false
+  },
+  "equally": {
+   "discourse_role": "additive",
+   "letters": 7,
+   "max_p_at_least_one": 0.005208333333333333,
+   "passes_frequency_rule": true,
+   "passes_length_rule": true
+  },
+  "finally": {
+   "discourse_role": "summative",
+   "letters": 7,
+   "max_p_at_least_one": 0.18489583333333334,
+   "passes_frequency_rule": false,
+   "passes_length_rule": true
+  },
+  "further": {
+   "discourse_role": "additive",
+   "letters": 7,
+   "max_p_at_least_one": 0.09635416666666667,
+   "passes_frequency_rule": true,
+   "passes_length_rule": true
+  },
+  "granted": {
+   "discourse_role": "concessive",
+   "letters": 7,
+   "max_p_at_least_one": 0.010416666666666666,
+   "passes_frequency_rule": true,
+   "passes_length_rule": true
+  },
+  "hence": {
+   "discourse_role": "consecutive",
+   "letters": 5,
+   "max_p_at_least_one": 0.0,
+   "passes_frequency_rule": true,
+   "passes_length_rule": true
+  },
+  "however": {
+   "discourse_role": "contrastive",
+   "letters": 7,
+   "max_p_at_least_one": 0.10416666666666667,
+   "passes_frequency_rule": true,
+   "passes_length_rule": true
+  },
+  "indeed": {
+   "discourse_role": "emphatic",
+   "letters": 6,
+   "max_p_at_least_one": 0.0,
+   "passes_frequency_rule": true,
+   "passes_length_rule": true
+  },
+  "instead": {
+   "discourse_role": "substitutive",
+   "letters": 7,
+   "max_p_at_least_one": 0.020833333333333332,
+   "passes_frequency_rule": true,
+   "passes_length_rule": true
+  },
+  "likewise": {
+   "discourse_role": "additive",
+   "letters": 8,
+   "max_p_at_least_one": 0.0,
+   "passes_frequency_rule": true,
+   "passes_length_rule": false
+  },
+  "meanwhile": {
+   "discourse_role": "temporal",
+   "letters": 9,
+   "max_p_at_least_one": 0.0,
+   "passes_frequency_rule": true,
+   "passes_length_rule": false
+  },
+  "moreover": {
+   "discourse_role": "additive",
+   "letters": 8,
+   "max_p_at_least_one": 0.0026041666666666665,
+   "passes_frequency_rule": true,
+   "passes_length_rule": false
+  },
+  "namely": {
+   "discourse_role": "exemplifying",
+   "letters": 6,
+   "max_p_at_least_one": 0.0,
+   "passes_frequency_rule": true,
+   "passes_length_rule": true
+  },
+  "next": {
+   "discourse_role": "consecutive",
+   "letters": 4,
+   "max_p_at_least_one": 0.020833333333333332,
+   "passes_frequency_rule": true,
+   "passes_length_rule": true
+  },
+  "nonetheless": {
+   "discourse_role": "contrastive",
+   "letters": 11,
+   "max_p_at_least_one": 0.0,
+   "passes_frequency_rule": true,
+   "passes_length_rule": false
+  },
+  "notably": {
+   "discourse_role": "emphatic",
+   "letters": 7,
+   "max_p_at_least_one": 0.0,
+   "passes_frequency_rule": true,
+   "passes_length_rule": true
+  },
+  "otherwise": {
+   "discourse_role": "conditional",
+   "letters": 9,
+   "max_p_at_least_one": 0.018229166666666668,
+   "passes_frequency_rule": true,
+   "passes_length_rule": false
+  },
+  "overall": {
+   "discourse_role": "summative",
+   "letters": 7,
+   "max_p_at_least_one": 0.11197916666666667,
+   "passes_frequency_rule": true,
+   "passes_length_rule": true
+  },
+  "rather": {
+   "discourse_role": "substitutive",
+   "letters": 6,
+   "max_p_at_least_one": 0.044270833333333336,
+   "passes_frequency_rule": true,
+   "passes_length_rule": true
+  },
+  "still": {
+   "discourse_role": "contrastive",
+   "letters": 5,
+   "max_p_at_least_one": 0.018229166666666668,
+   "passes_frequency_rule": true,
+   "passes_length_rule": true
+  },
+  "then": {
+   "discourse_role": "consecutive",
+   "letters": 4,
+   "max_p_at_least_one": 0.0390625,
+   "passes_frequency_rule": true,
+   "passes_length_rule": true
+  },
+  "therefore": {
+   "discourse_role": "consecutive",
+   "letters": 9,
+   "max_p_at_least_one": 0.03125,
+   "passes_frequency_rule": true,
+   "passes_length_rule": false
+  },
+  "though": {
+   "discourse_role": "contrastive",
+   "letters": 6,
+   "max_p_at_least_one": 0.013020833333333334,
+   "passes_frequency_rule": true,
+   "passes_length_rule": true
+  },
+  "thus": {
+   "discourse_role": "consecutive",
+   "letters": 4,
+   "max_p_at_least_one": 0.057291666666666664,
+   "passes_frequency_rule": true,
+   "passes_length_rule": true
+  },
+  "whereas": {
+   "discourse_role": "contrastive",
+   "letters": 7,
+   "max_p_at_least_one": 0.013020833333333334,
+   "passes_frequency_rule": true,
+   "passes_length_rule": true
+  },
+  "yet": {
+   "discourse_role": "contrastive",
+   "letters": 3,
+   "max_p_at_least_one": 0.005208333333333333,
+   "passes_frequency_rule": true,
+   "passes_length_rule": true
+  }
+ }
+}

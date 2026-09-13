@@ -1,0 +1,57 @@
+{
+ "_classification": "REGISTERED_OUTCOME",
+ "_reads": "signed per-replication stage records only. No estimation, no pooling, no masked quantity, no row re-read",
+ "_what": "the v6 study-level closure record",
+ "apparatus_faults": [
+  {
+   "amendment": {
+    "document": "user-notes/DCI1_preregistration_v6.md",
+    "id": "A15"
+   },
+   "defect": "the v6 CLI did not forward --repo-root to run_registration, whose default is '.', so assert_documents_adopted resolved the two governed documents against the process's working directory (dci1/) and reported both missing; stage 1 then wrote that readiness verdict as a 28.3 terminal report because REGISTRATION_INCOMPLETE was a terminal status",
+   "model_key": "gemma-3n-e2b-it",
+   "reason": "a defect in the caller, not a verdict about this model: both governed documents exist and declare ADOPTED at the commit the record itself names, no registration manifest existed, and no behavioural row had been generated anywhere in the study",
+   "retained_at": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v6/gemma-3n-e2b-it/superseded/apparatus_fault/fb9b4353b50ec2221b6a1de33465427ae3ab3a4aac81189645e5520711ed6122",
+   "retired_at": "2026-08-26T11:52:52+00:00",
+   "retired_gate": "PROTOCOL_REGISTERED",
+   "retired_record_hash": "fb9b4353b50ec2221b6a1de33465427ae3ab3a4aac81189645e5520711ed6122",
+   "retired_status": "REGISTRATION_INCOMPLETE"
+  }
+ ],
+ "firewall": "\u00a76.1: four replications analysed separately and never pooled; no cross-model scalar carries a claim, and \u00a715 registers no cross-model multiplicity family",
+ "last_stage_recorded": {
+  "gemma-3n-e2b-it": "GATE_4_COMPOSED_HEADROOM",
+  "gemma-3n-e4b-it": "GATE_3C_IDENTIFICATION",
+  "qwen3-4b": "GATE_2_5_CANDIDATE_QUALIFICATION",
+  "qwen3-4b-instruct-2507": "GATE_2_5_CANDIDATE_QUALIFICATION"
+ },
+ "n_survivors": 0,
+ "payload_sha256": "ecacca246df964965a062666f84625a525d7adf3d9d8e4a3c12e8fdf586303ff",
+ "registered_replications": [
+  "gemma-3n-e2b-it",
+  "gemma-3n-e4b-it",
+  "qwen3-4b",
+  "qwen3-4b-instruct-2507"
+ ],
+ "study_id": "dci1v6",
+ "study_level": {
+  "l5_withheld": "generalisation is never licensed by this design",
+  "n_survivors": 0,
+  "rule": "\u00a76.1",
+  "statement": "No replication reached GATE_5_FREEZE identified. The study makes no claim about the effect at any level. Every replication's terminal status is a statement about the apparatus reaching identification, not about the effect.",
+  "survivors": [],
+  "terminal": {
+   "gemma-3n-e2b-it": "PREFREEZE_AUDIT_FAILURE",
+   "gemma-3n-e4b-it": "COMPOSED_HEADROOM_FAILURE",
+   "qwen3-4b": "COMPOSED_HEADROOM_UNREACHABLE",
+   "qwen3-4b-instruct-2507": "COMPOSED_HEADROOM_UNREACHABLE"
+  }
+ },
+ "survivors": [],
+ "terminal_statuses": {
+  "gemma-3n-e2b-it": "PREFREEZE_AUDIT_FAILURE",
+  "gemma-3n-e4b-it": "COMPOSED_HEADROOM_FAILURE",
+  "qwen3-4b": "COMPOSED_HEADROOM_UNREACHABLE",
+  "qwen3-4b-instruct-2507": "COMPOSED_HEADROOM_UNREACHABLE"
+ }
+}

@@ -1,0 +1,243 @@
+{
+ "classification": "DEVELOPMENT_EVIDENCE",
+ "note": "current v5 read only as development evidence for survival and identification. No effect quantity is analysed here.",
+ "c4_rule": {
+  "min_straddling_feature_groups": 6,
+  "min_rungs_per_straddling_family": 3,
+  "min_within_family_iota_span": 0.4
+ },
+ "headroom": {
+  "band": [
+   0.05,
+   0.95
+  ],
+  "eligibility_band_on_p_solo": [
+   0.1,
+   0.9
+  ]
+ },
+ "replications": {
+  "gemma-3n-e2b-it": {
+   "iota_a_prescreen": 0.666504144319844,
+   "C4_met": false,
+   "straddling_groups_signed": [
+    "comma",
+    "marker_whereas",
+    "sentence",
+    "y_final"
+   ],
+   "n_straddling_signed": 4,
+   "n_eligible_rungs": 174,
+   "n_rungs_above_iota_a": 19,
+   "n_rungs_below_iota_a": 155,
+   "families_one_sided_approx": 26,
+   "families_straddling_but_span_short_approx": [
+    {
+     "family": "MK1",
+     "feature_group": "marker_thus",
+     "span": 0.376,
+     "n_rungs": 8,
+     "span_shortfall": 0.024
+    },
+    {
+     "family": "CL7",
+     "feature_group": "letter_a",
+     "span": 0.363,
+     "n_rungs": 6,
+     "span_shortfall": 0.037
+    },
+    {
+     "family": "MK2",
+     "feature_group": "marker_hence",
+     "span": 0.333,
+     "n_rungs": 8,
+     "span_shortfall": 0.067
+    },
+    {
+     "family": "MK5",
+     "feature_group": "marker_indeed",
+     "span": 0.292,
+     "n_rungs": 7,
+     "span_shortfall": 0.108
+    }
+   ],
+   "gate4": {
+    "outcome": "PASS",
+    "worst_cell": "pair:B+CL",
+    "worst_slot": "B",
+    "worst_compliance": 0.8958,
+    "margin_to_ceiling": 0.0542,
+    "solo_B": 0.7917,
+    "composed_lift_on_B": 0.1042
+   }
+  },
+  "gemma-3n-e4b-it": {
+   "iota_a_prescreen": 0.7082266910420476,
+   "C4_met": false,
+   "straddling_groups_signed": [
+    "capital",
+    "comma",
+    "letter_a",
+    "marker_indeed",
+    "sentence"
+   ],
+   "n_straddling_signed": 5,
+   "n_eligible_rungs": 179,
+   "n_rungs_above_iota_a": 14,
+   "n_rungs_below_iota_a": 163,
+   "families_one_sided_approx": 27,
+   "families_straddling_but_span_short_approx": [
+    {
+     "family": "MK2",
+     "feature_group": "marker_hence",
+     "span": 0.333,
+     "n_rungs": 6,
+     "span_shortfall": 0.067
+    },
+    {
+     "family": "MK6",
+     "feature_group": "marker_namely",
+     "span": 0.292,
+     "n_rungs": 8,
+     "span_shortfall": 0.108
+    },
+    {
+     "family": "MK1",
+     "feature_group": "marker_thus",
+     "span": 0.209,
+     "n_rungs": 6,
+     "span_shortfall": 0.191
+    }
+   ],
+   "gate4": {
+    "outcome": "TERMINAL",
+    "status": "COMPOSED_HEADROOM_FAILURE",
+    "observed": [
+     {
+      "cell": "solo:CL",
+      "compliance": 0.9583333333333334,
+      "slot": "CL"
+     },
+     {
+      "cell": "pair:B+CL",
+      "compliance": 0.9791666666666666,
+      "slot": "B"
+     }
+    ]
+   }
+  },
+  "qwen3-4b": {
+   "iota_a_prescreen": 0.666585425298562,
+   "C4_met": false,
+   "straddling_groups_signed": [
+    "capital",
+    "marker_hence",
+    "marker_indeed",
+    "marker_instead",
+    "marker_though"
+   ],
+   "n_straddling_signed": 5,
+   "n_eligible_rungs": 174,
+   "n_rungs_above_iota_a": 20,
+   "n_rungs_below_iota_a": 154,
+   "families_one_sided_approx": 27,
+   "families_straddling_but_span_short_approx": [
+    {
+     "family": "XC3",
+     "feature_group": "sentence",
+     "span": 0.366,
+     "n_rungs": 4,
+     "span_shortfall": 0.034
+    },
+    {
+     "family": "MK1",
+     "feature_group": "marker_thus",
+     "span": 0.334,
+     "n_rungs": 7,
+     "span_shortfall": 0.066
+    },
+    {
+     "family": "MK6",
+     "feature_group": "marker_namely",
+     "span": 0.333,
+     "n_rungs": 7,
+     "span_shortfall": 0.067
+    }
+   ],
+   "gate4": {
+    "outcome": "PASS",
+    "worst_cell": "pair:A+B",
+    "worst_slot": "B",
+    "worst_compliance": 0.8958,
+    "margin_to_ceiling": 0.0542,
+    "solo_B": 0.8438,
+    "composed_lift_on_B": 0.0521
+   }
+  },
+  "qwen3-4b-instruct-2507": {
+   "iota_a_prescreen": 0.624267578125,
+   "C4_met": true,
+   "straddling_groups_signed": [
+    "capital",
+    "letter_a",
+    "marker_indeed",
+    "marker_overall",
+    "marker_whereas",
+    "semicolon",
+    "vowel_initial",
+    "y_final"
+   ],
+   "n_straddling_signed": 8,
+   "n_eligible_rungs": 164,
+   "n_rungs_above_iota_a": 21,
+   "n_rungs_below_iota_a": 143,
+   "families_one_sided_approx": 23,
+   "families_straddling_but_span_short_approx": [
+    {
+     "family": "MK7",
+     "feature_group": "marker_instead",
+     "span": 0.375,
+     "n_rungs": 8,
+     "span_shortfall": 0.025
+    },
+    {
+     "family": "MK2",
+     "feature_group": "marker_hence",
+     "span": 0.292,
+     "n_rungs": 3,
+     "span_shortfall": 0.108
+    },
+    {
+     "family": "MK6",
+     "feature_group": "marker_namely",
+     "span": 0.292,
+     "n_rungs": 3,
+     "span_shortfall": 0.108
+    },
+    {
+     "family": "MK1",
+     "feature_group": "marker_thus",
+     "span": 0.208,
+     "n_rungs": 3,
+     "span_shortfall": 0.192
+    }
+   ],
+   "gate4": {
+    "outcome": "TERMINAL",
+    "status": "COMPOSED_HEADROOM_FAILURE",
+    "observed": [
+     {
+      "cell": "pair:B+R1",
+      "compliance": 0.9895833333333334,
+      "slot": "B"
+     },
+     {
+      "cell": "pair:R1+B",
+      "compliance": 0.9583333333333334,
+      "slot": "B"
+     }
+    ]
+   }
+  }
+ }
+}

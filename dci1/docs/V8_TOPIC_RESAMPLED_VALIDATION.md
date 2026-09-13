@@ -1,0 +1,145 @@
+# DCI-1 v8.1 — the topic-resampled methodology-validation replicate
+
+**Status.** Prespecified 2026-09-07, before any replicate row was generated.
+Methodology-validation evidence only: it is registered as a check on the
+robustness of the v8.1 pre-freeze pipeline, and **no result of it may change
+any scientific rule of v8.1** (§9 below). Design of record for the pipeline
+itself: `V8_FRAME_AWARE_PRESCREEN.md`; preregistration:
+`DCI1_preregistration_v8.1.md`.
+
+## 1. What a topic-resampled replicate is, and why it is needed
+
+Every existing v8 and v8.1 root of a model — the v8 pilots, the v8.1
+successor pilots and their re-executions (r19–r21, r23–r25) — screens and
+calibrates the **same topics**. The bank's pre-freeze sets are fixed (v4r2's
+split, carried unchanged, §6.2) and every stage spends each set in full, so
+a re-run varies only the decoding: the measured identical-text fraction on
+the first 3,000 grid rows is 100 % for gemma-3n-e4b-it, 69–77 % for
+qwen3-4b-instruct-2507, 65–79 % for qwen3-4b and 51–68 % for
+gemma-3n-e2b-it. Those roots therefore answer *"does the verdict survive
+decoding nondeterminism?"* and nothing else.
+
+A topic-resampled replicate answers the different question the robustness
+claim actually needs: **does the verdict survive which pre-freeze topics
+happened to be sampled into which role?** It is one fresh, area-stratified
+random partition of the pre-freeze topic pool into the same three roles,
+under a new domain-separated seed, with every scientific rule unchanged.
+
+## 2. The eligible pool
+
+Exactly the three pre-freeze sets the pilot spends:
+
+| role | size | per area |
+|---|---:|---:|
+| `prescreen` | 24 | 2 |
+| `calibration_a` | 96 | 8 |
+| `calibration_b` | 96 | 8 |
+| **pool** | **216** | **18** |
+
+The reserved sets — `composed` (24), `confirmatory` (384) and `sequestered`
+(0, opaque) — are **carried untouched** and are never materialised for the
+replicate. No confirmatory, composed or sequestered topic enters the pool,
+so the replicate consumes no protected material and exposes no protected
+outcome.
+
+## 3. How a genuinely different sample is obtained
+
+`dci1v8dev.run.topic_replicate.repartition` pools the 216 topics by area,
+shuffles each area's 18 under the replicate seed, and deals them back into
+the three roles at the registered per-area sizes (2 / 8 / 8). The result is
+checked to be area-stratified, pairwise disjoint, calibration-disjoint, and
+to spend the carried pool exactly — no topic gained, none lost.
+
+Because the pool is finite, the roles overlap the carried split by chance
+alone. Measured for replicate 1, against the expectation of a uniform
+re-deal:
+
+| role | shared with the pilot's same role | expected |
+|---|---:|---:|
+| `prescreen` | 2 of 24 | 2.7 |
+| `calibration_a` | 35 of 96 | 42.7 |
+| `calibration_b` | 39 of 96 | 42.7 |
+| calibration union | 170 of 192 | 170.7 |
+
+So the screen sees an almost entirely different sample, each calibration
+grid a substantially different one, and the calibration **union** is
+necessarily close to the pilot's — the pool bounds it. That bound is a
+property of the registered bank, is stated here in advance, and is part of
+how the results must be read (§7).
+
+## 4. The seed
+
+- domain `dci1v8:topicrep:v1`, asserted disjoint from every v4r3/v7/v8
+  generation, bootstrap and screen domain;
+- root: the carried topic-split seed (`CARRIED_TOPIC_SPLIT_SEED`);
+- inputs: the literal `"topic-replicate"` and the replicate index;
+- replicate index **1**; seed value `2969019755343878771`.
+
+The derivation is deterministic and fails on a missing input, like every
+other v8 seed. A second replicate would be index 2, never a re-draw of
+index 1. Generation seeds are unchanged in form (§14.2), so they move only
+because the prompts and topics they name move.
+
+## 5. What is rerun
+
+The whole pilot lifecycle, from `PILOT_REGISTERED` to `PILOT_REPORT`, in a
+fresh root per model: `QUALIFIED`, `GATE_0_APPARATUS`, `REGIME_SCREEN`,
+`SECOND_PASS_SCREEN`, `GATE_1_INSTRUMENT`, `GATE_2_CALIBRATION`,
+`GATE_3_REFERENCES`, `PILOT_REPORT`. Nothing is reused from any existing
+root: the topics differ, so every generation identity differs.
+
+The runs use the namespace `topic-replicate` and the study id
+`dci1v8-topicrep`. `dci1v8dev.confirm.pilot_import` admits only study id
+`dci1v8`, so a replicate root **cannot** be bound by a freeze or enter
+confirmatory evidence.
+
+## 6. What is compared, per model
+
+Against that model's first successor run (r14 / r15 / r16 / r23):
+
+- supported and unsupported frames, with the unsupported reason;
+- n\*(f), m\*(f), ι_A(f) and its topic-level SE;
+- `LOCAL_SUPPORTED` verdicts per frame;
+- model LOCAL eligibility;
+- SPECTRUM identification per frame;
+- LOCAL-valid family counts and admissible backup counts;
+- forwarded-set overlap (Jaccard, shared / old / new);
+- primary (core) and backup reference identity;
+- operating-point changes;
+- comparator-policy verdicts (legacy pooled, screen proxy) on the
+  replicate's own rows.
+
+Generated by `tools/v8_prescreen_revalidation.py --all`, which renders the
+replicate as its own block and a per-frame overlap table.
+
+## 7. How agreement and disagreement are summarised
+
+Reported as counts over supported frames, never as a pass/fail: how many
+frames agree on `LOCAL_SUPPORTED`, how many on the operating point, how many
+models agree on eligibility, and the distribution of forwarded-set Jaccard
+and of core-reference identity. Disagreements are reported individually with
+the frame, both values, and the comparator verdicts on the same rows.
+
+Two facts are stated with every summary: the calibration union is
+constrained to overlap the pilot's by about 89 % (§3), so this is a test of
+*role assignment within a fixed pool*, not of a fresh topic universe; and a
+disagreement is evidence about the estimator's sampling sensitivity, not
+evidence that either run is wrong.
+
+## 8. Standing
+
+Methodology-validation evidence. It informs the robustness narrative and the
+limitations of the v8.1 preregistration. It is not confirmatory evidence, not
+a pilot of record, and not an input to membership, eligibility, references,
+allocation or any threshold.
+
+## 9. What it may not do
+
+Its results **may not** change basis C, the pre-screen policy or thresholds,
+the forwarding rule, the calibration allocation, the operating-point rule or
+its bands, LOCAL/SPECTRUM validity thresholds, eligibility rules, the
+reference-ranking rule, the confirmatory estimands, inference thresholds or
+the multiplicity plan. If a replicate disagrees with a pilot, that is
+reported as a limitation of the pre-freeze estimator, not as a reason to
+retune it. A genuine implementation defect found on the way is a different
+matter and is fixed as a defect.

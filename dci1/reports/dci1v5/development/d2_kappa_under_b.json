@@ -1,0 +1,823 @@
+{
+ "_status": "DEVELOPMENT ONLY \u2014 design fitting on completed v4r4 evidence; not preregistered, not confirmatory, not validation",
+ "gemma-3n-e2b-it": {
+  "m_star": 10,
+  "median_words_b_solo": 84.0,
+  "median_words_unconstrained": 107.0,
+  "n_b_solo": 384,
+  "n_unconstrained": 384,
+  "rows": {
+   "CL7:60": {
+    "displacement": -0.033854166666666664,
+    "form": "count_lower_bound",
+    "kappa": 0.033854166666666664,
+    "kappa_under_b": 0.0,
+    "role": "class_control"
+   },
+   "CL7:80": {
+    "displacement": 0.0,
+    "form": "count_lower_bound",
+    "kappa": 0.0,
+    "kappa_under_b": 0.0,
+    "role": "class_control"
+   },
+   "CL8:19": {
+    "displacement": 0.0,
+    "form": "count_lower_bound",
+    "kappa": 0.0,
+    "kappa_under_b": 0.0,
+    "role": "class_control"
+   },
+   "CL8:25": {
+    "displacement": 0.0,
+    "form": "count_lower_bound",
+    "kappa": 0.0,
+    "kappa_under_b": 0.0,
+    "role": "class_control"
+   },
+   "CR5:1": {
+    "displacement": 0.005208333333333333,
+    "form": "rate_budget",
+    "kappa": 0.0,
+    "kappa_under_b": 0.005208333333333333,
+    "role": "reference"
+   },
+   "CR5:2": {
+    "displacement": 0.031249999999999997,
+    "form": "rate_budget",
+    "kappa": 0.0026041666666666665,
+    "kappa_under_b": 0.033854166666666664,
+    "role": "reference"
+   },
+   "CR5:3": {
+    "displacement": 0.05989583333333333,
+    "form": "rate_budget",
+    "kappa": 0.018229166666666668,
+    "kappa_under_b": 0.078125,
+    "role": "reference"
+   },
+   "CR5:4": {
+    "displacement": 0.10677083333333334,
+    "form": "rate_budget",
+    "kappa": 0.03125,
+    "kappa_under_b": 0.13802083333333334,
+    "role": "reference"
+   },
+   "CX1:1": {
+    "displacement": 0.015625,
+    "form": "exact_count",
+    "kappa": 0.0,
+    "kappa_under_b": 0.015625,
+    "role": "class_control"
+   },
+   "CX1:4": {
+    "displacement": 0.0,
+    "form": "exact_count",
+    "kappa": 0.0,
+    "kappa_under_b": 0.0,
+    "role": "class_control"
+   },
+   "CX2:1": {
+    "displacement": -0.03645833333333333,
+    "form": "exact_count",
+    "kappa": 0.12760416666666666,
+    "kappa_under_b": 0.09114583333333333,
+    "role": "class_control"
+   },
+   "CX2:3": {
+    "displacement": -0.0026041666666666665,
+    "form": "exact_count",
+    "kappa": 0.0026041666666666665,
+    "kappa_under_b": 0.0,
+    "role": "class_control"
+   },
+   "RF11:21": {
+    "displacement": 0.6067708333333334,
+    "form": "count_budget",
+    "kappa": 0.0078125,
+    "kappa_under_b": 0.6145833333333334,
+    "role": "reference"
+   },
+   "RF11:26": {
+    "displacement": 0.6848958333333334,
+    "form": "count_budget",
+    "kappa": 0.1484375,
+    "kappa_under_b": 0.8333333333333334,
+    "role": "reference"
+   },
+   "RF11:32": {
+    "displacement": 0.5182291666666666,
+    "form": "count_budget",
+    "kappa": 0.4453125,
+    "kappa_under_b": 0.9635416666666666,
+    "role": "reference"
+   },
+   "RF3:3": {
+    "displacement": -0.0390625,
+    "form": "count_budget",
+    "kappa": 0.4036458333333333,
+    "kappa_under_b": 0.3645833333333333,
+    "role": "reference"
+   },
+   "RF3:5": {
+    "displacement": 0.005208333333333259,
+    "form": "count_budget",
+    "kappa": 0.5989583333333334,
+    "kappa_under_b": 0.6041666666666666,
+    "role": "reference"
+   },
+   "RF3:6": {
+    "displacement": -0.0078125,
+    "form": "count_budget",
+    "kappa": 0.7083333333333334,
+    "kappa_under_b": 0.7005208333333334,
+    "role": "reference"
+   },
+   "RF3:8": {
+    "displacement": -0.0026041666666667407,
+    "form": "count_budget",
+    "kappa": 0.8411458333333334,
+    "kappa_under_b": 0.8385416666666666,
+    "role": "reference"
+   },
+   "RF6:1": {
+    "displacement": 0.0,
+    "form": "count_budget",
+    "kappa": 0.0,
+    "kappa_under_b": 0.0,
+    "role": "reference"
+   },
+   "RF6:2": {
+    "displacement": 0.0,
+    "form": "count_budget",
+    "kappa": 0.0,
+    "kappa_under_b": 0.0,
+    "role": "reference"
+   },
+   "RF8:4": {
+    "displacement": 0.5546875,
+    "form": "count_budget",
+    "kappa": 0.1171875,
+    "kappa_under_b": 0.671875,
+    "role": "reference"
+   },
+   "RF8:5": {
+    "displacement": 0.5494791666666666,
+    "form": "count_budget",
+    "kappa": 0.2421875,
+    "kappa_under_b": 0.7916666666666666,
+    "role": "reference"
+   },
+   "RF8:6": {
+    "displacement": 0.5598958333333333,
+    "form": "count_budget",
+    "kappa": 0.3385416666666667,
+    "kappa_under_b": 0.8984375,
+    "role": "reference"
+   },
+   "RF8:8": {
+    "displacement": 0.33072916666666674,
+    "form": "count_budget",
+    "kappa": 0.6276041666666666,
+    "kappa_under_b": 0.9583333333333334,
+    "role": "reference"
+   },
+   "RF9:10": {
+    "displacement": 0.16145833333333334,
+    "form": "count_budget",
+    "kappa": 0.23958333333333334,
+    "kappa_under_b": 0.4010416666666667,
+    "role": "reference"
+   },
+   "RF9:13": {
+    "displacement": 0.21354166666666663,
+    "form": "count_budget",
+    "kappa": 0.4609375,
+    "kappa_under_b": 0.6744791666666666,
+    "role": "reference"
+   },
+   "RF9:16": {
+    "displacement": 0.16927083333333337,
+    "form": "count_budget",
+    "kappa": 0.6953125,
+    "kappa_under_b": 0.8645833333333334,
+    "role": "reference"
+   },
+   "RF9:8": {
+    "displacement": 0.09114583333333334,
+    "form": "count_budget",
+    "kappa": 0.125,
+    "kappa_under_b": 0.21614583333333334,
+    "role": "reference"
+   }
+  }
+ },
+ "gemma-3n-e4b-it": {
+  "m_star": 10,
+  "median_words_b_solo": 82.0,
+  "median_words_unconstrained": 107.0,
+  "n_b_solo": 384,
+  "n_unconstrained": 384,
+  "rows": {
+   "CL7:80": {
+    "displacement": 0.0,
+    "form": "count_lower_bound",
+    "kappa": 0.0,
+    "kappa_under_b": 0.0,
+    "role": "class_control"
+   },
+   "CL8:25": {
+    "displacement": 0.0,
+    "form": "count_lower_bound",
+    "kappa": 0.0,
+    "kappa_under_b": 0.0,
+    "role": "class_control"
+   },
+   "CR3:8": {
+    "displacement": -0.109375,
+    "form": "rate_budget",
+    "kappa": 0.9114583333333334,
+    "kappa_under_b": 0.8020833333333334,
+    "role": "reference"
+   },
+   "CR5:4": {
+    "displacement": 0.15104166666666669,
+    "form": "rate_budget",
+    "kappa": 0.026041666666666668,
+    "kappa_under_b": 0.17708333333333334,
+    "role": "reference"
+   },
+   "CR5:5": {
+    "displacement": 0.21875,
+    "form": "rate_budget",
+    "kappa": 0.06770833333333333,
+    "kappa_under_b": 0.2864583333333333,
+    "role": "reference"
+   },
+   "CR5:6": {
+    "displacement": 0.25,
+    "form": "rate_budget",
+    "kappa": 0.15885416666666666,
+    "kappa_under_b": 0.4088541666666667,
+    "role": "reference"
+   },
+   "CR5:8": {
+    "displacement": 0.22395833333333331,
+    "form": "rate_budget",
+    "kappa": 0.4322916666666667,
+    "kappa_under_b": 0.65625,
+    "role": "reference"
+   },
+   "CX1:5": {
+    "displacement": 0.0,
+    "form": "exact_count",
+    "kappa": 0.0,
+    "kappa_under_b": 0.0,
+    "role": "class_control"
+   },
+   "CX1:7": {
+    "displacement": 0.0,
+    "form": "exact_count",
+    "kappa": 0.0,
+    "kappa_under_b": 0.0,
+    "role": "class_control"
+   },
+   "CX2:1": {
+    "displacement": -0.12239583333333334,
+    "form": "exact_count",
+    "kappa": 0.1796875,
+    "kappa_under_b": 0.057291666666666664,
+    "role": "class_control"
+   },
+   "CX2:2": {
+    "displacement": -0.026041666666666664,
+    "form": "exact_count",
+    "kappa": 0.028645833333333332,
+    "kappa_under_b": 0.0026041666666666665,
+    "role": "class_control"
+   },
+   "RF11:16": {
+    "displacement": 0.4192708333333333,
+    "form": "count_budget",
+    "kappa": 0.0,
+    "kappa_under_b": 0.4192708333333333,
+    "role": "reference"
+   },
+   "RF11:21": {
+    "displacement": 0.7317708333333334,
+    "form": "count_budget",
+    "kappa": 0.010416666666666666,
+    "kappa_under_b": 0.7421875,
+    "role": "reference"
+   },
+   "RF11:26": {
+    "displacement": 0.8046875,
+    "form": "count_budget",
+    "kappa": 0.109375,
+    "kappa_under_b": 0.9140625,
+    "role": "reference"
+   },
+   "RF1:2": {
+    "displacement": -0.0234375,
+    "form": "count_budget",
+    "kappa": 0.375,
+    "kappa_under_b": 0.3515625,
+    "role": "reference"
+   },
+   "RF1:4": {
+    "displacement": 0.04427083333333337,
+    "form": "count_budget",
+    "kappa": 0.6822916666666666,
+    "kappa_under_b": 0.7265625,
+    "role": "reference"
+   },
+   "RF1:6": {
+    "displacement": 0.04427083333333337,
+    "form": "count_budget",
+    "kappa": 0.8697916666666666,
+    "kappa_under_b": 0.9140625,
+    "role": "reference"
+   },
+   "RF1:7": {
+    "displacement": 0.03385416666666674,
+    "form": "count_budget",
+    "kappa": 0.9244791666666666,
+    "kappa_under_b": 0.9583333333333334,
+    "role": "reference"
+   },
+   "RF3:3": {
+    "displacement": 0.05989583333333337,
+    "form": "count_budget",
+    "kappa": 0.4270833333333333,
+    "kappa_under_b": 0.4869791666666667,
+    "role": "reference"
+   },
+   "RF3:6": {
+    "displacement": 0.0026041666666666297,
+    "form": "count_budget",
+    "kappa": 0.796875,
+    "kappa_under_b": 0.7994791666666666,
+    "role": "reference"
+   },
+   "RF3:7": {
+    "displacement": 0.01302083333333326,
+    "form": "count_budget",
+    "kappa": 0.8411458333333334,
+    "kappa_under_b": 0.8541666666666666,
+    "role": "reference"
+   },
+   "RF3:8": {
+    "displacement": 0.01041666666666663,
+    "form": "count_budget",
+    "kappa": 0.890625,
+    "kappa_under_b": 0.9010416666666666,
+    "role": "reference"
+   },
+   "RF9:10": {
+    "displacement": 0.15364583333333331,
+    "form": "count_budget",
+    "kappa": 0.2682291666666667,
+    "kappa_under_b": 0.421875,
+    "role": "reference"
+   },
+   "RF9:13": {
+    "displacement": 0.17708333333333337,
+    "form": "count_budget",
+    "kappa": 0.515625,
+    "kappa_under_b": 0.6927083333333334,
+    "role": "reference"
+   },
+   "RF9:6": {
+    "displacement": 0.03125,
+    "form": "count_budget",
+    "kappa": 0.07291666666666667,
+    "kappa_under_b": 0.10416666666666667,
+    "role": "reference"
+   },
+   "RF9:8": {
+    "displacement": 0.10677083333333334,
+    "form": "count_budget",
+    "kappa": 0.14583333333333334,
+    "kappa_under_b": 0.2526041666666667,
+    "role": "reference"
+   }
+  }
+ },
+ "qwen3-4b": {
+  "m_star": 12,
+  "median_words_b_solo": 56.0,
+  "median_words_unconstrained": 83.0,
+  "n_b_solo": 384,
+  "n_unconstrained": 384,
+  "rows": {
+   "CL7:30": {
+    "displacement": -0.7265625,
+    "form": "count_lower_bound",
+    "kappa": 0.8489583333333334,
+    "kappa_under_b": 0.12239583333333333,
+    "role": "class_control"
+   },
+   "CL7:45": {
+    "displacement": -0.08333333333333333,
+    "form": "count_lower_bound",
+    "kappa": 0.0859375,
+    "kappa_under_b": 0.0026041666666666665,
+    "role": "class_control"
+   },
+   "CR5:10": {
+    "displacement": 0.2890625,
+    "form": "rate_budget",
+    "kappa": 0.6276041666666666,
+    "kappa_under_b": 0.9166666666666666,
+    "role": "reference"
+   },
+   "CR5:5": {
+    "displacement": 0.6458333333333334,
+    "form": "rate_budget",
+    "kappa": 0.08854166666666667,
+    "kappa_under_b": 0.734375,
+    "role": "reference"
+   },
+   "CR5:6": {
+    "displacement": 0.6223958333333333,
+    "form": "rate_budget",
+    "kappa": 0.16145833333333334,
+    "kappa_under_b": 0.7838541666666666,
+    "role": "reference"
+   },
+   "CR5:8": {
+    "displacement": 0.5,
+    "form": "rate_budget",
+    "kappa": 0.3645833333333333,
+    "kappa_under_b": 0.8645833333333334,
+    "role": "reference"
+   },
+   "CX1:4": {
+    "displacement": 0.0,
+    "form": "exact_count",
+    "kappa": 0.0,
+    "kappa_under_b": 0.0,
+    "role": "class_control"
+   },
+   "CX1:5": {
+    "displacement": 0.0,
+    "form": "exact_count",
+    "kappa": 0.0,
+    "kappa_under_b": 0.0,
+    "role": "class_control"
+   },
+   "CX2:1": {
+    "displacement": -0.0026041666666666665,
+    "form": "exact_count",
+    "kappa": 0.005208333333333333,
+    "kappa_under_b": 0.0026041666666666665,
+    "role": "class_control"
+   },
+   "CX2:2": {
+    "displacement": 0.0,
+    "form": "exact_count",
+    "kappa": 0.0,
+    "kappa_under_b": 0.0,
+    "role": "class_control"
+   },
+   "RF11:12": {
+    "displacement": 0.4791666666666667,
+    "form": "count_budget",
+    "kappa": 0.0,
+    "kappa_under_b": 0.4791666666666667,
+    "role": "reference"
+   },
+   "RF11:16": {
+    "displacement": 0.6875,
+    "form": "count_budget",
+    "kappa": 0.018229166666666668,
+    "kappa_under_b": 0.7057291666666666,
+    "role": "reference"
+   },
+   "RF11:21": {
+    "displacement": 0.7421875,
+    "form": "count_budget",
+    "kappa": 0.16145833333333334,
+    "kappa_under_b": 0.9036458333333334,
+    "role": "reference"
+   },
+   "RF11:26": {
+    "displacement": 0.3984375,
+    "form": "count_budget",
+    "kappa": 0.5520833333333334,
+    "kappa_under_b": 0.9505208333333334,
+    "role": "reference"
+   },
+   "RF2:3": {
+    "displacement": 0.41666666666666663,
+    "form": "count_budget",
+    "kappa": 0.3828125,
+    "kappa_under_b": 0.7994791666666666,
+    "role": "reference"
+   },
+   "RF2:4": {
+    "displacement": 0.32552083333333326,
+    "form": "count_budget",
+    "kappa": 0.5598958333333334,
+    "kappa_under_b": 0.8854166666666666,
+    "role": "reference"
+   },
+   "RF2:5": {
+    "displacement": 0.2109375,
+    "form": "count_budget",
+    "kappa": 0.7239583333333334,
+    "kappa_under_b": 0.9348958333333334,
+    "role": "reference"
+   },
+   "RF2:6": {
+    "displacement": 0.15104166666666663,
+    "form": "count_budget",
+    "kappa": 0.8203125,
+    "kappa_under_b": 0.9713541666666666,
+    "role": "reference"
+   },
+   "RF3:1": {
+    "displacement": 0.4036458333333333,
+    "form": "count_budget",
+    "kappa": 0.3880208333333333,
+    "kappa_under_b": 0.7916666666666666,
+    "role": "reference"
+   },
+   "RF3:2": {
+    "displacement": 0.29947916666666663,
+    "form": "count_budget",
+    "kappa": 0.6145833333333334,
+    "kappa_under_b": 0.9140625,
+    "role": "reference"
+   },
+   "RF3:4": {
+    "displacement": 0.10677083333333337,
+    "form": "count_budget",
+    "kappa": 0.8776041666666666,
+    "kappa_under_b": 0.984375,
+    "role": "reference"
+   },
+   "RF3:6": {
+    "displacement": 0.02083333333333337,
+    "form": "count_budget",
+    "kappa": 0.9765625,
+    "kappa_under_b": 0.9973958333333334,
+    "role": "reference"
+   },
+   "RF6:1": {
+    "displacement": 0.0,
+    "form": "count_budget",
+    "kappa": 0.0,
+    "kappa_under_b": 0.0,
+    "role": "reference"
+   },
+   "RF6:2": {
+    "displacement": 0.0,
+    "form": "count_budget",
+    "kappa": 0.0,
+    "kappa_under_b": 0.0,
+    "role": "reference"
+   },
+   "RF6:3": {
+    "displacement": 0.0,
+    "form": "count_budget",
+    "kappa": 0.0,
+    "kappa_under_b": 0.0,
+    "role": "reference"
+   },
+   "RF8:4": {
+    "displacement": 0.26562499999999994,
+    "form": "count_budget",
+    "kappa": 0.2994791666666667,
+    "kappa_under_b": 0.5651041666666666,
+    "role": "reference"
+   },
+   "RF8:5": {
+    "displacement": 0.2109375,
+    "form": "count_budget",
+    "kappa": 0.484375,
+    "kappa_under_b": 0.6953125,
+    "role": "reference"
+   },
+   "RF8:6": {
+    "displacement": 0.171875,
+    "form": "count_budget",
+    "kappa": 0.625,
+    "kappa_under_b": 0.796875,
+    "role": "reference"
+   },
+   "RF8:7": {
+    "displacement": 0.109375,
+    "form": "count_budget",
+    "kappa": 0.7421875,
+    "kappa_under_b": 0.8515625,
+    "role": "reference"
+   }
+  }
+ },
+ "qwen3-4b-instruct-2507": {
+  "m_star": 10,
+  "median_words_b_solo": 52.0,
+  "median_words_unconstrained": 81.0,
+  "n_b_solo": 384,
+  "n_unconstrained": 384,
+  "rows": {
+   "CL7:45": {
+    "displacement": -0.0859375,
+    "form": "count_lower_bound",
+    "kappa": 0.08854166666666667,
+    "kappa_under_b": 0.0026041666666666665,
+    "role": "class_control"
+   },
+   "CL7:60": {
+    "displacement": 0.0026041666666666665,
+    "form": "count_lower_bound",
+    "kappa": 0.0,
+    "kappa_under_b": 0.0026041666666666665,
+    "role": "class_control"
+   },
+   "CL8:10": {
+    "displacement": -0.052083333333333336,
+    "form": "count_lower_bound",
+    "kappa": 0.0859375,
+    "kappa_under_b": 0.033854166666666664,
+    "role": "class_control"
+   },
+   "CL8:3": {
+    "displacement": -0.42708333333333326,
+    "form": "count_lower_bound",
+    "kappa": 0.9322916666666666,
+    "kappa_under_b": 0.5052083333333334,
+    "role": "class_control"
+   },
+   "CR3:6": {
+    "displacement": 0.04166666666666663,
+    "form": "rate_budget",
+    "kappa": 0.9296875,
+    "kappa_under_b": 0.9713541666666666,
+    "role": "reference"
+   },
+   "CX1:7": {
+    "displacement": 0.0,
+    "form": "exact_count",
+    "kappa": 0.0,
+    "kappa_under_b": 0.0,
+    "role": "class_control"
+   },
+   "CX1:8": {
+    "displacement": 0.0,
+    "form": "exact_count",
+    "kappa": 0.0,
+    "kappa_under_b": 0.0,
+    "role": "class_control"
+   },
+   "CX2:1": {
+    "displacement": -0.0026041666666666644,
+    "form": "exact_count",
+    "kappa": 0.033854166666666664,
+    "kappa_under_b": 0.03125,
+    "role": "class_control"
+   },
+   "CX2:2": {
+    "displacement": 0.0078125,
+    "form": "exact_count",
+    "kappa": 0.0,
+    "kappa_under_b": 0.0078125,
+    "role": "class_control"
+   },
+   "RF10:12": {
+    "displacement": 0.13802083333333331,
+    "form": "count_budget",
+    "kappa": 0.3072916666666667,
+    "kappa_under_b": 0.4453125,
+    "role": "reference"
+   },
+   "RF10:15": {
+    "displacement": 0.08333333333333337,
+    "form": "count_budget",
+    "kappa": 0.59375,
+    "kappa_under_b": 0.6770833333333334,
+    "role": "reference"
+   },
+   "RF10:19": {
+    "displacement": 0.00520833333333337,
+    "form": "count_budget",
+    "kappa": 0.8932291666666666,
+    "kappa_under_b": 0.8984375,
+    "role": "reference"
+   },
+   "RF11:12": {
+    "displacement": 0.734375,
+    "form": "count_budget",
+    "kappa": 0.0,
+    "kappa_under_b": 0.734375,
+    "role": "reference"
+   },
+   "RF11:16": {
+    "displacement": 0.8854166666666666,
+    "form": "count_budget",
+    "kappa": 0.005208333333333333,
+    "kappa_under_b": 0.890625,
+    "role": "reference"
+   },
+   "RF11:21": {
+    "displacement": 0.828125,
+    "form": "count_budget",
+    "kappa": 0.15625,
+    "kappa_under_b": 0.984375,
+    "role": "reference"
+   },
+   "RF11:26": {
+    "displacement": 0.421875,
+    "form": "count_budget",
+    "kappa": 0.578125,
+    "kappa_under_b": 1.0,
+    "role": "reference"
+   },
+   "RF7:21": {
+    "displacement": 0.7161458333333334,
+    "form": "count_budget",
+    "kappa": 0.0,
+    "kappa_under_b": 0.7161458333333334,
+    "role": "reference"
+   },
+   "RF7:22": {
+    "displacement": 0.7578125,
+    "form": "count_budget",
+    "kappa": 0.0026041666666666665,
+    "kappa_under_b": 0.7604166666666666,
+    "role": "reference"
+   },
+   "RF7:23": {
+    "displacement": 0.7864583333333333,
+    "form": "count_budget",
+    "kappa": 0.013020833333333334,
+    "kappa_under_b": 0.7994791666666666,
+    "role": "reference"
+   },
+   "RF7:24": {
+    "displacement": 0.8333333333333334,
+    "form": "count_budget",
+    "kappa": 0.0234375,
+    "kappa_under_b": 0.8567708333333334,
+    "role": "reference"
+   },
+   "RF8:3": {
+    "displacement": 0.48177083333333337,
+    "form": "count_budget",
+    "kappa": 0.18229166666666666,
+    "kappa_under_b": 0.6640625,
+    "role": "reference"
+   },
+   "RF8:4": {
+    "displacement": 0.4661458333333333,
+    "form": "count_budget",
+    "kappa": 0.2942708333333333,
+    "kappa_under_b": 0.7604166666666666,
+    "role": "reference"
+   },
+   "RF8:7": {
+    "displacement": 0.1875,
+    "form": "count_budget",
+    "kappa": 0.7526041666666666,
+    "kappa_under_b": 0.9401041666666666,
+    "role": "reference"
+   },
+   "RF8:8": {
+    "displacement": 0.11197916666666674,
+    "form": "count_budget",
+    "kappa": 0.8463541666666666,
+    "kappa_under_b": 0.9583333333333334,
+    "role": "reference"
+   },
+   "RF9:10": {
+    "displacement": 0.34375,
+    "form": "count_budget",
+    "kappa": 0.5729166666666666,
+    "kappa_under_b": 0.9166666666666666,
+    "role": "reference"
+   },
+   "RF9:13": {
+    "displacement": 0.13802083333333337,
+    "form": "count_budget",
+    "kappa": 0.8307291666666666,
+    "kappa_under_b": 0.96875,
+    "role": "reference"
+   },
+   "RF9:6": {
+    "displacement": 0.6041666666666666,
+    "form": "count_budget",
+    "kappa": 0.125,
+    "kappa_under_b": 0.7291666666666666,
+    "role": "reference"
+   },
+   "RF9:8": {
+    "displacement": 0.5416666666666666,
+    "form": "count_budget",
+    "kappa": 0.3046875,
+    "kappa_under_b": 0.8463541666666666,
+    "role": "reference"
+   }
+  }
+ }
+}

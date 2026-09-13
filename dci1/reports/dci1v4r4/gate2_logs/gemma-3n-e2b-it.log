@@ -1,0 +1,9 @@
+{
+ "model": "gemma-3n-e2b-it",
+ "stage": "GATE_2_REGIME",
+ "outcome": "PASS",
+ "n_star": 1,
+ "m_star": 10,
+ "iota_a": 0.5739130434782609,
+ "calibration_rows": 16128
+}
