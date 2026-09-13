@@ -335,7 +335,7 @@
             "correction": "",
             "implementation_hash": "54e9948180b5019472eb0cd2f55056806ca8b0016abec0c9c66f1f7b2b7d771f",
             "inherited_from": "",
-            "spec_hash": "c46944b0a2c864ceaaa1fa86c59f8ad0672520e74781a9a4caa9a8bfd5495986",
+            "spec_hash": "007d7471abb6d3d3275ac05ca16b1eb601c9aaa70b4e6b31b13085055a37a343",
             "status": "new",
             "verifier_id": "v19:verifier.transitive_order"
           },
@@ -343,7 +343,7 @@
             "correction": "",
             "implementation_hash": "b19b441c166407dfc83c132895cd311ca6c12870f924b7da3d253341a04503df",
             "inherited_from": "",
-            "spec_hash": "1e6517e8f7e9ed67bcfafc50718dcebf61be337561a49cb01ff8069ca11a6246",
+            "spec_hash": "0a26b28fdc5e47b8da1c47a5281aa42ebe533eebecd094c08f94b183221c7f92",
             "status": "new",
             "verifier_id": "v19:verifier.exact_bullet_count"
           },
@@ -351,7 +351,7 @@
             "correction": "corrected under sections 10.6 and 14.2 onto the frozen v19 text policy; see dci.v19.text.INTENTIONAL_CORRECTIONS",
             "implementation_hash": "e2e8b42847c37ed700e9e711103040c56c1ddad1248b3fa88332d99031ae9621",
             "inherited_from": "L_UNIQ (v_unique_words)",
-            "spec_hash": "ebae746bf014071f44106b85921436f90340683e50ac19067cc0004892e2e806",
+            "spec_hash": "e17f1c4bfbab8bf50b43fe9f3036439aa6819ca9b5d5bdf272d8282facceb49b",
             "status": "inherited_corrected",
             "verifier_id": "v19:verifier.unique_words"
           },
@@ -359,7 +359,7 @@
             "correction": "corrected under sections 10.6 and 14.2 onto the frozen v19 text policy; see dci.v19.text.INTENTIONAL_CORRECTIONS",
             "implementation_hash": "8df2c74bdfab324af7d24dff40fad281b8993e3c2b39fd0ab25549709d0cef4e",
             "inherited_from": "U_REQ (v_require_word_set)",
-            "spec_hash": "4483e50b1b68a8f70aff44c21e61f05401f81798137c37a5e2d4480a9b8c66d1",
+            "spec_hash": "b441bc9e3ff61d48bb50a31061cec1c26433954b96385d6699a1413b203cd7a2",
             "status": "inherited_corrected",
             "verifier_id": "v19:verifier.require_word_set"
           },
@@ -367,7 +367,7 @@
             "correction": "corrected under sections 10.6 and 14.2 onto the frozen v19 text policy; see dci.v19.text.INTENTIONAL_CORRECTIONS",
             "implementation_hash": "69cf5dceecc8113a42f3cebf49934dcdb62dcde53f5ce129fa775df9a56c65b7",
             "inherited_from": "B / O1 (v_increasing_lengths)",
-            "spec_hash": "ded9641f85a9c29585b02fef4a95fddd6bc5c7bb3968a3b0116047042bf2e1e6",
+            "spec_hash": "13ce3d9f31ffff66cfe7cd07b2954c5e576a28395222c1e3fae61270c232a3f3",
             "status": "inherited_corrected",
             "verifier_id": "v19:verifier.increasing_lengths"
           },
@@ -375,15 +375,15 @@
             "correction": "corrected under sections 10.6 and 14.2 onto the frozen v19 text policy; see dci.v19.text.INTENTIONAL_CORRECTIONS",
             "implementation_hash": "37894c7848d449fb4bc31876823b57096c715db80e6e0dac9bf2f13e88af6831",
             "inherited_from": "A / S2 (v_exact_sentence_count)",
-            "spec_hash": "df7ef72c124037bf6e7fd2b67c69f0d12fe661f796682fa4a8966f7f88d681fa",
+            "spec_hash": "7f208969a23524a3df871a66da091061eb0583485129693ef897a38cf7d066c3",
             "status": "inherited_corrected",
             "verifier_id": "v19:verifier.exact_sentence_count"
           }
         }
       },
       "frozen_by": "dci.v19.verifiers.bundle_state(CANONICAL_LIST_POLICY)",
-      "recorded_at": "2026-08-14T17:19:45+00:00",
-      "evidence": "The per-verifier table of declared-semantics and implementation hashes for all six target and focal verifiers. Producible only now, because the Pair 1 specification hashes contain the list-policy hash and that policy is a Stage 2 decision. implementation_hash refuses a source-less callable rather than hashing nothing. REGENERATED 2026-08-13T15:48:19+00:00 by tools/refreeze_stage2.py after: Pair 3 segmentation repair: v19/text.py had re-typed a narrower, pre-repair sentence-boundary class and dropped the abbreviation guard in rules._split_line, so p3.target over-counted sentences on titles, medial abbreviations and initials, and failed to split after multiple closing marks. text.py now takes rules.SENTENCE_BOUNDARY.pattern directly and declares sentence_abbreviation_guard=dci.verifiers.rules.ends_sentence. Segmentation now matches the certified inherited splitter on the audit bank. REGENERATED 2026-08-13T16:56:00+00:00 by tools/refreeze_stage2.py after: STRUCTURAL, behaviour-preserving: the sentence-split loop was unified into dci.verifiers.rules.split_line and dci.v19.text now delegates the pattern, the loop and the guard to it instead of mirroring the loop. Only implementation_hash fields moved; every text/list policy hash is unchanged, and both layers were verified verdict-identical to HEAD over the 59-text boundary bank (0 differences). REGENERATED 2026-08-14T17:19:45+00:00 by tools/refreeze_stage2.py after: Include the delegated abbreviation guard in the Pair 3 frozen closure. Delegating boundary decisions to dci.verifiers.rules left the guard's tables and source outside every hash, so a change to TITLE_ABBREVIATIONS moved F_A while spec, implementation and bundle hashes stayed identical. frozen_segmentation now carries abbreviation_guard_state, and the Pair 3 implementation tuples carry rules.split_line/ends_sentence/_opens_with_capital. Found in Codex review of PR #22."
+      "recorded_at": "2026-09-13T21:00:32+00:00",
+      "evidence": "The per-verifier table of declared-semantics and implementation hashes for all six target and focal verifiers. Producible only now, because the Pair 1 specification hashes contain the list-policy hash and that policy is a Stage 2 decision. implementation_hash refuses a source-less callable rather than hashing nothing. REGENERATED 2026-08-13T15:48:19+00:00 by tools/refreeze_stage2.py after: Pair 3 segmentation repair: v19/text.py had re-typed a narrower, pre-repair sentence-boundary class and dropped the abbreviation guard in rules._split_line, so p3.target over-counted sentences on titles, medial abbreviations and initials, and failed to split after multiple closing marks. text.py now takes rules.SENTENCE_BOUNDARY.pattern directly and declares sentence_abbreviation_guard=dci.verifiers.rules.ends_sentence. Segmentation now matches the certified inherited splitter on the audit bank. REGENERATED 2026-08-13T16:56:00+00:00 by tools/refreeze_stage2.py after: STRUCTURAL, behaviour-preserving: the sentence-split loop was unified into dci.verifiers.rules.split_line and dci.v19.text now delegates the pattern, the loop and the guard to it instead of mirroring the loop. Only implementation_hash fields moved; every text/list policy hash is unchanged, and both layers were verified verdict-identical to HEAD over the 59-text boundary bank (0 differences). REGENERATED 2026-08-14T17:19:45+00:00 by tools/refreeze_stage2.py after: Include the delegated abbreviation guard in the Pair 3 frozen closure. Delegating boundary decisions to dci.verifiers.rules left the guard's tables and source outside every hash, so a change to TITLE_ABBREVIATIONS moved F_A while spec, implementation and bundle hashes stayed identical. frozen_segmentation now carries abbreviation_guard_state, and the Pair 3 implementation tuples carry rules.split_line/ends_sentence/_opens_with_capital. Found in Codex review of PR #22. REGENERATED 2026-09-13T21:00:32+00:00 by tools/refreeze_stage2.py after: 2026-09-13, PR #35 review: the abbreviation-guard state records TRAILING_ABBREVIATION's compile flags beside its pattern, so a flags-only change to the delegated regex (which moves Pair 3 sentence counts) moves the frozen identity. The guard state is part of every verifier's frozen segmentation, so all six spec_hash values and the bundle hash move; no implementation hash, policy hash or verifier behaviour changes."
     },
     {
       "slot": "verifiers.boundary_mutations",
@@ -479,10 +479,10 @@
     },
     {
       "slot": "verifiers.bundle_hash",
-      "value": "bd6642836a2f4ba91af9ab1e2f516c3c3728b1c64ee1a6bebea5d9897bedc866",
+      "value": "b544453865dc8903a5d68b15bd0eb1cbc66f4d135750f6a1b5261bf5a6bea201",
       "frozen_by": "dci.v19.verifiers.bundle_hash(CANONICAL_LIST_POLICY)",
-      "recorded_at": "2026-08-14T17:19:45+00:00",
-      "evidence": "Appendix I requires invariant verifier hashes across the run, so this is the identity every later stage compares against. Frozen only after the specification bundle and the section 8.7 boundary battery, which are its declared prerequisites: the bundle fixes what each verifier's semantics and implementation hash to, and the battery is the evidence that those implementations behave at their boundaries. Freezing this hash earlier would name a bundle whose boundary behaviour had not been demonstrated. REGENERATED 2026-08-13T15:48:19+00:00 by tools/refreeze_stage2.py after: Pair 3 segmentation repair: v19/text.py had re-typed a narrower, pre-repair sentence-boundary class and dropped the abbreviation guard in rules._split_line, so p3.target over-counted sentences on titles, medial abbreviations and initials, and failed to split after multiple closing marks. text.py now takes rules.SENTENCE_BOUNDARY.pattern directly and declares sentence_abbreviation_guard=dci.verifiers.rules.ends_sentence. Segmentation now matches the certified inherited splitter on the audit bank. REGENERATED 2026-08-13T16:56:00+00:00 by tools/refreeze_stage2.py after: STRUCTURAL, behaviour-preserving: the sentence-split loop was unified into dci.verifiers.rules.split_line and dci.v19.text now delegates the pattern, the loop and the guard to it instead of mirroring the loop. Only implementation_hash fields moved; every text/list policy hash is unchanged, and both layers were verified verdict-identical to HEAD over the 59-text boundary bank (0 differences). REGENERATED 2026-08-14T17:19:45+00:00 by tools/refreeze_stage2.py after: Include the delegated abbreviation guard in the Pair 3 frozen closure. Delegating boundary decisions to dci.verifiers.rules left the guard's tables and source outside every hash, so a change to TITLE_ABBREVIATIONS moved F_A while spec, implementation and bundle hashes stayed identical. frozen_segmentation now carries abbreviation_guard_state, and the Pair 3 implementation tuples carry rules.split_line/ends_sentence/_opens_with_capital. Found in Codex review of PR #22."
+      "recorded_at": "2026-09-13T21:00:32+00:00",
+      "evidence": "Appendix I requires invariant verifier hashes across the run, so this is the identity every later stage compares against. Frozen only after the specification bundle and the section 8.7 boundary battery, which are its declared prerequisites: the bundle fixes what each verifier's semantics and implementation hash to, and the battery is the evidence that those implementations behave at their boundaries. Freezing this hash earlier would name a bundle whose boundary behaviour had not been demonstrated. REGENERATED 2026-08-13T15:48:19+00:00 by tools/refreeze_stage2.py after: Pair 3 segmentation repair: v19/text.py had re-typed a narrower, pre-repair sentence-boundary class and dropped the abbreviation guard in rules._split_line, so p3.target over-counted sentences on titles, medial abbreviations and initials, and failed to split after multiple closing marks. text.py now takes rules.SENTENCE_BOUNDARY.pattern directly and declares sentence_abbreviation_guard=dci.verifiers.rules.ends_sentence. Segmentation now matches the certified inherited splitter on the audit bank. REGENERATED 2026-08-13T16:56:00+00:00 by tools/refreeze_stage2.py after: STRUCTURAL, behaviour-preserving: the sentence-split loop was unified into dci.verifiers.rules.split_line and dci.v19.text now delegates the pattern, the loop and the guard to it instead of mirroring the loop. Only implementation_hash fields moved; every text/list policy hash is unchanged, and both layers were verified verdict-identical to HEAD over the 59-text boundary bank (0 differences). REGENERATED 2026-08-14T17:19:45+00:00 by tools/refreeze_stage2.py after: Include the delegated abbreviation guard in the Pair 3 frozen closure. Delegating boundary decisions to dci.verifiers.rules left the guard's tables and source outside every hash, so a change to TITLE_ABBREVIATIONS moved F_A while spec, implementation and bundle hashes stayed identical. frozen_segmentation now carries abbreviation_guard_state, and the Pair 3 implementation tuples carry rules.split_line/ends_sentence/_opens_with_capital. Found in Codex review of PR #22. REGENERATED 2026-09-13T21:00:32+00:00 by tools/refreeze_stage2.py after: 2026-09-13, PR #35 review: the abbreviation-guard state records TRAILING_ABBREVIATION's compile flags beside its pattern, so a flags-only change to the delegated regex (which moves Pair 3 sentence counts) moves the frozen identity. The guard state is part of every verifier's frozen segmentation, so all six spec_hash values and the bundle hash move; no implementation hash, policy hash or verifier behaviour changes."
     },
     {
       "slot": "verifiers.tier1_audit_protocol",

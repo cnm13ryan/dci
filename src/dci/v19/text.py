@@ -171,7 +171,7 @@ def abbreviation_guard_state(policy: TextPolicy) -> dict[str, Any]:
     `sentence_abbreviation_guard` records WHICH guard runs. That is not enough to
     freeze the measurement: the guard lives in `dci.verifiers.rules`, outside this
     module, and its decision is driven by two abbreviation tables, a trailing-token
-    pattern and an opening-punctuation set. Adding one entry to
+    pattern (with its compile flags) and an opening-punctuation set. Adding one entry to
     `TITLE_ABBREVIATIONS` changes sentence counts — and therefore F_A — while the
     guard's NAME, the v19 helpers' source, and every hash derived from them stay
     identical.
@@ -193,6 +193,12 @@ def abbreviation_guard_state(policy: TextPolicy) -> dict[str, Any]:
         "title_abbreviations": sorted(rules.TITLE_ABBREVIATIONS),
         "medial_abbreviations": sorted(rules.MEDIAL_ABBREVIATIONS),
         "trailing_abbreviation_pattern": rules.TRAILING_ABBREVIATION.pattern,
+        # The flags are part of the regex, not a detail of it: recompiled with
+        # `re.ASCII`, `[^\W\d_]` stops matching non-ASCII letters, so "ÉA." reads
+        # as the initial "A." and a boundary disappears while the pattern string,
+        # and so every hash, stays the same. The declaration is outside the
+        # implementation hash, so the flags have to travel here.
+        "trailing_abbreviation_flags": int(rules.TRAILING_ABBREVIATION.flags),
         "opening_punctuation": "".join(sorted(rules.OPENING_PUNCTUATION)),
     }
 
