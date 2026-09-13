@@ -166,7 +166,8 @@ counts over the same segmentation.
   change.
 
 **Frozen artifacts, final state against `main`.**
-- `src/dci/v19/stage2_frozen.json`: 6 of 13 records change.
+- `src/dci/v19/stage2_frozen.json`: 6 of 13 records change (including the
+  review follow-up below).
   - `verifiers.p1.list_policy`: the text policy's `sentence_boundary` becomes
     `rules.SENTENCE_BOUNDARY.pattern`, and it gains `sentence_abbreviation_guard`.
   - `satisfiability.encoding_map` and `satisfiability.review_trigger`: the list-
@@ -218,6 +219,25 @@ the 240-response blinded audit corpus, 640 cross-model rows and a 1-in-20 sample
 - The v19 confirmatory run has not been executed.
 - The exploratory arm and the DCI-1 line score through `dci.verifiers.rules` or
   their own verifiers, and `rules.split_sentences` is unchanged.
+
+**Review follow-up, same day (Codex on PR #35).** The guard state recorded
+`TRAILING_ABBREVIATION.pattern` but not the regex's compile flags, and the
+declaration is outside every implementation hash.
+- **The gap.** Recompiling the regex with `re.ASCII` stops `[^\W\d_]` matching
+  `É`, so in "The label reads ÉA. Next stop is Paris." the trailing token shrinks
+  to the initial "A" and a boundary disappears. The count went from 2 to 1 while
+  the bundle hash stayed the same (demonstrated).
+- **The fix.** `abbreviation_guard_state` now also records
+  `trailing_abbreviation_flags`.
+  `test_changing_the_abbreviation_regex_flags_moves_the_frozen_identity` pins it,
+  and it fails without the fix.
+- **The re-freeze.** `tools/refreeze_stage2.py` re-froze
+  `verifiers.specification_bundle` and `verifiers.bundle_hash`.
+  - The guard state is part of every verifier's frozen segmentation, so all six
+    `spec_hash` values move.
+  - No implementation hash, policy hash, other record or review packet changes.
+- **No behaviour change.** The differential harness gives identical outputs on
+  all 118,612 texts before and after.
 
 **Still outstanding.** Section 10.6's Stage 2 semantic re-audit (human work).
 Regenerating the packets invalidated the ones already issued, so this re-freeze may

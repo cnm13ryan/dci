@@ -279,6 +279,8 @@ def test_the_delegated_guard_is_inside_the_frozen_closure():
     assert sorted(rules.TITLE_ABBREVIATIONS) == guard["title_abbreviations"]
     assert sorted(rules.MEDIAL_ABBREVIATIONS) == guard["medial_abbreviations"]
     assert guard["boundary_pattern"] == rules.SENTENCE_BOUNDARY.pattern
+    assert guard["trailing_abbreviation_pattern"] == rules.TRAILING_ABBREVIATION.pattern
+    assert guard["trailing_abbreviation_flags"] == rules.TRAILING_ABBREVIATION.flags
 
 
 def test_changing_an_abbreviation_table_moves_the_frozen_identity(monkeypatch):
@@ -299,6 +301,27 @@ def test_changing_an_abbreviation_table_moves_the_frozen_identity(monkeypatch):
     assert V.bundle_hash(P) != before_hash, (
         "an abbreviation-table change moved F_A without moving the frozen "
         "bundle identity")
+
+
+def test_changing_the_abbreviation_regex_flags_moves_the_frozen_identity(monkeypatch):
+    """A flags-only change to the delegated regex is a measurement change too.
+
+    Found in review: the guard state recorded `TRAILING_ABBREVIATION.pattern`
+    but not its flags. Recompiled with `re.ASCII`, `[^\\W\\d_]` no longer
+    matches `É`, so the trailing token of "ÉA." shrinks to the capital "A", is
+    read as an initial, and the boundary after it disappears, with the pattern
+    string, and so every hash, unchanged.
+    """
+    text = "The label reads ÉA. Next stop is Paris."
+    before_count = len(v19_sentences(text, P))
+    before_hash = V.bundle_hash(P)
+
+    monkeypatch.setattr(rules, "TRAILING_ABBREVIATION",
+                        re.compile(rules.TRAILING_ABBREVIATION.pattern, re.ASCII))
+
+    assert len(v19_sentences(text, P)) != before_count, "fixture stopped biting"
+    assert V.bundle_hash(P) != before_hash, (
+        "a regex-flags change moved F_A without moving the frozen bundle identity")
 
 
 def test_the_guard_name_resolves_to_the_function_it_names():
