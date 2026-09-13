@@ -10,7 +10,9 @@ after volatile-field stripping). The notebook cells are archived under
 
 To audit any stage against the cell it came from, diff
 `src/dci/pipeline/stages/<stage>.py` against `notebook_source/cells/<n>.py`; the
-eleven ledgered exceptions are listed in `docs/migration_ledger_patches.csv`.
+eleven ledgered execution-only exceptions (`P0`-`P10`) are listed in
+`docs/migration_ledger_patches.csv`, beside one later scientific verifier repair
+(`P13-sentence-abbreviations`) that is outside the byte-identity boundary.
 `tools/migrate_v15.py` reconstructs the v15 package from the archive into
 `build/v15_reconstruction/` — it never writes over `src/`, which is the
 authoritative repaired implementation and is not what the archive contains.
@@ -31,8 +33,10 @@ source audit, risk table, reproducibility report and open blockers;
       inference/             backend seam: oracle (dry run) + hf_transformers
       verifiers/ analysis/ … extracted pure libraries (84 defs, unit-tested)
     configs/profiles/        dev_fast, dev_fast_gpu, integration_pass, pilot, study
-    environments/rocm|cuda/  the two GPU stacks — separate projects, pinned;
-                             locks are generated on the target machine
+    environments/rocm|cuda/  the two GPU stacks — separate projects; torch (and on
+                             ROCm its wheel set) is pinned, the HF libraries are
+                             lower-bounded and their versions are recorded per
+                             run; locks are generated on the target machine
     scripts/                 environment doctors + Lambda provisioning tooling
     tests/                   unit / integration / regression / hardware
     notebook_source/         the archived v15 cells + build harness (read-only)
