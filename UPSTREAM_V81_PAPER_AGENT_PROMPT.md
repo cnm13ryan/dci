@@ -31,9 +31,9 @@ results, never compare them numerically in the main text.
 
 **One sentence.** Against three same-form companions matched to it on
 wording-conditioned stand-alone compliance, the focal instruction A costs
-compliance with B no more than they do in 23 of 24 preregistered
-model × wording-frame × prompt-order conditions — while composition itself
-moves B's compliance by up to 49 percentage points.
+compliance with B less than 10 percentage points more than they do in 23 of
+24 preregistered model × wording-frame × prompt-order conditions — while
+composition itself moves B's compliance by up to 49 percentage points.
 
 **The shape of the argument**, in four moves:
 

@@ -336,10 +336,14 @@ def per_cell(frame: pd.DataFrame) -> pd.DataFrame:
             # applies, so a cell blocked on a missing feed says nothing about
             # the model — the ceiling and the undelivered focal instruction
             # vanish behind EVIDENCE_INCOMPLETE. That is right for pooling and
-            # wrong for reading, so what was observed is reported beside
-            # whether it may be read causally. Only `estimable` governs pooling.
-            "behavioural": reading.behavioural.status,
+            # wrong for reading, so the reading with those feeds assumed to
+            # pass is reported beside whether the cell may be read causally.
+            # It is named as the conditional it is, and the assumed axes travel
+            # with it: the rates behind it were scored by the very verifier and
+            # execution nobody established. Only `estimable` governs pooling.
+            "behavioural_if_prerequisites_pass": reading.behavioural.status,
             "behavioural_reason": reading.behavioural.reason,
+            "prerequisites_assumed": ", ".join(reading.conditional_on) or "none",
             "focal_uptake": evidence.focal_uptake,
             "reference_uptake": evidence.reference_uptake,
             "cap_hit_rate": evidence.cap_hit_rate,
@@ -726,27 +730,40 @@ def document(frame: pd.DataFrame, cells: pd.DataFrame, missing: list[dict],
                      "A_fail_focal", "A_fail_reference", "focal_uptake",
                      "reference_uptake", "cap_hit_rate", "tau", "lo", "hi",
                      "n_tasks", "joint_focal", "identification",
-                     "behavioural"]]
+                     "behavioural_if_prerequisites_pass",
+                     "prerequisites_assumed"]]
               [cells["load"] == contract.LOAD]),
         "",
         "**Two verdict columns, because two different questions are being "
         "asked.** `identification` answers *may this contrast be read "
         "causally?* — and it alone governs whether a cell enters the pooled τ. "
-        "`behavioural` answers *what was observed?* — the verdict the same "
-        "classifier returns once any missing prerequisite feed is supplied, "
-        "holding every measured constituent fixed. Where nothing was missing "
-        "the two coincide.",
+        "`behavioural_if_prerequisites_pass` answers *what would this cell "
+        "read as if every prerequisite that was never established had "
+        "passed?* — the verdict the same classifier returns with the axes in "
+        "`prerequisites_assumed` set to passing, holding every measured "
+        "constituent fixed. Where nothing was assumed the two coincide.",
+        "",
+        "**It is a conditional, not an observation.** Every rate behind it was "
+        "scored by the verifier and produced by the execution those "
+        "prerequisites would vouch for, so an uncertified verifier or an "
+        "unvalidated execution could make a `TARGET_CEILING` or a "
+        "`FOCAL_NONUPTAKE` reading wrong, not just an identification. For the "
+        "same reason the column never prints `IDENTIFIED` for a cell whose "
+        "identification was not established: `NO_BEHAVIOURAL_BLOCK` means "
+        "that, with the assumed prerequisites passing, none of the behavioural "
+        "verdicts applies.",
         "",
         "The distinction matters because the classifier returns the FIRST "
         "verdict that applies. A cell blocked on evidence it was never given "
         "reports `EVIDENCE_INCOMPLETE` and would otherwise say nothing at all "
         "about the model — the ceiling, the floor and the undelivered focal "
         "instruction would all disappear behind the block. Failing closed is "
-        "right for pooling and wrong for reading, so both are printed.",
+        "right for pooling and wrong for reading, so both are printed, the "
+        "second under its condition.",
         "",
         "A `TARGET_CEILING` reading means the target instruction essentially "
-        "never fails in either arm, so τ is 0 **by construction** rather than "
-        "by absence of interference. `FOCAL_NONUPTAKE` means the focal "
+        "never fails in either arm as scored, so τ is 0 **by construction** "
+        "rather than by absence of interference. `FOCAL_NONUPTAKE` means the focal "
         "instruction was not followed often enough to count as delivered, so "
         "τ estimates the effect of *presenting* it. `EVIDENCE_INCOMPLETE` is "
         "not a statement about the model at all: it means a prerequisite — "
@@ -816,7 +833,8 @@ def document(frame: pd.DataFrame, cells: pd.DataFrame, missing: list[dict],
             table(k5[["model", "backend", "load", "background", "requested",
                       "final_answers", "no_final", "A_fail_focal",
                       "A_fail_reference", "tau", "lo", "hi", "n_tasks",
-                      "identification", "behavioural"]]),
+                      "identification", "behavioural_if_prerequisites_pass",
+                      "prerequisites_assumed"]]),
             "",
             "### Semicolon-minus-control contrast at k=5",
             "",

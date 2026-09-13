@@ -146,6 +146,21 @@ class TestReportAgreesWithTheLayer:
                        "A_fail_focal", "A_fail_reference", "n_tasks"):
             assert column in cells.columns, f"{column} not reported"
 
+    def test_the_second_layer_is_published_as_a_conditional(self) -> None:
+        """The column named what was assumed; it once read as an observation."""
+        rows = [row(t, arm) for t in range(10) for arm in (FOCAL, REFERENCE)]
+        frame = scored(rows)
+        cells = R.per_cell(frame)
+        assert "behavioural" not in cells.columns
+        reading = identification.read(R.cell_evidence(frame, R.tau_per_task(frame)))
+        cell = cells.iloc[0]
+        assert cell["behavioural_if_prerequisites_pass"] == reading.behavioural.status
+        assert cell["prerequisites_assumed"] == (
+            ", ".join(reading.conditional_on) or "none")
+        if reading.conditional_on:
+            assert cell["behavioural_if_prerequisites_pass"] != identification.IDENTIFIED
+            assert cell["behavioural_reason"].startswith("conditional on ")
+
     def test_the_narrow_local_helper_is_gone(self) -> None:
         assert not hasattr(R, "degeneracy"), (
             "the duplicate degeneracy() helper is still present")

@@ -22,9 +22,9 @@ to the paper-writing agent.*
 
 **One sentence.** Against three same-form companions matched to it on
 wording-conditioned stand-alone compliance, the focal instruction A costs
-compliance with B no more than they do in 23 of 24 preregistered
-model × wording-frame × prompt-order conditions — while composition itself
-moves B's compliance by up to 49 percentage points.
+compliance with B less than 10 percentage points more than they do in 23 of
+24 preregistered model × wording-frame × prompt-order conditions — while
+composition itself moves B's compliance by up to 49 percentage points.
 
 **Abstract-level, three sentences.**
 
@@ -857,7 +857,7 @@ Evidence classes: **PC** primary confirmatory · **RS** registered sensitivity �
 
 | candidate statement | class | scope | exact supporting result | allowed wording | too-strong wording |
 |---|:-:|---|---|---|---|
-| A costs B no more than same-form companions matched on frame-conditioned compliance | **PC** | per model × frame × order | `L3c` on the joint interval, 23 of 24 | "In 23 of the 24 entering conditions the simultaneous interval for Δ_R(f) stops below +10 pp." | "A is not unusually harmful"; "no pair-specific interference"; "equivalent to zero" |
+| A costs B no more than same-form companions matched on frame-conditioned compliance | **PC** | per model × frame × order | `L3c` on the joint interval, 23 of 24 | "In 23 of the 24 entering conditions the simultaneous interval for Δ_R(f) stops below +10 pp." | "A is not unusually harmful"; "no pair-specific interference"; "equivalent to zero"; "no more than" without the +10 pp margin |
 | Model-level equivalence | **PC** | per model × order | 7 of 8 `LOCAL_EQUIVALENT_SAME_FORM_ONLY` | "Seven of eight model × order configurations return the registered same-form-only equivalence verdict." | dropping "same-form-only"; generalising to companions at large |
 | One condition shows A costing B more | **PC** | one cell | +12.64 pp, [+9.62, +15.66], `INDETERMINATE@0.10` | "Δ_R = +12.6 pp with a joint interval excluding zero; the registered rule certifies neither an excess above +10 pp nor a bound below it." | "A specifically interferes with B on this model"; omitting the four qualifications |
 | Frames disagree within a model | **PC** | one model × order | `FRAME_HETEROGENEOUS` | "On one model and prompt order the entering frames do not reach the same reading; the registered verdict is heterogeneity." | treating heterogeneity as a null or as noise |

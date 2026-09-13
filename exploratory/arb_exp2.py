@@ -100,7 +100,8 @@ print(ranked[["order", "absG", "absD"]].to_string(
 print(f"\nDIAGNOSTIC ORDER = {ranked.iloc[0]['order']}")
 
 print("\n\n## Arbitration across all six orders\n")
-focal = frame[frame["arm"] == A.FOCAL_ARM]
+focal = A.behavioural(frame)
+focal = focal[focal["arm"] == A.FOCAL_ARM]
 print(pd.crosstab([focal["order"], focal["background_name"],
                    focal["reasoning_budget"]], focal["arbitration_state"],
                   normalize="index").to_string(float_format=lambda v: f"{v:.3f}"))

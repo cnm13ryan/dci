@@ -170,25 +170,39 @@ earlier "0 of 8" statement was never about it:
 Two columns, because two different questions are being asked. **Identification**
 answers *may this contrast be read causally?* — and every cell fails it, on
 missing prerequisite evidence rather than on anything the model did.
-**Behavioural** answers *what was observed?* — it is the verdict the same
-`classify()` returns once the two missing feeds are supplied, holding every
-measured constituent fixed. Reporting only the first would hide the second, and
-the second is where the science is.
+**Behavioural, if prerequisites pass** answers *what would this cell read as if
+the two missing feeds had passed?* — it is the verdict the same `classify()`
+returns with `execution_validated` and `verifier_certified` set to passing,
+holding every measured constituent fixed. Reporting only the first would hide
+the second. The second is a conditional, not an observation: every rate behind
+it was scored by the verifier nobody certified, so a ceiling or a non-uptake
+reading depends on those feeds as much as identification does.
 
-| model | background | τ | 95% CI | F_focal | F_ref | uptake focal | uptake ref | cap-hit | identification | behavioural |
+| model | background | τ | 95% CI | F_focal | F_ref | uptake focal | uptake ref | cap-hit | identification | behavioural, if prerequisites pass |
 |---|---|---|---|---|---|---|---|---|---|---|
 | Qwen3.5-4B | bracket | +0.000 | — | 0.000 | 0.000 | 1.000 | 1.000 | 0.475 | `EVIDENCE_INCOMPLETE` | `TARGET_CEILING` |
-| Qwen3.5-4B | semicolon | +0.031 | [0.000, 0.094] | 0.033 | 0.000 | 0.967 | 1.000 | 0.338 | `EVIDENCE_INCOMPLETE` | `IDENTIFIED` |
+| Qwen3.5-4B | semicolon | +0.031 | [0.000, 0.094] | 0.033 | 0.000 | 0.967 | 1.000 | 0.338 | `EVIDENCE_INCOMPLETE` | `NO_BEHAVIOURAL_BLOCK` |
 | Qwen3.5-9B | bracket | +0.000 | — | 0.000 | 0.000 | 1.000 | 1.000 | 0.300 | `EVIDENCE_INCOMPLETE` | `TARGET_CEILING` |
-| Qwen3.5-9B | semicolon | +0.026 | [0.000, 0.079] | 0.028 | 0.000 | 0.972 | 1.000 | 0.150 | `EVIDENCE_INCOMPLETE` | `IDENTIFIED` |
+| Qwen3.5-9B | semicolon | +0.026 | [0.000, 0.079] | 0.028 | 0.000 | 0.972 | 1.000 | 0.150 | `EVIDENCE_INCOMPLETE` | `NO_BEHAVIOURAL_BLOCK` |
 | gemma-4-E4B-it | bracket | +0.000 | — | 0.000 | 0.000 | 0.900 | 1.000 | 0.000 | `EVIDENCE_INCOMPLETE` | `TARGET_CEILING` |
 | gemma-4-E4B-it | semicolon | +0.000 | — | 0.000 | 0.000 | 0.875 | 1.000 | 0.000 | `EVIDENCE_INCOMPLETE` | `TARGET_CEILING` |
 | Kimi-VL | bracket | +0.050 | [0.000, 0.125] | 0.054 | 0.000 | **0.405** | 0.531 | 0.138 | `EVIDENCE_INCOMPLETE` | `FOCAL_NONUPTAKE` |
 | Kimi-VL | semicolon | **+0.278** | [0.056, 0.500] | 0.559 | 0.286 | **0.088** | 0.571 | 0.138 | `EVIDENCE_INCOMPLETE` | `FOCAL_NONUPTAKE` |
 
 The behavioural column is computed, not asserted: re-derive it by calling
-`classify()` on each row's constituents with `execution_validated`,
-`verifier_certified` and `satisfiable` set to `True`.
+`read()` on each cell's evidence, which runs `classify()` on its constituents
+with the two absent axes set to passing. (`satisfiable` is witnessed, not
+assumed; an earlier wording of this sentence listed it among the substituted
+axes.)
+
+**Relabelled 2026-09-13 (Codex review on PR #24).** Until then the column was
+headed *behavioural*, described as *what was observed?*, and printed
+`IDENTIFIED` for the two Qwen3.5 semicolon cells. That put a conditional on the
+page as an observation and used the one label the missing evidence withholds.
+The values are unchanged; `IDENTIFIED` in this layer is now
+`NO_BEHAVIOURAL_BLOCK`, the column is named as the conditional, and
+`ACTUAL_CROSS_MODEL_DCI_RESULTS.md` (regenerated from the same runs, rows
+byte-identical) names the assumed axes beside every cell.
 
 **0 of 8 poolable — corrected.** An earlier version of this section reported
 2 of 8, with the Qwen semicolon cells identified. That was withdrawn by a
@@ -210,7 +224,8 @@ cross-model cell, so all eight now carry `EVIDENCE_INCOMPLETE`:
 | `verifier_certified` | **unestablished** | no certification for these checkpoints' output class |
 
 The behavioural readings are unchanged and still reported — the `TARGET_CEILING`
-and `FOCAL_NONUPTAKE` patterns are real properties of the data, and they are what
+and `FOCAL_NONUPTAKE` patterns are what the data show as scored, conditional on
+the uncertified verifier and unadmitted execution being sound, and they are what
 the behavioural column above carries. What is withdrawn is the claim that any
 cross-model cell was *identified*, which the pipeline was never in a position to
 assert.
@@ -263,8 +278,9 @@ run the slice at less than 5/5. Recorded diagnoses stand.
 ### 2.3 "Qwen3.5-9B semicolon shows τ = −0.150" — `NOT_IDENTIFIED`
 
 (NO_THINKING set. Under bounded thinking the same checkpoint yields +0.026,
-which is **also not identified** — `EVIDENCE_INCOMPLETE`, and behaviourally the
-one cell that would clear the gates if the two missing feeds were supplied. See
+which is **also not identified** — `EVIDENCE_INCOMPLETE`, and `NO_BEHAVIOURAL_BLOCK`
+in the conditional layer: one of the two cells that would clear the gates if the
+two missing feeds were supplied and passed. See
 §2.1b.)
 
 The only nominally non-zero cross-model estimate. Focal uptake 27.5%; the CI
