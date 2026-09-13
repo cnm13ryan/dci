@@ -36,6 +36,11 @@ byte-identical apart from the S-rewrite and the **eleven** ledgered patches
 The byte-identity boundary is therefore exactly these eleven entries, and the
 count is not a judgement call: `docs/migration_ledger_patches.csv` holds all
 eleven, every one classified `execution-only` with `protocol_impact: none`.
+The same file also carries a twelfth, later row, `P13-sentence-abbreviations`:
+a post-migration **scientific** repair to `dci/verifiers/rules.py` (the
+abbreviation guard, classified `scientific`, with a primary-outcome impact).
+It is outside the byte-identity boundary - it is not a cell-body exception of the
+migration - and is recorded there so the verifier's change has a ledger row.
 `docs/migration_ledger.csv` is the wider record - the same eleven plus thirteen
 `L-` entries describing the architectural moves (state module, stage modules,
 library extraction, prelude, compat shim, and so on), which are relocations
