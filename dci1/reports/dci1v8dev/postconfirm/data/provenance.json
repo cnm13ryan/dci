@@ -3,6 +3,32 @@
  "models": {
   "qwen3-4b": {
    "analysis_record_hash": "5591cb46c64c127a410b1b05d7622581d1d2724b38203a2f08672f3b6b5e83b3",
+   "verified_records": {
+    "CONFIRMATORY_ANALYSIS": {
+     "signed_record": "evidence/dci1v8/qwen3-4b/CONFIRMATORY_ANALYSIS/records/confirmatory_analysis.json",
+     "record_hash": "5591cb46c64c127a410b1b05d7622581d1d2724b38203a2f08672f3b6b5e83b3",
+     "signature_verified": true,
+     "reader_copy_matches_payload": true
+    },
+    "FROZEN": {
+     "signed_record": "evidence/dci1v8/qwen3-4b/FROZEN/records/freeze.json",
+     "record_hash": "7902b05f12a2bb60b775b49702bffbbbd4539e0e1ababdf433683ad1da546e9a",
+     "signature_verified": true,
+     "reader_copy_matches_payload": true
+    },
+    "MEMBERSHIP": {
+     "signed_record": "evidence/dci1v8/qwen3-4b/MEMBERSHIP/records/membership.json",
+     "record_hash": "b6d5831f2bb4c49b3be0edc9bf500a934f685be9ee17508fc4c4c0aa2080c712",
+     "signature_verified": true,
+     "reader_copy_matches_payload": true
+    },
+    "CONFIRMATORY_GENERATION": {
+     "signed_record": "evidence/dci1v8/qwen3-4b/CONFIRMATORY_GENERATION/records/confirmatory_generation.json",
+     "record_hash": "287e507ed9b1dc86b07fc2ae25ad99a0a31af544366009eb2129b2f9074f3820",
+     "signature_verified": true,
+     "reader_copy_matches_payload": true
+    }
+   },
    "freeze_hash": "7902b05f12a2bb60b775b49702bffbbbd4539e0e1ababdf433683ad1da546e9a",
    "generation_record_hash": "287e507ed9b1dc86b07fc2ae25ad99a0a31af544366009eb2129b2f9074f3820",
    "producing_commit": "034fc7214762b6848d5d904b14fd82b317830667",
@@ -47,6 +73,32 @@
   },
   "qwen3-4b-instruct-2507": {
    "analysis_record_hash": "31f1b46be5e6416e832c428082108dfabd643d024bd02f5e6f60ef7dfefcf90f",
+   "verified_records": {
+    "CONFIRMATORY_ANALYSIS": {
+     "signed_record": "evidence/dci1v8/qwen3-4b-instruct-2507/CONFIRMATORY_ANALYSIS/records/confirmatory_analysis.json",
+     "record_hash": "31f1b46be5e6416e832c428082108dfabd643d024bd02f5e6f60ef7dfefcf90f",
+     "signature_verified": true,
+     "reader_copy_matches_payload": true
+    },
+    "FROZEN": {
+     "signed_record": "evidence/dci1v8/qwen3-4b-instruct-2507/FROZEN/records/freeze.json",
+     "record_hash": "4d72e728af137746ff95d54aa49b1a46bb7d504c989518b66615f6eef1fc6a95",
+     "signature_verified": true,
+     "reader_copy_matches_payload": true
+    },
+    "MEMBERSHIP": {
+     "signed_record": "evidence/dci1v8/qwen3-4b-instruct-2507/MEMBERSHIP/records/membership.json",
+     "record_hash": "603773c0944fc77e89bae63da1c2604b16c5d35978c590492113b900f3af897a",
+     "signature_verified": true,
+     "reader_copy_matches_payload": true
+    },
+    "CONFIRMATORY_GENERATION": {
+     "signed_record": "evidence/dci1v8/qwen3-4b-instruct-2507/CONFIRMATORY_GENERATION/records/confirmatory_generation.json",
+     "record_hash": "a98dc7aa45f75ed013b88fbdd4bba31c0661b5bc98f88f2d408001956a5b15cd",
+     "signature_verified": true,
+     "reader_copy_matches_payload": true
+    }
+   },
    "freeze_hash": "4d72e728af137746ff95d54aa49b1a46bb7d504c989518b66615f6eef1fc6a95",
    "generation_record_hash": "a98dc7aa45f75ed013b88fbdd4bba31c0661b5bc98f88f2d408001956a5b15cd",
    "producing_commit": "034fc7214762b6848d5d904b14fd82b317830667",
@@ -82,6 +134,32 @@
   },
   "gemma-3n-e2b-it": {
    "analysis_record_hash": "5edcd5730bc4c0318522cc0e3bce57cbb044c6fb02c8743b3e67175ea9329c13",
+   "verified_records": {
+    "CONFIRMATORY_ANALYSIS": {
+     "signed_record": "evidence/dci1v8/gemma-3n-e2b-it/CONFIRMATORY_ANALYSIS/records/confirmatory_analysis.json",
+     "record_hash": "5edcd5730bc4c0318522cc0e3bce57cbb044c6fb02c8743b3e67175ea9329c13",
+     "signature_verified": true,
+     "reader_copy_matches_payload": true
+    },
+    "FROZEN": {
+     "signed_record": "evidence/dci1v8/gemma-3n-e2b-it/FROZEN/records/freeze.json",
+     "record_hash": "33595b8078525a12eb33e97827164992ac742fc8d7c5918dd672d5ef9906a1a9",
+     "signature_verified": true,
+     "reader_copy_matches_payload": true
+    },
+    "MEMBERSHIP": {
+     "signed_record": "evidence/dci1v8/gemma-3n-e2b-it/MEMBERSHIP/records/membership.json",
+     "record_hash": "58d1c18e4f3aaacc12ba402f19f8596a272e675bb7d5695d4ade8c7f4f3f05d0",
+     "signature_verified": true,
+     "reader_copy_matches_payload": true
+    },
+    "CONFIRMATORY_GENERATION": {
+     "signed_record": "evidence/dci1v8/gemma-3n-e2b-it/CONFIRMATORY_GENERATION/records/confirmatory_generation.json",
+     "record_hash": "117e95aa9a8b2ae107af4bef6700e5d6043cbd76764ff8ba141bcc011cd0874d",
+     "signature_verified": true,
+     "reader_copy_matches_payload": true
+    }
+   },
    "freeze_hash": "33595b8078525a12eb33e97827164992ac742fc8d7c5918dd672d5ef9906a1a9",
    "generation_record_hash": "117e95aa9a8b2ae107af4bef6700e5d6043cbd76764ff8ba141bcc011cd0874d",
    "producing_commit": "034fc7214762b6848d5d904b14fd82b317830667",
@@ -114,6 +192,32 @@
   },
   "gemma-3n-e4b-it": {
    "analysis_record_hash": "e90e0f7d6606bd8d4feed30aa90c6a89f2aacb3fd9e8d86481496072e44fa5ac",
+   "verified_records": {
+    "CONFIRMATORY_ANALYSIS": {
+     "signed_record": "evidence/dci1v8/gemma-3n-e4b-it/CONFIRMATORY_ANALYSIS/records/confirmatory_analysis.json",
+     "record_hash": "e90e0f7d6606bd8d4feed30aa90c6a89f2aacb3fd9e8d86481496072e44fa5ac",
+     "signature_verified": true,
+     "reader_copy_matches_payload": true
+    },
+    "FROZEN": {
+     "signed_record": "evidence/dci1v8/gemma-3n-e4b-it/FROZEN/records/freeze.json",
+     "record_hash": "70bcb5da77f2cbca33035d2e75bd90781d5251895a8a2d44d98449e63b67881d",
+     "signature_verified": true,
+     "reader_copy_matches_payload": true
+    },
+    "MEMBERSHIP": {
+     "signed_record": "evidence/dci1v8/gemma-3n-e4b-it/MEMBERSHIP/records/membership.json",
+     "record_hash": "92e62732016e1247421f21c589d0af9717d90ba3a5c1844baaf91c43c45e5bd3",
+     "signature_verified": true,
+     "reader_copy_matches_payload": true
+    },
+    "CONFIRMATORY_GENERATION": {
+     "signed_record": "evidence/dci1v8/gemma-3n-e4b-it/CONFIRMATORY_GENERATION/records/confirmatory_generation.json",
+     "record_hash": "e4dd54ff8575dceed8865e670123a6ef304fef379450473da2dd11e8c84eb9c0",
+     "signature_verified": true,
+     "reader_copy_matches_payload": true
+    }
+   },
    "freeze_hash": "70bcb5da77f2cbca33035d2e75bd90781d5251895a8a2d44d98449e63b67881d",
    "generation_record_hash": "e4dd54ff8575dceed8865e670123a6ef304fef379450473da2dd11e8c84eb9c0",
    "producing_commit": "034fc7214762b6848d5d904b14fd82b317830667",

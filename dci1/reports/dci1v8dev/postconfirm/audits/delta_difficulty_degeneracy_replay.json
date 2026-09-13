@@ -1,0 +1,1048 @@
+{
+ "audit": "delta_difficulty degenerate-replicate replay (F1 per frame and JOINT_F1)",
+ "ceiling": 0.01,
+ "evidence_root": "/home/cnm13ryan/git/dci-v8-canonical/dci1/evidence/dci1v8p1-confirm",
+ "models": {
+  "gemma-3n-e2b-it": {
+   "joint_F1": [
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_first",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.0075784054634221365,
+      "replayed_standard_error": 0.0075784054634221365,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 0,
+     "model": "gemma-3n-e2b-it",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_first",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.008577200459177403,
+      "replayed_standard_error": 0.008577200459177403,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 1,
+     "model": "gemma-3n-e2b-it",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_first",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.009030628638194024,
+      "replayed_standard_error": 0.009030628638194024,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 2,
+     "model": "gemma-3n-e2b-it",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_first",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.006796744330562537,
+      "replayed_standard_error": 0.006796744330562537,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 3,
+     "model": "gemma-3n-e2b-it",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_second",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.011330295424021624,
+      "replayed_standard_error": 0.011330295424021624,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 0,
+     "model": "gemma-3n-e2b-it",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_second",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.009646195143773207,
+      "replayed_standard_error": 0.009646195143773207,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 1,
+     "model": "gemma-3n-e2b-it",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_second",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.010901265136211188,
+      "replayed_standard_error": 0.010901265136211188,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 2,
+     "model": "gemma-3n-e2b-it",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_second",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.009763315117592477,
+      "replayed_standard_error": 0.009763315117592477,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 3,
+     "model": "gemma-3n-e2b-it",
+     "replicates": 10000,
+     "status": "OK"
+    }
+   ],
+   "per_frame_F1": [
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_first",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_frozen_member": true,
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.0075164217040815905,
+      "replayed_standard_error": 0.0075164217040815905,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 0,
+     "model": "gemma-3n-e2b-it",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_first",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_frozen_member": true,
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.008608634828956947,
+      "replayed_standard_error": 0.008608634828956947,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 1,
+     "model": "gemma-3n-e2b-it",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_first",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_frozen_member": true,
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.009005332115127447,
+      "replayed_standard_error": 0.009005332115127447,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 2,
+     "model": "gemma-3n-e2b-it",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_first",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_frozen_member": true,
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.006798239607789309,
+      "replayed_standard_error": 0.006798239607789309,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 3,
+     "model": "gemma-3n-e2b-it",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_second",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_frozen_member": true,
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.011335233921009276,
+      "replayed_standard_error": 0.011335233921009276,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 0,
+     "model": "gemma-3n-e2b-it",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_second",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_frozen_member": true,
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.009693394848170556,
+      "replayed_standard_error": 0.009693394848170556,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 1,
+     "model": "gemma-3n-e2b-it",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_second",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_frozen_member": true,
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.0107749325832141,
+      "replayed_standard_error": 0.0107749325832141,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 2,
+     "model": "gemma-3n-e2b-it",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_second",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_frozen_member": true,
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.009955120124314983,
+      "replayed_standard_error": 0.009955120124314983,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 3,
+     "model": "gemma-3n-e2b-it",
+     "replicates": 10000,
+     "status": "OK"
+    }
+   ],
+   "record_hashes": {
+    "CONFIRMATORY_ANALYSIS": "5edcd5730bc4c0318522cc0e3bce57cbb044c6fb02c8743b3e67175ea9329c13",
+    "CONFIRMATORY_GENERATION": "117e95aa9a8b2ae107af4bef6700e5d6043cbd76764ff8ba141bcc011cd0874d",
+    "FROZEN": "33595b8078525a12eb33e97827164992ac742fc8d7c5918dd672d5ef9906a1a9"
+   },
+   "resamples": 10000,
+   "seconds": 87.7
+  },
+  "gemma-3n-e4b-it": {
+   "joint_F1": [
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_first",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.00754666132866574,
+      "replayed_standard_error": 0.00754666132866574,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 0,
+     "model": "gemma-3n-e4b-it",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_first",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.008361918441386918,
+      "replayed_standard_error": 0.008361918441386918,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 1,
+     "model": "gemma-3n-e4b-it",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_first",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.007104077075738412,
+      "replayed_standard_error": 0.007104077075738412,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 2,
+     "model": "gemma-3n-e4b-it",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_first",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.007099365720033693,
+      "replayed_standard_error": 0.007099365720033693,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 3,
+     "model": "gemma-3n-e4b-it",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_second",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.008277382185495267,
+      "replayed_standard_error": 0.008277382185495267,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 0,
+     "model": "gemma-3n-e4b-it",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_second",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.00981257945459806,
+      "replayed_standard_error": 0.00981257945459806,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 1,
+     "model": "gemma-3n-e4b-it",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_second",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.009809276686827186,
+      "replayed_standard_error": 0.009809276686827186,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 2,
+     "model": "gemma-3n-e4b-it",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_second",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.010166912717053443,
+      "replayed_standard_error": 0.010166912717053443,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 3,
+     "model": "gemma-3n-e4b-it",
+     "replicates": 10000,
+     "status": "OK"
+    }
+   ],
+   "per_frame_F1": [
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_first",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_frozen_member": true,
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.007526418495250384,
+      "replayed_standard_error": 0.007526418495250384,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 0,
+     "model": "gemma-3n-e4b-it",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_first",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_frozen_member": true,
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.008474091972851703,
+      "replayed_standard_error": 0.008474091972851703,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 1,
+     "model": "gemma-3n-e4b-it",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_first",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_frozen_member": true,
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.007165939610796423,
+      "replayed_standard_error": 0.007165939610796423,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 2,
+     "model": "gemma-3n-e4b-it",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_first",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_frozen_member": true,
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.0070444218044017634,
+      "replayed_standard_error": 0.0070444218044017634,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 3,
+     "model": "gemma-3n-e4b-it",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_second",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_frozen_member": true,
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.00840552175171258,
+      "replayed_standard_error": 0.00840552175171258,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 0,
+     "model": "gemma-3n-e4b-it",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_second",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_frozen_member": true,
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.00974187696204573,
+      "replayed_standard_error": 0.00974187696204573,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 1,
+     "model": "gemma-3n-e4b-it",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_second",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_frozen_member": true,
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.009822235014841267,
+      "replayed_standard_error": 0.009822235014841267,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 2,
+     "model": "gemma-3n-e4b-it",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_second",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_frozen_member": true,
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.010356519225945632,
+      "replayed_standard_error": 0.010356519225945632,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 3,
+     "model": "gemma-3n-e4b-it",
+     "replicates": 10000,
+     "status": "OK"
+    }
+   ],
+   "record_hashes": {
+    "CONFIRMATORY_ANALYSIS": "e90e0f7d6606bd8d4feed30aa90c6a89f2aacb3fd9e8d86481496072e44fa5ac",
+    "CONFIRMATORY_GENERATION": "e4dd54ff8575dceed8865e670123a6ef304fef379450473da2dd11e8c84eb9c0",
+    "FROZEN": "70bcb5da77f2cbca33035d2e75bd90781d5251895a8a2d44d98449e63b67881d"
+   },
+   "resamples": 10000,
+   "seconds": 93.7
+  },
+  "qwen3-4b": {
+   "joint_F1": [
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_first",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.006614682365466121,
+      "replayed_standard_error": 0.006614682365466121,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 0,
+     "model": "qwen3-4b",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_first",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.006962180008626264,
+      "replayed_standard_error": 0.006962180008626264,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 1,
+     "model": "qwen3-4b",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_first",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.007193012784524985,
+      "replayed_standard_error": 0.007193012784524985,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 2,
+     "model": "qwen3-4b",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_first",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.00380307039755233,
+      "replayed_standard_error": 0.00380307039755233,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 3,
+     "model": "qwen3-4b",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_second",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.009351182356541336,
+      "replayed_standard_error": 0.009351182356541336,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 0,
+     "model": "qwen3-4b",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_second",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.009882859105442647,
+      "replayed_standard_error": 0.009882859105442647,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 1,
+     "model": "qwen3-4b",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_second",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.010215434330259026,
+      "replayed_standard_error": 0.010215434330259026,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 2,
+     "model": "qwen3-4b",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_second",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.006913316298079956,
+      "replayed_standard_error": 0.006913316298079956,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 3,
+     "model": "qwen3-4b",
+     "replicates": 10000,
+     "status": "OK"
+    }
+   ],
+   "per_frame_F1": [
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_first",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_frozen_member": true,
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.006496757870689136,
+      "replayed_standard_error": 0.006496757870689136,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 0,
+     "model": "qwen3-4b",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_first",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_frozen_member": true,
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.006908177460208373,
+      "replayed_standard_error": 0.006908177460208373,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 1,
+     "model": "qwen3-4b",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_first",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_frozen_member": true,
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.007201418705015395,
+      "replayed_standard_error": 0.007201418705015395,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 2,
+     "model": "qwen3-4b",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_first",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_frozen_member": true,
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.003792620552099587,
+      "replayed_standard_error": 0.003792620552099587,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 3,
+     "model": "qwen3-4b",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_second",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_frozen_member": true,
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.009267983316378936,
+      "replayed_standard_error": 0.009267983316378936,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 0,
+     "model": "qwen3-4b",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_second",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_frozen_member": true,
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.009803903849708697,
+      "replayed_standard_error": 0.009803903849708697,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 1,
+     "model": "qwen3-4b",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_second",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_frozen_member": true,
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.010251749887886743,
+      "replayed_standard_error": 0.010251749887886743,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 2,
+     "model": "qwen3-4b",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_second",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_frozen_member": true,
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.007004700766689618,
+      "replayed_standard_error": 0.007004700766689618,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 3,
+     "model": "qwen3-4b",
+     "replicates": 10000,
+     "status": "OK"
+    }
+   ],
+   "record_hashes": {
+    "CONFIRMATORY_ANALYSIS": "5591cb46c64c127a410b1b05d7622581d1d2724b38203a2f08672f3b6b5e83b3",
+    "CONFIRMATORY_GENERATION": "287e507ed9b1dc86b07fc2ae25ad99a0a31af544366009eb2129b2f9074f3820",
+    "FROZEN": "7902b05f12a2bb60b775b49702bffbbbd4539e0e1ababdf433683ad1da546e9a"
+   },
+   "resamples": 10000,
+   "seconds": 89.4
+  },
+  "qwen3-4b-instruct-2507": {
+   "joint_F1": [
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_first",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.0055436587597129106,
+      "replayed_standard_error": 0.0055436587597129106,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 1,
+     "model": "qwen3-4b-instruct-2507",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_first",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.006204273076912707,
+      "replayed_standard_error": 0.006204273076912707,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 3,
+     "model": "qwen3-4b-instruct-2507",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_second",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.009718393257554327,
+      "replayed_standard_error": 0.009718393257554327,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 1,
+     "model": "qwen3-4b-instruct-2507",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_second",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.006774443492736631,
+      "replayed_standard_error": 0.006774443492736631,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 3,
+     "model": "qwen3-4b-instruct-2507",
+     "replicates": 10000,
+     "status": "OK"
+    }
+   ],
+   "per_frame_F1": [
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_first",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_frozen_member": true,
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.005639101164826464,
+      "replayed_standard_error": 0.005639101164826464,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 1,
+     "model": "qwen3-4b-instruct-2507",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_first",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_frozen_member": true,
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.006288043823548154,
+      "replayed_standard_error": 0.006288043823548154,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 3,
+     "model": "qwen3-4b-instruct-2507",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_second",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_frozen_member": true,
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.009688496830527195,
+      "replayed_standard_error": 0.009688496830527195,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 1,
+     "model": "qwen3-4b-instruct-2507",
+     "replicates": 10000,
+     "status": "OK"
+    },
+    {
+     "ceiling": 0.01,
+     "configuration": "outcome_second",
+     "degenerate_replicate_share": 0.0,
+     "dropped_a_point": 0,
+     "fidelity": {
+      "estimate_matches_frozen_member": true,
+      "estimate_matches_record": true,
+      "recorded_standard_error": 0.006821466095724114,
+      "replayed_standard_error": 0.006821466095724114,
+      "standard_error_matches_record": true
+     },
+     "fit_unavailable": 0,
+     "frame": 3,
+     "model": "qwen3-4b-instruct-2507",
+     "replicates": 10000,
+     "status": "OK"
+    }
+   ],
+   "record_hashes": {
+    "CONFIRMATORY_ANALYSIS": "31f1b46be5e6416e832c428082108dfabd643d024bd02f5e6f60ef7dfefcf90f",
+    "CONFIRMATORY_GENERATION": "a98dc7aa45f75ed013b88fbdd4bba31c0661b5bc98f88f2d408001956a5b15cd",
+    "FROZEN": "4d72e728af137746ff95d54aa49b1a46bb7d504c989518b66615f6eef1fc6a95"
+   },
+   "resamples": 10000,
+   "seconds": 44.0
+  }
+ },
+ "summary": {
+  "all_estimates_match_record": true,
+  "all_standard_errors_match_record": true,
+  "any_above_ceiling": false,
+  "max_degenerate_share": 0.0,
+  "non_registered_refits": 0,
+  "replayed_bootstraps": 56,
+  "replicates_refitted": 560000
+ }
+}

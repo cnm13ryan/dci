@@ -8,6 +8,13 @@ for the composition story, from the per-block series the record already
 carries). It exists so the paper's tables and figures have a durable,
 traceable input instead of transcribed terminal output.
 
+Every record is read from ``evidence/dci1v8/<model>/<stage>/records/`` and
+verified (content hash and signature, then study and layer) before anything
+is extracted from it, exactly as ``lifecycle.read_stage_record`` does. The
+unsigned reader copies under ``durable/`` are never used as input; the
+provenance file only records whether each one still equals its verified
+payload.
+
     tools/v8_postconfirm_extract.py --root <confirm root> --out <dir>
 """
 from __future__ import annotations
@@ -16,10 +23,19 @@ import argparse
 import csv
 import hashlib
 import json
+import sys
 from pathlib import Path
 from typing import Any, Mapping
 
+HERE = Path(__file__).resolve()
+sys.path.insert(0, str(HERE.parents[1] / "src"))
+
+from dci1v4.engine.signing import verify_signed     # noqa: E402
+from dci1v4.errors import IntegrityError             # noqa: E402
+
 PP = 100.0                       # every emitted magnitude is percentage points
+STUDY_ID = "dci1v8"              # the confirmatory study every record must declare
+LAYER = "confirm"
 MODELS = ("qwen3-4b", "qwen3-4b-instruct-2507",
           "gemma-3n-e2b-it", "gemma-3n-e4b-it")
 CONFIGS = ("outcome_first", "outcome_second")
@@ -34,15 +50,32 @@ def _sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def load(root: Path, model: str, stage: str, name: str) -> dict[str, Any]:
-    return json.loads((root / "durable" / "dci1v8" / model / stage / name).read_text())
+def load(root: Path, model: str, stage: str, name: str
+         ) -> tuple[dict[str, Any], dict[str, Any]]:
+    """The verified payload of one signed stage record, and what was checked.
 
-
-def record_hash(root: Path, model: str, stage: str, name: str) -> str:
-    p = root / "evidence" / "dci1v8" / model / stage / "records" / name
-    if p.exists():
-        return json.loads(p.read_text()).get("record_hash", "")
-    return ""
+    Refuses (IntegrityError) on a missing record, a content-hash or signature
+    mismatch, or a record that declares another study or layer.
+    """
+    signed_path = root / "evidence" / STUDY_ID / model / stage / "records" / name
+    key = root / "evidence" / STUDY_ID / "keys" / "signing.key"
+    if not signed_path.exists():
+        raise IntegrityError(f"{model}: {stage} signed record missing at {signed_path}")
+    signed = json.loads(signed_path.read_text())
+    payload = verify_signed(signed, key, where=f"{model}:{stage}")
+    if payload.get("study_id") != STUDY_ID:
+        raise IntegrityError(f"{model}: the {stage} record declares study_id "
+                             f"{payload.get('study_id')!r}, not {STUDY_ID!r}")
+    if payload.get("layer") != LAYER:
+        raise IntegrityError(f"{model}: the {stage} record is not a "
+                             "confirmatory-layer record")
+    reader = root / "durable" / STUDY_ID / model / stage / name
+    check = {"signed_record": str(signed_path.relative_to(root)),
+             "record_hash": signed["record_hash"], "signature_verified": True,
+             "reader_copy_matches_payload": (
+                 json.loads(reader.read_text()) == payload
+                 if reader.exists() else None)}
+    return payload, check
 
 
 def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
@@ -96,16 +129,22 @@ def main() -> int:
     provenance: dict[str, Any] = {"root": str(root), "models": {}}
 
     for model in MODELS:
-        rec = load(root, model, "CONFIRMATORY_ANALYSIS",
-                   "confirmatory_analysis.json")
-        fz = load(root, model, "FROZEN", "freeze.json")
-        mb = load(root, model, "MEMBERSHIP", "membership.json")
-        gen = load(root, model, "CONFIRMATORY_GENERATION",
-                   "confirmatory_generation.json")
+        rec, rec_check = load(root, model, "CONFIRMATORY_ANALYSIS",
+                              "confirmatory_analysis.json")
+        fz, fz_check = load(root, model, "FROZEN", "freeze.json")
+        mb, mb_check = load(root, model, "MEMBERSHIP", "membership.json")
+        gen, gen_check = load(root, model, "CONFIRMATORY_GENERATION",
+                              "confirmatory_generation.json")
+        if rec["inputs"]["generation_record_hash"] != gen_check["record_hash"]:
+            raise IntegrityError(f"{model}: the analysis record names generation "
+                                 f"record {rec['inputs']['generation_record_hash']}, "
+                                 f"but the signed generation record is "
+                                 f"{gen_check['record_hash']}")
         provenance["models"][model] = {
-            "analysis_record_hash": record_hash(root, model,
-                                                "CONFIRMATORY_ANALYSIS",
-                                                "confirmatory_analysis.json"),
+            "analysis_record_hash": rec_check["record_hash"],
+            "verified_records": {"CONFIRMATORY_ANALYSIS": rec_check,
+                                 "FROZEN": fz_check, "MEMBERSHIP": mb_check,
+                                 "CONFIRMATORY_GENERATION": gen_check},
             "freeze_hash": rec["inputs"]["freeze_hash"],
             "generation_record_hash": rec["inputs"]["generation_record_hash"],
             "producing_commit": rec["producing_commit"],
