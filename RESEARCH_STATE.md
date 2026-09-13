@@ -93,14 +93,32 @@ its own evidence tree. It does not share code with `src/dci/` or
 last paragraph). It is not a successor to the v19 protocol in `src/dci/v19/`
 (§2), which is a separate, paused study.
 
-**Where the code and the evidence are.** The authoritative code for every DCI-1
-revision, v8.1 included, is on `main`; the development branches named in the
-dated sections below (`dev/v8-canonical`, `dev/v8-frame-aware-prescreen`,
-`dev/v7-difficulty-spectrum`) have been merged into it. `dci1/evidence/` is
-gitignored. The v8 and v8.1 roots (`dci1v8-pilot*`, `dci1v8-confirm*`,
-`dci1v8p1-confirm`) are held in the local worktree `../dci-v8-canonical`, a
-checkout of `main` retained primarily because it holds that evidence tree; the
-roots of earlier revisions are in the main checkout's `dci1/evidence/`.
+**Where the code is.** The authoritative code for every DCI-1 revision, v8.1
+included, is on `main`; the development branches named in the dated sections
+below (`dev/v8-canonical`, `dev/v8-frame-aware-prescreen`,
+`dev/v7-difficulty-spectrum`) have been merged into it.
+
+**What evidence a clone carries.** Raw stage records are not in git:
+`dci1/evidence/` is gitignored, and the repository records no off-machine
+archive of it. For v8.1 the durable references are the committed ones: the
+preregistration `dci1/docs/DCI1_preregistration_v8.1.md` and the freeze commit
+`034fc72`; the tables projected from the signed confirmatory records,
+[`dci1/reports/dci1v8dev/postconfirm/data/`](dci1/reports/dci1v8dev/postconfirm/data/),
+whose `provenance.json` carries each signed record's hash and its signature
+verification; and the audits in `dci1/reports/dci1v8dev/postconfirm/audits/`,
+which authenticate all 2,353,152 scored rows in 168 backend runs against the
+signed generation records and replay all 56 executed `delta_difficulty`
+bootstraps. A clone can check every reported number against those tables and
+see which signed record each came from. Re-verifying the tables against the
+records themselves needs the raw root.
+
+**The author's local raw copy.** The raw roots exist only on the machine that
+ran the study, which is also where the absolute paths inside `provenance.json`
+and the audits point. There, the v8 and v8.1 roots (`dci1v8-pilot*`,
+`dci1v8-confirm*`, `dci1v8p1-confirm`) sit in a sibling worktree,
+`../dci-v8-canonical`, a checkout of `main` kept because it holds them, and the
+roots of earlier revisions sit in the primary checkout's `dci1/evidence/`.
+Neither location exists in a fresh clone or in CI.
 
 | Version | Status |
 |---|---|
@@ -2374,6 +2392,21 @@ iota_A at the screen remains READINESS **R7** and is the researcher's.
 - **Withdrawn.** Several early quantitative claims — a nested correlation, a
   mislabelled statistic, a buggy sentence counter, a shared-seed replicate regime.
   Kept and marked in section D of `CLAIM_EVIDENCE_MATRIX.md`; never cited as support.
+- **Known, and deliberately deferred (v7 only).** v7's `StudyContext`
+  (`dci1/src/dci1v7/engine/context.py`) refuses another study's tree only when
+  that tree exists on disk. In a fresh clone, then, a v7 synthetic or
+  development root under a directory named for another study (for example
+  `…/dci1v6/nested`) is accepted. Where the foreign tree is present the overlap
+  check still refuses it, and a stage record carrying another study's
+  `study_id` is still refused (`engine/transitions.py`). The fix refuses a
+  foreign name on every path component and names the historical trees without
+  listing the disk. It exists as `d163232` on the tag
+  `archive/maint/v7-docs-marker-unification` and is not on `main`. It is
+  deferred rather than applied for three reasons. v7 is closed. Its
+  registration binds producing commit `ed0446f`, so any re-run needs a §32
+  superseding registration, which is where this fix belongs. And no active
+  code uses the module: v8.1 has its own context, which checks every ancestor.
+  Raised by the Codex review of PR #31.
 - **Not reproducible from a clone.** `runs/` is gitignored and absent. The run
   manifests hash files a fresh checkout does not have. See
   `exploratory/evidence/README.md` for the promotion path that fixes this per claim.
