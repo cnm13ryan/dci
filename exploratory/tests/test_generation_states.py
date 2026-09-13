@@ -90,6 +90,23 @@ class TestTechnicalFailuresLeaveTheEstimands:
         after = A.tau(scored(polluted), **common)
         pd.testing.assert_series_equal(before, after)
 
+    def test_technical_rows_do_not_move_the_arbitration_summaries(self) -> None:
+        """The four state probabilities partition the behavioural rows. A
+        technical row in the denominator counted as a miss for every state, so
+        one valid 'both' answer beside one apparatus failure read P(both)=0.5."""
+        clean = [row("PLT01", "B", FOUR), row("PLT01", "C_L3", FOUR),
+                 row("PLT02", "B", ONE), row("PLT02", "C_L3", FOUR)]
+        polluted = clean + [row("PLT01", "B", None, technical=True, replicate=1),
+                            row("PLT02", "B", "", technical=True, replicate=1)]
+        common = dict(background=A.AMPLIFIER, order="QAC", reasoning_budget=0)
+        before = A.arbitration(scored(clean), **common)
+        after = A.arbitration(scored(polluted), **common)
+        for state in A.STATES:
+            pd.testing.assert_series_equal(before[state], after[state])
+        assert sum(after[state]["PLT01"] for state in A.STATES) == 1.0
+        pd.testing.assert_series_equal(A.survival(scored(clean), **common),
+                                       A.survival(scored(polluted), **common))
+
 
 class TestModelCausedNonAnswers:
     def test_empty_answer_without_technical_flag_is_still_scored(self) -> None:
