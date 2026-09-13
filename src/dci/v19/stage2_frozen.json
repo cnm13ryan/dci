@@ -5,19 +5,6 @@
     {
       "slot": "verifiers.p1.list_policy",
       "value": {
-        "policy_id": "v19:list-policy.canonical",
-        "text_policy": {
-          "policy_id": "v19:text-policy.canonical",
-          "unicode_normalisation": "NFKC",
-          "removed_categories": [
-            "Cf",
-            "Cc"
-          ],
-          "case_rule": "casefold",
-          "word_pattern": "[^\\W_]+(?:['’\\-][^\\W_]+)*",
-          "sentence_boundary": "(?<=[.!?])[\"”’]?\\s+",
-          "collapse_whitespace": true
-        },
         "bullet_markers": [
           "-",
           "*",
@@ -25,23 +12,37 @@
           "‣",
           "▪"
         ],
+        "continuation_joins_previous": true,
+        "empty_items_count": false,
+        "extra_items_permitted": false,
+        "label_match": "token_membership",
+        "nested_items_count": true,
         "numbered_forms": [
           "N.",
           "N)",
           "(N)"
         ],
-        "numbered_max_digits": 3,
-        "require_space_after_marker": true,
         "numbered_items_count": true,
-        "nested_items_count": true,
-        "continuation_joins_previous": true,
-        "empty_items_count": false,
-        "label_match": "token_membership",
-        "extra_items_permitted": false
+        "numbered_max_digits": 3,
+        "policy_id": "v19:list-policy.canonical",
+        "require_space_after_marker": true,
+        "text_policy": {
+          "case_rule": "casefold",
+          "collapse_whitespace": true,
+          "policy_id": "v19:text-policy.canonical",
+          "removed_categories": [
+            "Cf",
+            "Cc"
+          ],
+          "sentence_abbreviation_guard": "dci.verifiers.rules.ends_sentence",
+          "sentence_boundary": "(?<=[.!?])[\\\"\\'”’)\\]*\\\\]*\\s+",
+          "unicode_normalisation": "NFKC",
+          "word_pattern": "[^\\W_]+(?:['’\\-][^\\W_]+)*"
+        }
       },
       "frozen_by": "the investigator, in the Stage 2 decision instruction of 2026-08-11",
-      "recorded_at": "2026-08-11T00:00:00+00:00",
-      "evidence": "Amendment A1, accepted verbatim: 'Adopt the canonical list grammar, with these requirements'. The requirements attached to that acceptance are implemented and tested: the grammar is arm-blind (no verifier takes an arm, a role or a composition, and none of the functions in any verifier's declared implementation closure mentions one); the target bullet-count verifier's closure is exactly (verify_exact_bullet_count, parse_list, normalise), so the focal ordering relation has no channel into it; match_items_to_labels appears in exactly one verifier's closure, the focal one; sixteen predeclared equivalent surface forms parse to identical items at four lengths; and parse-form and UNPARSEABLE rates are reported per arm as section 11.8 diagnostics, with UNPARSEABLE remaining the orthogonal generation state of section 10.1 rather than a third primary outcome. dci.v19.parsing.RESOLVED_BY_AMENDMENT records the reason for each of the ten grammar decisions."
+      "recorded_at": "2026-08-13T15:48:19+00:00",
+      "evidence": "Amendment A1, accepted verbatim: 'Adopt the canonical list grammar, with these requirements'. The requirements attached to that acceptance are implemented and tested: the grammar is arm-blind (no verifier takes an arm, a role or a composition, and none of the functions in any verifier's declared implementation closure mentions one); the target bullet-count verifier's closure is exactly (verify_exact_bullet_count, parse_list, normalise), so the focal ordering relation has no channel into it; match_items_to_labels appears in exactly one verifier's closure, the focal one; sixteen predeclared equivalent surface forms parse to identical items at four lengths; and parse-form and UNPARSEABLE rates are reported per arm as section 11.8 diagnostics, with UNPARSEABLE remaining the orthogonal generation state of section 10.1 rather than a third primary outcome. dci.v19.parsing.RESOLVED_BY_AMENDMENT records the reason for each of the ten grammar decisions. REGENERATED 2026-08-13T15:48:19+00:00 by tools/refreeze_stage2.py after: Pair 3 segmentation repair: v19/text.py had re-typed a narrower, pre-repair sentence-boundary class and dropped the abbreviation guard in rules._split_line, so p3.target over-counted sentences on titles, medial abbreviations and initials, and failed to split after multiple closing marks. text.py now takes rules.SENTENCE_BOUNDARY.pattern directly and declares sentence_abbreviation_guard=dci.verifiers.rules.ends_sentence. Segmentation now matches the certified inherited splitter on the audit bank."
     },
     {
       "slot": "verifiers.p1.ordering_depth",
@@ -153,12 +154,12 @@
       "slot": "satisfiability.encoding_map",
       "value": {
         "abstract_features": {
+          "item_position": "0-based position of each declared Pair 1 item among the items",
+          "n_distinct_tokens": "distinct word tokens in the response",
           "n_items": "number of list items in the response",
           "n_sentences": "number of sentences in the response",
-          "item_position": "0-based position of each declared Pair 1 item among the items",
-          "sentence_length": "word-token count of each sentence, in order",
           "n_tokens": "total word tokens in the response",
-          "n_distinct_tokens": "distinct word tokens in the response",
+          "sentence_length": "word-token count of each sentence, in order",
           "token_multiplicity": "occurrence count of each distinguished token"
         },
         "clause_kinds": [
@@ -169,75 +170,75 @@
           "mandatory_tokens",
           "all_tokens_distinct"
         ],
-        "list_policy_hash": "428614c8efbd7db543b2027681dc7ec629b1915291e5885e2f0a9e55c36aee26",
-        "text_policy_hash": "71033dbabadb0ca7baac4c7848b298b295ac6df3089d88c4e8e6a214ba5647a2",
         "clauses": [
           {
             "constraint_id": "v19:p1.focal.transitive_order",
-            "kind": "item_precedence",
             "coverage": "PARTIAL",
-            "uncovered_semantics": "the abstraction places each declared item at an integer position and checks the closure over those positions; it does not establish that a reader would identify the item at that position AS that item, which is the identification the list policy's label rule decides",
             "features": [
               "n_items",
               "item_position"
-            ]
+            ],
+            "kind": "item_precedence",
+            "uncovered_semantics": "the abstraction places each declared item at an integer position and checks the closure over those positions; it does not establish that a reader would identify the item at that position AS that item, which is the identification the list policy's label rule decides"
           },
           {
             "constraint_id": "v19:p1.target.exact_bullet_count",
-            "kind": "exact_item_count",
             "coverage": "COMPLETE",
-            "uncovered_semantics": "",
             "features": [
               "n_items"
-            ]
+            ],
+            "kind": "exact_item_count",
+            "uncovered_semantics": ""
           },
           {
             "constraint_id": "v19:p2.focal.all_words_unique",
-            "kind": "all_tokens_distinct",
             "coverage": "PARTIAL",
-            "uncovered_semantics": "the abstraction equates distinctness with the token counts agreeing under the frozen tokenisation. Invisible characters no longer defeat it - they are removed before tokenising - but confusables remain outside any automated rule: a Cyrillic look-alike is a different string and NFKC does not merge it, so a projection satisfying this clause can still look to a reader like a repeated word. Section 10.6 assigns homoglyphs to human audit material, not to code",
             "features": [
               "n_tokens",
               "n_distinct_tokens",
               "token_multiplicity"
-            ]
+            ],
+            "kind": "all_tokens_distinct",
+            "uncovered_semantics": "the abstraction equates distinctness with the token counts agreeing under the frozen tokenisation. Invisible characters no longer defeat it - they are removed before tokenising - but confusables remain outside any automated rule: a Cyrillic look-alike is a different string and NFKC does not merge it, so a projection satisfying this clause can still look to a reader like a repeated word. Section 10.6 assigns homoglyphs to human audit material, not to code"
           },
           {
             "constraint_id": "v19:p2.target.mandatory_words",
-            "kind": "mandatory_tokens",
             "coverage": "COMPLETE",
-            "uncovered_semantics": "",
             "features": [
               "token_multiplicity",
               "n_tokens",
               "n_distinct_tokens"
-            ]
+            ],
+            "kind": "mandatory_tokens",
+            "uncovered_semantics": ""
           },
           {
             "constraint_id": "v19:p3.focal.increasing_lengths",
-            "kind": "increasing_sentence_lengths",
             "coverage": "COMPLETE",
-            "uncovered_semantics": "",
             "features": [
               "n_sentences",
               "sentence_length",
               "n_tokens"
-            ]
+            ],
+            "kind": "increasing_sentence_lengths",
+            "uncovered_semantics": ""
           },
           {
             "constraint_id": "v19:p3.target.exact_sentence_count",
-            "kind": "exact_sentence_count",
             "coverage": "PARTIAL",
-            "uncovered_semantics": "the abstraction counts sentences as the frozen segmentation does, and that segmentation strips the list grammar's own markers and treats each remaining line as a sentence, so a projection satisfying this clause need not contain that many sentences as a reader would count them. The coupling is now explicit - the marker patterns are inside this clause's hash - but it is not removed",
             "features": [
               "n_sentences"
-            ]
+            ],
+            "kind": "exact_sentence_count",
+            "uncovered_semantics": "the abstraction counts sentences as the frozen segmentation does, and that segmentation strips the list grammar's own markers and treats each remaining line as a sentence, so a projection satisfying this clause need not contain that many sentences as a reader would count them. The coupling is now explicit - the marker patterns are inside this clause's hash - but it is not removed"
           }
-        ]
+        ],
+        "list_policy_hash": "7ec2c31b021f9e8706fd56633e1bc640777a4f2408888be05a6dbc30e39ea2a5",
+        "text_policy_hash": "49e904f0e0f28d75f7799ce936d5923c947be74e183ecf7f73d0df04236bc91d"
       },
       "frozen_by": "dci.v19.encoding.encoding_map_state(CANONICAL_LIST_POLICY)",
-      "recorded_at": "2026-08-11T00:00:00+00:00",
-      "evidence": "The canonical structured encoding of every constraint family and the abstract feature projection a solver sat result covers. Each clause declares its deterministic coverage; three of the six declare PARTIAL and name exactly what the projection does not capture. The domain compares the record with the map the code implements, so freezing an abstraction nobody computes is refused."
+      "recorded_at": "2026-08-13T15:48:19+00:00",
+      "evidence": "The canonical structured encoding of every constraint family and the abstract feature projection a solver sat result covers. Each clause declares its deterministic coverage; three of the six declare PARTIAL and name exactly what the projection does not capture. The domain compares the record with the map the code implements, so freezing an abstraction nobody computes is refused. REGENERATED 2026-08-13T15:48:19+00:00 by tools/refreeze_stage2.py after: Pair 3 segmentation repair: v19/text.py had re-typed a narrower, pre-repair sentence-boundary class and dropped the abbreviation guard in rules._split_line, so p3.target over-counted sentences on titles, medial abbreviations and initials, and failed to split after multiple closing marks. text.py now takes rules.SENTENCE_BOUNDARY.pattern directly and declares sentence_abbreviation_guard=dci.verifiers.rules.ends_sentence. Segmentation now matches the certified inherited splitter on the audit bank."
     },
     {
       "slot": "satisfiability.witness_constructor",
@@ -249,148 +250,145 @@
     {
       "slot": "satisfiability.review_trigger",
       "value": {
-        "trigger_id": "v19:review-trigger.fixtures-v1",
-        "list_policy_hash": "428614c8efbd7db543b2027681dc7ec629b1915291e5885e2f0a9e55c36aee26",
-        "n_fixtures": 4,
         "all_hold": true,
         "fixtures": {
-          "triggers-on-incomplete-coverage": {
-            "property": "review triggers when deterministic coverage is incomplete",
-            "citation": "section 8.6",
-            "expectation": "review_required names exactly the PARTIAL clauses",
+          "disagreement-requires-adjudication": {
+            "citation": "section 8.6: 'unresolved disagreement fails certification'",
+            "expectation": "a split review does not certify; an adjudicated one does",
+            "holds": true,
             "observed": {
-              "partial_clauses": [
-                "v19:p1.focal.transitive_order"
-              ],
-              "triggered": [
-                "v19:p1.focal.transitive_order"
-              ],
-              "holds": true
+              "adjudicated_certified": true,
+              "adjudicated_state": "HUMAN_REVIEW_PASSED",
+              "holds": true,
+              "unresolved_certified": false,
+              "unresolved_outcome": "REVIEW_REQUIRED",
+              "unresolved_state": "HUMAN_REVIEW_REQUIRED"
             },
-            "holds": true
+            "property": "reviewer disagreement requires a third adjudicator"
           },
           "silent-on-complete-coverage": {
-            "property": "review does not trigger when coverage is complete",
             "citation": "section 8.6: review is required 'only for' incomplete clauses",
             "expectation": "review_required is empty when every clause is COMPLETE",
+            "holds": true,
             "observed": {
               "complete_clauses": [
                 "v19:p1.target.exact_bullet_count"
               ],
+              "complete_clauses_triggered": [],
+              "holds": true,
+              "no_fully_covered_composition_exists": true,
               "partial_clauses": [
                 "v19:p1.focal.transitive_order"
               ],
               "triggered": [
                 "v19:p1.focal.transitive_order"
-              ],
-              "complete_clauses_triggered": [],
-              "no_fully_covered_composition_exists": true,
-              "holds": true
+              ]
             },
-            "holds": true
+            "property": "review does not trigger when coverage is complete"
+          },
+          "triggers-on-incomplete-coverage": {
+            "citation": "section 8.6",
+            "expectation": "review_required names exactly the PARTIAL clauses",
+            "holds": true,
+            "observed": {
+              "holds": true,
+              "partial_clauses": [
+                "v19:p1.focal.transitive_order"
+              ],
+              "triggered": [
+                "v19:p1.focal.transitive_order"
+              ]
+            },
+            "property": "review triggers when deterministic coverage is incomplete"
           },
           "wrong-witness-rejected": {
-            "property": "a review of the wrong witness is rejected",
             "citation": "section 8.6",
             "expectation": "certification refuses a review keyed to another text",
+            "holds": true,
             "observed": {
-              "witness_hash": "b04f7b34f311bab9f92aec0540653b643f37c52a3872e7f5a808e921822cef74",
-              "reviewed_hash": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
-              "outcome": "REVIEW_REQUIRED",
               "certified": false,
-              "holds": true
+              "holds": true,
+              "outcome": "REVIEW_REQUIRED",
+              "reviewed_hash": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+              "witness_hash": "b04f7b34f311bab9f92aec0540653b643f37c52a3872e7f5a808e921822cef74"
             },
-            "holds": true
-          },
-          "disagreement-requires-adjudication": {
-            "property": "reviewer disagreement requires a third adjudicator",
-            "citation": "section 8.6: 'unresolved disagreement fails certification'",
-            "expectation": "a split review does not certify; an adjudicated one does",
-            "observed": {
-              "unresolved_state": "HUMAN_REVIEW_REQUIRED",
-              "unresolved_outcome": "REVIEW_REQUIRED",
-              "unresolved_certified": false,
-              "adjudicated_state": "HUMAN_REVIEW_PASSED",
-              "adjudicated_certified": true,
-              "holds": true
-            },
-            "holds": true
+            "property": "a review of the wrong witness is rejected"
           }
         },
-        "records_hash": "934bb0356f7929e8b96b6d614e9fe1ded8db54affc3076e79429b6a7acfe02cb"
+        "list_policy_hash": "7ec2c31b021f9e8706fd56633e1bc640777a4f2408888be05a6dbc30e39ea2a5",
+        "n_fixtures": 4,
+        "records_hash": "552c45f92e8d82e88a9ffbcbaf96ffb1a9d1b962906bb24cd256e493ea129ebe",
+        "trigger_id": "v19:review-trigger.fixtures-v1"
       },
       "frozen_by": "dci.v19.review_trigger.frozen_trigger_evidence()",
-      "recorded_at": "2026-08-11T00:00:00+00:00",
-      "evidence": "Section 14.2 assigns Stage 2 the semantic-review TRIGGERS. Four adversarial fixtures demonstrate the four properties: review triggers on incomplete coverage; a COMPLETE clause does not trigger; a review keyed to the wrong witness is rejected; and reviewer disagreement does not certify without a third adjudicator. The evidence is regenerated at certification time and compared by record hash, so a frozen demonstration the code no longer reproduces fails. Recorded alongside: no composition the protocol can currently encode is fully covered, because each pair has exactly one PARTIAL clause - so every Stage 10 composition will require its own review."
+      "recorded_at": "2026-08-13T15:48:19+00:00",
+      "evidence": "Section 14.2 assigns Stage 2 the semantic-review TRIGGERS. Four adversarial fixtures demonstrate the four properties: review triggers on incomplete coverage; a COMPLETE clause does not trigger; a review keyed to the wrong witness is rejected; and reviewer disagreement does not certify without a third adjudicator. The evidence is regenerated at certification time and compared by record hash, so a frozen demonstration the code no longer reproduces fails. Recorded alongside: no composition the protocol can currently encode is fully covered, because each pair has exactly one PARTIAL clause - so every Stage 10 composition will require its own review. REGENERATED 2026-08-13T15:48:19+00:00 by tools/refreeze_stage2.py after: Pair 3 segmentation repair: v19/text.py had re-typed a narrower, pre-repair sentence-boundary class and dropped the abbreviation guard in rules._split_line, so p3.target over-counted sentences on titles, medial abbreviations and initials, and failed to split after multiple closing marks. text.py now takes rules.SENTENCE_BOUNDARY.pattern directly and declares sentence_abbreviation_guard=dci.verifiers.rules.ends_sentence. Segmentation now matches the certified inherited splitter on the audit bank."
     },
     {
       "slot": "verifiers.specification_bundle",
       "value": {
+        "list_policy_hash": "7ec2c31b021f9e8706fd56633e1bc640777a4f2408888be05a6dbc30e39ea2a5",
         "protocol": "v19",
-        "list_policy_hash": "428614c8efbd7db543b2027681dc7ec629b1915291e5885e2f0a9e55c36aee26",
-        "text_policy_hash": "71033dbabadb0ca7baac4c7848b298b295ac6df3089d88c4e8e6a214ba5647a2",
+        "text_policy_hash": "49e904f0e0f28d75f7799ce936d5923c947be74e183ecf7f73d0df04236bc91d",
         "verifiers": {
           "v19:p1.focal.transitive_order": {
-            "verifier_id": "v19:verifier.transitive_order",
-            "status": "new",
-            "spec_hash": "cbe31eae8df2ecf0d2ee9c034d0b63b6d8e2bd0f019392c7b253d63e257958c7",
-            "implementation_hash": "54e9948180b5019472eb0cd2f55056806ca8b0016abec0c9c66f1f7b2b7d771f",
+            "correction": "",
+            "implementation_hash": "21ac9b559f069f7c4def6326ceb379b7be71f071c3a30ae8a7c585ff33b72eec",
             "inherited_from": "",
-            "correction": ""
+            "spec_hash": "007d7471abb6d3d3275ac05ca16b1eb601c9aaa70b4e6b31b13085055a37a343",
+            "status": "new",
+            "verifier_id": "v19:verifier.transitive_order"
           },
           "v19:p1.target.exact_bullet_count": {
-            "verifier_id": "v19:verifier.exact_bullet_count",
-            "status": "new",
-            "spec_hash": "8ae7e936cd0cda4b3fb2baaf7d6d28c59400b1da045a2f3f10351b30f1a632a4",
-            "implementation_hash": "b19b441c166407dfc83c132895cd311ca6c12870f924b7da3d253341a04503df",
+            "correction": "",
+            "implementation_hash": "5f874ce576d31cf32eef5c4f31e9696d3285d488bea58a4e9846b249375d7569",
             "inherited_from": "",
-            "correction": ""
+            "spec_hash": "0a26b28fdc5e47b8da1c47a5281aa42ebe533eebecd094c08f94b183221c7f92",
+            "status": "new",
+            "verifier_id": "v19:verifier.exact_bullet_count"
           },
           "v19:p2.focal.all_words_unique": {
-            "verifier_id": "v19:verifier.unique_words",
-            "status": "inherited_corrected",
-            "spec_hash": "9521749b25268413ff6800f0c73fba6043839cfad85de62eec45a5ae61c468d3",
-            "implementation_hash": "e2e8b42847c37ed700e9e711103040c56c1ddad1248b3fa88332d99031ae9621",
+            "correction": "corrected under sections 10.6 and 14.2 onto the frozen v19 text policy; see dci.v19.text.INTENTIONAL_CORRECTIONS",
+            "implementation_hash": "983ef039c5cc6768d369f52954612b7aea53d12ecfb17be7cf69e8bfeefdeca1",
             "inherited_from": "L_UNIQ (v_unique_words)",
-            "correction": "corrected under sections 10.6 and 14.2 onto the frozen v19 text policy; see dci.v19.text.INTENTIONAL_CORRECTIONS"
+            "spec_hash": "e17f1c4bfbab8bf50b43fe9f3036439aa6819ca9b5d5bdf272d8282facceb49b",
+            "status": "inherited_corrected",
+            "verifier_id": "v19:verifier.unique_words"
           },
           "v19:p2.target.mandatory_words": {
-            "verifier_id": "v19:verifier.require_word_set",
-            "status": "inherited_corrected",
-            "spec_hash": "b0561ce975bb0e7ac1ec7d4ca463cddf0ec956e271ebee83f7bdc0bae9c5f35b",
-            "implementation_hash": "8df2c74bdfab324af7d24dff40fad281b8993e3c2b39fd0ab25549709d0cef4e",
+            "correction": "corrected under sections 10.6 and 14.2 onto the frozen v19 text policy; see dci.v19.text.INTENTIONAL_CORRECTIONS",
+            "implementation_hash": "a6bf9882845dff763a463a082445e9a0a6af62dbbc05f2509935abbe7d6b06b5",
             "inherited_from": "U_REQ (v_require_word_set)",
-            "correction": "corrected under sections 10.6 and 14.2 onto the frozen v19 text policy; see dci.v19.text.INTENTIONAL_CORRECTIONS"
+            "spec_hash": "b441bc9e3ff61d48bb50a31061cec1c26433954b96385d6699a1413b203cd7a2",
+            "status": "inherited_corrected",
+            "verifier_id": "v19:verifier.require_word_set"
           },
           "v19:p3.focal.increasing_lengths": {
-            "verifier_id": "v19:verifier.increasing_lengths",
-            "status": "inherited_corrected",
-            "spec_hash": "f9a8de96885d1c86efcbd0b95022a77af812b46131e311bb01bb06af8d2c407e",
-            "implementation_hash": "61280c350a95887aa11cde3da682550515fb0cf9885ab54703587323e7b61ee0",
+            "correction": "corrected under sections 10.6 and 14.2 onto the frozen v19 text policy; see dci.v19.text.INTENTIONAL_CORRECTIONS",
+            "implementation_hash": "8047cf4d0e6a42d8dc317bd1d16fa243d6e9b3feaff0fa2fa1a651f218feeeba",
             "inherited_from": "B / O1 (v_increasing_lengths)",
-            "correction": "corrected under sections 10.6 and 14.2 onto the frozen v19 text policy; see dci.v19.text.INTENTIONAL_CORRECTIONS"
+            "spec_hash": "13ce3d9f31ffff66cfe7cd07b2954c5e576a28395222c1e3fae61270c232a3f3",
+            "status": "inherited_corrected",
+            "verifier_id": "v19:verifier.increasing_lengths"
           },
           "v19:p3.target.exact_sentence_count": {
-            "verifier_id": "v19:verifier.exact_sentence_count",
-            "status": "inherited_corrected",
-            "spec_hash": "3042691a1b7a439a7e0b586f28d9521b7db3fcba13ebfc71ecaedee56f1c265d",
-            "implementation_hash": "e208dd42b192424d4d9035744ca4729f8250b475a853d4cb30c17235a26370ff",
+            "correction": "corrected under sections 10.6 and 14.2 onto the frozen v19 text policy; see dci.v19.text.INTENTIONAL_CORRECTIONS",
+            "implementation_hash": "ad66d525dc1ede059fa2ccf5b41391c6ae3a425c8fa03ffaf469ab304b916056",
             "inherited_from": "A / S2 (v_exact_sentence_count)",
-            "correction": "corrected under sections 10.6 and 14.2 onto the frozen v19 text policy; see dci.v19.text.INTENTIONAL_CORRECTIONS"
+            "spec_hash": "7f208969a23524a3df871a66da091061eb0583485129693ef897a38cf7d066c3",
+            "status": "inherited_corrected",
+            "verifier_id": "v19:verifier.exact_sentence_count"
           }
         }
       },
       "frozen_by": "dci.v19.verifiers.bundle_state(CANONICAL_LIST_POLICY)",
-      "recorded_at": "2026-08-11T00:00:00+00:00",
-      "evidence": "The per-verifier table of declared-semantics and implementation hashes for all six target and focal verifiers. Producible only now, because the Pair 1 specification hashes contain the list-policy hash and that policy is a Stage 2 decision. implementation_hash refuses a source-less callable rather than hashing nothing."
+      "recorded_at": "2026-09-13T21:16:00+00:00",
+      "evidence": "The per-verifier table of declared-semantics and implementation hashes for all six target and focal verifiers. Producible only now, because the Pair 1 specification hashes contain the list-policy hash and that policy is a Stage 2 decision. implementation_hash refuses a source-less callable rather than hashing nothing. REGENERATED 2026-08-13T15:48:19+00:00 by tools/refreeze_stage2.py after: Pair 3 segmentation repair: v19/text.py had re-typed a narrower, pre-repair sentence-boundary class and dropped the abbreviation guard in rules._split_line, so p3.target over-counted sentences on titles, medial abbreviations and initials, and failed to split after multiple closing marks. text.py now takes rules.SENTENCE_BOUNDARY.pattern directly and declares sentence_abbreviation_guard=dci.verifiers.rules.ends_sentence. Segmentation now matches the certified inherited splitter on the audit bank. REGENERATED 2026-08-13T16:56:00+00:00 by tools/refreeze_stage2.py after: STRUCTURAL, behaviour-preserving: the sentence-split loop was unified into dci.verifiers.rules.split_line and dci.v19.text now delegates the pattern, the loop and the guard to it instead of mirroring the loop. Only implementation_hash fields moved; every text/list policy hash is unchanged, and both layers were verified verdict-identical to HEAD over the 59-text boundary bank (0 differences). REGENERATED 2026-08-14T17:19:45+00:00 by tools/refreeze_stage2.py after: Include the delegated abbreviation guard in the Pair 3 frozen closure. Delegating boundary decisions to dci.verifiers.rules left the guard's tables and source outside every hash, so a change to TITLE_ABBREVIATIONS moved F_A while spec, implementation and bundle hashes stayed identical. frozen_segmentation now carries abbreviation_guard_state, and the Pair 3 implementation tuples carry rules.split_line/ends_sentence/_opens_with_capital. Found in Codex review of PR #22. REGENERATED 2026-09-13T21:00:32+00:00 by tools/refreeze_stage2.py after: 2026-09-13, PR #35 review: the abbreviation-guard state records TRAILING_ABBREVIATION's compile flags beside its pattern, so a flags-only change to the delegated regex (which moves Pair 3 sentence counts) moves the frozen identity. The guard state is part of every verifier's frozen segmentation, so all six spec_hash values and the bundle hash move; no implementation hash, policy hash or verifier behaviour changes. REGENERATED 2026-09-13T21:16:00+00:00 by tools/refreeze_stage2.py after: 2026-09-13, Codex review of PR #13: every function a verifier executes between its decision and the recorded outcome is now in its implementation hash (Verifier.invoke, VerifierOutcome.__post_init__, _scored, _missing, _delivered, _unparseable, both compliance mappers, assert_evidence_is_diagnostic, field_roles.role_of), plus Pair 1's marker builders, ParsedList.count/describe, ListItem.describe and the ordering relation's closure, chain_depth and label check, and the Pair 2 folded_tokens/word_tokens helpers. All six implementation_hash values and the bundle hash move; no spec hash, policy hash or verifier behaviour changes. tests/unit/test_v19_implementation_closure.py traces the bundle and refuses executed code that is neither hashed nor identity-only."
     },
     {
       "slot": "verifiers.boundary_mutations",
       "value": {
         "v19:p1.focal.transitive_order": {
-          "n_mutations": 1000,
-          "distinct_texts": 1000,
-          "n_collateral": 0,
           "boundaries": [
             "duplication",
             "forbidden_item",
@@ -400,12 +398,12 @@
             "parser_edge",
             "unicode"
           ],
-          "records_hash": "a00cfba7a21b4dcad632488a1b76b66c6c9232440189ba9b68d5887ba62c7e4d"
+          "distinct_texts": 1000,
+          "n_collateral": 0,
+          "n_mutations": 1000,
+          "records_hash": "4a128416cd849a40e66a2f50ccbe133aee53aa16b5d0327d47aa06d7db4b06e7"
         },
         "v19:p1.target.exact_bullet_count": {
-          "n_mutations": 1000,
-          "distinct_texts": 1000,
-          "n_collateral": 0,
           "boundaries": [
             "duplication",
             "forbidden_item",
@@ -415,12 +413,12 @@
             "parser_edge",
             "unicode"
           ],
-          "records_hash": "a00cfba7a21b4dcad632488a1b76b66c6c9232440189ba9b68d5887ba62c7e4d"
+          "distinct_texts": 1000,
+          "n_collateral": 0,
+          "n_mutations": 1000,
+          "records_hash": "4a128416cd849a40e66a2f50ccbe133aee53aa16b5d0327d47aa06d7db4b06e7"
         },
         "v19:p2.focal.all_words_unique": {
-          "n_mutations": 1000,
-          "distinct_texts": 1000,
-          "n_collateral": 0,
           "boundaries": [
             "duplication",
             "off_by_one",
@@ -428,12 +426,12 @@
             "parser_edge",
             "unicode"
           ],
-          "records_hash": "f0115a676bb140bcd10f4ef7679eee75b8c3c9420768f45e8ab089e6d3b38fba"
+          "distinct_texts": 1000,
+          "n_collateral": 0,
+          "n_mutations": 1000,
+          "records_hash": "0fa96bbd51b7afe7bd48ccbc3cd871ea0b21cf3767cde61762b04f66d09fb2ba"
         },
         "v19:p2.target.mandatory_words": {
-          "n_mutations": 1000,
-          "distinct_texts": 1000,
-          "n_collateral": 0,
           "boundaries": [
             "duplication",
             "off_by_one",
@@ -441,12 +439,12 @@
             "parser_edge",
             "unicode"
           ],
-          "records_hash": "f0115a676bb140bcd10f4ef7679eee75b8c3c9420768f45e8ab089e6d3b38fba"
+          "distinct_texts": 1000,
+          "n_collateral": 0,
+          "n_mutations": 1000,
+          "records_hash": "0fa96bbd51b7afe7bd48ccbc3cd871ea0b21cf3767cde61762b04f66d09fb2ba"
         },
         "v19:p3.focal.increasing_lengths": {
-          "n_mutations": 1000,
-          "distinct_texts": 1000,
-          "n_collateral": 0,
           "boundaries": [
             "duplication",
             "off_by_one",
@@ -455,12 +453,12 @@
             "parser_edge",
             "unicode"
           ],
-          "records_hash": "c53716f256dbe885cf4f84a3cbe404b021d390cd97c4d4e24b196dc5c2944717"
+          "distinct_texts": 1000,
+          "n_collateral": 0,
+          "n_mutations": 1000,
+          "records_hash": "179985ba04b13417439d429e6acfd2ac72523c5fa39a74e0d90adb415027b66f"
         },
         "v19:p3.target.exact_sentence_count": {
-          "n_mutations": 1000,
-          "distinct_texts": 1000,
-          "n_collateral": 0,
           "boundaries": [
             "duplication",
             "off_by_one",
@@ -469,19 +467,22 @@
             "parser_edge",
             "unicode"
           ],
-          "records_hash": "c53716f256dbe885cf4f84a3cbe404b021d390cd97c4d4e24b196dc5c2944717"
+          "distinct_texts": 1000,
+          "n_collateral": 0,
+          "n_mutations": 1000,
+          "records_hash": "179985ba04b13417439d429e6acfd2ac72523c5fa39a74e0d90adb415027b66f"
         }
       },
       "frozen_by": "dci.v19.mutation.frozen_battery_evidence()",
-      "recorded_at": "2026-08-11T00:00:00+00:00",
-      "evidence": "Section 8.7's battery: 17 named transforms across 8 boundary families, applied to each of the six declared constraint templates, 1,000 distinct mutated texts each. distinct_texts is recorded equal to n_mutations, so a floor reached by repeating one whitespace edit would be visible. The record schema is checked by the slot's typed domain; whether these hashes match a battery the harness produces is re-checked by regenerating it at certification time."
+      "recorded_at": "2026-08-13T15:48:19+00:00",
+      "evidence": "Section 8.7's battery: 17 named transforms across 8 boundary families, applied to each of the six declared constraint templates, 1,000 distinct mutated texts each. distinct_texts is recorded equal to n_mutations, so a floor reached by repeating one whitespace edit would be visible. The record schema is checked by the slot's typed domain; whether these hashes match a battery the harness produces is re-checked by regenerating it at certification time. REGENERATED 2026-08-13T15:48:19+00:00 by tools/refreeze_stage2.py after: Pair 3 segmentation repair: v19/text.py had re-typed a narrower, pre-repair sentence-boundary class and dropped the abbreviation guard in rules._split_line, so p3.target over-counted sentences on titles, medial abbreviations and initials, and failed to split after multiple closing marks. text.py now takes rules.SENTENCE_BOUNDARY.pattern directly and declares sentence_abbreviation_guard=dci.verifiers.rules.ends_sentence. Segmentation now matches the certified inherited splitter on the audit bank."
     },
     {
       "slot": "verifiers.bundle_hash",
-      "value": "0c26c2d7659a00192157cd139ce63e1a77160ef6bf184c8d01580a9647274f86",
+      "value": "db83c98b6fabf7356f5ad26ccb5fa681ec00b5e9de9f282b2a0c471e9194970f",
       "frozen_by": "dci.v19.verifiers.bundle_hash(CANONICAL_LIST_POLICY)",
-      "recorded_at": "2026-08-11T00:00:00+00:00",
-      "evidence": "Appendix I requires invariant verifier hashes across the run, so this is the identity every later stage compares against. Frozen only after the specification bundle and the section 8.7 boundary battery, which are its declared prerequisites: the bundle fixes what each verifier's semantics and implementation hash to, and the battery is the evidence that those implementations behave at their boundaries. Freezing this hash earlier would name a bundle whose boundary behaviour had not been demonstrated."
+      "recorded_at": "2026-09-13T21:16:00+00:00",
+      "evidence": "Appendix I requires invariant verifier hashes across the run, so this is the identity every later stage compares against. Frozen only after the specification bundle and the section 8.7 boundary battery, which are its declared prerequisites: the bundle fixes what each verifier's semantics and implementation hash to, and the battery is the evidence that those implementations behave at their boundaries. Freezing this hash earlier would name a bundle whose boundary behaviour had not been demonstrated. REGENERATED 2026-08-13T15:48:19+00:00 by tools/refreeze_stage2.py after: Pair 3 segmentation repair: v19/text.py had re-typed a narrower, pre-repair sentence-boundary class and dropped the abbreviation guard in rules._split_line, so p3.target over-counted sentences on titles, medial abbreviations and initials, and failed to split after multiple closing marks. text.py now takes rules.SENTENCE_BOUNDARY.pattern directly and declares sentence_abbreviation_guard=dci.verifiers.rules.ends_sentence. Segmentation now matches the certified inherited splitter on the audit bank. REGENERATED 2026-08-13T16:56:00+00:00 by tools/refreeze_stage2.py after: STRUCTURAL, behaviour-preserving: the sentence-split loop was unified into dci.verifiers.rules.split_line and dci.v19.text now delegates the pattern, the loop and the guard to it instead of mirroring the loop. Only implementation_hash fields moved; every text/list policy hash is unchanged, and both layers were verified verdict-identical to HEAD over the 59-text boundary bank (0 differences). REGENERATED 2026-08-14T17:19:45+00:00 by tools/refreeze_stage2.py after: Include the delegated abbreviation guard in the Pair 3 frozen closure. Delegating boundary decisions to dci.verifiers.rules left the guard's tables and source outside every hash, so a change to TITLE_ABBREVIATIONS moved F_A while spec, implementation and bundle hashes stayed identical. frozen_segmentation now carries abbreviation_guard_state, and the Pair 3 implementation tuples carry rules.split_line/ends_sentence/_opens_with_capital. Found in Codex review of PR #22. REGENERATED 2026-09-13T21:00:32+00:00 by tools/refreeze_stage2.py after: 2026-09-13, PR #35 review: the abbreviation-guard state records TRAILING_ABBREVIATION's compile flags beside its pattern, so a flags-only change to the delegated regex (which moves Pair 3 sentence counts) moves the frozen identity. The guard state is part of every verifier's frozen segmentation, so all six spec_hash values and the bundle hash move; no implementation hash, policy hash or verifier behaviour changes. REGENERATED 2026-09-13T21:16:00+00:00 by tools/refreeze_stage2.py after: 2026-09-13, Codex review of PR #13: every function a verifier executes between its decision and the recorded outcome is now in its implementation hash (Verifier.invoke, VerifierOutcome.__post_init__, _scored, _missing, _delivered, _unparseable, both compliance mappers, assert_evidence_is_diagnostic, field_roles.role_of), plus Pair 1's marker builders, ParsedList.count/describe, ListItem.describe and the ordering relation's closure, chain_depth and label check, and the Pair 2 folded_tokens/word_tokens helpers. All six implementation_hash values and the bundle hash move; no spec hash, policy hash or verifier behaviour changes. tests/unit/test_v19_implementation_closure.py traces the bundle and refuses executed code that is neither hashed nor identity-only."
     },
     {
       "slot": "verifiers.tier1_audit_protocol",

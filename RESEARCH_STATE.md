@@ -30,7 +30,7 @@ Positive τ is directional interference.
 | what | the preregistered v15/v19 protocol | fast, cheap, local-GPU probing |
 | changes | ledgered amendments (`docs/migration_ledger.csv`, `src/dci/v19/stage2_frozen.json`) | free; interfaces break by design |
 | output | a **gate status**, not a number (`src/dci/statuses.py`) | estimates stamped `EXPLORATORY_NO_EVIDENCE` |
-| status | Stage 2 frozen; the confirmatory run has **not** been executed | eleven rounds completed |
+| status | Stage 2 frozen, with Pair 3 segmentation re-frozen on 2026-09-13 and its section 10.6 semantic re-audit outstanding; the confirmatory run has **not** been executed | eleven rounds completed |
 
 They are coupled in one direction: `exploratory/dci_exploratory/harvest.py`
 executes confirmatory stages `c112…c212` at runtime to obtain the constraint
@@ -3160,7 +3160,9 @@ First model: `qwen3-4b-instruct-2507`. Nothing is authorised to run.
 
 [`CHANGES_SCIENTIFIC.md`](CHANGES_SCIENTIFIC.md) — measurement-affecting changes
 only, newest first, each stating what changed, which results are affected, and
-whether old and new remain comparable. Most recent: §13.11's chance column,
+whether old and new remain comparable. Most recent: the v19 Pair 3
+sentence-segmentation repair, ported to main on 2026-09-13 from PR #22.
+Before it: §13.11's chance column,
 zero on every replication of v5–v7, corrected on the Gate-2 producer to
 §13.2's unconstrained-cell κ_c with degenerate candidates withheld and
 recorded; no pinned §13 module and no threshold changes; stored tables are

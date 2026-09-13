@@ -52,17 +52,20 @@ from typing import Any
 
 from dci.provenance.hashes import sha
 from dci.v19 import field_roles, pairs
+from dci.v19 import parsing as _parsing
 from dci.v19 import text as textlib
 from dci.v19.parsing import (
     CANONICAL_LIST_POLICY,
     ListPolicy,
     OrderingRelation,
+    ParsedList,
     match_items_to_labels,
     parse_list,
     sentence_lengths,
     sentences,
 )
 from dci.v19.text import TextPolicy
+from dci.verifiers import rules
 
 
 class Verdict(str, enum.Enum):
@@ -265,9 +268,17 @@ def frozen_segmentation(text_policy: TextPolicy,
     Includes the marker patterns when the verifier's span depends on them, which is
     how section 4.4's shared segmentation becomes visible in Pair 3's hash rather
     than hidden inside a helper.
+
+    It also carries the abbreviation guard's substance, not merely its name. The
+    policy declares WHICH guard runs; `abbreviation_guard_state` records what that
+    guard decides with, because the guard now lives in `dci.verifiers.rules` and a
+    change to its tables moves F_A without moving any v19 source. See that
+    function for why delegation made this necessary.
     """
     state: dict[str, Any] = {"text_policy": text_policy.state(),
-                             "text_policy_hash": text_policy.policy_hash}
+                             "text_policy_hash": text_policy.policy_hash,
+                             "abbreviation_guard":
+                                 textlib.abbreviation_guard_state(text_policy)}
     if list_policy is not None:
         state["list_policy_hash"] = list_policy.policy_hash
         state["marker_patterns"] = list(list_policy.marker_patterns())
@@ -705,6 +716,25 @@ class Verifier:
                 evidence={})
 
 
+def _outcome_contract() -> tuple[Callable, ...]:
+    """The code between a verifier's decision and the recorded outcome.
+
+    Every verifier returns through these: `Verifier.invoke` maps a crash to
+    VERIFIER_ERROR, `_scored`/`_missing` build the outcome, `_delivered` and
+    `_unparseable` settle the generation state, the compliance mappers turn a
+    count or fraction into FULL/PARTIAL/VIOLATION, and the outcome's own checks
+    (`VerifierOutcome.__post_init__`, `assert_evidence_is_diagnostic` with
+    `field_roles.role_of`) decide whether it is admissible at all. A change to any
+    of them moves a recorded verdict, compliance or state, so they belong in "the
+    code that ran" for every verifier. Found in review: none of them was hashed.
+    `tests/unit/test_v19_implementation_closure.py` traces the bundle and fails
+    if an executed function is neither hashed nor declared identity-only.
+    """
+    return (Verifier.invoke, VerifierOutcome.__post_init__, _scored, _missing,
+            _delivered, _unparseable, _count_compliance, _fraction_compliance,
+            assert_evidence_is_diagnostic, field_roles.role_of)
+
+
 def bundle(policy: ListPolicy = CANONICAL_LIST_POLICY) -> dict[str, Verifier]:
     """Every target and focal verifier the three pairs require.
 
@@ -715,45 +745,70 @@ def bundle(policy: ListPolicy = CANONICAL_LIST_POLICY) -> dict[str, Verifier]:
     decision and the registry still gates whether it may be relied on.
     """
     text_policy = policy.text
+    contract = _outcome_contract()
     built = {
         pairs.PAIR_1.target.constraint_id: Verifier(
             spec=_p1_count_spec(policy),
             run=lambda t, **kw: verify_exact_bullet_count(t, policy=policy, **kw),
             implementation=(verify_exact_bullet_count, parse_list,
-                            textlib.normalise),
+                            _parsing._bullet_pattern, _parsing._numbered_pattern,
+                            ParsedList.count.fget, ParsedList.describe,
+                            _parsing.ListItem.describe, textlib.normalise)
+            + contract,
             status="new"),
         pairs.PAIR_1.focal.constraint_id: Verifier(
             spec=_p1_order_spec(policy),
             run=lambda t, **kw: verify_transitive_order(t, policy=policy, **kw),
             implementation=(verify_transitive_order, parse_list,
-                            match_items_to_labels, textlib.folded_tokens),
+                            _parsing._bullet_pattern, _parsing._numbered_pattern,
+                            ParsedList.count.fget, ParsedList.describe,
+                            _parsing.ListItem.describe, match_items_to_labels,
+                            OrderingRelation.assert_labels_are_tokens,
+                            OrderingRelation.closure, OrderingRelation.chain_depth.fget,
+                            textlib.folded_tokens, textlib.word_tokens,
+                            textlib.normalise, textlib.fold)
+            + contract,
             status="new"),
         pairs.PAIR_2.target.constraint_id: Verifier(
             spec=_p2_target_spec(text_policy),
             run=lambda t, **kw: verify_mandatory_words(
                 t, text_policy=text_policy, **kw),
             implementation=(verify_mandatory_words, textlib.token_multiset,
-                            textlib.word_tokens, textlib.normalise, textlib.fold),
+                            textlib.folded_tokens, textlib.word_tokens,
+                            textlib.normalise, textlib.fold)
+            + contract,
             status="inherited_corrected"),
         pairs.PAIR_2.focal.constraint_id: Verifier(
             spec=_p2_focal_spec(text_policy),
             run=lambda t, **kw: verify_all_words_unique(
                 t, text_policy=text_policy, **kw),
             implementation=(verify_all_words_unique, textlib.token_multiset,
-                            textlib.folded_tokens, textlib.normalise, textlib.fold),
+                            textlib.folded_tokens, textlib.word_tokens,
+                            textlib.normalise, textlib.fold)
+            + contract,
             status="inherited_corrected"),
         pairs.PAIR_3.target.constraint_id: Verifier(
             spec=_p3_target_spec(policy),
             run=lambda t, **kw: verify_exact_sentence_count(t, policy=policy, **kw),
+            # `rules.split_line` and `rules.ends_sentence` are the delegated
+            # boundary decision. They execute on every scored answer, so their
+            # source belongs in the hash of "the code that ran" exactly as much
+            # as the v19 helpers do.
             implementation=(verify_exact_sentence_count, sentences,
-                            textlib.split_sentences, textlib.normalise),
+                            textlib.split_sentences, textlib.normalise,
+                            rules.split_line, rules.ends_sentence,
+                            rules._opens_with_capital)
+            + contract,
             status="inherited_corrected"),
         pairs.PAIR_3.focal.constraint_id: Verifier(
             spec=_p3_focal_spec(policy),
             run=lambda t, **kw: verify_increasing_lengths(t, policy=policy, **kw),
             implementation=(verify_increasing_lengths, sentence_lengths,
                             textlib.sentence_lengths, textlib.split_sentences,
-                            textlib.word_tokens, textlib.normalise),
+                            textlib.word_tokens, textlib.normalise,
+                            rules.split_line, rules.ends_sentence,
+                            rules._opens_with_capital)
+            + contract,
             status="inherited_corrected"),
     }
     return built
