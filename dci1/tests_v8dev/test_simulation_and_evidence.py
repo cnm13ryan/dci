@@ -1,11 +1,24 @@
 """Quick simulation smoke tests, and evidence-dependent checks that skip
-without a stored tree."""
+without a stored tree.
+
+The two evidence checks name their chance basis, because `load_replication`
+refuses to guess (7196123). Reproducing a signed v7 certificate needs the basis
+those records were signed on, the recorded zero column. The spectrum invariant
+reads the corrected §13.2 basis from the committed cache, like every backtest
+tool. Before this, both called `load_replication` with neither and raised
+`ProtocolError`. That was never seen, because both skip wherever the gitignored
+v7 evidence is absent: CI, a fresh clone and every secondary worktree.
+"""
 from __future__ import annotations
+
+from pathlib import Path
 
 import pytest
 
 from dci1v8dev import simulate as S
 from dci1v8dev.prescreen.screen import ScreenConfig
+
+CHANCE_CACHE = Path(__file__).resolve().parents[1] / "reports" / "dci1v8dev" / "chance_basis"
 
 
 def test_archetype_truths_match_their_names():
@@ -44,7 +57,11 @@ def test_reserve_extension_recovers_the_hard_side_in_simulation():
 def test_backtest_reproduces_the_signed_certificate(evidence_root):
     from dci1v8dev import backtest as B
     from dci1v8dev.prescreen import legacy
-    rep = B.load_replication(evidence_root, "dci1v7/qwen3-4b")
+    # The signed records were computed on the recorded zero column; the
+    # corrected basis moves the pre-screen's iota_A and straddling groups, so
+    # it could not reproduce them.
+    rep = B.load_replication(evidence_root, "dci1v7/qwen3-4b",
+                             allow_recorded_chance=True)
     table, a_grid = B.prescreen_input(rep["regime"])
     cert = legacy.legacy_certificate(table, a_grid)
     signed = rep["regime"]["coverage"]
@@ -61,7 +78,9 @@ def test_backtest_reproduces_the_signed_certificate(evidence_root):
 
 def test_spectrum_replay_local_valid_is_a_subset_of_folded_stable(evidence_root):
     from dci1v8dev import backtest as B
-    rep = B.load_replication(evidence_root, "dci1v7/qwen3-4b")
+    rep = B.load_replication(evidence_root, "dci1v7/qwen3-4b",
+                             chance_cache_dir=CHANCE_CACHE, tree="v7",
+                             model="qwen3-4b")
     out = B.spectrum_backtest(rep, label="v7", model="qwen3-4b", resamples=300)
     assert out["n_local_valid"] <= out["n_folded_stable"]
     assert out["n_spectrum_valid"] >= out["n_local_valid"]
