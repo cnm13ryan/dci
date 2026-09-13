@@ -13,7 +13,7 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
-## 2026-09-13 (post-confirmatory audit) — two gaps in the frozen v8.1 analysis found in review; the executed run was not affected by either; the result extractor now reads signed records only
+## 2026-09-13 — (post-confirmatory audit) two gaps in the frozen v8.1 analysis found in review; the executed run was not affected by either; the result extractor now reads signed records only
 
 **What changed.** No rule, estimand, threshold or frozen module. Code review of PR #33
 found two gaps in the frozen analysis (`dci1v8dev/confirm/analysis.py`, whose module
@@ -78,7 +78,7 @@ scored-row content (for example a per-file SHA-256) into the signed generation r
 
 ---
 
-## 2026-09-10 (v8.1 confirmatory) — the frozen registered analysis executed once; the confirmatory estimand now has values, and every earlier v8/v8.1 number becomes pre-freeze identification evidence
+## 2026-09-10 — (v8.1 confirmatory) the frozen registered analysis executed once; the confirmatory estimand now has values, and every earlier v8/v8.1 number becomes pre-freeze identification evidence
 
 **What changed.** Nothing in any rule. The frozen `CONFIRMATORY_ANALYSIS`
 and `FINAL_REPORT` stages ran once, unattended, on the complete
@@ -147,7 +147,7 @@ calibration.
 
 ---
 
-## 2026-09-03 (successor design, v8.1) — the pre-screen, the second pass and the forwarding become frame-specific; the pooled screen stays as a comparator arm; the frozen v8 root is superseded for the successor only
+## 2026-09-03 — (successor design, v8.1) the pre-screen, the second pass and the forwarding become frame-specific; the pooled screen stays as a comparator arm; the frozen v8 root is superseded for the successor only
 
 **What changed.** Under Approach A every quantity from Gate 2 onward is
 frame-specific, but the pilots r5–r13 screened, ranked and forwarded
@@ -299,7 +299,7 @@ pre-freeze topic sample", and the limitations carried with the freeze.
 
 ---
 
-## 2026-09-02 (pre-freeze audit) — the morning's four freezes superseded; one allocation, one universal calibration, operating-point status, provenance gate, the registered analysis restored per frame, a standalone v8 preregistration
+## 2026-09-02 — (pre-freeze audit) the morning's four freezes superseded; one allocation, one universal calibration, operating-point status, provenance gate, the registered analysis restored per frame, a standalone v8 preregistration
 
 **What happened first.** Protected composed generation under the four
 `FROZEN` records of `5870ddf` (root `dci1/evidence/dci1v8-confirm`) ran from
@@ -410,7 +410,7 @@ LOCAL e2b f0+f1+f3, e4b f0+f1+f3, qwen3-4b f0+f3, 2507 none; SPECTRUM on
 the runner-up arm on six LOCAL frames. **No composed row has been generated
 for this design.** Report: `dci1/reports/dci1v8dev/freeze_readiness/FREEZE_READINESS.md`.
 
-## 2026-09-02 (pre-freeze) — the v8 confirmatory layer: freeze, protected generation, frame-aware analysis; allocation 384 blocks per frame; joint cross-frame multiplicity; frame-aware LOCAL top-up; backups generated for a reference-sensitivity contrast
+## 2026-09-02 — (pre-freeze) the v8 confirmatory layer: freeze, protected generation, frame-aware analysis; allocation 384 blocks per frame; joint cross-frame multiplicity; frame-aware LOCAL top-up; backups generated for a reference-sensitivity contrast
 
 **What changed.** A confirmatory layer, `dci1/src/dci1v8dev/confirm/`
 (design note `dci1/docs/V8_CONFIRMATORY.md`), continues the v8 pilot past
@@ -474,7 +474,7 @@ only `confirm/analysis.py` imports the composed-observation modules.
 
 ---
 
-## 2026-09-01 (pre-freeze) — the fourth registered model is measured under Approach A for the first time
+## 2026-09-01 — (pre-freeze) the fourth registered model is measured under Approach A for the first time
 
 **What changed.** `gemma-3n-e4b-it` ran the nine-stage v8 pilot
 (`dci1v8-pilot-r11`, all stages `PASS`) at the **default** two-pass
@@ -506,7 +506,7 @@ the fourth, which is the defect this closes.
 
 ---
 
-## 2026-08-31 (pre-freeze) — the v8 confirmatory allocation is three passes: 288 blocks per wording frame
+## 2026-08-31 — (pre-freeze) the v8 confirmatory allocation is three passes: 288 blocks per wording frame
 
 **What changed.** `dci1v8dev.rules.CONFIRMATORY_FRAME_OFFSETS = (0, 1, 2)`,
 and `CONFIRMATORY_BLOCKS_PER_FRAME` is now derived from it as
@@ -584,7 +584,7 @@ constants bound by `rule_table()`; `reports/dci1v8dev/local_precision.md`.
 
 ---
 
-## 2026-08-31 (pre-freeze) — `qwen3-4b-instruct-2507` calibration raised to the topic ceiling
+## 2026-08-31 — (pre-freeze) `qwen3-4b-instruct-2507` calibration raised to the topic ceiling
 
 **What changed.** `CALIBRATION_FRAME_OFFSETS_BY_MODEL` gains
 `"qwen3-4b-instruct-2507": (0, 1, 2, 3)`, the same four-pass allocation
@@ -633,7 +633,7 @@ and no threshold was moved in response.
 
 ---
 
-## 2026-08-31 (after pilot r9) — the v8 LOCAL inclusion rule: full reference survival per frame, at least two supported frames per model
+## 2026-08-31 — (after pilot r9) the v8 LOCAL inclusion rule: full reference survival per frame, at least two supported frames per model
 
 **What changed.** `dci1v8dev.rules.LOCAL_ELIGIBILITY_MIN_FRAMES = 2` and the
 new `dci1v8dev.run.eligibility` decide, prospectively, which (model, frame)
@@ -705,7 +705,7 @@ pre-rule record and a post-rule record answer the same question the same way.
 
 ---
 
-## 2026-08-31 (pre-freeze precision check) — the LOCAL confirmatory allocation at 96 blocks per frame does not reach Δ_R's registered precondition
+## 2026-08-31 — (pre-freeze precision check) the LOCAL confirmatory allocation at 96 blocks per frame does not reach Δ_R's registered precondition
 
 **What this is.** Not a change — a **measurement against the registered
 precondition**, recorded because it is the fact that decides whether the LOCAL
@@ -769,7 +769,7 @@ ready for freeze.
 
 ---
 
-## 2026-08-31 (after pilot r8) — the v8 calibration allocation is per model: four passes, 192 topics per frame, for `qwen3-4b`
+## 2026-08-31 — (after pilot r8) the v8 calibration allocation is per model: four passes, 192 topics per frame, for `qwen3-4b`
 
 **What changed.** `dci1v8dev.rules.CALIBRATION_FRAME_OFFSETS_BY_MODEL`
 makes Gate 2's calibration allocation a property of the replication.
@@ -862,7 +862,7 @@ passes.
 
 ---
 
-## 2026-08-30 (after pilot r5/r6) — the v8 calibration allocation: two passes, 96 topics per wording frame
+## 2026-08-30 — (after pilot r5/r6) the v8 calibration allocation: two passes, 96 topics per wording frame
 
 **What changed.** `dci1v8dev.rules.CALIBRATION_FRAME_OFFSETS = (0, 2)`, and
 Gate 2 lays every one of its backend runs out over one **calibration pass**
@@ -939,7 +939,7 @@ balance, the `frame = block_index % N_WORDINGS` invariant, the refusal, the
 per-topic vector length that SE(ι) is formed at, and the record fields.
 Nothing is frozen and no composed or interference outcome exists.
 
-## 2026-08-30 (pilot r4) — the v8 calibration extension: a reserve rung the round measures now has a chance column and kappa(R|B)
+## 2026-08-30 — (pilot r4) the v8 calibration extension: a reserve rung the round measures now has a chance column and kappa(R|B)
 
 **What changed.** `dci1v8dev.run.calibration` declares, on the Gate-2 grid
 runs, every reserve rung the calibration extension may pick
@@ -975,7 +975,7 @@ commit. **Comparability.** Any future replication's spectrum pool may now
 contain extension rungs that the pre-fix code could not have admitted;
 r1–r4 contain no calibrated candidate at all, so nothing is re-read.
 
-## 2026-08-30 (after pilot r3) — v8: the wording frame is part of the experimental condition (Approach A; researcher decision; prospective)
+## 2026-08-30 — (after pilot r3) v8: the wording frame is part of the experimental condition (Approach A; researcher decision; prospective)
 
 **What changed** (`dci1/docs/V8_FRAME_CONDITIONING.md`; `dci1v8dev.run`
 Gates 2 and 3, the report, the manifest). Pilot r3 showed the four v8
@@ -1026,7 +1026,7 @@ caliper, SE(ι) ≤ 0.05, the Wilson/Newcombe intervals) are unchanged and
 harder to meet per frame, which the pilot now measures rather than
 assumes away.
 
-## 2026-08-30 (pilot r2) — the v8 second pass: batch index is the batch's position; the cap of three is global
+## 2026-08-30 — (pilot r2) the v8 second pass: batch index is the batch's position; the cap of three is global
 
 **What changed.** `dci1v8dev.prescreen.rescreen.plan_batch` returned
 `index = max(batches_used.values())` (the largest per-family batch count)
@@ -1056,7 +1056,7 @@ contains a family that re-enters after ι_A moves.
 **Comparability.** r2's regime record is comparable with r3's (same code
 path); r2's batches are not read by anything.
 
-## 2026-08-30 (later) — v8 pilot: fresh-topic second pass asserted, the v7-relative frame threshold removed, the wording diagnostic measured per frame (researcher decisions; prospective; no evidence)
+## 2026-08-30 — (later) v8 pilot: fresh-topic second pass asserted, the v7-relative frame threshold removed, the wording diagnostic measured per frame (researcher decisions; prospective; no evidence)
 
 **What changed** (`dci1/docs/V8_PILOT.md` §1a). (1) The second pass takes
 no extra draw on a pre-screen topic and never touches Calibration-B: its
@@ -1139,7 +1139,7 @@ comparison.
 
 ---
 
-## 2026-08-29 (evening) — canonical v8 candidate: one branch, the corrected chance basis in every replay, retention/coverage/wording finalised (no registered rule changes)
+## 2026-08-29 — (evening) canonical v8 candidate: one branch, the corrected chance basis in every replay, retention/coverage/wording finalised (no registered rule changes)
 
 **What changed.** Branch `dev/v8-canonical` reconciles the four v8/v7 lines
 (`fix/v8-verifier-unification`, `fix/v7-chance-basis`,
