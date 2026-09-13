@@ -79,7 +79,8 @@ described in `REASONING_DATA_PROVENANCE.md`.
 * Leakage audit: 2/160 detector hits, both inspected, **both benign** — confirmed
   leakage 0/160. The detector's `\bwait\b` pattern over-flags ordinary prose.
 * Robustness: leave-one-task-out never changes sign; dropping the longest 10% of
-  traces moves the estimate from +0.400 to +0.450.
+  traces in each arm moves the estimate from +0.400 to +0.472, on 18 of the 20
+  tasks (SCIENTIFIC_CLAIM_AUDIT.md §1.5 has the per-arm repair).
 
 ## Deliberately not done here
 

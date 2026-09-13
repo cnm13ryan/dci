@@ -85,7 +85,7 @@ failure of the model, not of the task.
 | independent sampling | 0/80 natural and 0/400 capped replicate pairs identical, against 390/400 before the seed fix |
 | task heterogeneity | 14 of 20 tasks positive, 5 exactly zero, 1 negative (range −0.500 to +1.000) |
 | **leave one task out** | semicolon estimate ranges **+0.368 to +0.447** over all 20 refits; **the sign never changes** |
-| **long-trace sensitivity** | dropping the longest trace, the longest 5%, or the longest 10% gives +0.400, +0.400, +0.450 — the result is **not** carried by the tail |
+| **long-trace sensitivity** | dropping the longest trace, the longest 5%, or the longest 10% of each arm gives +0.425, +0.400, +0.472 — the result is **not** carried by the tail; the 10% row keeps 19 bracket and 18 semicolon tasks, so it is not the same task set as the others ([SCIENTIFIC_CLAIM_AUDIT.md §1.5](SCIENTIFIC_CLAIM_AUDIT.md#15-long-trace-robustness-table--supported_with_narrower_wording)) |
 | ceiling | 0/160 reached the 39,550-token engineering ceiling |
 | answer integrity | 0 empty, 0 truncated, mean 119 answer tokens |
 | **leakage** | 2/160 detector hits, **both inspected, both benign** — ordinary prose using the word *wait*. Confirmed leakage **0/160**. |
