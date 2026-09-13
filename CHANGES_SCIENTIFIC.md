@@ -49,18 +49,35 @@ against current code and fixed. None changes a verifier's behaviour.
    - **Fix:** `Registry.requirement_sources`/`upstream_requirements` extend a
      stage's blockers with the requirements of every stage that produces one of its
      inputs, recursively. This is section 14's ordering rule.
-   - **What is not changed:** no `depends_on` edge was invented, so the declared
-     scientific dependencies and the registry's declaration fingerprint are
-     unchanged.
+   - **What is not changed:** no `depends_on` edge was invented to make the
+     traversal work; the one declaration added is the review follow-up below.
    - **Reporting:** `stage_status` reports inherited blockers with the stage that
      declared them (`required_by`) and a new `n_required_including_upstream`.
+   - **Review follow-up, same day (Codex on PR #36).** Transitivity follows
+     `produces`, and Stage 15 declared none, so no traversal could reach it: with
+     every Stage 12 and 14 artifact frozen, Stage 16 (locked inference, and the
+     terminal-state ledger it creates) reported READY before any confirmatory
+     generation had run. Section 14.16 verifies the completeness of that
+     generation, and section 15.1's fixed-size stopping rule defines when it is
+     complete. Stage 15 now produces a new pending slot,
+     `generation.confirmatory_outputs` (`PENDING_EMPIRICAL`; depends on the
+     generation manifest, the root signature and the certified GPU class), which
+     Stage 16 requires and `ledger.terminal_states` depends on.
+     `test_locked_inference_waits_for_confirmatory_generation` and
+     `test_from_stage_2a_every_stage_is_reached_from_its_predecessor` fail on
+     the previous registry. The consecutive-stage check starts at Stage 2A:
+     Stage 1's outputs are fixed by the preregistration text, and whether
+     Stage 2A should wait for a Stage 2 output (its verifier-replay tests) is a
+     protocol question this change does not decide.
 
 **Frozen artifacts.** `tools/refreeze_stage2.py` re-froze
 `verifiers.specification_bundle` (all six `implementation_hash` values, nothing
 else) and `verifiers.bundle_hash`.
 - Unchanged: the other 11 records, every spec hash and policy hash, and the review
   packets. Both tools now report every record current.
-- The registry fingerprint is not frozen anywhere and is unchanged.
+- The registry's declaration fingerprint moves (208 → 209 slots;
+  `71d7e86d…` → `0f4c7108…`) with the new Stage 15 output. It is not frozen in
+  any artifact, and neither tool reports anything stale.
 
 **Tests corrected, with reasons.**
 - `test_the_target_verifier_declares_only_generic_segmentation` pinned the exact,

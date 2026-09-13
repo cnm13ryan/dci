@@ -314,6 +314,8 @@ def test_stage_fifteen_becomes_ready_only_with_the_whole_chain():
      "section 14.13: any failure blocks confirmation"),
     ("stage_16_locked_inference", "freeze.root_signature",
      "section 14.16 runs the preselected analysis after the freeze"),
+    ("stage_16_locked_inference", "generation.confirmatory_outputs",
+     "section 14.16 verifies the completeness of what Stage 15 generated"),
     ("stage_17_terminal_falsification", "analysis.confirmatory_outputs",
      "section 14.17 opens the material only after outputs are locked"),
 ])
@@ -321,6 +323,45 @@ def test_each_audited_dependency_is_now_encoded(stage, slot, why):
     gate = REGISTRY.gate(stage)
     assert slot in gate.required_slots, f"{stage} must require {slot}: {why}"
     assert REGISTRY.citation_for(stage, slot)
+
+
+def test_locked_inference_waits_for_confirmatory_generation():
+    """Codex on PR #36: Stage 15 declared no output, so no traversal reached it.
+
+    With everything Stage 15 needs frozen, Stage 16's remaining inputs were all
+    Stage 12 and 14 products, and locked inference - with the terminal-state
+    ledger it creates - reported READY although nothing had been generated.
+    """
+    got = all_upstream_of("stage_15_confirmatory_generation")
+    got.require_stage("stage_15_confirmatory_generation")
+    blockers = {s.name for s in got.blockers_for("stage_16_locked_inference")}
+    assert blockers == {"generation.confirmatory_outputs"}
+    with pytest.raises(UnresolvedDependency,
+                       match=r"generation\.confirmatory_outputs"):
+        got.require_stage("stage_16_locked_inference")
+    slot = got.slots["generation.confirmatory_outputs"]
+    generated = Registry(protocol=PROTOCOL_VERSION, slots=got.slots.freeze(
+        slot.name, for_domain(slot.domain), by="probe"))
+    generated.require_stage("stage_16_locked_inference")
+
+
+def test_from_stage_2a_every_stage_is_reached_from_its_predecessor():
+    """The mandatory order, as the gate sees it.
+
+    From Stage 2A on, the preregistration's text has each stage consume what the
+    one before it produced, so the predecessor must be among the stages the gate
+    traverses. Stage 1 is excluded because its outputs are fixed by the
+    preregistration text and can never block. Whether Stage 2A consumes a Stage 2
+    output (its verifier-replay tests) is not encoded and not asserted here.
+    """
+    order = [g.key for g in STAGE_GATES]
+    for before, after in zip(order[order.index("stage_2a_qualification"):],
+                             order[order.index("stage_2a_qualification") + 1:]):
+        sources = REGISTRY.requirement_sources(after)
+        reached = ({g.key for g in sources.values()}
+                   | {registry.PRODUCING_STAGE[s].key for s in sources
+                      if s in registry.PRODUCING_STAGE})
+        assert before in reached, f"{after} does not wait for {before}"
 
 
 @pytest.mark.parametrize("gate", [g.key for g in STAGE_GATES
@@ -364,6 +405,7 @@ def test_no_stage_is_ready_with_any_single_prerequisite_removed(gate):
     "simulation.counterfactual_diagnostic", "runtime.cost_model",
     "manifest.generation_manifest", "manifest.root_hash",
     "recertification.stage13", "freeze.root_signature",
+    "generation.confirmatory_outputs",
     "ledger.terminal_states", "analysis.code_hash",
     "analysis.confirmatory_outputs", "falsification.result",
 ])

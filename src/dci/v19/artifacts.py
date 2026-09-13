@@ -482,11 +482,23 @@ FREEZE_SLOTS = SlotTable.of(
 # ------------------------------------ Stages 15 to 17: execution and falsification
 
 EXECUTION_SLOTS = SlotTable.of(
+    pending("generation.confirmatory_outputs", "sections 14.15, 15.1",
+            Resolution.PENDING_EMPIRICAL,
+            "Stage 15: execute only the frozen generation manifest until every "
+            "planned generation id has one durably persisted scientific output "
+            "or a terminal permanent-technical-missingness record after the "
+            "frozen retry policy",
+            depends_on=("manifest.generation_manifest", "freeze.root_signature",
+                        "runtime.certified_gpu_class"),
+            note="section 15.1's fixed-size stopping rule is what makes it "
+                 "complete; Stage 16 verifies that completeness and cannot "
+                 "trigger new generation"),
     pending("ledger.terminal_states", "Appendix I / section 14.16",
             Resolution.PENDING_EMPIRICAL,
             "Stage 16: the frozen terminal observed/permanently-missing ledger, "
             "with exactly one terminal state per planned generation id",
-            depends_on=("manifest.generation_manifest", "freeze.root_signature")),
+            depends_on=("manifest.generation_manifest", "freeze.root_signature",
+                        "generation.confirmatory_outputs")),
     pending("analysis.code_hash", "section 14.16",
             Resolution.PENDING_EMPIRICAL,
             "Stage 16: the hash of the single preselected analysis code, run "
