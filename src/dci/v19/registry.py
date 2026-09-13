@@ -119,6 +119,11 @@ class StageGate:
 # consumes what an earlier stage produced, so an earlier stage's unmet
 # requirement blocks everything downstream of it, and a requirement added to an
 # upstream gate later propagates without editing any slot.
+#
+# Transitivity only follows `produces`, so a stage that declares no output cannot
+# be reached by it. Stage 15 was such a stage, and Stage 16 could report READY
+# before any confirmatory generation had run; it now produces
+# `generation.confirmatory_outputs`, which Stage 16 requires.
 STAGE_GATES: tuple[StageGate, ...] = (
     StageGate(
         key="stage_1_definitions", ordinal="1",
@@ -414,7 +419,7 @@ STAGE_GATES: tuple[StageGate, ...] = (
                    "execution authority", "freeze.root_signature")
             + _req("section 14.15 replays failures only within the certified "
                    "interchangeability class", "runtime.certified_gpu_class")),
-        produces=()),
+        produces=("generation.confirmatory_outputs",)),
     StageGate(
         key="stage_16_locked_inference", ordinal="16",
         title="locked confirmatory inference",
@@ -423,6 +428,9 @@ STAGE_GATES: tuple[StageGate, ...] = (
             _req("section 14.16 verifies completeness and integrity against the "
                  "frozen manifest", "manifest.generation_manifest",
                  "manifest.root_hash")
+            + _req("section 14.16 verifies the completeness of the confirmatory "
+                   "generation, which ends under section 15.1's fixed-size "
+                   "stopping rule", "generation.confirmatory_outputs")
             + _req("section 14.16 runs the single preselected analysis code once",
                    "freeze.root_signature")),
         produces=("ledger.terminal_states", "analysis.code_hash",
