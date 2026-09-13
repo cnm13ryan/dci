@@ -1,0 +1,148 @@
+{
+ "root": "/home/cnm13ryan/git/dci-v8-canonical/dci1/evidence/dci1v8p1-confirm",
+ "models": {
+  "qwen3-4b": {
+   "analysis_record_hash": "5591cb46c64c127a410b1b05d7622581d1d2724b38203a2f08672f3b6b5e83b3",
+   "freeze_hash": "7902b05f12a2bb60b775b49702bffbbbd4539e0e1ababdf433683ad1da546e9a",
+   "generation_record_hash": "287e507ed9b1dc86b07fc2ae25ad99a0a31af544366009eb2129b2f9074f3820",
+   "producing_commit": "034fc7214762b6848d5d904b14fd82b317830667",
+   "resamples": 10000,
+   "n_rows": 715776,
+   "recorded_at": "2026-09-10T13:54:01+00:00",
+   "frames_entering_local": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "frames_entering_spectrum": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "model_verdict": {
+    "outcome_first": "LOCAL_EQUIVALENT_SAME_FORM_ONLY",
+    "outcome_second": "LOCAL_EQUIVALENT_SAME_FORM_ONLY"
+   },
+   "methodological_success": {
+    "criterion": "\u00a726 methodological success, restated per model for the frame-conditioned design",
+    "note": "not the scientific effect claim: it says the design identified and could measure what it registered",
+    "reasons": [
+     "f0:outcome_second:D(A<-B) does not meet its precision precondition (per-frame interval)",
+     "f1:outcome_first:D(A<-B) does not meet its precision precondition (per-frame interval)",
+     "f1:outcome_second:D(A<-B) does not meet its precision precondition (per-frame interval)",
+     "f0:D(A<-B):outcome_first does not meet its precision precondition (joint interval)",
+     "f1:D(A<-B):outcome_first does not meet its precision precondition (joint interval)",
+     "f2:D(A<-B):outcome_first does not meet its precision precondition (joint interval)",
+     "f3:D(A<-B):outcome_first does not meet its precision precondition (joint interval)",
+     "f0:D(A<-B):outcome_second does not meet its precision precondition (joint interval)",
+     "f1:D(A<-B):outcome_second does not meet its precision precondition (joint interval)",
+     "f2:D(A<-B):outcome_second does not meet its precision precondition (joint interval)"
+    ],
+    "rule": "every entering frame's asked F1 members ESTIMATED; the registered precision precondition met on every primary interval; every frame table passed its cell-set assertion",
+    "verdict": "NOT_MET"
+   },
+   "generation_rows": 715776
+  },
+  "qwen3-4b-instruct-2507": {
+   "analysis_record_hash": "31f1b46be5e6416e832c428082108dfabd643d024bd02f5e6f60ef7dfefcf90f",
+   "freeze_hash": "4d72e728af137746ff95d54aa49b1a46bb7d504c989518b66615f6eef1fc6a95",
+   "generation_record_hash": "a98dc7aa45f75ed013b88fbdd4bba31c0661b5bc98f88f2d408001956a5b15cd",
+   "producing_commit": "034fc7214762b6848d5d904b14fd82b317830667",
+   "resamples": 10000,
+   "n_rows": 344064,
+   "recorded_at": "2026-09-10T13:49:50+00:00",
+   "frames_entering_local": [
+    1,
+    3
+   ],
+   "frames_entering_spectrum": [
+    1,
+    3
+   ],
+   "model_verdict": {
+    "outcome_first": "LOCAL_EQUIVALENT_SAME_FORM_ONLY",
+    "outcome_second": "LOCAL_EQUIVALENT_SAME_FORM_ONLY"
+   },
+   "methodological_success": {
+    "criterion": "\u00a726 methodological success, restated per model for the frame-conditioned design",
+    "note": "not the scientific effect claim: it says the design identified and could measure what it registered",
+    "reasons": [
+     "f1:outcome_second:D(A<-B) does not meet its precision precondition (per-frame interval)",
+     "f3:outcome_second:D(A<-B) does not meet its precision precondition (per-frame interval)",
+     "f1:D(A<-B):outcome_first does not meet its precision precondition (joint interval)",
+     "f1:D(A<-B):outcome_second does not meet its precision precondition (joint interval)",
+     "f3:D(A<-B):outcome_second does not meet its precision precondition (joint interval)"
+    ],
+    "rule": "every entering frame's asked F1 members ESTIMATED; the registered precision precondition met on every primary interval; every frame table passed its cell-set assertion",
+    "verdict": "NOT_MET"
+   },
+   "generation_rows": 344064
+  },
+  "gemma-3n-e2b-it": {
+   "analysis_record_hash": "5edcd5730bc4c0318522cc0e3bce57cbb044c6fb02c8743b3e67175ea9329c13",
+   "freeze_hash": "33595b8078525a12eb33e97827164992ac742fc8d7c5918dd672d5ef9906a1a9",
+   "generation_record_hash": "117e95aa9a8b2ae107af4bef6700e5d6043cbd76764ff8ba141bcc011cd0874d",
+   "producing_commit": "034fc7214762b6848d5d904b14fd82b317830667",
+   "resamples": 10000,
+   "n_rows": 623616,
+   "recorded_at": "2026-09-10T13:53:39+00:00",
+   "frames_entering_local": [
+    0,
+    1,
+    3
+   ],
+   "frames_entering_spectrum": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "model_verdict": {
+    "outcome_first": "LOCAL_EQUIVALENT_SAME_FORM_ONLY",
+    "outcome_second": "LOCAL_EQUIVALENT_SAME_FORM_ONLY"
+   },
+   "methodological_success": {
+    "criterion": "\u00a726 methodological success, restated per model for the frame-conditioned design",
+    "note": "not the scientific effect claim: it says the design identified and could measure what it registered",
+    "reasons": [],
+    "rule": "every entering frame's asked F1 members ESTIMATED; the registered precision precondition met on every primary interval; every frame table passed its cell-set assertion",
+    "verdict": "MET"
+   },
+   "generation_rows": 623616
+  },
+  "gemma-3n-e4b-it": {
+   "analysis_record_hash": "e90e0f7d6606bd8d4feed30aa90c6a89f2aacb3fd9e8d86481496072e44fa5ac",
+   "freeze_hash": "70bcb5da77f2cbca33035d2e75bd90781d5251895a8a2d44d98449e63b67881d",
+   "generation_record_hash": "e4dd54ff8575dceed8865e670123a6ef304fef379450473da2dd11e8c84eb9c0",
+   "producing_commit": "034fc7214762b6848d5d904b14fd82b317830667",
+   "resamples": 10000,
+   "n_rows": 669696,
+   "recorded_at": "2026-09-10T13:56:09+00:00",
+   "frames_entering_local": [
+    0,
+    1,
+    3
+   ],
+   "frames_entering_spectrum": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "model_verdict": {
+    "outcome_first": "LOCAL_EQUIVALENT_SAME_FORM_ONLY",
+    "outcome_second": "FRAME_HETEROGENEOUS"
+   },
+   "methodological_success": {
+    "criterion": "\u00a726 methodological success, restated per model for the frame-conditioned design",
+    "note": "not the scientific effect claim: it says the design identified and could measure what it registered",
+    "reasons": [],
+    "rule": "every entering frame's asked F1 members ESTIMATED; the registered precision precondition met on every primary interval; every frame table passed its cell-set assertion",
+    "verdict": "MET"
+   },
+   "generation_rows": 669696
+  }
+ }
+}

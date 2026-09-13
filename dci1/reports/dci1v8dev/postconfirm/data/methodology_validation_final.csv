@@ -1,0 +1,22 @@
+measure,perturbation,scope,value,denominator,source
+LOCAL verdicts agreeing,decoding re-execution (same topics same seeds),frame comparisons,16,16,reports/dci1v8dev/frame_aware_prescreen/prescreen_revalidation.md 3.5
+LOCAL verdicts agreeing,topic resampling (fresh pre-freeze partition),frame comparisons,13,14,reports/dci1v8dev/frame_aware_prescreen/prescreen_revalidation.md 3.7
+SPECTRUM identification agreeing,topic resampling,frame comparisons,13,14,prescreen_revalidation.md 3.7
+operating points agreeing,topic resampling,frame comparisons,11,14,prescreen_revalidation.md 3.7
+model eligibility agreeing,decoding re-execution,models,4,4,prescreen_revalidation.md 3.5
+model eligibility agreeing,topic resampling,models,3,4,prescreen_revalidation.md 3.7
+forwarded-set Jaccard min,decoding re-execution,frames,0.59,,prescreen_revalidation.md 3.7
+forwarded-set Jaccard max,decoding re-execution,frames,1.00,,prescreen_revalidation.md 3.7
+forwarded-set Jaccard min,topic resampling,frames,0.51,,prescreen_revalidation.md 3.7
+forwarded-set Jaccard max,topic resampling,frames,0.77,,prescreen_revalidation.md 3.7
+core reference triple identical,decoding re-execution,frames,5,16,prescreen_revalidation.md 3.7
+core reference triple identical,topic resampling,frames,3,14,prescreen_revalidation.md 3.7
+core reference families identical,decoding re-execution,frames,8,16,prescreen_revalidation.md 3.7
+core reference families identical,topic resampling,frames,7,14,prescreen_revalidation.md 3.7
+admissible backups identical,decoding re-execution,frames,8,16,prescreen_revalidation.md 3.7
+admissible backups identical,topic resampling,frames,3,14,prescreen_revalidation.md 3.7
+frame-aware set at least as supported as pooled on identical rows,frame-conditioned forwarding at equal budget,frames,13,14,prescreen_revalidation.md 3.2
+frame-aware supported where pooled is not on identical rows,frame-conditioned forwarding at equal budget,frames,2,14,prescreen_revalidation.md 3.2
+pooled set clears the 13.15 minimum on 2507 frame 3,decoding nondeterminism across roots,observations,2,5,prescreen_revalidation.md 3.6
+frame-aware set clears the 13.15 minimum on 2507 frame 3,decoding nondeterminism across roots,observations,3,3,prescreen_revalidation.md 3.6
+basis C and basis A reach the same family count backup count and verdict,target-basis comparator,frames,14,14,prescreen_revalidation.md 3.4

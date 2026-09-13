@@ -264,8 +264,17 @@ def test_the_frozen_root_and_the_pilot_roots_still_verify():
     from dci1v4.engine.signing import verify_signed
     root = EVIDENCE / "dci1v8-confirm-r2"
     key = root / "evidence" / "dci1v8" / "keys" / "signing.key"
-    lock = json.loads((Path(__file__).resolve().parents[1] / "reports" / "dci1v8dev"
-                       / "confirmatory_membership.json").read_text())
+    # The lock that names THIS root. `confirmatory_membership.json` is the
+    # study-level lock and it moves with the live root: since 034fc72 it
+    # names dci1v8p1-confirm, and the v8 lock was archived beside it rather
+    # than overwritten. The check below is that the superseded root is
+    # untouched, so it has to read the lock that was written for it.
+    reports = Path(__file__).resolve().parents[1] / "reports" / "dci1v8dev"
+    archived = reports / "confirmatory" / "confirmatory_membership.f7af7f2.v8.json"
+    live = reports / "confirmatory_membership.json"
+    lock = json.loads((archived if archived.exists() else live).read_text())
+    assert Path(lock["root"]).name == root.name, \
+        "the lock read here must be the one written for this root"
     n = 0
     for model_dir in sorted((root / "evidence" / "dci1v8").iterdir()):
         frozen = model_dir / "FROZEN" / "records"
