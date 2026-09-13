@@ -130,6 +130,98 @@ regressed behaviour were corrected, and
 `test_pair_three_segmentation_matches_the_certified_inherited_splitter` now pins
 agreement with the inherited splitter case by case.
 
+
+**Port to main, 2026-09-13.** This entry was written on 2026-08-13 for PR #22, but
+the repair never reached `main` until now.
+
+- **Why it was missed.** PR #21 merged `chore/repo-hardening-and-research-state`
+  into `main` at `12f7195` (2026-08-14 17:15Z). That commit still carried this
+  defect as a strict xfail. PR #22 merged the repair into that branch 26 minutes
+  later, so it stayed there.
+- **What was ported.** Four commits, cherry-picked with `-x` onto `main`
+  (`a43dfc0`): `10c5726`, `07e0b6e`, `25b9265` and `4cc823f`.
+  - The first two add `tools/generate_review_packets.py` and
+    `tools/refreeze_stage2.py`. These are the producing procedures this entry
+    names, and `CLAUDE.md` already cites them.
+  - Nothing else from that branch is included.
+- **Conflicts.** Between the merge base and `main`, nothing under `src/dci`,
+  `tests` or `tools` had changed except the new `tests/unit/test_frozen_solver_pin.py`.
+  The only conflicts were in this file and `RESEARCH_STATE.md`.
+
+**The frozen closure (`4cc823f`, not described above).** Delegating the decision to
+`dci.verifiers.rules` put part of the measurement outside v19. So the Pair 3
+specification state now also carries the guard's substance:
+`text.abbreviation_guard_state` holds the boundary pattern, both abbreviation
+tables, the trailing-token pattern and the opening-punctuation set. The Pair 3
+implementation tuples gain `rules.split_line`, `rules.ends_sentence` and
+`rules._opens_with_capital`. A change to the delegated tables now moves the spec
+hash and the bundle hash.
+
+**Correction to the scope stated above.** The measurement changes for **both** Pair
+3 verifiers, not only `p3.target`: `v19:p3.focal.increasing_lengths` scores word
+counts over the same segmentation.
+
+- **Pair 1 and Pair 2:** their four spec hashes and `boundary_mutations` record
+  hashes move because the text-policy state gains a field. Their behaviour does not
+  change.
+
+**Frozen artifacts, final state against `main`.**
+- `src/dci/v19/stage2_frozen.json`: 6 of 13 records change.
+  - `verifiers.p1.list_policy`: the text policy's `sentence_boundary` becomes
+    `rules.SENTENCE_BOUNDARY.pattern`, and it gains `sentence_abbreviation_guard`.
+  - `satisfiability.encoding_map` and `satisfiability.review_trigger`: the list-
+    and text-policy hashes, and the trigger's records hash.
+  - `verifiers.specification_bundle`: both policy hashes, all six spec hashes, and
+    the implementation hashes of the two Pair 3 verifiers.
+  - `verifiers.boundary_mutations`: six records hashes. Every `n_collateral` stays 0.
+  - `verifiers.bundle_hash`.
+  - The other 7 records, including `satisfiability.solver_identity` (z3 5.0.0),
+    and every investigator decision, are unchanged.
+- `docs/v19_stage2_semantic_review_packets.json`: the three packet ids, the two
+  policy hashes and the three encoding hashes change. No composition, clause or
+  witness changes.
+- **Reproducibility.** Run on the ported tree, both tools report every record
+  current and nothing to write, so the committed values are what the procedures
+  produce.
+
+**Differential check of the port.** The whole bundle and the inherited splitter
+were run under `main`'s code and under this branch over the same 118,612 texts:
+the 240-response blinded audit corpus, 640 cross-model rows and a 1-in-20 sample of
+117,732 v8.1 confirmatory responses.
+
+- **Unchanged on every text, with identity hashes stripped:**
+  `rules.split_sentences`, the Pair 1 and Pair 2 verifiers, and word tokens.
+- **Changed:** the v19 segmentation, and so `p3.target` and `p3.focal`, on 253
+  texts (0.21%).
+  - Audit corpus: 64 texts, all over-counts removed.
+  - Cross-model rows: 1 text.
+  - v8.1 sample: 188 texts; 158 over-counts removed, and 30 boundaries the narrowed
+    closing-mark class had missed are restored.
+- **Against the human counts:** v19 agrees with them on 46/65 labelled responses
+  before and 65/65 after; the inherited splitter agrees on 65/65 in both.
+- **Against the inherited splitter:** the v19 count now equals the inherited count
+  on 118,611 of 118,612 texts, against 252 disagreements before.
+
+**Known residual.** The one remaining disagreement is a real v8.1 response,
+"… water is primarily H₂O. These components …".
+- **Mechanism.** v19 normalises with NFKC, which turns `H₂O.` into `H2O.`. In the
+  guard, `TRAILING_ABBREVIATION` stops at the digit, so it reads the trailing `O.`
+  as an initial and suppresses the boundary. v19 counts 7 sentences here; the
+  inherited splitter and the pre-repair v19 count 8.
+- **Scope.** The same guard behaviour applies to an ASCII `H2O.` in the certified
+  inherited verifier itself, so this is an inherited limitation that v19 now shares.
+  It is not new code.
+- **Not fixed here.** Changing it would amend the inherited verifier and needs its
+  own decision.
+
+**Results affected.** None that exist.
+- The v19 confirmatory run has not been executed.
+- The exploratory arm and the DCI-1 line score through `dci.verifiers.rules` or
+  their own verifiers, and `rules.split_sentences` is unchanged.
+
+**Still outstanding.** Section 10.6's Stage 2 semantic re-audit (human work).
+Regenerating the packets invalidated the ones already issued, so this re-freeze may
+not be presented as reviewed until that re-audit runs against the current bundle.
 ---
 
 ## 2026-09-13 — (post-confirmatory audit) two gaps in the frozen v8.1 analysis found in review; the executed run was not affected by either; the result extractor now reads signed records only
