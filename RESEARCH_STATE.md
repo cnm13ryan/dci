@@ -30,7 +30,7 @@ Positive τ is directional interference.
 | what | the preregistered v15/v19 protocol | fast, cheap, local-GPU probing |
 | changes | ledgered amendments (`docs/migration_ledger.csv`, `src/dci/v19/stage2_frozen.json`) | free; interfaces break by design |
 | output | a **gate status**, not a number (`src/dci/statuses.py`) | estimates stamped `EXPLORATORY_NO_EVIDENCE` |
-| status | Stage 2 frozen; the confirmatory run has **not** been executed | eleven rounds completed |
+| status | Stage 2 frozen, with Pair 3 segmentation re-frozen on 2026-09-13 and its section 10.6 semantic re-audit outstanding; the confirmatory run has **not** been executed | eleven rounds completed |
 
 They are coupled in one direction: `exploratory/dci_exploratory/harvest.py`
 executes confirmatory stages `c112…c212` at runtime to obtain the constraint

@@ -147,3 +147,27 @@ as an initial, occurs 0 times in the 240-response corpus.
 contract at the seam and runs the existing boundary banks through *both* layers.
 All 39 prior boundary tests called only `rules.split_sentences`, and that
 one-sidedness is why the two implementations drifted apart in the first place.
+
+**Port to main (2026-09-13).** The repair above was merged into
+`chore/repo-hardening-and-research-state` (PR #22) after that branch had already
+been merged into `main` (PR #21). So `main` kept this defect, as a strict xfail,
+until it was ported by cherry-picking the same four commits. The port changed the
+scope, evidence and outstanding work as follows.
+
+- **Two corrections to the scope stated above.**
+  - The segmentation also feeds `p3.focal.increasing_lengths`, so both Pair 3
+    verifiers change.
+  - The Pair 1 and Pair 2 spec hashes move with the text-policy state; their
+    behaviour does not.
+- **Differential over 118,612 texts** (the audit corpus, cross-model rows and a
+  v8.1 sample):
+  - v19 changes on 253 texts;
+  - the inherited splitter and the Pair 1 and Pair 2 verifiers are unchanged on
+    all of them;
+  - v19 now matches the inherited count on all but one text.
+- **Residual.** That one text contains `H₂O.`. NFKC makes it `H2O.`, whose trailing
+  `O.` the guard reads as an initial, so one boundary is lost. This is the guard's
+  documented initial cost, realised once in 118,612 texts. It is inherited from
+  `dci.verifiers.rules`, and changing it is a separate decision.
+- **Step 5 above is still outstanding.** See `CHANGES_SCIENTIFIC.md`, 2026-09-13
+  (v19).
