@@ -13,6 +13,329 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-09-13 — (v19) three review findings closed: the verifier hash closure, the Stage 2 report's bundle identity, and stage gates that did not reach upstream stages
+
+**What changed.** Three findings from Codex reviews of PRs #12 and #13 were verified
+against current code and fixed. None changes a verifier's behaviour.
+
+1. **Verifier implementation hashes did not cover the code that ran.**
+   - **Unhashed:** every verifier returns through `Verifier.invoke`, `_scored`,
+     `_missing`, `_delivered`, `_unparseable`, the two compliance mappers,
+     `VerifierOutcome.__post_init__` and `assert_evidence_is_diagnostic`, and none
+     of them was in any implementation tuple.
+   - **Also unhashed:** Pair 1's marker builders, `ParsedList.count`/`describe`, the
+     ordering relation's `closure`, `chain_depth` and label check, and the Pair 2
+     `folded_tokens`/`word_tokens` helpers.
+   - **Consequence:** editing e.g. `_count_compliance` would have moved recorded
+     compliance with `verifiers.bundle_hash` unchanged.
+   - **Fix:** `_outcome_contract()` and the missing helpers now join the tuples.
+   - **Guard:** `tests/unit/test_v19_implementation_closure.py` traces all six
+     verifiers over inputs that reach every outcome branch. It refuses any executed
+     `dci` function that is neither inside a hashed callable's source nor on an
+     explicit identity-only list, each entry naming the hash that already carries
+     it. On the previous tuples it fails for all six verifiers.
+2. **The Stage 2 certification report named no bundle.** `Certification.bundle_hash`
+   was always `""`. `certify_verifiers` now carries the hash its bundle finding
+   computed, and `certify_stage2` passes it through. The value stays empty when
+   there is no frozen list policy.
+3. **Stage gates were not transitive over producing stages.**
+   - **The claim:** the registry said downstream stages could require only
+     aggregate artifacts because each aggregate's `depends_on` chain carried every
+     upstream requirement.
+   - **Why it was false:** 13 of 18 gates had upstream requirements outside that
+     closure. Stage 15 reported READY with every confirmation pool, background
+     stratum and independent validation unresolved, because no aggregate's
+     `depends_on` reached them.
+   - **Fix:** `Registry.requirement_sources`/`upstream_requirements` extend a
+     stage's blockers with the requirements of every stage that produces one of its
+     inputs, recursively. This is section 14's ordering rule.
+   - **What is not changed:** no `depends_on` edge was invented to make the
+     traversal work; the one declaration added is the review follow-up below.
+   - **Reporting:** `stage_status` reports inherited blockers with the stage that
+     declared them (`required_by`) and a new `n_required_including_upstream`.
+   - **Review follow-up, same day (Codex on PR #36).** Transitivity follows
+     `produces`, and Stage 15 declared none, so no traversal could reach it: with
+     every Stage 12 and 14 artifact frozen, Stage 16 (locked inference, and the
+     terminal-state ledger it creates) reported READY before any confirmatory
+     generation had run. Section 14.16 verifies the completeness of that
+     generation, and section 15.1's fixed-size stopping rule defines when it is
+     complete. Stage 15 now produces a new pending slot,
+     `generation.confirmatory_outputs` (`PENDING_EMPIRICAL`; depends on the
+     generation manifest, the root signature and the certified GPU class), which
+     Stage 16 requires and `ledger.terminal_states` depends on.
+     `test_locked_inference_waits_for_confirmatory_generation` and
+     `test_from_stage_2a_every_stage_is_reached_from_its_predecessor` fail on
+     the previous registry. The consecutive-stage check starts at Stage 2A:
+     Stage 1's outputs are fixed by the preregistration text, and whether
+     Stage 2A should wait for a Stage 2 output (its verifier-replay tests) is a
+     protocol question this change does not decide.
+
+**Frozen artifacts.** `tools/refreeze_stage2.py` re-froze
+`verifiers.specification_bundle` (all six `implementation_hash` values, nothing
+else) and `verifiers.bundle_hash`.
+- Unchanged: the other 11 records, every spec hash and policy hash, and the review
+  packets. Both tools now report every record current.
+- The registry's declaration fingerprint moves (208 → 209 slots;
+  `71d7e86d…` → `0f4c7108…`) with the new Stage 15 output. It is not frozen in
+  any artifact, and neither tool reports anything stale.
+
+**Tests corrected, with reasons.**
+- `test_the_target_verifier_declares_only_generic_segmentation` pinned the exact,
+  incomplete Pair 1 tuple. It now asserts what it exists for: no label or relation
+  code in the target's closure.
+- `test_no_function_a_verifier_declares_mentions_an_arm` now ignores docstrings.
+  `assert_evidence_is_diagnostic` is newly in every closure, and its docstring names
+  `arm` as a field it rejects. Identifiers, string constants and comments still
+  count.
+- `all_upstream_of` in `test_v19_stage_gates.py` froze only the `depends_on` closure,
+  the exact state the defect let through. It now freezes the upstream requirements.
+  The old helper survives as `depends_on_closure_of` to pin the regression
+  (`test_depends_on_alone_no_longer_unblocks_stage_fifteen`, which fails on the
+  previous registry).
+
+**Which results are affected.** None.
+- The v19 confirmatory run has not been executed.
+- Verifier outputs are identical on the 118,612-text differential corpus, and
+  confirmatory-suite and exploratory results are unchanged.
+- A v19 pre-freeze stage can now be blocked by an unmet upstream requirement that
+  was previously invisible to it. That is the intended correction, and no v19
+  stage past Stage 2 has run.
+
+**Comparability.** Unchanged for every recorded number.
+
+---
+
+## 2026-09-13 — (v19; written 2026-08-13 for PR #22, ported to main) Pair 3 sentence segmentation repaired in the v19 layer
+
+**What changed.** `dci.v19.text` re-declared its own sentence-boundary regex and
+split on it directly. Two repairs that live in `dci.verifiers.rules` were lost in
+the process:
+
+* the boundary pattern was narrower than the one it claimed to inherit verbatim —
+  at most one closing mark from a three-character set, which is the *pre*-repair
+  class — so `**Bold.** Next.` and `(Aside.) Next.` did not split;
+* the abbreviation guard (`rules.ends_sentence`) was not applied at all, so
+  titles, medial abbreviations and initials each produced a spurious boundary.
+
+`v19/text.py` now takes `rules.SENTENCE_BOUNDARY.pattern` directly and declares
+`sentence_abbreviation_guard = "dci.verifiers.rules.ends_sentence"`, a new hashed
+`TextPolicy` field. The guard is named rather than boolean so the specification
+hash records *which* rule ran and a future policy that wants raw regex splitting
+has to say so.
+
+The final shape delegates all three parts of the decision — the pattern, the
+boundary-acceptance loop (`rules.split_line`, now public and parameterised by the
+policy's compiled pattern) and the ambiguous-terminator predicate
+(`rules.ends_sentence`). v19 carries no boundary regex, no abbreviation table and
+no split loop of its own. That last step was **structural and verdict-preserving**:
+both layers were checked identical to `HEAD` over a 59-text bank (0 differences),
+and in the frozen table only `implementation_hash` fields moved while every text
+and list policy hash stayed put — which is exactly the signal that separates a
+refactor from a measurement change here.
+
+**What measurement changed.** `v19:p3.target.exact_sentence_count` — the verifier
+that decides the primary outcome F_A. Examples, inherited → v19-before → v19-now:
+
+| text | inherited | was | now |
+|---|---:|---:|---:|
+| `Mr. Smith went to Washington. He stayed.` | 2 | 3 | 2 |
+| `Sales spike at 6 a.m. when others sleep.` | 1 | 2 | 1 |
+| `A. B. C. D. E.` | 1 | 5 | 1 |
+| `**Bold.** Next one.` | 2 | 1 | 2 |
+
+The pre-repair v19 direction was over-counting, which manufactures sentence-count
+*overshoot* and scores compliant answers as violations — the same defect class the
+blinded human audit removed from the inherited verifier in Round 4.
+
+**Adjudicated against blinded human ground truth.** `exploratory/verifier_audit/`
+holds a blinded three-way audit — human sentence counts recorded against real
+study outputs with arm, condition and every verdict withheld. Joining the labels
+to the texts gives 65 labelled responses:
+
+| segmenter | agreement with the human count |
+|---|---:|
+| inherited `dci.verifiers.rules` | **65/65** |
+| frozen v19 as it stood | **46/65** |
+| v19 with the guard restored | **65/65** |
+
+All 19 disagreements are over-counts, none under-counts; the causes are 20 ×
+`a.m.`, 2 × `p.m.` and one single-capital initial. On the 43 labelled cases that
+carry a target `n`, **6 (14%) have their F_A verdict flipped**, and in every one
+the unguarded verifier is wrong against the human verdict — each a false FAIL on
+a compliant answer. Across all 240 responses in the corpus the two segmenters
+disagree on 64 (26.7%).
+
+The guard's own documented cost — a sentence ending in a bare capital letter,
+read as an initial — occurs **0 times in those 240 responses**, so it is
+unrealised on this study's output distribution.
+
+**Which results are affected.** None that exist. The v19 confirmatory pipeline has
+not been run. The exploratory arm is unaffected: it scores through
+`dci.verifiers.rules.v_exact_sentence_count`, imports only design constants
+(`LOADS`, `ORDERS`, `PAIR_3`, `families`) from `dci.v19`, and never reaches
+`dci.v19.verifiers`. The inherited path was verified byte-for-byte unchanged
+against `HEAD` over the audit bank (0 differences).
+
+**Comparability.** Not at issue for existing numbers, per the above. Any future
+v19 output is comparable with the inherited-verifier exploratory results in a way
+the previous code was not.
+
+**Consequent artifact changes.** Both regenerated by their producing procedure,
+not by hand:
+
+* `src/dci/v19/stage2_frozen.json` — 6 records (`verifiers.p1.list_policy`,
+  `satisfiability.encoding_map`, `satisfiability.review_trigger`,
+  `verifiers.specification_bundle`, `verifiers.boundary_mutations`,
+  `verifiers.bundle_hash`) via `tools/refreeze_stage2.py`. The mutation battery
+  still reports `n_collateral: 0` on all six verifiers.
+* `docs/v19_stage2_semantic_review_packets.json` — all three packet ids, via
+  `tools/generate_review_packets.py`. Packet ids are content hashes over the
+  composition, clause and witness, so a reviewer is not shown material built by a
+  parser that is no longer running.
+
+**Evidence.** `tests/unit/test_segmentation_contract.py` states the contract at
+the seam: the certified boundary banks are imported from
+`test_sentence_boundary_abbreviations` and run through **both** layers, because
+all 39 pre-existing boundary tests called only `rules.split_sentences` — which is
+how a one-sided contract let the two implementations drift apart. A mutation check
+confirms the contract bites: the shipped defect produces 22 bank failures (18 from
+the dropped guard, 4 from the narrowed closing-mark class).
+
+The one permitted divergence is pinned rather than hidden: v19 keeps a segment
+containing any Unicode word token where the inherited layer requires
+`[A-Za-z0-9]`, so non-Latin text is 0 segments inherited and ordinary text in v19.
+That is amendment A2's `unicode-sentence-survival` correction, and it is a
+*survival* difference, not a boundary-placement one.
+
+`exploratory/tests/test_audit_independence.py` is the counterweight: the three
+deliberate re-implementations — `independent_segmenter.segment`,
+`reanalysis_standalone`, and `mechanism.legacy_split_sentences` — must **not** be
+unified, because their value is that they share no code with what they audit.
+Applying "one implementation" uniformly would collapse the controls into the
+thing they control.
+
+Also `tests/unit/test_v19_inherited_verifier_audit.py`. The enumerated
+disagreement set is unchanged at 15 entries, all Unicode-class, exactly as
+amendment A2 declared — the six abbreviation disagreements that were failing the
+audit are gone rather than added to the table. Two fixtures that had encoded the
+regressed behaviour were corrected, and
+`test_pair_three_segmentation_matches_the_certified_inherited_splitter` now pins
+agreement with the inherited splitter case by case.
+
+
+**Port to main, 2026-09-13.** This entry was written on 2026-08-13 for PR #22, but
+the repair never reached `main` until now.
+
+- **Why it was missed.** PR #21 merged `chore/repo-hardening-and-research-state`
+  into `main` at `12f7195` (2026-08-14 17:15Z). That commit still carried this
+  defect as a strict xfail. PR #22 merged the repair into that branch 26 minutes
+  later, so it stayed there.
+- **What was ported.** Four commits, cherry-picked with `-x` onto `main`
+  (`a43dfc0`): `10c5726`, `07e0b6e`, `25b9265` and `4cc823f`.
+  - The first two add `tools/generate_review_packets.py` and
+    `tools/refreeze_stage2.py`. These are the producing procedures this entry
+    names, and `CLAUDE.md` already cites them.
+  - Nothing else from that branch is included.
+- **Conflicts.** Between the merge base and `main`, nothing under `src/dci`,
+  `tests` or `tools` had changed except the new `tests/unit/test_frozen_solver_pin.py`.
+  The only conflicts were in this file and `RESEARCH_STATE.md`.
+
+**The frozen closure (`4cc823f`, not described above).** Delegating the decision to
+`dci.verifiers.rules` put part of the measurement outside v19. So the Pair 3
+specification state now also carries the guard's substance:
+`text.abbreviation_guard_state` holds the boundary pattern, both abbreviation
+tables, the trailing-token pattern and the opening-punctuation set. The Pair 3
+implementation tuples gain `rules.split_line`, `rules.ends_sentence` and
+`rules._opens_with_capital`. A change to the delegated tables now moves the spec
+hash and the bundle hash.
+
+**Correction to the scope stated above.** The measurement changes for **both** Pair
+3 verifiers, not only `p3.target`: `v19:p3.focal.increasing_lengths` scores word
+counts over the same segmentation.
+
+- **Pair 1 and Pair 2:** their four spec hashes and `boundary_mutations` record
+  hashes move because the text-policy state gains a field. Their behaviour does not
+  change.
+
+**Frozen artifacts, final state against `main`.**
+- `src/dci/v19/stage2_frozen.json`: 6 of 13 records change (including the
+  review follow-up below).
+  - `verifiers.p1.list_policy`: the text policy's `sentence_boundary` becomes
+    `rules.SENTENCE_BOUNDARY.pattern`, and it gains `sentence_abbreviation_guard`.
+  - `satisfiability.encoding_map` and `satisfiability.review_trigger`: the list-
+    and text-policy hashes, and the trigger's records hash.
+  - `verifiers.specification_bundle`: both policy hashes, all six spec hashes, and
+    the implementation hashes of the two Pair 3 verifiers.
+  - `verifiers.boundary_mutations`: six records hashes. Every `n_collateral` stays 0.
+  - `verifiers.bundle_hash`.
+  - The other 7 records, including `satisfiability.solver_identity` (z3 5.0.0),
+    and every investigator decision, are unchanged.
+- `docs/v19_stage2_semantic_review_packets.json`: the three packet ids, the two
+  policy hashes and the three encoding hashes change. No composition, clause or
+  witness changes.
+- **Reproducibility.** Run on the ported tree, both tools report every record
+  current and nothing to write, so the committed values are what the procedures
+  produce.
+
+**Differential check of the port.** The whole bundle and the inherited splitter
+were run under `main`'s code and under this branch over the same 118,612 texts:
+the 240-response blinded audit corpus, 640 cross-model rows and a 1-in-20 sample of
+117,732 v8.1 confirmatory responses.
+
+- **Unchanged on every text, with identity hashes stripped:**
+  `rules.split_sentences`, the Pair 1 and Pair 2 verifiers, and word tokens.
+- **Changed:** the v19 segmentation, and so `p3.target` and `p3.focal`, on 253
+  texts (0.21%).
+  - Audit corpus: 64 texts, all over-counts removed.
+  - Cross-model rows: 1 text.
+  - v8.1 sample: 188 texts; 158 over-counts removed, and 30 boundaries the narrowed
+    closing-mark class had missed are restored.
+- **Against the human counts:** v19 agrees with them on 46/65 labelled responses
+  before and 65/65 after; the inherited splitter agrees on 65/65 in both.
+- **Against the inherited splitter:** the v19 count now equals the inherited count
+  on 118,611 of 118,612 texts, against 252 disagreements before.
+
+**Known residual.** The one remaining disagreement is a real v8.1 response,
+"… water is primarily H₂O. These components …".
+- **Mechanism.** v19 normalises with NFKC, which turns `H₂O.` into `H2O.`. In the
+  guard, `TRAILING_ABBREVIATION` stops at the digit, so it reads the trailing `O.`
+  as an initial and suppresses the boundary. v19 counts 7 sentences here; the
+  inherited splitter and the pre-repair v19 count 8.
+- **Scope.** The same guard behaviour applies to an ASCII `H2O.` in the certified
+  inherited verifier itself, so this is an inherited limitation that v19 now shares.
+  It is not new code.
+- **Not fixed here.** Changing it would amend the inherited verifier and needs its
+  own decision.
+
+**Results affected.** None that exist.
+- The v19 confirmatory run has not been executed.
+- The exploratory arm and the DCI-1 line score through `dci.verifiers.rules` or
+  their own verifiers, and `rules.split_sentences` is unchanged.
+
+**Review follow-up, same day (Codex on PR #35).** The guard state recorded
+`TRAILING_ABBREVIATION.pattern` but not the regex's compile flags, and the
+declaration is outside every implementation hash.
+- **The gap.** Recompiling the regex with `re.ASCII` stops `[^\W\d_]` matching
+  `É`, so in "The label reads ÉA. Next stop is Paris." the trailing token shrinks
+  to the initial "A" and a boundary disappears. The count went from 2 to 1 while
+  the bundle hash stayed the same (demonstrated).
+- **The fix.** `abbreviation_guard_state` now also records
+  `trailing_abbreviation_flags`.
+  `test_changing_the_abbreviation_regex_flags_moves_the_frozen_identity` pins it,
+  and it fails without the fix.
+- **The re-freeze.** `tools/refreeze_stage2.py` re-froze
+  `verifiers.specification_bundle` and `verifiers.bundle_hash`.
+  - The guard state is part of every verifier's frozen segmentation, so all six
+    `spec_hash` values move.
+  - No implementation hash, policy hash, other record or review packet changes.
+- **No behaviour change.** The differential harness gives identical outputs on
+  all 118,612 texts before and after.
+
+**Still outstanding.** Section 10.6's Stage 2 semantic re-audit (human work).
+Regenerating the packets invalidated the ones already issued, so this re-freeze may
+not be presented as reviewed until that re-audit runs against the current bundle.
+---
+
 ## 2026-09-13 — (post-confirmatory audit) two gaps in the frozen v8.1 analysis found in review; the executed run was not affected by either; the result extractor now reads signed records only
 
 **What changed.** No rule, estimand, threshold or frozen module. Code review of PR #33
