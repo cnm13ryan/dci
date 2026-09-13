@@ -3,7 +3,7 @@
 The 10-minute orientation. Everything here points at something else; primary
 numbers live in the reports and the generated artifacts, not in this file.
 
-Last reviewed: 2026-08-29.
+Last reviewed: 2026-09-10.
 
 ---
 
@@ -482,6 +482,35 @@ what it *decides*. Verdict **READY_TO_FREEZE**: basis C registered, the
 operating-point rule unchanged with its runner-up arm, mixed pilot commits
 accepted on an audited operational-only difference. The freeze binds the
 pilot roots; no replicate root can be bound.
+
+**FROZEN, GENERATED AND ANALYSED (2026-09-10).** The v8.1 confirmatory root
+`dci1/evidence/dci1v8p1-confirm` froze at commit `034fc72` (preregistration
+hash `d3552f9f…`, membership lock `31af521c…`), generated 2,353,152 rows
+across 12 LOCAL and 14 SPECTRUM frames at 384 blocks per frame, and the
+frozen `CONFIRMATORY_ANALYSIS` and `FINAL_REPORT` stages ran once and
+returned `PASS` for all four models. **Δ_R(f) runs −11.19 to +12.64 pp over
+the 24 entering model × frame × order cells; 23 of 24 joint decision
+intervals stop below +10 pp (`L3c`) and the precision precondition is met in
+24 of 24 (half-widths 1.05–3.24 pp).** Seven of eight model × order
+configurations return `LOCAL_EQUIVALENT_SAME_FORM_ONLY`; gemma-3n-e4b-it
+with B second returns **`FRAME_HETEROGENEOUS`**, because its frame 1 gives
+Δ_R = +12.64 pp, joint CI [+9.62, +15.66], reading `INDETERMINATE@0.10`.
+That cell is also the study's most reference-sensitive: across the nine
+admissible triples of its five frozen families Δ_R runs −8.63 to +12.64 pp
+and the frozen triple is the most harmful of the nine; the graded recoding
+takes it to +7.07 pp; §17.4's both-bounds rule withholds its levels; and the
+SPECTRUM arm on the same rows puts A 11.49 pp *below* what companions of its
+measured difficulty predict. Reference-set choice changes a registered
+verdict on 2 of 24 cells (both on gemma-3n-e4b-it, B second); the runner-up
+operating point changes **none**. Raw composition is undiminished: D(B←A)
+runs −13.5 to +49.2 pp and D(A←B) −36.1 to +54.5 pp. §26 methodological
+success is `MET` on both Gemmas and `NOT_MET` on both Qwens, on D(A←B)'s
+precision alone — every Δ_R interval meets its precondition. Full result
+matrix, sensitivities, claim ledger and the manuscript rewrite map:
+[`V8_1_POSTCONFIRM_PAPER_REWRITE_BUNDLE.md`](V8_1_POSTCONFIRM_PAPER_REWRITE_BUNDLE.md)
+and [`POSTCONFIRM_EXEC_SUMMARY.md`](POSTCONFIRM_EXEC_SUMMARY.md); the
+machine-readable tables are under
+`dci1/reports/dci1v8dev/postconfirm/data/`.
 
 ### 4c. The reference-pool tension, and what was screened against it (2026-08-20)
 

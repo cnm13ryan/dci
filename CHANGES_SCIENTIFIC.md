@@ -13,6 +13,75 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-09-10 (v8.1 confirmatory) — the frozen registered analysis executed once; the confirmatory estimand now has values, and every earlier v8/v8.1 number becomes pre-freeze identification evidence
+
+**What changed.** Nothing in any rule. The frozen `CONFIRMATORY_ANALYSIS`
+and `FINAL_REPORT` stages ran once, unattended, on the complete
+2,353,152-row set of the root `dci1/evidence/dci1v8p1-confirm`, from a clean
+worktree at the bound commit `034fc7214762b6848d5d904b14fd82b317830667`,
+under the freeze each generation record was signed against. All eight
+invocations returned `PASS`. The analysis code was byte-identical to the
+seven module hashes bound at registration, and the seven documents and the
+membership lock hashed to their registered values. No frozen threshold,
+estimand, forwarding rule, operating point, eligibility rule or multiplicity
+plan was touched, and no protected outcome was read before the stage ran.
+
+**Which results are affected.** All of them, in the sense that the study
+now has a confirmatory answer where before it had none.
+
+- The confirmatory estimand Δ_R(f) has values for the first time: −11.19 to
+  +12.64 pp over 24 entering model × frame × order cells, 23 of 24 reading
+  `L3c` on the joint decision interval, precision precondition met 24 of 24.
+- Model verdicts: `LOCAL_EQUIVALENT_SAME_FORM_ONLY` on seven of eight model
+  × order configurations, `FRAME_HETEROGENEOUS` on gemma-3n-e4b-it with B
+  second. Every verdict carries `NEAR_FORM_UNAVAILABLE`.
+- §26 methodological success: `MET` on both Gemma models, `NOT_MET` on both
+  Qwen models — on D(A←B)'s precision precondition only.
+- The registered descriptive families now have values too: F_REFSENS
+  (verdict changes on 2 of 24 cells), F_RUNNER_UP (no reading changes),
+  F_SPECTRUM (δ_difficulty negative in 25 of 28 cells, `L3e` on 17; and the
+  fitted slope β positive with its interval excluding zero in 19 of 28 —
+  since ι is a chance-corrected stand-alone *compliance*, that is B faring
+  worse beside an *easier* companion, the opposite of the arm's design
+  premise), F5's
+  two recodings, F6's vacuity family, F11's order contrasts, §23's
+  projection audit (outside its allowance on 370 of 370 audited cells) and
+  §34 D6's ledger (0 `NOT_IDENTIFIED`).
+
+**Comparability.**
+
+- **v8.1 pre-freeze evidence stays valid and stays what it was**: pilot runs
+  r14/r15/r16/r23, the decoding re-executions, the topic-resampled
+  replicates and r26 are all *identification* evidence measured before any
+  composed cell existed. They are not comparable with, and are not
+  superseded by, the confirmatory numbers; they establish that the pipeline
+  that chose the operating points and reference sets was stable enough in
+  its verdicts for the confirmatory contrast to mean something.
+- **v7 development results are not comparable and must not be merged.**
+  v7's Δ_R is pooled over the four wording frames; v8.1's is per frame, and
+  no registered v8.1 quantity pools them. v7's "no simultaneous upper bound
+  above +3.9 pp" does not survive: v8.1's largest joint upper bound is
+  +15.66 pp.
+- **The frozen v8 root `dci1v8-confirm-r2` remains superseded** for this
+  successor design and was not altered.
+
+**What was added.** Two read-only tools that compute nothing scientific:
+`dci1/tools/v8_postconfirm_extract.py` copies the signed analysis records
+into the paper's CSV/JSON tables, and
+`dci1/tools/v8_postconfirm_spectrum_points.py` re-forms the registered
+spectrum fit's own input with the frozen functions and asserts it reproduces
+the recorded slope, prediction, δ_difficulty and every per-point residual to
+1e-9. Their outputs live in `dci1/reports/dci1v8dev/postconfirm/data/`; the
+interpretation lives in `V8_1_POSTCONFIRM_PAPER_REWRITE_BUNDLE.md`.
+
+**Not resolved by this entry.** Reference-set conditionality (2 of 24
+verdicts move across admissible triples of the frozen five);
+qwen3-4b-instruct-2507's sample-sensitive eligibility; every frame being
+`OPERATING_POINT_UNSTABLE`; the absent near-form arm; the §23 projection's
+calibration.
+
+---
+
 ## 2026-09-03 (successor design, v8.1) — the pre-screen, the second pass and the forwarding become frame-specific; the pooled screen stays as a comparator arm; the frozen v8 root is superseded for the successor only
 
 **What changed.** Under Approach A every quantity from Gate 2 onward is

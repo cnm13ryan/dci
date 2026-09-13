@@ -72,6 +72,30 @@ records signed at the frozen commit `034fc72`. The next registered stage is
 composed outcome; nothing before it has read, summarised or computed from
 one.
 
+## Confirmatory analysis and final report (2026-09-10)
+
+Both remaining registered stages ran once, from the same clean worktree at
+the same bound commit, CPU only, and returned `PASS` for every model. Each
+analysis record re-read the rows on disk, matched the count against the
+generation record, and asserted its inputs against the freeze hash it was
+signed under.
+
+| model | analysis record hash | recorded at | final report hash |
+|---|---|---|---|
+| qwen3-4b | `5591cb46c64c127a` | 2026-09-10T13:54:01Z | `af7138f534420738` |
+| qwen3-4b-instruct-2507 | `31f1b46be5e6416e` | 2026-09-10T13:49:50Z | `3dfab3cd8904acfa` |
+| gemma-3n-e2b-it | `5edcd5730bc4c031` | 2026-09-10T13:53:39Z | `2fad8b4cab4cbaaa` |
+| gemma-3n-e4b-it | `e90e0f7d6606bd8d` | 2026-09-10T13:56:09Z | `c6666bdbabcdd2ee` |
+
+Bootstrap resamples 10,000, as registered. `FINAL_REPORT` is the last stage
+of the lifecycle; the root is complete and every stage is write-once, so a
+re-analysis would need a fresh root and re-generation.
+
+The results, their registered readings, every registered sensitivity and the
+manuscript rewrite map are in
+`V8_1_POSTCONFIRM_PAPER_REWRITE_BUNDLE.md` at the repository root, with the
+machine-readable tables under `reports/dci1v8dev/postconfirm/data/`.
+
 ## Where the pre-freeze evidence lives
 
 - `reports/dci1v8dev/frame_aware_prescreen/prescreen_revalidation.md` — the
