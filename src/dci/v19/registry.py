@@ -107,10 +107,23 @@ class StageGate:
 #
 # Downstream stages depend on AGGREGATE freeze artifacts where the protocol
 # provides one - section 14.12's root manifest hash and section 14.14's signed
-# root manifest - rather than re-enumerating every primitive. The aggregates are
-# themselves fail-closed on their primitives through their own `depends_on`
-# chains, so the shortening loses no strictness and cannot silently omit a
-# requirement added later.
+# root manifest - rather than re-enumerating every primitive.
+#
+# That shortening loses no strictness only because the gate is transitive over
+# STAGES, not just over `depends_on`: a stage is blocked by its own requirements
+# and, recursively, by the requirements of every stage that produces one of them
+# (`Registry.upstream_requirements`). Review found the `depends_on` chains alone
+# did not carry this - Stage 15 could report READY with every confirmation pool
+# unauthored and the Stage 10, 12 and 14 gates still blocked, because no
+# aggregate's `depends_on` reached them. Section 14's ordering says a later stage
+# consumes what an earlier stage produced, so an earlier stage's unmet
+# requirement blocks everything downstream of it, and a requirement added to an
+# upstream gate later propagates without editing any slot.
+#
+# Transitivity only follows `produces`, so a stage that declares no output cannot
+# be reached by it. Stage 15 was such a stage, and Stage 16 could report READY
+# before any confirmatory generation had run; it now produces
+# `generation.confirmatory_outputs`, which Stage 16 requires.
 STAGE_GATES: tuple[StageGate, ...] = (
     StageGate(
         key="stage_1_definitions", ordinal="1",
@@ -406,7 +419,7 @@ STAGE_GATES: tuple[StageGate, ...] = (
                    "execution authority", "freeze.root_signature")
             + _req("section 14.15 replays failures only within the certified "
                    "interchangeability class", "runtime.certified_gpu_class")),
-        produces=()),
+        produces=("generation.confirmatory_outputs",)),
     StageGate(
         key="stage_16_locked_inference", ordinal="16",
         title="locked confirmatory inference",
@@ -415,6 +428,9 @@ STAGE_GATES: tuple[StageGate, ...] = (
             _req("section 14.16 verifies completeness and integrity against the "
                  "frozen manifest", "manifest.generation_manifest",
                  "manifest.root_hash")
+            + _req("section 14.16 verifies the completeness of the confirmatory "
+                   "generation, which ends under section 15.1's fixed-size "
+                   "stopping rule", "generation.confirmatory_outputs")
             + _req("section 14.16 runs the single preselected analysis code once",
                    "freeze.root_signature")),
         produces=("ledger.terminal_states", "analysis.code_hash",
@@ -441,6 +457,10 @@ STAGE_GATE_BY_KEY: Mapping[str, StageGate] = {g.key: g for g in STAGE_GATES}
 # Derived view, kept because it is the simplest thing to read and to assert on.
 STAGE_DEPENDENCIES: Mapping[str, tuple[str, ...]] = {
     g.key: g.required_slots for g in STAGE_GATES}
+
+# Which stage produces each output. An output has at most one producer.
+PRODUCING_STAGE: Mapping[str, StageGate] = {
+    slot: g for g in STAGE_GATES for slot in g.produces}
 
 
 @dataclass(frozen=True)
@@ -484,14 +504,45 @@ class Registry:
                 f"{', '.join(g.key for g in STAGE_GATES)}")
         return STAGE_GATE_BY_KEY[stage]
 
+    def requirement_sources(self, stage: str) -> dict[str, StageGate]:
+        """Every slot `stage` needs, mapped to the stage that declares the need.
+
+        A stage's own requirements come first. Then, for each required slot that an
+        earlier stage produces, that stage's requirements are needed too, and so on
+        upstream: the producing stage could not legitimately have produced its
+        output while one of its own prerequisites was unmet. A stage that requires
+        one of its own outputs (Stage 2 and `satisfiability.review_trigger`) is not
+        re-entered.
+        """
+        root = self.gate(stage)
+        sources: dict[str, StageGate] = {}
+        visited = {root.key}
+        queue: list[tuple[str, StageGate]] = [(slot, root) for slot in root.required_slots]
+        while queue:
+            slot, declared_by = queue.pop(0)
+            if slot in sources:
+                continue
+            sources[slot] = declared_by
+            producer = PRODUCING_STAGE.get(slot)
+            if producer is not None and producer.key not in visited:
+                visited.add(producer.key)
+                queue.extend((s, producer) for s in producer.required_slots)
+        return sources
+
+    def upstream_requirements(self, stage: str) -> tuple[str, ...]:
+        """`requirement_sources` as names, own requirements first."""
+        return tuple(self.requirement_sources(stage))
+
     def blockers_for(self, stage: str) -> tuple[Slot, ...]:
-        """Which of a stage's declared prerequisites are still unresolved."""
-        return self.slots.blockers(*self.gate(stage).required_slots)
+        """Which prerequisites of `stage`, its own or inherited from the stages that
+        produce its inputs, are still unresolved."""
+        return self.slots.blockers(*self.upstream_requirements(stage))
 
     def require_stage(self, stage: str) -> None:
-        """Fail closed unless every prerequisite of `stage` is resolved."""
+        """Fail closed unless every prerequisite of `stage`, including those of the
+        stages that produce its inputs, is resolved."""
         gate = self.gate(stage)
-        self.slots.require(*gate.required_slots,
+        self.slots.require(*self.upstream_requirements(stage),
                            what=f"Stage {gate.ordinal} ({gate.title})")
 
     def citation_for(self, stage: str, slot: str) -> str:
@@ -512,6 +563,7 @@ class Registry:
         """
         gate = self.gate(stage)
         blockers = self.blockers_for(stage)
+        sources = self.requirement_sources(stage)
         statuses = sorted({s.status for s in blockers})
         root = next((s for s in BLOCKER_PRECEDENCE if s in statuses), None)
         return {
@@ -523,10 +575,13 @@ class Registry:
             "root_blocker": root,
             "all_blocking_statuses": statuses,
             "n_required": len(gate.required_slots),
+            "n_required_including_upstream": len(sources),
             "produces": list(gate.produces),
             "blockers": [
                 {"name": s.name, "prereg": s.prereg, "status": s.status,
-                 "rule": s.rule, "why_required": self.citation_for(stage, s.name)}
+                 "rule": s.rule,
+                 "required_by": sources[s.name].key,
+                 "why_required": self.citation_for(sources[s.name].key, s.name)}
                 for s in blockers],
         }
 

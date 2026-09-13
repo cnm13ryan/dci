@@ -13,6 +13,98 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-09-13 — (v19) three review findings closed: the verifier hash closure, the Stage 2 report's bundle identity, and stage gates that did not reach upstream stages
+
+**What changed.** Three findings from Codex reviews of PRs #12 and #13 were verified
+against current code and fixed. None changes a verifier's behaviour.
+
+1. **Verifier implementation hashes did not cover the code that ran.**
+   - **Unhashed:** every verifier returns through `Verifier.invoke`, `_scored`,
+     `_missing`, `_delivered`, `_unparseable`, the two compliance mappers,
+     `VerifierOutcome.__post_init__` and `assert_evidence_is_diagnostic`, and none
+     of them was in any implementation tuple.
+   - **Also unhashed:** Pair 1's marker builders, `ParsedList.count`/`describe`, the
+     ordering relation's `closure`, `chain_depth` and label check, and the Pair 2
+     `folded_tokens`/`word_tokens` helpers.
+   - **Consequence:** editing e.g. `_count_compliance` would have moved recorded
+     compliance with `verifiers.bundle_hash` unchanged.
+   - **Fix:** `_outcome_contract()` and the missing helpers now join the tuples.
+   - **Guard:** `tests/unit/test_v19_implementation_closure.py` traces all six
+     verifiers over inputs that reach every outcome branch. It refuses any executed
+     `dci` function that is neither inside a hashed callable's source nor on an
+     explicit identity-only list, each entry naming the hash that already carries
+     it. On the previous tuples it fails for all six verifiers.
+2. **The Stage 2 certification report named no bundle.** `Certification.bundle_hash`
+   was always `""`. `certify_verifiers` now carries the hash its bundle finding
+   computed, and `certify_stage2` passes it through. The value stays empty when
+   there is no frozen list policy.
+3. **Stage gates were not transitive over producing stages.**
+   - **The claim:** the registry said downstream stages could require only
+     aggregate artifacts because each aggregate's `depends_on` chain carried every
+     upstream requirement.
+   - **Why it was false:** 13 of 18 gates had upstream requirements outside that
+     closure. Stage 15 reported READY with every confirmation pool, background
+     stratum and independent validation unresolved, because no aggregate's
+     `depends_on` reached them.
+   - **Fix:** `Registry.requirement_sources`/`upstream_requirements` extend a
+     stage's blockers with the requirements of every stage that produces one of its
+     inputs, recursively. This is section 14's ordering rule.
+   - **What is not changed:** no `depends_on` edge was invented to make the
+     traversal work; the one declaration added is the review follow-up below.
+   - **Reporting:** `stage_status` reports inherited blockers with the stage that
+     declared them (`required_by`) and a new `n_required_including_upstream`.
+   - **Review follow-up, same day (Codex on PR #36).** Transitivity follows
+     `produces`, and Stage 15 declared none, so no traversal could reach it: with
+     every Stage 12 and 14 artifact frozen, Stage 16 (locked inference, and the
+     terminal-state ledger it creates) reported READY before any confirmatory
+     generation had run. Section 14.16 verifies the completeness of that
+     generation, and section 15.1's fixed-size stopping rule defines when it is
+     complete. Stage 15 now produces a new pending slot,
+     `generation.confirmatory_outputs` (`PENDING_EMPIRICAL`; depends on the
+     generation manifest, the root signature and the certified GPU class), which
+     Stage 16 requires and `ledger.terminal_states` depends on.
+     `test_locked_inference_waits_for_confirmatory_generation` and
+     `test_from_stage_2a_every_stage_is_reached_from_its_predecessor` fail on
+     the previous registry. The consecutive-stage check starts at Stage 2A:
+     Stage 1's outputs are fixed by the preregistration text, and whether
+     Stage 2A should wait for a Stage 2 output (its verifier-replay tests) is a
+     protocol question this change does not decide.
+
+**Frozen artifacts.** `tools/refreeze_stage2.py` re-froze
+`verifiers.specification_bundle` (all six `implementation_hash` values, nothing
+else) and `verifiers.bundle_hash`.
+- Unchanged: the other 11 records, every spec hash and policy hash, and the review
+  packets. Both tools now report every record current.
+- The registry's declaration fingerprint moves (208 → 209 slots;
+  `71d7e86d…` → `0f4c7108…`) with the new Stage 15 output. It is not frozen in
+  any artifact, and neither tool reports anything stale.
+
+**Tests corrected, with reasons.**
+- `test_the_target_verifier_declares_only_generic_segmentation` pinned the exact,
+  incomplete Pair 1 tuple. It now asserts what it exists for: no label or relation
+  code in the target's closure.
+- `test_no_function_a_verifier_declares_mentions_an_arm` now ignores docstrings.
+  `assert_evidence_is_diagnostic` is newly in every closure, and its docstring names
+  `arm` as a field it rejects. Identifiers, string constants and comments still
+  count.
+- `all_upstream_of` in `test_v19_stage_gates.py` froze only the `depends_on` closure,
+  the exact state the defect let through. It now freezes the upstream requirements.
+  The old helper survives as `depends_on_closure_of` to pin the regression
+  (`test_depends_on_alone_no_longer_unblocks_stage_fifteen`, which fails on the
+  previous registry).
+
+**Which results are affected.** None.
+- The v19 confirmatory run has not been executed.
+- Verifier outputs are identical on the 118,612-text differential corpus, and
+  confirmatory-suite and exploratory results are unchanged.
+- A v19 pre-freeze stage can now be blocked by an unmet upstream requirement that
+  was previously invisible to it. That is the intended correction, and no v19
+  stage past Stage 2 has run.
+
+**Comparability.** Unchanged for every recorded number.
+
+---
+
 ## 2026-09-13 — (v19; written 2026-08-13 for PR #22, ported to main) Pair 3 sentence segmentation repaired in the v19 layer
 
 **What changed.** `dci.v19.text` re-declared its own sentence-boundary regex and
