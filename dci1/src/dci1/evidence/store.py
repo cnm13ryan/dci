@@ -180,6 +180,21 @@ def mirror_to_durable(working: Path, durable: Path) -> dict[str, str]:
     return written
 
 
+def _verified_durable_bytes(src: Path) -> bytes:
+    """One durable file's bytes, checked against its hash sidecar."""
+    sidecar = src.with_suffix(src.suffix + ".sha256")
+    if not sidecar.exists():
+        raise ProtocolError(f"{src}: durable file has no hash sidecar")
+    data = src.read_bytes()
+    expect = sidecar.read_text().strip()
+    actual = sha_bytes(data)
+    if actual != expect:
+        raise ProtocolError(
+            f"{src}: durable bytes fail their recorded hash "
+            f"({actual[:12]} != {expect[:12]})")
+    return data
+
+
 def restore_from_durable(durable: Path, working: Path) -> dict[str, str]:
     """Copy durable → working, verifying every recorded hash; fail closed."""
     restored = {}
@@ -187,19 +202,10 @@ def restore_from_durable(durable: Path, working: Path) -> dict[str, str]:
     if not durable.exists():
         raise ProtocolError(f"durable root {durable} does not exist")
     for src in _iter_files(durable):
-        sidecar = src.with_suffix(src.suffix + ".sha256")
-        if not sidecar.exists():
-            raise ProtocolError(f"{src}: durable file has no hash sidecar")
-        data = src.read_bytes()
-        expect = sidecar.read_text().strip()
-        actual = sha_bytes(data)
-        if actual != expect:
-            raise ProtocolError(
-                f"{src}: durable bytes fail their recorded hash "
-                f"({actual[:12]} != {expect[:12]})")
+        data = _verified_durable_bytes(src)
         rel = src.relative_to(durable)
         atomic_write_bytes(Path(working) / rel, data)
-        restored[str(rel)] = actual
+        restored[str(rel)] = sha_bytes(data)
     return restored
 
 
@@ -212,6 +218,29 @@ def verify_working_matches_durable(working: Path, durable: Path) -> None:
             raise ProtocolError(f"{twin}: present in durable, absent locally")
         if sha_bytes(twin.read_bytes()) != sha_bytes(src.read_bytes()):
             raise ProtocolError(f"{twin}: differs from durable copy")
+
+
+def verify_durable_copy(working: Path, durable: Path) -> None:
+    """The durable copy of ``working`` exists, is intact and is current.
+
+    Intact: every file passes its hash sidecar, as a restore requires.
+    Current: working and durable hold the same files with the same bytes, so
+    neither a deleted or corrupted copy nor one that working has outgrown
+    passes. Fail closed.
+    """
+    working, durable = Path(working), Path(durable)
+    if not durable.is_dir():
+        raise ProtocolError(f"durable copy {durable} does not exist")
+    for src in _iter_files(durable):
+        _verified_durable_bytes(src)
+    verify_working_matches_durable(working, durable)
+    unreplicated = sorted(
+        {str(p.relative_to(working)) for p in _iter_files(working)}
+        - {str(p.relative_to(durable)) for p in _iter_files(durable)})
+    if unreplicated:
+        raise ProtocolError(
+            f"{working}: {len(unreplicated)} file(s) absent from the durable "
+            f"copy, first {unreplicated[:3]}; the copy is stale")
 
 
 def fingerprint_tree(root: Path) -> dict[str, str]:

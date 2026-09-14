@@ -51,8 +51,13 @@ def require_freeze_consistency(tree: StudyTree,
                                freeze_record_hash: str) -> None:
     if not tree.freeze_record.exists():
         raise ProtocolError(f"no freeze record at {tree.freeze_record}")
-    on_disk = json.loads(tree.freeze_record.read_text())
-    body = {k: v for k, v in on_disk.items() if k != "freeze_hash"}
+    try:
+        on_disk = json.loads(tree.freeze_record.read_text())
+        body = {k: v for k, v in on_disk.items() if k != "freeze_hash"}
+    except (ValueError, AttributeError) as error:
+        raise ProtocolError(
+            f"freeze record {tree.freeze_record} is unreadable; registered "
+            "output refused") from error
     actual = sha(body)
     if actual != freeze_record_hash:
         raise ProtocolError(

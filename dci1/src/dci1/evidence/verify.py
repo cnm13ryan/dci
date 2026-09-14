@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Any
 
 from dci1.evidence.layout import RAW_LAYERS, StudyTree
+from dci1.evidence.provenance import require_freeze_consistency
 from dci1.evidence.sealing import MANIFEST_NAME, CacheWriter, is_sealed, verify_stage
 from dci1.evidence.store import fingerprint_tree, restore_from_durable
 from dci1.protocol.constants import ProtocolError
@@ -49,14 +50,10 @@ def verify_evidence(tree: StudyTree) -> dict[str, Any]:
                 raise ProtocolError(
                     f"study manifest binding for stage {stage!r} fails "
                     f"({actual[:10]} != {digest[:10]})")
-        if manifest.get("freeze_record_hash") and \
-                tree.freeze_record.exists():
-            from dci1.protocol.hashing import sha
-
-            record = json.loads(tree.freeze_record.read_text())
-            body = {k: v for k, v in record.items() if k != "freeze_hash"}
-            if sha(body) != manifest["freeze_record_hash"]:
-                raise ProtocolError("study manifest freeze binding fails")
+        # A recorded binding makes the freeze record mandatory: a missing,
+        # unreadable or different record fails, by the check analysis uses.
+        if manifest.get("freeze_record_hash"):
+            require_freeze_consistency(tree, manifest["freeze_record_hash"])
         report["study_manifest_verified"] = True
     report["ok"] = True
     return report
