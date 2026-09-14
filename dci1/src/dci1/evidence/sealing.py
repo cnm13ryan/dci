@@ -17,17 +17,25 @@ import datetime
 import fcntl
 import json
 import os
+import re
 import subprocess
 from pathlib import Path
 from typing import Any
 
 from dci1.evidence.layout import RAW_LAYERS, StudyTree
-from dci1.evidence.store import atomic_write, read_json, write_json
+from dci1.evidence.store import (
+    atomic_write,
+    read_json,
+    verify_durable_copy,
+    write_json,
+)
 from dci1.protocol.constants import ProtocolError
 from dci1.protocol.hashing import sha_text
 
 SEAL_MARKER = "_SEALED"
 MANIFEST_NAME = "MANIFEST.jsonl"
+#: A commit id as ``git rev-parse`` prints it (SHA-1 or SHA-256 repositories).
+COMMIT_ID = re.compile(r"[0-9a-f]{40}|[0-9a-f]{64}")
 
 
 def utc_now() -> str:
@@ -35,17 +43,29 @@ def utc_now() -> str:
 
 
 def writer_identity(repo_root: Path | None = None) -> dict[str, Any]:
+    """The source revision an artifact is written from (R18, R20).
+
+    Fail closed: unless both Git commands exit 0 and HEAD is a commit id, the
+    identity is an empty commit with ``writer_dirty = True``, which
+    ``provenance.require_registered_writer`` refuses. A failed command prints
+    nothing, and reading that silence as a clean tree would let a registered
+    artifact name no source revision.
+    """
     root = repo_root or Path(__file__).resolve().parents[4]
+    unknown = {"writer_commit": "", "writer_dirty": True}
     try:
-        commit = subprocess.run(["git", "rev-parse", "HEAD"], cwd=root,
-                                capture_output=True, text=True,
-                                timeout=30).stdout.strip()
+        head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=root,
+                              capture_output=True, text=True, timeout=30)
         status = subprocess.run(["git", "status", "--porcelain"], cwd=root,
-                                capture_output=True, text=True,
-                                timeout=30).stdout.strip()
-        return {"writer_commit": commit, "writer_dirty": bool(status)}
+                                capture_output=True, text=True, timeout=30)
     except Exception:                                    # noqa: BLE001
-        return {"writer_commit": "", "writer_dirty": True}
+        return unknown
+    commit = head.stdout.strip()
+    if (head.returncode != 0 or status.returncode != 0
+            or not COMMIT_ID.fullmatch(commit)):
+        return unknown
+    return {"writer_commit": commit,
+            "writer_dirty": bool(status.stdout.strip())}
 
 
 def artifact_header(tree: StudyTree, *, model_id: str, schema_name: str,
@@ -101,6 +121,13 @@ def assert_stage_unsealed(stage_dir: Path) -> None:
     if is_sealed(stage_dir):
         raise ProtocolError(
             f"stage {stage_dir} is sealed; every subsequent write is refused")
+    # Only `seal_stage` writes a manifest, so a manifest means the stage was
+    # sealed, or a seal was interrupted. Removing the marker must not reopen it.
+    if (Path(stage_dir) / MANIFEST_NAME).exists():
+        raise ProtocolError(
+            f"stage {stage_dir} has a {MANIFEST_NAME} but no {SEAL_MARKER} "
+            "marker; a sealed stage is not reopened by removing its marker, "
+            "and every write is refused")
 
 
 class CacheWriter:
@@ -202,15 +229,29 @@ def seal_stage(tree: StudyTree, stage: str) -> dict[str, Any]:
 
 
 def verify_stage(tree: StudyTree, stage: str) -> dict[str, Any]:
-    """Recompute every hash/count in a sealed stage; raise on mismatch."""
+    """Recompute every hash/count in a sealed stage; raise on mismatch.
+
+    The seal marker is mandatory. It carries the manifest's checksum, so a
+    manifest without one is unverified, and a stage whose marker was removed
+    is refused rather than reported unsealed.
+    """
     stage_dir = tree.stage_dir(stage)
     manifest_path = stage_dir / MANIFEST_NAME
     if not manifest_path.exists():
         raise ProtocolError(f"{stage_dir}: no stage manifest")
-    seal = json.loads((stage_dir / SEAL_MARKER).read_text()) \
-        if is_sealed(stage_dir) else None
+    if not is_sealed(stage_dir):
+        raise ProtocolError(
+            f"{stage_dir}: {MANIFEST_NAME} without its {SEAL_MARKER} marker; "
+            "the seal was removed or never completed, and the stage is not "
+            "verified")
+    try:
+        sealed_checksum = json.loads(
+            (stage_dir / SEAL_MARKER).read_text())["manifest_sha256"]
+    except (ValueError, KeyError, TypeError) as error:
+        raise ProtocolError(
+            f"{stage_dir}: unreadable {SEAL_MARKER} marker") from error
     text = manifest_path.read_text()
-    if seal and sha_text(text) != seal["manifest_sha256"]:
+    if sha_text(text) != sealed_checksum:
         raise ProtocolError(f"{stage_dir}: manifest fails its sealed checksum")
     listed = {}
     for line in text.splitlines():
@@ -232,8 +273,7 @@ def verify_stage(tree: StudyTree, stage: str) -> dict[str, Any]:
                 f"{stage_dir / rel}: differs from its manifest entry "
                 f"(recorded {entry['sha256'][:10]}, "
                 f"actual {actual['sha256'][:10]})")
-    return {"stage": stage, "files": len(listed),
-            "sealed": is_sealed(stage_dir)}
+    return {"stage": stage, "files": len(listed), "sealed": True}
 
 
 def write_study_manifest(tree: StudyTree,
@@ -275,6 +315,14 @@ def replicate_raw_layers(tree: StudyTree) -> dict[str, Any]:
 
 
 def assert_replicated(tree: StudyTree, *layers: str) -> None:
+    """Selection and scoring proceed only on raw layers whose durable copy
+    exists, is intact and matches the working layer (R25).
+
+    The receipt says a replication happened once. The copy is what makes the
+    raw evidence recoverable, so every named layer's copy is checked on each
+    call (``store.verify_durable_copy``). A receipt whose copy was deleted,
+    corrupted or outgrown is refused.
+    """
     path = tree.root / "integrity" / "replication.json"
     if not path.exists():
         raise ProtocolError(
@@ -285,3 +333,10 @@ def assert_replicated(tree: StudyTree, *layers: str) -> None:
         if layer not in record.get("layers", {}):
             raise ProtocolError(
                 f"raw layer {layer!r} has no replication record (R25)")
+        try:
+            verify_durable_copy(tree.root / layer, tree.durable_root / layer)
+        except ProtocolError as error:
+            raise ProtocolError(
+                f"raw layer {layer!r} has a replication record but no "
+                f"current durable copy; selection and scoring refuse to "
+                f"proceed (R25): {error}") from error
