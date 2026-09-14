@@ -7,10 +7,12 @@
 # primary outcome had silently lost its abbreviation guard, and the test that
 # exists to catch exactly that was red and unread.
 #
-# Both suites run without any GPU stack, in about two minutes. The hardware and
-# `slow` tiers are deliberately excluded: they need the ROCm workstation, the
-# Lambda API, or sixteen minutes, and a CI job nobody waits for is a CI job
-# nobody reads.
+# Two jobs, in parallel. `cpu` runs the preregistered protocol's suite
+# (`tests/`) and the exploratory suite; `dci1` runs DCI-1's, a separate study
+# with its own interpreter and lock. Everything here runs without any GPU stack. The
+# hardware and `slow` tiers are deliberately excluded: they need the ROCm
+# workstation, the Lambda API, or tens of minutes, and a CI job nobody waits
+# for is a CI job nobody reads.
 name: cpu-tests
 
 on:
@@ -52,3 +54,65 @@ jobs:
       - name: Exploratory suite
         if: always()
         run: pytest exploratory/tests -q
+
+  # DCI-1 (`dci1/`) is a separate uv project: Python 3.13, numpy, pyarrow and
+  # pytest pinned in `dci1/uv.lock`, and no import of `src/dci` (so no z3; the
+  # `cpu` job keeps the root pin). It was added after this workflow and never
+  # ran here, so two backtests that raised `ProtocolError` from 7196123 until
+  # PR #39 went unseen, and so did a v7 check that only passes where the
+  # gitignored evidence tree exists.
+  #
+  # The environment is the one the study records: uv 0.10.12 and uv-managed
+  # CPython 3.13.12, installed from the lock with `--frozen` (hash-checked, never
+  # re-resolved). The fast tiers of the v8/v8.1 line (`tests_v8dev`) and of v7
+  # (`tests_v7`) run; the `slow` lifecycle walks and the closed v2-v6 suites do
+  # not. Tests that need the evidence tree skip, and `-rsx` prints each skip
+  # and expected failure with its reason so the log says what did not run.
+  dci1:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: dci1
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        run: pipx install uv==0.10.12
+
+      - name: Install the locked environment
+        id: sync
+        run: uv sync --frozen --managed-python --python 3.13.12
+
+      # Floats computed through BLAS depend on the kernel OpenBLAS picks for the
+      # host, and GitHub's runner pool mixes AVX2 and AVX-512 machines: the
+      # legacy pre-screen's posterior summaries move by ~1e-10 between them
+      # (see test_legacy_prescreen_characterization.FLOAT_ABS_TOL). Recorded so
+      # a float-level result can be tied to the machine that produced it.
+      - name: Record the machine
+        run: |
+          lscpu | grep '^Model name'
+          grep -qw avx512f /proc/cpuinfo && echo "AVX-512: yes" || echo "AVX-512: no"
+          OPENBLAS_VERBOSE=2 .venv/bin/python -c \
+            "import numpy as np; np.ones((2, 2)) @ np.ones((2, 2)); print('numpy', np.__version__)"
+
+      # `requirements-frozen.txt` is the lock's `uv export --frozen`, and the
+      # v3/v4 environment records hash it; it had drifted from the lock once.
+      - name: The lock is current and its export matches it
+        run: |
+          uv lock --check
+          uv export --frozen | diff - requirements-frozen.txt
+
+      # Serial: the peak is about 5 GB, and xdist would duplicate module
+      # fixtures per worker.
+      - name: v8 / v8.1 suite (tests_v8dev, not slow)
+        if: ${{ !cancelled() && steps.sync.outcome == 'success' }}
+        run: |
+          .venv/bin/python -m pytest tests_v8dev -q -p no:cacheprovider \
+            -m "not slow and not gpu" -rsx
+
+      - name: v7 suite (tests_v7, not slow)
+        if: ${{ !cancelled() && steps.sync.outcome == 'success' }}
+        run: |
+          .venv/bin/python -m pytest tests_v7 -q -p no:cacheprovider \
+            -m "not slow and not gpu" -rsx

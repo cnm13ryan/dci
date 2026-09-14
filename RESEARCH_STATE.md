@@ -2406,7 +2406,10 @@ iota_A at the screen remains READINESS **R7** and is the researcher's.
   registration binds producing commit `ed0446f`, so any re-run needs a §32
   superseding registration, which is where this fix belongs. And no active
   code uses the module: v8.1 has its own context, which checks every ancestor.
-  Raised by the Codex review of PR #31.
+  Raised by the Codex review of PR #31. CI shows it: `tests_v7`'s
+  `test_v5_cannot_adopt_a_v4r4_evidence_root` is a strict expected failure
+  wherever `dci1/evidence/dci1v4r4` is absent, and fails the run if the refusal
+  ever starts working without that tree.
 - **Not reproducible from a clone.** `runs/` is gitignored and absent. The run
   manifests hash files a fresh checkout does not have. See
   `exploratory/evidence/README.md` for the promotion path that fixes this per claim.
