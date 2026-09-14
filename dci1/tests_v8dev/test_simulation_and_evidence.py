@@ -1,13 +1,15 @@
-"""Quick simulation smoke tests, and evidence-dependent checks that skip
-without a stored tree.
+"""Quick simulation smoke tests, and two replays of signed v7 records.
 
-The two evidence checks name their chance basis, because `load_replication`
-refuses to guess (7196123). Reproducing a signed v7 certificate needs the basis
-those records were signed on, the recorded zero column. The spectrum invariant
-reads the corrected §13.2 basis from the committed cache, like every backtest
-tool. Before this, both called `load_replication` with neither and raised
-`ProtocolError`. That was never seen, because both skip wherever the gitignored
-v7 evidence is absent: CI, a fresh clone and every secondary worktree.
+The two replays name their chance basis, because `load_replication` refuses to
+guess (7196123). Reproducing a signed v7 certificate needs the basis those
+records were signed on, the recorded zero column. The spectrum invariant reads
+the corrected §13.2 basis from the committed cache, like every backtest tool.
+Before PR #39 both called `load_replication` with neither and raised
+`ProtocolError`. That was never seen, because both skipped wherever the
+gitignored v7 evidence was absent: CI, a fresh clone and every secondary
+worktree. They now read the six stage records from the committed evidence
+subset (`v7_replication_root`), byte-identical to the stored tree, so they run
+everywhere.
 """
 from __future__ import annotations
 
@@ -54,13 +56,13 @@ def test_reserve_extension_recovers_the_hard_side_in_simulation():
     assert r["new"]["fraction_resampled"] > 0.5
 
 
-def test_backtest_reproduces_the_signed_certificate(evidence_root):
+def test_backtest_reproduces_the_signed_certificate(v7_replication_root):
     from dci1v8dev import backtest as B
     from dci1v8dev.prescreen import legacy
     # The signed records were computed on the recorded zero column; the
     # corrected basis moves the pre-screen's iota_A and straddling groups, so
     # it could not reproduce them.
-    rep = B.load_replication(evidence_root, "dci1v7/qwen3-4b",
+    rep = B.load_replication(v7_replication_root, "dci1v7/qwen3-4b",
                              allow_recorded_chance=True)
     table, a_grid = B.prescreen_input(rep["regime"])
     cert = legacy.legacy_certificate(table, a_grid)
@@ -76,9 +78,10 @@ def test_backtest_reproduces_the_signed_certificate(evidence_root):
         rep["gate3a"]["coverage_at_calibrated_iota_a"]["conditions"]["C4"]
 
 
-def test_spectrum_replay_local_valid_is_a_subset_of_folded_stable(evidence_root):
+def test_spectrum_replay_local_valid_is_a_subset_of_folded_stable(
+        v7_replication_root):
     from dci1v8dev import backtest as B
-    rep = B.load_replication(evidence_root, "dci1v7/qwen3-4b",
+    rep = B.load_replication(v7_replication_root, "dci1v7/qwen3-4b",
                              chance_cache_dir=CHANCE_CACHE, tree="v7",
                              model="qwen3-4b")
     out = B.spectrum_backtest(rep, label="v7", model="qwen3-4b", resamples=300)
