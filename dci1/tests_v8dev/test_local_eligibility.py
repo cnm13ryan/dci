@@ -342,10 +342,15 @@ def test_the_stored_pilot_records_give_the_recorded_verdict():
     pair is the evidence for §4b's finding --- the ceiling moved f3 from
     4-and-1 to 3-and-0, so the shortfall was an artefact of the two-pass
     split size rather than a gap the allocation could close.
+
+    The rule's whole input from each record, ``by_frame[f]``'s survival,
+    status and unsupported reason, is committed in the evidence subset and
+    checked against the signed records where they are on disk
+    (``test_evidence_subset``). This used to read the pilot roots directly and
+    skip without them, which was everywhere except the one worktree holding
+    them; it now runs in CI and a fresh clone.
     """
-    import json
-    import pathlib as _p
-    evidence = _p.Path(__file__).resolve().parents[1] / "evidence"
+    from tests_v8dev.conftest import pilot_eligibility_inputs
     expected = {
         ("dci1v8-pilot-r9", "qwen3-4b"): ([0, 3], True),
         ("dci1v8-pilot-r8", "gemma-3n-e2b-it"): ([1, 3], True),
@@ -353,20 +358,13 @@ def test_the_stored_pilot_records_give_the_recorded_verdict():
         ("dci1v8-pilot-r10", "qwen3-4b-instruct-2507"): ([1], False),
         ("dci1v8-pilot-r11", "gemma-3n-e4b-it"): ([3], False),
     }
-    seen = 0
+    lanes = pilot_eligibility_inputs()
+    assert set(lanes) == {f"{root}/{model}" for root, model in expected}
     for (root, model), (frames, eligible) in expected.items():
-        path = (evidence / root / "evidence" / "dci1v8" / model
-                / "GATE_3_REFERENCES" / "gate3_references.json")
-        if not path.exists():
-            continue
-        record = json.loads(path.read_text())
-        record = record.get("payload", record)
-        out = EL.local_eligibility(record["by_frame"], frames=S.FRAMES)
+        out = EL.local_eligibility(lanes[f"{root}/{model}"]["by_frame"],
+                                   frames=S.FRAMES)
         assert out["local_supported_frames"] == frames, (root, model)
         assert out["local_eligible"] is eligible, (root, model)
-        seen += 1
-    if seen == 0:
-        pytest.skip("no promoted v8 pilot evidence in this working tree")
 
 
 # ---------------------------------------------------- the production wiring

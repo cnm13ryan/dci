@@ -1,6 +1,9 @@
 """Fixtures for the v8 development-candidate suite. Fixture data only."""
 from __future__ import annotations
 
+import gzip
+import hashlib
+import json
 import os
 from collections.abc import Sequence
 from pathlib import Path
@@ -93,9 +96,31 @@ def split_rows(kind: str, severity: int, *, solo_a: float, solo_b: float,
                             n_topics=n_topics, per_topic=vec(solo_b)))
 
 
-@pytest.fixture
-def evidence_root() -> Path:
-    if not (EVIDENCE / "dci1v7" / "qwen3-4b" / "REGIME_SCREEN").exists():
-        pytest.skip("no stored evidence root (gitignored); set "
-                    "DCI1_EVIDENCE_ROOT to run")
-    return EVIDENCE
+#: The signed records a few evidence checks need, committed so they run in CI
+#: and a fresh clone (``tools/v8_ci_evidence_fixture.py``; the manifest names
+#: each source and its hashes, and ``test_evidence_subset`` checks them).
+SUBSET = Path(__file__).resolve().parent / "fixtures" / "evidence_subset"
+
+
+def subset_manifest() -> dict:
+    return json.loads((SUBSET / "MANIFEST.json").read_text())
+
+
+def pilot_eligibility_inputs() -> dict:
+    """Per pilot lane, the fields of ``GATE_3_REFERENCES.by_frame`` the LOCAL
+    eligibility rule reads."""
+    return json.loads((SUBSET / subset_manifest()["local_eligibility"]["fixture"])
+                      .read_text())
+
+
+@pytest.fixture(scope="session")
+def v7_replication_root(tmp_path_factory) -> Path:
+    """An evidence root holding the committed v7 ``qwen3-4b`` stage records,
+    each checked against the manifest's SHA-256 before a loader opens it."""
+    root = tmp_path_factory.mktemp("evidence_subset")
+    for rel, entry in subset_manifest()["backtest"]["files"].items():
+        data = gzip.decompress((SUBSET / entry["fixture"]).read_bytes())
+        assert hashlib.sha256(data).hexdigest() == entry["sha256"], rel
+        (root / rel).parent.mkdir(parents=True, exist_ok=True)
+        (root / rel).write_bytes(data)
+    return root

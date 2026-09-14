@@ -31,6 +31,18 @@ def test_v4r4_is_foreign_to_v5():
                           if root.name.startswith("dci1v4r4")} or True
 
 
+# The deferred PR #31 defect, stated where it shows (RESEARCH_STATE.md §5).
+# `foreign_roots()` finds the historical evidence trees by listing the
+# gitignored `evidence/`, so where `evidence/dci1v4r4` is absent (CI, a fresh
+# clone) this refusal does not fire. The fix, d163232 on the tag
+# archive/maint/v7-docs-marker-unification, edits registered v7 study code and
+# is deliberately not applied. Where the tree is present the test runs as it
+# always did. Strict, and only the missing refusal counts: the day it fires
+# without the tree, the XPASS fails and this marker has to come off.
+@pytest.mark.xfail(not (DCI1_ROOT / "evidence" / "dci1v4r4").exists(),
+                   reason="deferred PR #31: v7's foreign-root refusal needs "
+                          "the gitignored evidence/dci1v4r4 on disk",
+                   raises=pytest.fail.Exception, strict=True)
 def test_v5_cannot_adopt_a_v4r4_evidence_root():
     with pytest.raises(ProtocolError):
         StudyContext(namespace="registered", study_id=dci1v7.STUDY_ID,

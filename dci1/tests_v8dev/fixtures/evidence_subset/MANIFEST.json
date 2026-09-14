@@ -1,0 +1,108 @@
+{
+ "backtest": {
+  "chance_cache": "reports/dci1v8dev/chance_basis/v7__qwen3-4b.json",
+  "files": {
+   "dci1v7/qwen3-4b/GATE_2_5_CANDIDATE_QUALIFICATION/gate2_5_candidate_qualification.json": {
+    "bytes": 1285026,
+    "fixture": "dci1v7/qwen3-4b/GATE_2_5_CANDIDATE_QUALIFICATION/gate2_5_candidate_qualification.json.gz",
+    "record_hash": "3f3ce5c8c210ab0c61071dc0d492c2b56e51ff2f50b65d3df1771a17a0d1c2d5",
+    "sha256": "b5eec558a64410bddcf88500ed0b106e3b73c85a7442fd3a17668dc84618b05a",
+    "stage_key": "gate2_5"
+   },
+   "dci1v7/qwen3-4b/GATE_2_FOCAL_CALIBRATION/gate2_focal_calibration.json": {
+    "bytes": 1341897,
+    "fixture": "dci1v7/qwen3-4b/GATE_2_FOCAL_CALIBRATION/gate2_focal_calibration.json.gz",
+    "record_hash": "2fdd19a79902950ea8919e37c97391238a1e25bb4921306b71fac38beb9c42b6",
+    "sha256": "4a3be8b69422d6342079621b728c272b48ebf66a4124d0af92bc38c3e2182eab",
+    "stage_key": "gate2"
+   },
+   "dci1v7/qwen3-4b/GATE_3A_REFERENCE_CALIBRATION/gate3a_reference_calibration.json": {
+    "bytes": 1036014,
+    "fixture": "dci1v7/qwen3-4b/GATE_3A_REFERENCE_CALIBRATION/gate3a_reference_calibration.json.gz",
+    "record_hash": "76753642f7cb713fb00229dca2cc5e3683f8bdb92c67ff64be3e09e1bb679edd",
+    "sha256": "8be42c1e84bf85e87e25b15c8528bc3976d4ee32396cf2168c6b1ef3130697c1",
+    "stage_key": "gate3a"
+   },
+   "dci1v7/qwen3-4b/GATE_3B_REFERENCE_SELECTION/gate3b_reference_selection.json": {
+    "bytes": 1740356,
+    "fixture": "dci1v7/qwen3-4b/GATE_3B_REFERENCE_SELECTION/gate3b_reference_selection.json.gz",
+    "record_hash": "ba1aa3024db21d652020595b5a6f06f2d89e8b23f62ec68215b130a488218bf3",
+    "sha256": "7b02c1d0b3fbcde538c936b7b5c80816d15d2161f3000f5ba868b2653285c001",
+    "stage_key": "gate3b"
+   },
+   "dci1v7/qwen3-4b/GATE_3C_IDENTIFICATION/gate3c_identification.json": {
+    "bytes": 11847,
+    "fixture": "dci1v7/qwen3-4b/GATE_3C_IDENTIFICATION/gate3c_identification.json.gz",
+    "record_hash": "2b38b566119ed0d9f4298eaefb507baa361359a2cc153762058cba0cea6c15e4",
+    "sha256": "e20b868b74c287245dafd4b752f2c452ea8ee7e3a52222e09fbd98dfdeaa074c",
+    "stage_key": "gate3c"
+   },
+   "dci1v7/qwen3-4b/REGIME_SCREEN/regime_record.json": {
+    "bytes": 287523,
+    "fixture": "dci1v7/qwen3-4b/REGIME_SCREEN/regime_record.json.gz",
+    "record_hash": "899c57537ff2fa121dec9bd93f723bfa073f3d61efab7183d780c72c89feeedd",
+    "sha256": "844b7489cc47120f794a37f5293274376258ab1b1661a30e523dcca8035ff1e4",
+    "stage_key": "regime"
+   }
+  },
+  "model": "qwen3-4b",
+  "read_by": "tests_v8dev/test_simulation_and_evidence.py",
+  "rel": "dci1v7/qwen3-4b",
+  "tree": "v7"
+ },
+ "generated_by": "tools/v8_ci_evidence_fixture.py",
+ "local_eligibility": {
+  "fields": [
+   "survival",
+   "status",
+   "unsupported_reason"
+  ],
+  "fixture": "pilot_local_eligibility.json",
+  "frames": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "lanes": {
+   "dci1v8-pilot-r10/qwen3-4b-instruct-2507": {
+    "bytes": 4764567,
+    "extract_sha": "6791a468181eb16b0370c65a384fbe1814c1ed7dda859717f4e1da8f2d59b753",
+    "record_hash": "36a06404eb716ee44a7074dc4f000b63b0762505fbab7e5190d1e0df5ab5b9e3",
+    "sha256": "e5f1e462eb04800b5d91ca3292bdd713a0e0a21febb0c8d40ef899dc543090b3",
+    "source": "dci1v8-pilot-r10/evidence/dci1v8/qwen3-4b-instruct-2507/GATE_3_REFERENCES/gate3_references.json"
+   },
+   "dci1v8-pilot-r11/gemma-3n-e4b-it": {
+    "bytes": 8803782,
+    "extract_sha": "fd8413cf9f6ce574550b8c5ffe5bed6d187b62b6a72d37a3f80956fe9645e0be",
+    "record_hash": "443777ae4a5630f782b262ac454b5251bbf7ae11c8a4fd4ba7f697230b9abf6f",
+    "sha256": "b17595f0ab72e00b3a524a3c71d4c60b67cdfcb540a8169d870ef2e8a1514b1c",
+    "source": "dci1v8-pilot-r11/evidence/dci1v8/gemma-3n-e4b-it/GATE_3_REFERENCES/gate3_references.json"
+   },
+   "dci1v8-pilot-r8/gemma-3n-e2b-it": {
+    "bytes": 8222950,
+    "extract_sha": "c0bc6cc1b4062674c3d241c458d448d881c50669df914cc8576653d256c80776",
+    "record_hash": "213b9e77649b2b8b33577627187b6c104251680ff14f025c035a691c91ad8d17",
+    "sha256": "5cd0c775e7e9fa6a9e14a0586ab07c555bf566708ef6daf51106fa3c33752283",
+    "source": "dci1v8-pilot-r8/evidence/dci1v8/gemma-3n-e2b-it/GATE_3_REFERENCES/gate3_references.json"
+   },
+   "dci1v8-pilot-r8/qwen3-4b-instruct-2507": {
+    "bytes": 7578240,
+    "extract_sha": "08cb4be38d07edeac094d1f9bb8b69da6882c9e9e2e21cb7ebbaea083824d663",
+    "record_hash": "52c5a22cf556eb5b88c17ecd013779de35edf7d35c545b85332fa3a299f6d977",
+    "sha256": "68a09489ad48bb7d20f8524aadeaefba0f1b82bd2558738e55c37a6057126146",
+    "source": "dci1v8-pilot-r8/evidence/dci1v8/qwen3-4b-instruct-2507/GATE_3_REFERENCES/gate3_references.json"
+   },
+   "dci1v8-pilot-r9/qwen3-4b": {
+    "bytes": 9203738,
+    "extract_sha": "57a22a42197eb72143ddac52bc9a3b966dd36f7c589b878830e4240753dcbddf",
+    "record_hash": "0f4a8501b0984a310571215a0418ab4a5b7cb328edffbd0885a63f6126c46b1a",
+    "sha256": "26c7cd1ec2cc675ecba90bc1dc295f31fb0059937434cfcc123c876d45232792",
+    "source": "dci1v8-pilot-r9/evidence/dci1v8/qwen3-4b/GATE_3_REFERENCES/gate3_references.json"
+   }
+  },
+  "read_by": "tests_v8dev/test_local_eligibility.py"
+ },
+ "note": "Source paths are relative to a DCI-1 evidence root, which is gitignored. Each source was signature-verified with its own tree's key at extraction; no key is committed.",
+ "read_only": true
+}
