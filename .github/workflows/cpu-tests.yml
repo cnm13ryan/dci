@@ -84,6 +84,18 @@ jobs:
         id: sync
         run: uv sync --frozen --managed-python --python 3.13.12
 
+      # Floats computed through BLAS depend on the kernel OpenBLAS picks for the
+      # host, and GitHub's runner pool mixes AVX2 and AVX-512 machines: the
+      # legacy pre-screen's posterior summaries move by ~1e-10 between them
+      # (see test_legacy_prescreen_characterization.FLOAT_ABS_TOL). Recorded so
+      # a float-level result can be tied to the machine that produced it.
+      - name: Record the machine
+        run: |
+          lscpu | grep '^Model name'
+          grep -qw avx512f /proc/cpuinfo && echo "AVX-512: yes" || echo "AVX-512: no"
+          OPENBLAS_VERBOSE=2 .venv/bin/python -c \
+            "import numpy as np; np.ones((2, 2)) @ np.ones((2, 2)); print('numpy', np.__version__)"
+
       # `requirements-frozen.txt` is the lock's `uv export --frozen`, and the
       # v3/v4 environment records hash it; it had drifted from the lock once.
       - name: The lock is current and its export matches it
