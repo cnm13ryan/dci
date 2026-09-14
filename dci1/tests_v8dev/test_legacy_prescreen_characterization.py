@@ -32,6 +32,7 @@ preserving on real evidence.
 from __future__ import annotations
 
 import json
+import math
 from pathlib import Path
 
 import pytest
@@ -49,6 +50,44 @@ from dci1v8dev.run.regime import jsonable, prescreen_input
 
 FIXTURES = Path(__file__).resolve().parent / "fixtures" / "legacy_prescreen"
 CASES = ("gemma-3n-e2b-it.r12", "qwen3-4b.r9")
+
+
+#: How far a float may move between CPUs. `statistics.hierarchical_draws`
+#: inverts and multiplies matrices, so the continuous posterior summaries
+#: depend on the OpenBLAS kernel numpy picks for the machine. The records were
+#: produced on an AVX-512 kernel. On an AVX2 kernel (`OPENBLAS_CORETYPE=Zen` or
+#: `Haswell` reproduces it) every status, label, ranking, batch plan, forwarded
+#: set, cost and draw proportion replayed here is identical, and the floats
+#: these tests pin move by about 1e-10 at most (`iota_mean`; 2.3e-8 over every
+#: summary the screen writes). CI's runner pool mixes both, so an exact float
+#: comparison failed on some hosts and passed on others for one commit. Anything
+#: that is not a float is still compared exactly, and a float may move by no
+#: more than this: a real change (a seed, a draw count, a count, a rule) moves
+#: them by orders of magnitude more, and one draw in 4,000 is 2.5e-4.
+FLOAT_ABS_TOL = 1e-9
+
+
+def _mismatches(got, want, path="$"):
+    """Where two JSON-shaped values differ: exactly, except that two numbers
+    of which one is a float may differ by up to ``FLOAT_ABS_TOL``."""
+    if isinstance(got, dict) and isinstance(want, dict):
+        if set(got) != set(want):
+            return [f"{path}: keys differ {sorted(set(got) ^ set(want))}"]
+        return [m for k in got for m in _mismatches(got[k], want[k], f"{path}.{k}")]
+    if isinstance(got, list) and isinstance(want, list):
+        if len(got) != len(want):
+            return [f"{path}: length {len(got)} != {len(want)}"]
+        return [m for i, (g, w) in enumerate(zip(got, want))
+                for m in _mismatches(g, w, f"{path}[{i}]")]
+    numbers = all(isinstance(x, (int, float)) and not isinstance(x, bool)
+                  for x in (got, want))
+    if numbers and float in (type(got), type(want)):
+        if (got == want or abs(got - want) <= FLOAT_ABS_TOL
+                or (math.isnan(got) and math.isnan(want))):
+            return []
+    elif got == want:
+        return []
+    return [f"{path}: {got!r} != {want!r}"]
 
 
 def _expand(table):
@@ -103,7 +142,8 @@ def test_the_pooled_screen_reproduces_the_signed_regime_record(case):
     assert screen["iota_a"] == exp["iota_a"]
     assert screen["iota_a_prescreen_point"] == exp["iota_a_prescreen_point"]
     assert screen["summary"] == exp["summary"]
-    assert _family_view(screen) == _expected_family_view(exp["families"])
+    problems = _mismatches(_family_view(screen), _expected_family_view(exp["families"]))
+    assert not problems, problems[:10]
 
 
 def test_the_ranking_is_score_order_with_the_family_id_as_the_tie_break(case):
@@ -176,7 +216,8 @@ def test_the_second_pass_plans_exactly_the_recorded_batches(replayed):
     assert screen["statuses"] == exp["statuses"]
     assert screen["labels"] == exp["labels"]
     assert screen["iota_a"] == exp["iota_a"]
-    assert _family_view(screen) == _expected_family_view(exp["families"])
+    problems = _mismatches(_family_view(screen), _expected_family_view(exp["families"]))
+    assert not problems, problems[:10]
 
 
 def test_the_retention_forwards_exactly_the_recorded_set(replayed):
@@ -186,7 +227,8 @@ def test_the_retention_forwards_exactly_the_recorded_set(replayed):
     config = RetentionConfig(**rcfg)
     retention = jsonable(retain(result["screen"], config=config))
     assert [e["candidate"] for e in retention["forwarded"]] == exp["forwarded_set"]
-    assert retention == exp["retention"]
+    problems = _mismatches(retention, exp["retention"])
+    assert not problems, problems[:10]
     assert retention["n_forwarded"] == exp["n_forwarded"]
     assert retention["calibration_cost_generations"] == \
         exp["calibration_cost_generations"]
@@ -201,7 +243,8 @@ def test_the_retention_forwards_exactly_the_recorded_set(replayed):
     assert plan.frames == [0, 1, 2, 3]
     for f in plan.frames:
         assert plan.forwarded(f) == exp["forwarded_set"]
-        assert jsonable(plan.by_frame[str(f)]["retention"]) == exp["retention"]
+        assert not _mismatches(jsonable(plan.by_frame[str(f)]["retention"]),
+                               exp["retention"])
     assert all(v == [0, 1, 2, 3] for v in plan.selected_by_frames.values())
 
 
@@ -221,7 +264,7 @@ def test_one_pooled_iota_a_targets_every_frame_while_gate2_disagrees(replayed):
     for e in exp["retention"]["forwarded"]:
         rung = next(r for r in fam[e["family"]]["rungs"]
                     if r["candidate"] == e["candidate"])
-        assert e["iota_mean"] == rung["iota_mean"]
+        assert abs(e["iota_mean"] - rung["iota_mean"]) <= FLOAT_ABS_TOL
     # the retention config names no frame anywhere
     assert "frame" not in json.dumps(case["retention_config"])
     # Gate 2's own coordinate differs across the supported frames: by 0.207
