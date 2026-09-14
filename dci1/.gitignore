@@ -1,8 +1,11 @@
 # Working evidence and its durable mirror: registered artifacts are
 # content-hashed and signed, and runs must never dirty the Git worktree
 # (prereg v3 §28 / item 10), so they live outside version control.
-evidence/
-durable_root/
+# Anchored with a leading slash to the two roots beside this file. Unanchored,
+# `evidence/` also matched the v2 source package `src/dci1/evidence/`, and its
+# six modules were never committed.
+/evidence/
+/durable_root/
 
 # Environments (rebuilt from the committed uv locks). No trailing slash: a
 # secondary `git worktree` links its environment rather than copying it, and
