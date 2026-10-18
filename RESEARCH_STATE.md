@@ -303,8 +303,8 @@ and both entries are kept.
   committed only under `dci1/reports/dci1v5/` (`6760c2b`), and that is what the
   citations refer to. Not repaired, for the reason above: both studies are
   closed and the strings are registered code.
-  `dci1/tests_v8dev/test_pinned_document_paths.py` lists exactly these four and
-  fails if any other pinned document goes missing.
+  `dci1/tests_v8dev/test_pinned_document_paths.py` lists exactly these four as
+  known broken and fails if any other pinned document goes missing.
 - **Not reproducible from a clone.** `runs/` is gitignored and absent. The run
   manifests hash files a fresh checkout does not have. See
   `exploratory/evidence/README.md` for the promotion path that fixes this per claim.
