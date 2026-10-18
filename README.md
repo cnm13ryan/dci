@@ -1,6 +1,33 @@
-# DCI — Directional Constraint Interference (v15 protocol, portable implementation)
+# DCI — Directional Constraint Interference
 
-This repository is the authoritative implementation of the DCI v15 protocol,
+## Repository map
+
+This repository holds three studies that share a root but not code, plus the
+manuscript. For the current scientific picture start at
+[`RESEARCH_STATE.md`](RESEARCH_STATE.md); for working rules, `CLAUDE.md`.
+
+| study | status | folders |
+|---|---|---|
+| **DCI-1** (the active line) | v8.1 frozen 2026-09-08, confirmatory analysis run 2026-09-10 | `dci1/` — preregistration and design docs in `dci1/docs/`, code in `dci1/src/dci1v<N>/` (one package per revision; v8 imports from `dci1v4` and `dci1v7`, so older revisions are live dependencies), results in `dci1/reports/`. Raw evidence (`dci1/evidence/`) is gitignored and lives on the workstation. |
+| **v15/v19 protocol** | paused; confirmatory run not executed | `src/dci/`, `configs/`, `notebook_source/`, `tests/`, `docs/`, `tools/`, `scripts/` (incl. Lambda tooling), `environments/` — the rest of this README |
+| **exploratory** | eleven rounds complete | `exploratory/` — index in [`exploratory/EXPERIMENTS.md`](exploratory/EXPERIMENTS.md) |
+
+Also here:
+
+- `manuscript/` — paper-writing documents for DCI-1 v8.1 (rewrite bundle,
+  change brief, upstream agent prompt, executive summary). `paper/` is a
+  different, gitignored build output.
+- `user-notes/` — earlier DCI-1 preregistrations (v2–v7) and planning notes.
+  `user-notes/DCI1_preregistration_v7.md` is cited by path from v8 code; do
+  not move it.
+- `autorater_forensics/` — standalone Inspect AI diagnosis of the DCI-1 Gate 1
+  autorater; read-only with respect to registered evidence.
+- `.provenance/` — pre-repair snapshot of the v15 source and tests.
+- `CHANGES_SCIENTIFIC.md` — log of every change to what results mean.
+
+## v15/v19 protocol package (`src/dci/`)
+
+`src/dci/` is the authoritative implementation of the DCI v15 protocol,
 extracted from the validated Colab notebook with **demonstrated behavioral
 equivalence** (every Gate 0 self-test passes - the inventory lives in
 `tests/regression/gate0_registry.py`; the frozen no-bypass `integration_pass`

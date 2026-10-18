@@ -252,8 +252,8 @@ def test_reimplementation_concordance_on_boundary_and_packets():
     assert s0_count_independent("However, however; HOWEVER!") == 3
     assert s0_count_independent("Howeverhowever") == 0
     from pathlib import Path
-    packet = Path("/home/cnm13ryan/git/dci/dci1/evidence/dci1-v3/"
-                  "gemma-3n-e2b-it/gate1/annotation_packet.jsonl")
+    packet = (Path(__file__).resolve().parents[1] / "evidence" / "dci1-v3"
+              / "gemma-3n-e2b-it" / "gate1" / "annotation_packet.jsonl")
     if packet.exists():
         import json
         rows = [json.loads(l) for l in packet.read_text().splitlines()]

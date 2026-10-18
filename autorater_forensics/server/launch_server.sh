@@ -15,7 +15,7 @@ set -eu
 DEVICE=${1:-0}
 PORT=${2:-8555}
 MAXLEN=${3:-4096}
-B=/home/cnm13ryan/git/dci/dci1/environments/backend/.venv
+B=$(cd "$(dirname "$0")/../.." && pwd)/dci1/environments/backend/.venv
 LOG=$(dirname "$0")/vllm_server_p${2:-8555}.log
 
 env -u ROCR_VISIBLE_DEVICES -u CUDA_VISIBLE_DEVICES \

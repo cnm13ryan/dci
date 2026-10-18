@@ -37,5 +37,5 @@ confirmatory record: it digests
 section.
 
 Interpretation, registered readings, sensitivities and the manuscript
-rewrite map: `V8_1_POSTCONFIRM_PAPER_REWRITE_BUNDLE.md` at the repository
+rewrite map: `manuscript/V8_1_POSTCONFIRM_PAPER_REWRITE_BUNDLE.md` in the repository
 root.
