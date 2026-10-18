@@ -4,16 +4,20 @@ The researcher's DCI-1 planning record from v2 to v7: preregistrations,
 changelogs, decision records, audits, and the prompts that commissioned each
 implementation. v8 and v8.1 live in `dci1/docs/` instead.
 
-**Pinned** means `dci1` code names the file by its `user-notes/...` path. A
-registration or freeze record keeps that path, so do not move or rename a pinned
-file. `dci1/tests_v8dev/test_pinned_document_paths.py` fails if one goes missing.
+**Pinned** means code uses or writes the file's `user-notes/...` path: it
+hashes the file, or records the path in a registration, manifest or freeze
+record. A signed record keeps that path, so do not move or rename a pinned
+file. `dci1/tests_v8dev/test_pinned_document_paths.py` fails if one goes
+missing, and also if this README's *pinned* marks stop matching what it
+detects. **Cited** means only a docstring or comment names the file. Moving it
+breaks a reader's reference but no record.
 
 ## Preregistrations
 
 | file | revision | |
 |---|---|---|
 | `DCI-1_preregistration_v2.md` | v2 | pinned |
-| `DCI-1_preregistration_v3.md` | v3 | pinned |
+| `DCI-1_preregistration_v3.md` | v3 | cited |
 | `DCI1_preregistration_v4r1.md` | v4 revision 1 | pinned |
 | `DCI1_preregistration_v4r2.md` | v4 revision 2 | pinned |
 | `DCI1_preregistration_v4r3.md` | v4 revision 3 | pinned |
@@ -40,9 +44,9 @@ file. `dci1/tests_v8dev/test_pinned_document_paths.py` fails if one goes missing
 |---|---|
 | `DCI1_v4r1_unresolved_decisions.md` | |
 | `DCI1_v4r2_unresolved_decisions.md` | pinned |
-| `DCI1_v4r2_prefreeze_checks.md` | pinned |
+| `DCI1_v4r2_prefreeze_checks.md` | cited |
 | `DCI1_v4_amendment_A_prompt_stem.md` | draft, not adopted |
-| `DCI1_v4_amendment_B_reference_pool.md` | draft, not adopted; pinned |
+| `DCI1_v4_amendment_B_reference_pool.md` | draft, not adopted; cited |
 | `DCI1_v4_amendment_C_focal_grid.md` | draft, not adopted |
 | `DCI1_v6_proposal.md` | not adopted, not registered |
 
