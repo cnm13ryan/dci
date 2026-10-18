@@ -88,6 +88,7 @@ def test_the_judge_is_disjoint_from_the_study_replications():
         assert ar.judge_config(condition)["judge_model_key"] not in MODEL_KEYS
 
 
+@pytest.mark.skipif(not ar.EVIDENCE.exists(), reason="no stored evidence tree")
 def test_the_split_is_disjoint_and_deterministic():
     items = ar.build_items()
     first, second = ar.split_pool(items), ar.split_pool(items)
@@ -98,6 +99,7 @@ def test_the_split_is_disjoint_and_deterministic():
     assert len(dev) + len(cal) == len(items)
 
 
+@pytest.mark.skipif(not ar.EVIDENCE.exists(), reason="no stored evidence tree")
 def test_the_split_preserves_the_verifier_class():
     """Overwriting verifier_class to carry a stratum label would corrupt both
     the strata downstream and the agreement denominator."""
@@ -105,6 +107,7 @@ def test_the_split_preserves_the_verifier_class():
         assert item["verifier_class"] in ("pass", "fail")
 
 
+@pytest.mark.skipif(not ar.EVIDENCE.exists(), reason="no stored evidence tree")
 def test_the_subsample_is_stratum_balanced():
     split = ar.split_pool(ar.build_items())
     sample = ar.subsample(split["development"], 48)
