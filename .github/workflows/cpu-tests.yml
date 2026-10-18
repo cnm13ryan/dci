@@ -65,9 +65,14 @@ jobs:
   # The environment is the one the study records: uv 0.10.12 and uv-managed
   # CPython 3.13.12, installed from the lock with `--frozen` (hash-checked, never
   # re-resolved). The fast tiers of the v8/v8.1 line (`tests_v8dev`) and of v7
-  # (`tests_v7`) run; the `slow` lifecycle walks and the closed v2-v6 suites do
-  # not. Tests that need the evidence tree skip, and `-rsx` prints each skip
-  # and expected failure with its reason so the log says what did not run.
+  # (`tests_v7`) run, and so do the closed v2-v6 suites: v8.1 imports `dci1v4`
+  # and `dci1v7`, so those suites are what notice a change that reaches a closed
+  # study through shared code. They were left out until 2026-10-18, by which
+  # time seven of their tests failed wherever the evidence tree is absent; those
+  # now skip or are strict expected failures, as in `tests_v7`. The `slow`
+  # lifecycle walks do not run. Tests that need the evidence tree skip, and
+  # `-rsx` prints each skip and expected failure with its reason so the log says
+  # what did not run.
   dci1:
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -116,3 +121,18 @@ jobs:
         run: |
           .venv/bin/python -m pytest tests_v7 -q -p no:cacheprovider \
             -m "not slow and not gpu" -rsx
+
+      # One pytest process per suite: they share test file names
+      # (`test_isolation.py` is in v5, v6 and v7) and each has its own conftest.
+      # Every suite runs; the step fails if any of them did.
+      - name: closed suites (tests, tests_v3 ... tests_v6, not slow)
+        if: ${{ !cancelled() && steps.sync.outcome == 'success' }}
+        run: |
+          rc=0
+          for suite in tests tests_v3 tests_v4 tests_v4r3 tests_v4r4 tests_v5 tests_v6; do
+            echo "::group::$suite"
+            .venv/bin/python -m pytest "$suite" -q -p no:cacheprovider \
+              -m "not slow and not gpu" -rsx || rc=1
+            echo "::endgroup::"
+          done
+          exit $rc

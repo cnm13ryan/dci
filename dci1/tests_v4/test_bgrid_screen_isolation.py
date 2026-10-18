@@ -84,6 +84,9 @@ def test_registered_focal_grid_is_unchanged():
     assert sum(len(v) for v in REFERENCE_LADDERS.values()) == 94
 
 
+@pytest.mark.skipif(not (DCI1_ROOT / "evidence" / "dci1-v4" / "registration"
+                         / "manifest.json").exists(),
+                    reason="no stored evidence tree")
 def test_verifier_hash_still_matches_the_signed_manifest():
     manifest = json.loads(
         (DCI1_ROOT / "evidence" / "dci1-v4" / "registration"
