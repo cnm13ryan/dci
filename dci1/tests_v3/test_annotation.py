@@ -26,8 +26,8 @@ from dci1v3.analysis.stats import wilson_upper_one_sided
 from dci1v3.protocol.constants import GATE1_ANNOTATORS
 from dci1v3.verifiers.target import s0_count
 
-REPO_PACKET = Path("/home/cnm13ryan/git/dci/dci1/evidence/dci1-v3/"
-                   "gemma-3n-e2b-it/gate1/annotation_packet.jsonl")
+REPO_PACKET = (Path(__file__).resolve().parents[1] / "evidence" / "dci1-v3"
+               / "gemma-3n-e2b-it" / "gate1" / "annotation_packet.jsonl")
 
 
 def make_packet(path: Path, items: int = 20) -> Path:
@@ -329,7 +329,7 @@ def test_http_dashboard_locks_on_single_finalisation(packet, workspace):
 # ------------------------------------------------------------- residuals
 def test_no_active_three_annotator_assumptions_in_source():
     """The amendment leaves no live three-annotator logic in dci1v3."""
-    src = Path("/home/cnm13ryan/git/dci/dci1/src/dci1v3")
+    src = Path(__file__).resolve().parents[1] / "src" / "dci1v3"
     offenders = []
     for path in src.rglob("*.py"):
         text = path.read_text()

@@ -93,7 +93,7 @@ re-analysis would need a fresh root and re-generation.
 
 The results, their registered readings, every registered sensitivity and the
 manuscript rewrite map are in
-`V8_1_POSTCONFIRM_PAPER_REWRITE_BUNDLE.md` at the repository root, with the
+`manuscript/V8_1_POSTCONFIRM_PAPER_REWRITE_BUNDLE.md` in the repository, with the
 machine-readable tables under `reports/dci1v8dev/postconfirm/data/`.
 
 ## Where the pre-freeze evidence lives
