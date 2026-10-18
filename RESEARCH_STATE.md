@@ -293,7 +293,18 @@ and both entries are kept.
   Raised by the Codex review of PR #31. CI shows it: `tests_v7`'s
   `test_v5_cannot_adopt_a_v4r4_evidence_root` is a strict expected failure
   wherever `dci1/evidence/dci1v4r4` is absent, and fails the run if the refusal
-  ever starts working without that tree.
+  ever starts working without that tree. `tests_v5` and `tests_v6` carry the
+  same test and, since 2026-10-18, the same marker.
+- **Known broken, and deferred: four pinned paths in v6 and v7.** `dci1v6` and
+  `dci1v7` were derived from `dci1v5` with the revision renamed throughout, and
+  the rename carried two decision-packet paths with it: their manifests and
+  verifier modules cite `dci1/reports/dci1v{6,7}/d4_marker_audit.md` and
+  `…/u2_tier_model_decision.md`, which never existed. The packets were
+  committed only under `dci1/reports/dci1v5/` (`6760c2b`), and that is what the
+  citations refer to. Not repaired, for the reason above: both studies are
+  closed and the strings are registered code.
+  `dci1/tests_v8dev/test_pinned_document_paths.py` lists exactly these four and
+  fails if any other pinned document goes missing.
 - **Not reproducible from a clone.** `runs/` is gitignored and absent. The run
   manifests hash files a fresh checkout does not have. See
   `exploratory/evidence/README.md` for the promotion path that fixes this per claim.
