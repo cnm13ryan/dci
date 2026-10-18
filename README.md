@@ -24,6 +24,8 @@ Also here:
   autorater; read-only with respect to registered evidence.
 - `.provenance/` — pre-repair snapshot of the v15 source and tests.
 - `CHANGES_SCIENTIFIC.md` — log of every change to what results mean.
+- `docs/history/research_state_log.md` — the dated study log (§4c–§4ao) moved
+  verbatim out of `RESEARCH_STATE.md`; citations by section number still apply.
 
 ## v15/v19 protocol package (`src/dci/`)
 
