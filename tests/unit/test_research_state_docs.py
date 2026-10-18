@@ -22,6 +22,7 @@ REPO = Path(__file__).resolve().parents[2]
 
 DOCS = (
     "RESEARCH_STATE.md",
+    "docs/history/research_state_log.md",
     "CHANGES_SCIENTIFIC.md",
     "exploratory/EXPERIMENTS.md",
     "exploratory/evidence/README.md",
