@@ -537,7 +537,7 @@ into the paper's CSV/JSON tables, and
 spectrum fit's own input with the frozen functions and asserts it reproduces
 the recorded slope, prediction, δ_difficulty and every per-point residual to
 1e-9. Their outputs live in `dci1/reports/dci1v8dev/postconfirm/data/`; the
-interpretation lives in `V8_1_POSTCONFIRM_PAPER_REWRITE_BUNDLE.md`.
+interpretation lives in `manuscript/V8_1_POSTCONFIRM_PAPER_REWRITE_BUNDLE.md`.
 
 **Not resolved by this entry.** Reference-set conditionality (2 of 24
 verdicts move across admissible triples of the frozen five);
