@@ -77,9 +77,11 @@ def test_no_registered_value_was_changed():
     assert TARGET_GRID == (1, 2, 3, 4, 5, 6, 7, 8)
     assert FOCAL_GRID == (7, 8, 9, 10)
     assert sum(len(v) for v in REFERENCE_LADDERS.values()) == 94
-    manifest = json.loads(
-        (DCI1_ROOT / "evidence" / "dci1-v4" / "registration"
-         / "manifest.json").read_text())
+    manifest_path = (DCI1_ROOT / "evidence" / "dci1-v4" / "registration"
+                     / "manifest.json")
+    if not manifest_path.exists():
+        pytest.skip("no stored evidence tree")
+    manifest = json.loads(manifest_path.read_text())
     assert (verifier_source_hash()
             == manifest["payload"]["instruments"]["canonical_verifier_hash"]), (
         "the canonical verifier hash moved; the screen must not touch verifiers")
