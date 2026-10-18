@@ -87,7 +87,7 @@ sentence.
 
 ## Where everything is
 
-- **Full bundle**: `V8_1_POSTCONFIRM_PAPER_REWRITE_BUNDLE.md` (repo root of
+- **Full bundle**: `V8_1_POSTCONFIRM_PAPER_REWRITE_BUNDLE.md`, beside this file (originally at the repo root of
   the `dev/v8-frame-aware-prescreen` worktree).
 - **Figure and table datasets**: `dci1/reports/dci1v8dev/postconfirm/data/`
   (17 files, CSV + JSON).
