@@ -1,21 +1,17 @@
 # DCI-1 — isolated confirmatory study module
 
-> **The live protocol line is v7** (`src/dci1v7`): adopted, registered and run
-> on 2026-08-28 and closed the same day with zero survivors of four, amended
-> in place (A6–A8) after the closure, with development rehearsals continuing
-> under `evidence/dci1v7-development*`. Start at the repository's
-> `RESEARCH_STATE.md` §4b, then `reports/dci1v7/READINESS.md`,
-> `reports/dci1v7/CLOSURE.md` and `user-notes/DCI1_preregistration_v7.md`.
-> **The prospective v8 candidate** lives in `src/dci1v8dev` (design:
-> `docs/V8_CANDIDATE.md`; its pilot execution layer `src/dci1v8dev/run`,
-> `docs/V8_PILOT.md`, validated without a GPU on 2026-08-30; nothing
-> registered, no v8 evidence, no pilot run). Which
-> definition belongs to which revision — A's wording, the marker counter, the
-> word-list order, wording grammar, family counts, report paths — is in
-> `docs/VERSION_DRIFT.md`. Every earlier line (v2, v3, v4r1–v4r4, v5, v6) is
-> closed and retained unmodified as a design record; v4r3 (`src/dci1v4r3`,
-> `reports/dci1v4r3/REPORT.md`) was the live line when this banner was first
-> written, on 2026-08-21.
+> **The current line is v8.1** (`src/dci1v8dev`): frozen on 2026-09-08 at
+> `034fc72`, with the frozen confirmatory analysis run once on 2026-09-10. It
+> succeeds v8 (frozen 2026-09-03, never generated). Start at the repository's
+> `RESEARCH_STATE.md` §4b, then `docs/DCI1_preregistration_v8.1.md` and
+> `reports/dci1v8dev/postconfirm/`. Every earlier line (v2, v3, v4r1–v4r4, v5,
+> v6, v7) is closed and retained unmodified as a design record, and several are
+> still imported by v8.1; [`src/README.md`](src/README.md) maps each package to
+> its status, dependencies and test suite. Which definition belongs to which
+> revision — A's wording, the marker counter, the word-list order, wording
+> grammar, family counts, report paths — is in `docs/VERSION_DRIFT.md`. This
+> banner was rewritten on 2026-10-18; it had last named v7 as the live line.
+> The v2 and v3 sections below are those studies' manuals, kept as written.
 >
 > **This module also holds the earlier protocol versions.** The v2 implementation
 > (`src/dci1`, below) is **closed**: all four model replications reached
@@ -229,8 +225,8 @@ directories (e.g. the two `gate2.json` files, or the two
 
 ## Commands
 
-    PY=/home/cnm13ryan/git/dci/dci1/.venv/bin/python   # the study's own scientific env
     cd dci1
+    PY=.venv/bin/python                           # the study's own scientific env
     $PY -m pytest tests/ -q                       # 131 CPU protocol tests
     PYTHONPATH=src $PY -m dci1.cli check          # measurement/witness checks
     PYTHONPATH=src $PY -m dci1.cli smoke          # synthetic end-to-end smoke
