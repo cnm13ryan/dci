@@ -32,8 +32,15 @@ def newcombe(k1: int, n1: int, k2: int, n2: int, z: float
     l1, u1 = wilson(k1, n1, z)
     l2, u2 = wilson(k2, n2, z)
     d = p1 - p2
-    lower = d - math.sqrt((p1 - l1) ** 2 + (u2 - p2) ** 2)
-    upper = d + math.sqrt((u1 - p1) ** 2 + (p2 - l2) ** 2)
+    # Squares as products, not ``** 2``: a float power goes through the C
+    # library's pow, which is not correctly rounded on every platform, so
+    # the pilot of 2026-10-25 hashed differently on Linux and macOS in the
+    # last digit. Multiplication and sqrt are exactly rounded (IEEE 754);
+    # this reproduces every Linux value of that pilot (revision 2026-10).
+    a, b = p1 - l1, u2 - p2
+    c, e = u1 - p1, p2 - l2
+    lower = d - math.sqrt(a * a + b * b)
+    upper = d + math.sqrt(c * c + e * e)
     return (max(-1.0, lower), min(1.0, upper))
 
 

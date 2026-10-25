@@ -1,0 +1,40 @@
+
+=== gemma-3n-e2b-it|F0  p_A=0.55 (n=96)
+  SAME: ew.nonetheless.4 0.55/96 d+0.00 MATCH; ew.perhaps.2 0.57/96 d+0.02 MATCH; ew.therefore.6 0.57/96 d+0.02 MATCH; ew.although.6 0.59/96 d+0.04 MATCH; ew.therefore.4 0.47/96 d-0.08 MATCH; ew.although.4 0.39/96 d-0.17 plaus; ew.indeed.6 0.74/96 d+0.19 plaus; ew.moreover.6 0.33/96 d-0.22 plaus; ew.consequently.4 0.78/32 d+0.23 plaus
+  OBJ: es.7 0.36/96 d-0.19 plaus; ec.semicolon.1 0.75/32 d+0.20 plaus; ec.semicolon.2 0.28/32 d-0.27 plaus; es.4 0.28/32 d-0.27 plaus; ep.2 1.00/96 d+0.45 out; ep.3 1.00/96 d+0.45 out; ec.comma.6 0.03/32 d-0.52 out[EXT]; ec.comma.3 0.00/32 d-0.55 out[EXT]
+  OP: pro.letter.z 0.56/32 d+0.01 MATCH; unq.bigram 0.56/32 d+0.01 MATCH; ord.alpha4 0.51/96 d-0.04 MATCH; nb.max12 0.77/96 d+0.22 plaus; inc.remarkable 0.78/32 d+0.23 plaus; inc.silver+morning+quiet 0.82/96 d+0.27 out; inc.window+garden 0.85/96 d+0.30 out; unq.opener3 0.93/96 d+0.38 out; rel.share4 0.16/96 d-0.40 out
+
+=== gemma-3n-e2b-it|F1  p_A=0.28 (n=96)
+  SAME: ew.although.4 0.31/96 d+0.03 MATCH; ew.nonetheless.4 0.31/96 d+0.03 MATCH; ew.although.6 0.33/96 d+0.05 MATCH; ew.moreover.6 0.22/32 d-0.06 MATCH; ew.therefore.6 0.40/96 d+0.11 plaus; ew.perhaps.6 0.14/96 d-0.15 plaus; ew.perhaps.4 0.44/32 d+0.16 plaus; ew.moreover.4 0.11/96 d-0.17 plaus; ew.instead.4 0.01/96 d-0.27 out
+  OBJ: es.4 0.22/32 d-0.06 MATCH; ec.semicolon.2 0.42/96 d+0.14 plaus; ec.comma.6 0.01/96 d-0.27 out[EXT]; ec.comma.3 0.00/32 d-0.28 out[EXT]; es.7 0.66/32 d+0.38 out; ec.semicolon.1 0.72/96 d+0.44 out; ep.2 1.00/96 d+0.72 out; ep.3 1.00/96 d+0.72 out
+  OP: ord.alpha4 0.22/32 d-0.06 MATCH; rel.share4 0.20/96 d-0.08 MATCH; unq.bigram 0.41/96 d+0.12 plaus; pro.letter.b 0.08/96 d-0.20 plaus[INE]; unq.word5 0.05/96 d-0.23 out[INE]; rel.word3 0.03/96 d-0.25 out; ord.dec4 0.00/32 d-0.28 out[INE]; ord.inc4 0.00/32 d-0.28 out[EXT]; ord.inc6 0.00/32 d-0.28 out[INE]
+
+=== gemma-3n-e4b-it|F0  p_A=0.75 (n=96)
+  SAME: ew.nonetheless.4 0.76/96 d+0.01 MATCH; ew.therefore.6 0.77/96 d+0.02 MATCH; ew.moreover.6 0.72/96 d-0.03 MATCH; ew.although.4 0.80/96 d+0.05 MATCH; ew.perhaps.2 0.68/96 d-0.07 MATCH; ew.although.6 0.65/96 d-0.10 plaus; ew.therefore.2 0.89/96 d+0.14 plaus; ew.therefore.4 0.92/96 d+0.17 plaus; ew.indeed.4 0.93/96 d+0.18 plaus
+  OBJ: ec.semicolon.1 0.71/96 d-0.04 MATCH; ec.semicolon.2 0.56/96 d-0.19 plaus; ep.2 1.00/32 d+0.25 out; ep.3 1.00/32 d+0.25 out; es.4 0.31/32 d-0.44 out; es.7 0.28/32 d-0.47 out; ec.comma.3 0.00/32 d-0.75 out[EXT]; ec.comma.6 0.00/32 d-0.75 out[EXT]
+  OP: inc.remarkable 0.74/96 d-0.01 MATCH; inc.silver+morning+quiet 0.88/96 d+0.12 plaus; unq.bigram 0.57/96 d-0.18 plaus; unq.opener3 0.94/96 d+0.19 plaus; inc.simple 0.97/32 d+0.22 plaus; inc.window+garden 0.97/32 d+0.22 plaus; nb.max12 1.00/32 d+0.25 out; nb.max20 1.00/32 d+0.25 out; nb.min10 1.00/32 d+0.25 out
+
+=== gemma-3n-e4b-it|F1  p_A=0.79 (n=96)
+  SAME: ew.indeed.6 0.78/96 d-0.01 MATCH; ew.although.4 0.75/96 d-0.04 MATCH; ew.moreover.4 0.85/96 d+0.06 MATCH; ew.therefore.6 0.73/96 d-0.06 MATCH; ew.nonetheless.4 0.70/96 d-0.09 MATCH; ew.therefore.2 0.89/96 d+0.09 MATCH; ew.therefore.4 0.91/96 d+0.11 plaus; ew.indeed.4 0.96/96 d+0.17 plaus; ew.perhaps.2 0.96/96 d+0.17 plaus
+  OBJ: ec.semicolon.1 0.75/32 d-0.04 MATCH; ec.semicolon.2 0.65/96 d-0.15 plaus; ep.2 1.00/32 d+0.21 plaus; ep.3 1.00/32 d+0.21 plaus; es.4 0.34/32 d-0.45 out; es.7 0.28/32 d-0.51 out; ec.comma.3 0.00/32 d-0.79 out[EXT]; ec.comma.6 0.00/32 d-0.79 out[EXT]
+  OP: inc.remarkable 0.71/96 d-0.08 MATCH; inc.silver+morning+quiet 0.91/96 d+0.11 plaus; unq.bigram 0.67/96 d-0.12 plaus; inc.window+garden 0.97/32 d+0.18 plaus; inc.simple 1.00/32 d+0.21 plaus; nb.max12 1.00/32 d+0.21 plaus; nb.max20 1.00/32 d+0.21 plaus; nb.min10 1.00/32 d+0.21 plaus; pro.letter.z 0.58/96 d-0.21 plaus
+
+=== qwen3-4b|F0  p_A=0.62 (n=96)
+  SAME: ew.consequently.4 0.62/96 d+0.00 MATCH; ew.instead.2 0.66/96 d+0.03 MATCH; ew.nonetheless.4 0.59/96 d-0.03 MATCH; ew.although.2 0.75/96 d+0.12 plaus; ew.therefore.4 0.75/96 d+0.12 plaus; ew.indeed.4 0.44/32 d-0.19 plaus; ew.perhaps.6 0.44/32 d-0.19 plaus; ew.indeed.6 0.41/32 d-0.22 plaus; ew.therefore.6 0.84/96 d+0.22 plaus
+  OBJ: ec.semicolon.2 0.69/96 d+0.06 MATCH; es.7 0.91/96 d+0.28 out; ec.semicolon.1 1.00/32 d+0.38 out; ep.2 1.00/32 d+0.38 out; ep.3 1.00/32 d+0.38 out; es.4 1.00/32 d+0.38 out; ec.comma.3 0.18/96 d-0.45 out[EXT]; ec.comma.6 0.00/32 d-0.62 out[EXT]
+  OP: nb.min10 0.65/96 d+0.02 MATCH; pro.letter.z 0.67/96 d+0.04 MATCH; rel.share4 0.54/96 d-0.08 MATCH; unq.opener3 0.50/32 d-0.12 plaus; unq.bigram 0.28/32 d-0.34 out; nb.max20 0.99/96 d+0.36 out; inc.remarkable 1.00/32 d+0.38 out; inc.silver+morning+quiet 1.00/32 d+0.38 out; inc.simple 1.00/32 d+0.38 out
+
+=== qwen3-4b|F1  p_A=0.65 (n=96)
+  SAME: ew.instead.2 0.64/96 d-0.01 MATCH; ew.consequently.4 0.62/96 d-0.02 MATCH; ew.although.2 0.53/96 d-0.11 plaus; ew.therefore.4 0.78/96 d+0.14 plaus; ew.nonetheless.2 0.79/96 d+0.15 plaus; ew.nonetheless.4 0.50/32 d-0.15 plaus; ew.therefore.6 0.84/96 d+0.20 plaus; ew.indeed.2 0.88/96 d+0.23 out; ew.moreover.4 0.93/96 d+0.28 out
+  OBJ: es.7 0.81/96 d+0.17 plaus; ec.semicolon.2 0.83/96 d+0.19 plaus; es.4 0.98/96 d+0.33 out; ec.semicolon.1 1.00/96 d+0.35 out; ep.2 1.00/96 d+0.35 out; ep.3 1.00/96 d+0.35 out; ec.comma.3 0.12/96 d-0.52 out[EXT]; ec.comma.6 0.00/32 d-0.65 out[EXT]
+  OP: pro.letter.z 0.69/96 d+0.04 MATCH; unq.opener3 0.49/96 d-0.16 plaus; inc.remarkable 0.99/96 d+0.34 out; inc.window+garden 0.99/96 d+0.34 out; inc.silver+morning+quiet 1.00/96 d+0.35 out; inc.simple 1.00/96 d+0.35 out; nb.max12 1.00/96 d+0.35 out; nb.max20 1.00/96 d+0.35 out; pro.word.very+really+just 1.00/96 d+0.35 out
+
+=== qwen3-4b-instruct-2507|F0  p_A=0.23 (n=96)
+  SAME: ew.although.6 0.19/32 d-0.04 MATCH; ew.indeed.6 0.41/32 d+0.18 plaus; ew.moreover.6 0.01/96 d-0.22 out; ew.moreover.4 0.50/32 d+0.27 plaus; ew.perhaps.6 0.50/32 d+0.27 plaus; ew.instead.6 0.56/32 d+0.33 out; ew.although.4 0.62/32 d+0.40 out; ew.instead.4 0.81/96 d+0.58 out; ew.therefore.6 0.88/96 d+0.65 out
+  OBJ: ec.semicolon.2 0.27/96 d+0.04 MATCH; ec.comma.6 0.14/96 d-0.09 MATCH[EXT]; ec.comma.3 0.10/96 d-0.12 plaus[EXT]; ec.semicolon.1 0.97/32 d+0.74 out; ep.2 1.00/96 d+0.77 out; ep.3 1.00/96 d+0.77 out; es.4 1.00/96 d+0.77 out; es.7 1.00/96 d+0.77 out
+  OP: rel.share4 0.22/32 d-0.01 MATCH; pro.word.the 0.19/32 d-0.04 MATCH; ord.alpha4 0.38/32 d+0.15 plaus; ord.inc4 0.07/96 d-0.16 plaus[EXT]; unq.word5 0.05/96 d-0.18 plaus[INE]; ord.dec4 0.02/96 d-0.21 out[INE]; ord.inc6 0.00/32 d-0.23 plaus[INE]; pro.letter.b 0.00/32 d-0.23 plaus[INE]; rel.letter3 0.00/32 d-0.23 plaus
+
+=== qwen3-4b-instruct-2507|F1  p_A=0.68 (n=96)
+  SAME: ew.indeed.6 0.68/96 d+0.00 MATCH; ew.although.2 0.72/32 d+0.04 MATCH; ew.instead.4 0.77/96 d+0.09 MATCH; ew.instead.6 0.58/96 d-0.09 MATCH; ew.perhaps.6 0.56/32 d-0.11 plaus; ew.perhaps.4 0.83/96 d+0.16 plaus; ew.therefore.6 0.93/96 d+0.25 out; ew.indeed.2 0.97/32 d+0.29 out; ew.indeed.4 0.97/32 d+0.29 out
+  OBJ: ec.semicolon.1 0.97/32 d+0.29 out; ep.2 1.00/32 d+0.32 out; ep.3 1.00/32 d+0.32 out; es.4 1.00/32 d+0.32 out; es.7 1.00/32 d+0.32 out; ec.semicolon.2 0.16/32 d-0.52 out; ec.comma.6 0.10/96 d-0.57 out[EXT]; ec.comma.3 0.08/96 d-0.59 out[EXT]
+  OP: nb.min10 0.55/96 d-0.12 plaus; unq.bigram 0.54/96 d-0.14 plaus; pro.letter.z 0.53/32 d-0.15 plaus; inc.window+garden 0.97/32 d+0.29 out; nb.max12 0.97/32 d+0.29 out; inc.remarkable 1.00/32 d+0.32 out; inc.silver+morning+quiet 1.00/32 d+0.32 out; inc.simple 1.00/32 d+0.32 out; nb.max20 1.00/32 d+0.32 out

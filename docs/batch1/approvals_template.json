@@ -55,7 +55,7 @@
    "approved_on": "",
    "note": "",
    "origin": "proposed",
-   "payload_hash": "c0cb71842c0f3bb8f09901a50ebd7c0b76b209374631d1e181abecba7b4c2f3e",
+   "payload_hash": "33b033cf4280db11f7dee9a492a2bf96d5fac62346f8d97561763354862c2c21",
    "status": "PROPOSED",
    "summary": "One bounded round, selected only from complete, authenticated Stage 1 evidence: boundary cells ranked by class, then by standardised distance to the boundary; 64 new-topic responses each; at most stage2_max_cells cells. Finalisation needs both stages complete; there is no partial-completion rule.",
    "title": "Stage 2 refinement rule and stage completeness"
@@ -85,7 +85,7 @@
    "approved_on": "",
    "note": "",
    "origin": "design",
-   "payload_hash": "86db9770310b309ff3ae3d430c453a1c3e4687fc525d39e20bc7c925c6591c38",
+   "payload_hash": "98e78f8c198e8d0f3d8334c9fab75d4756fc68e41bf66dae782cbf78f2045417",
    "status": "PROPOSED",
    "summary": "Point estimate >= 20% in at least one model-frame, on all stand-alone responses of that cell (Stage 1 + 2); 10% extension reported separately. The OR over eight cells admits candidates whose true rate is below 20% (disclosed).",
    "title": "Eligibility operationalisation"
@@ -95,7 +95,7 @@
    "approved_on": "",
    "note": "",
    "origin": "design",
-   "payload_hash": "540aaaf0cd3684f1bf1cff0cf874874409cb60a612121f8bb00061a569a46628",
+   "payload_hash": "3e9271ffc7f3de82a3461cc1c8e357eb1e3b00e1c9128f3072385256a23d772e",
    "status": "PROPOSED",
    "summary": "|p_X - p_A| <= 0.10 per model-frame on raw compliance; iota uses task-only kappa per model (frame-invariant prompt); undefined iota is unmatched and flagged. Matching is a noisy classification at pilot sample sizes (see D14).",
    "title": "Matching operationalisation"

@@ -1,0 +1,5 @@
+point estimates: {'P1': 7, 'P2': 0, 'P3': 1} feasible: {'P1': False, 'P2': False, 'P3': False}
+P1: true-coverage posterior mean 6.9/16, 90% interval [4, 10], P(feasible) 0.003
+P2: true-coverage posterior mean 0.7/16, 90% interval [0, 3], P(feasible) 0.000
+P3: true-coverage posterior mean 2.0/16, 90% interval [0, 5], P(feasible) 0.000
+P(all three feasible) 0.000   [A=A.however.6, tolerance=0.1, draws=4000]

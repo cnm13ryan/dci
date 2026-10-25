@@ -197,11 +197,11 @@
    "implementation": {
     "calibration.py": "fb4f2a1d60f0fd0f7807847a0d02382bd2628580a3609b416d6ce546fa795fa1",
     "evidence.py": "b74694313b023fde5de8e030992655478b7eee7354cf043fce5eacbabc491727",
-    "intervals.py": "cb10ee61da6be5cf128899e798444ed24d1713223401bed44a68c58ee7866e3a",
+    "intervals.py": "bd55bfe9a32d81c9612fae61dbc162fef751a4f95c180117ef5aa167b0ab5125",
     "pipeline.py": "3aa82bf91110d784ef29708310fb5a3742767ed9b0a20baade5f07e9549062da"
    },
    "origin": "proposed",
-   "payload_hash": "c0cb71842c0f3bb8f09901a50ebd7c0b76b209374631d1e181abecba7b4c2f3e",
+   "payload_hash": "33b033cf4280db11f7dee9a492a2bf96d5fac62346f8d97561763354862c2c21",
    "status": "PROPOSED",
    "title": "Stage 2 refinement rule and stage completeness"
   },
@@ -232,11 +232,11 @@
    "approved_by": "",
    "approved_on": "",
    "implementation": {
-    "intervals.py": "cb10ee61da6be5cf128899e798444ed24d1713223401bed44a68c58ee7866e3a",
+    "intervals.py": "bd55bfe9a32d81c9612fae61dbc162fef751a4f95c180117ef5aa167b0ab5125",
     "references.py": "7e5e2d930dad11c08764472470606de0488f845d158117045635025aefbe7e7c"
    },
    "origin": "design",
-   "payload_hash": "86db9770310b309ff3ae3d430c453a1c3e4687fc525d39e20bc7c925c6591c38",
+   "payload_hash": "98e78f8c198e8d0f3d8334c9fab75d4756fc68e41bf66dae782cbf78f2045417",
    "status": "PROPOSED",
    "title": "Eligibility operationalisation"
   },
@@ -244,11 +244,11 @@
    "approved_by": "",
    "approved_on": "",
    "implementation": {
-    "intervals.py": "cb10ee61da6be5cf128899e798444ed24d1713223401bed44a68c58ee7866e3a",
+    "intervals.py": "bd55bfe9a32d81c9612fae61dbc162fef751a4f95c180117ef5aa167b0ab5125",
     "references.py": "7e5e2d930dad11c08764472470606de0488f845d158117045635025aefbe7e7c"
    },
    "origin": "design",
-   "payload_hash": "540aaaf0cd3684f1bf1cff0cf874874409cb60a612121f8bb00061a569a46628",
+   "payload_hash": "3e9271ffc7f3de82a3461cc1c8e357eb1e3b00e1c9128f3072385256a23d772e",
    "status": "PROPOSED",
    "title": "Matching operationalisation"
   },
@@ -381,7 +381,7 @@
    "unq.word5": "e36e87a21d70b986fe99dbdd0621825bb18038713195f298774cd8285d0b9ca6"
   }
  },
- "manifest_hash": "30021ef0a08e12157d21285ea5bc26af0421820ea7555ca395e711fce1d159f3",
+ "manifest_hash": "dbc720e1ca268c6a92dd0e2b35a77667ece909cd89086a0f316bd91ff434178e",
  "models": [
   {
    "chat_template_kwargs": {},
@@ -464,7 +464,7 @@
   "environment.py": "d4946066a56c09e352f288b2854314a337e1574b1e9ce47004ecc1dd50312934",
   "evidence.py": "b74694313b023fde5de8e030992655478b7eee7354cf043fce5eacbabc491727",
   "freeze.py": "da75241421546694d1336afaf857739bb77e64e273736123a7d26ae6feb9ec28",
-  "intervals.py": "cb10ee61da6be5cf128899e798444ed24d1713223401bed44a68c58ee7866e3a",
+  "intervals.py": "bd55bfe9a32d81c9612fae61dbc162fef751a4f95c180117ef5aa167b0ab5125",
   "library.py": "2cc8eba7fee4fbfadd969c8bd9d621f75f6d7567461965d7d223a2da2050e597",
   "outcomes.py": "ed51afa4838c6043d3ca0c2aab24169ad3076a405da20be8bfa915e75d928a7c",
   "pipeline.py": "3aa82bf91110d784ef29708310fb5a3742767ed9b0a20baade5f07e9549062da",

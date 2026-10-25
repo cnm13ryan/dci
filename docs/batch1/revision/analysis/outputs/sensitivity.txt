@@ -1,0 +1,24 @@
+== A.however.4:0.10
+point estimates: {'P1': 7, 'P2': 2, 'P3': 1} feasible: {'P1': False, 'P2': False, 'P3': False}
+P1: true-coverage posterior mean 6.3/16, 90% interval [3, 10], P(feasible) 0.010
+P2: true-coverage posterior mean 2.9/16, 90% interval [0, 6], P(feasible) 0.000
+P3: true-coverage posterior mean 1.2/16, 90% interval [0, 4], P(feasible) 0.000
+P(all three feasible) 0.000   [A=A.however.4, tolerance=0.1, draws=2000]
+== A.however.6:0.15
+point estimates: {'P1': 11, 'P2': 4, 'P3': 8} feasible: {'P1': False, 'P2': False, 'P3': False}
+P1: true-coverage posterior mean 11.1/16, 90% interval [9, 14], P(feasible) 0.401
+P2: true-coverage posterior mean 3.6/16, 90% interval [0, 7], P(feasible) 0.000
+P3: true-coverage posterior mean 8.0/16, 90% interval [4, 12], P(feasible) 0.058
+P(all three feasible) 0.000   [A=A.however.6, tolerance=0.15, draws=2000]
+== A.however.6:0.20
+point estimates: {'P1': 13, 'P2': 9, 'P3': 14} feasible: {'P1': True, 'P2': False, 'P3': True}
+P1: true-coverage posterior mean 13.9/16, 90% interval [12, 16], P(feasible) 0.978
+P2: true-coverage posterior mean 7.7/16, 90% interval [4, 11], P(feasible) 0.034
+P3: true-coverage posterior mean 12.6/16, 90% interval [10, 14], P(feasible) 0.831
+P(all three feasible) 0.025   [A=A.however.6, tolerance=0.2, draws=2000]
+== A.however.4:0.15
+point estimates: {'P1': 11, 'P2': 9, 'P3': 1} feasible: {'P1': False, 'P2': False, 'P3': False}
+P1: true-coverage posterior mean 11.1/16, 90% interval [8, 14], P(feasible) 0.430
+P2: true-coverage posterior mean 8.4/16, 90% interval [5, 12], P(feasible) 0.082
+P3: true-coverage posterior mean 4.7/16, 90% interval [1, 8], P(feasible) 0.000
+P(all three feasible) 0.000   [A=A.however.4, tolerance=0.15, draws=2000]

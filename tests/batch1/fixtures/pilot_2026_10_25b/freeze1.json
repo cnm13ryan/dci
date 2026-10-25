@@ -1,0 +1,577 @@
+{
+ "authorization": {
+  "blocking": [],
+  "pilot_authorizable": true
+ },
+ "backend_source": {
+  "files": {
+   "__init__.py": "0ed0ea532c3b66117ca50a90123d202fd72ffa4c2276e8447cc6b101bcd1ff26",
+   "__main__.py": "f7864a559757b960f0300ddf46ea3c969076ec52df068ebe75ffe006ad13050d",
+   "arbitration_vllm.py": "f885116cbabdf83fa0b775906d6d1a39395855099f02051f8223d94ba781cf08",
+   "capabilities.py": "d266434b0080fafba622d2b5a67df8c18ef36deeecad8dd7cd1a956f717237c5",
+   "contract.py": "5c625d398e312ab3ff88e73e53b61cc77809c956d176a4d3710b8515e64b4a4c",
+   "engine.py": "b95411d77a38f45b04ceb0f888161f8cc67216b8709c75a72ebf7dfea4beee9a",
+   "hardware.py": "ab695671800bee225863c36d913df98de0484e48440ccd515c1d6228cfee7f88",
+   "hardware_validation.py": "086ab69fac635ae54a371df024506d696430bb4b9b24766b2f8132669c101f29",
+   "io.py": "df5faac3907371bfa865579e5b68e803eeb93a85e40beaa7fd48f0d06859b891",
+   "natural_length.py": "b401756c64bae01a87d845e5b905b6ca5c8ca434d176d90d3e221b470a7d250f",
+   "natural_reasoning.py": "aeb3c18a9ebe3143224b347746698ae2b62a728f03516b2ee98a32a3dbe6cb19",
+   "plan.py": "00fcd7228f42e65a09fc8709c4c0fcf624258d8eb30428e39afad13579ca73bd",
+   "reasoning.py": "02978d1d174b319551db6262b4a1db389ea7132b2e32c55faac984b6ff21ea46",
+   "reasoning_vllm.py": "33d7ac64383e4720853d5a6c63c7d4e92934be6ea109882b4d7c6f297ee137cd",
+   "records.py": "79f871d6e028aa595701e46f5214be659d156eeb7b004fdb4a5d61de3f6ed1e5",
+   "registry.py": "a73fd1880116469e61e0f6c2e03b38466ebc103b370e27aec597aa36320fa55f",
+   "resolve.py": "864308b017c6d05e79d7c3cfe3209e14bc772bc189d0fa1915677ac897ce8f09",
+   "tp2_mitigated.py": "d0385a9a1b7d0b0a750865acba70012d581126e0d9c372476e268ad3caf45b81"
+  },
+  "hash": "e4e5f103998db94fa90307bcb7ede9ecad4ae3944040121e8c42608bfa43c9b1"
+ },
+ "compatibility": {
+  "counts": {
+   "COMPATIBLE": 305,
+   "INCOMPATIBLE": 19,
+   "UNRESOLVED": 0
+  },
+  "hash": "4a8fd97fc48a36a18c139f2206ae56928d42911c8a6da876e368f8a13ba74267",
+  "task_level_counts": {
+   "TASK_COMPATIBLE": 305,
+   "TASK_UNRESOLVED": 0
+  },
+  "task_level_unresolved": [],
+  "unresolved": []
+ },
+ "config": {
+  "a_counts": [
+   2,
+   4,
+   6
+  ],
+  "a_headroom_band": [
+   0.1,
+   0.9
+  ],
+  "a_min_informative_model_frames": 6,
+  "a_min_informative_models": 3,
+  "b_informative_band": [
+   0.15,
+   0.85
+  ],
+  "b_limits": [
+   8,
+   9,
+   10,
+   11,
+   12,
+   13
+  ],
+  "b_min_gap": 2,
+  "b_min_informative_model_frames": 4,
+  "b_min_median_separation": 0.15,
+  "b_min_separated_models": 3,
+  "eligibility_threshold": 0.2,
+  "extension_threshold": 0.1,
+  "feasibility_min_configs": 12,
+  "feasibility_min_models": 3,
+  "frames": [
+   "F0",
+   "F1"
+  ],
+  "g1_min_distinct_words": 3,
+  "generation_root_seed": 202610180,
+  "matching_tolerance": 0.1,
+  "max_technical_attempts": 3,
+  "min_cell_fraction": 0.9,
+  "models": [
+   "gemma-3n-e2b-it",
+   "gemma-3n-e4b-it",
+   "qwen3-4b",
+   "qwen3-4b-instruct-2507"
+  ],
+  "near_threshold_margin": 2,
+  "p1_min_additional": 2,
+  "p2_min_additional_other_object": 2,
+  "p3_min_additional_other_operation": 3,
+  "p3_min_g3": 3,
+  "pilot_topics": 96,
+  "preferred_a_count": 4,
+  "seed_domain": "dci.batch1:gen:v1",
+  "stability_min_feasible_share": 0.8,
+  "stability_replicates": 200,
+  "stability_seed": 20261019,
+  "stability_stable_threshold": 0.5,
+  "stability_unstable_band": [
+   0.2,
+   0.8
+  ],
+  "stage1_draws": 1,
+  "stage1_topics": 32,
+  "stage2_draws": 1,
+  "stage2_max_cells": 240,
+  "stage2_topics": 64,
+  "task_only_draws": 2,
+  "truncation_review_share": 0.02,
+  "z": 1.959963984540054
+ },
+ "config_hash": "b8596f836ec24bc2dec4acd1ebe5d9aa1f586b6ef2ec887347d2c69c739d2c92",
+ "decisions": {
+  "D01": {
+   "approved_by": "Bryan",
+   "approved_on": "2026-10-25",
+   "implementation": {
+    "library.py": "2cc8eba7fee4fbfadd969c8bd9d621f75f6d7567461965d7d223a2da2050e597",
+    "verifiers.py": "7e6bfcd45d8d9bb053f45968ecd95859fc77a64c1837851d5394b3994847094c"
+   },
+   "origin": "proposed",
+   "payload_hash": "1984255921c07e932cb3bda6d0d1a17c9c52b0ea9a28d9119301672de6461ce0",
+   "status": "APPROVED",
+   "title": "Parameters of the 29 proposed variants"
+  },
+  "D02": {
+   "approved_by": "Bryan",
+   "approved_on": "2026-10-25",
+   "implementation": {
+    "design.py": "3ce9e8620d7423b95933af2e83fa287f8a0f6e73b115cd42f28758aaa12c772f",
+    "library.py": "2cc8eba7fee4fbfadd969c8bd9d621f75f6d7567461965d7d223a2da2050e597"
+   },
+   "origin": "proposed",
+   "payload_hash": "6b0294a33bb87047d4e9043a3a7efea79bc36e426f31a8f9d7a2fcae1eb96758",
+   "status": "APPROVED",
+   "title": "The two wording frames and the prompt"
+  },
+  "D03": {
+   "approved_by": "Bryan",
+   "approved_on": "2026-10-25",
+   "implementation": {
+    "dci/verifiers/rules.py": "00bed1e904013bcde6cac2c6243bc0c6655b7a1f73f47042b12946e258a63647",
+    "text.py": "dd7d69ab3f943b764d427fa421a936570f3d36d4fa657e397ad17904d54e8145"
+   },
+   "origin": "proposed",
+   "payload_hash": "f013531202272bc8576a7f1414912438e453f942dea41fdbaf816a5f9577c2e7",
+   "status": "APPROVED",
+   "title": "Text semantics"
+  },
+  "D04": {
+   "approved_by": "Bryan",
+   "approved_on": "2026-10-25",
+   "implementation": {
+    "outcomes.py": "ed51afa4838c6043d3ca0c2aab24169ad3076a405da20be8bfa915e75d928a7c",
+    "scoring.py": "b539c120662d42c91e2e9e0736b80f826b00cf03cc109e5a91ddc3e6c1cb305d",
+    "verifiers.py": "7e6bfcd45d8d9bb053f45968ecd95859fc77a64c1837851d5394b3994847094c"
+   },
+   "origin": "proposed",
+   "payload_hash": "94c018a1c2dcede3eba5476540e03055aa087198cda1ba0beb6cac516b8e4205",
+   "status": "APPROVED",
+   "title": "Outcomes, compliance and vacuity"
+  },
+  "D05": {
+   "approved_by": "Bryan",
+   "approved_on": "2026-10-25",
+   "implementation": {
+    "design.py": "3ce9e8620d7423b95933af2e83fa287f8a0f6e73b115cd42f28758aaa12c772f",
+    "topics.py": "8a160c2d2ca19898b7c33ef2a8169f512aa9ccaf476094f4a7c0dacdd901bbcc"
+   },
+   "origin": "proposed",
+   "payload_hash": "543834c0bba5d23d85c9c7ea68191692495c27effad80b51aedfd411891d953d",
+   "status": "APPROVED",
+   "title": "Stage 1 allocation and pilot topics"
+  },
+  "D06": {
+   "approved_by": "Bryan",
+   "approved_on": "2026-10-25",
+   "implementation": {
+    "calibration.py": "fb4f2a1d60f0fd0f7807847a0d02382bd2628580a3609b416d6ce546fa795fa1",
+    "evidence.py": "b74694313b023fde5de8e030992655478b7eee7354cf043fce5eacbabc491727",
+    "intervals.py": "cb10ee61da6be5cf128899e798444ed24d1713223401bed44a68c58ee7866e3a",
+    "pipeline.py": "3aa82bf91110d784ef29708310fb5a3742767ed9b0a20baade5f07e9549062da"
+   },
+   "origin": "proposed",
+   "payload_hash": "c0cb71842c0f3bb8f09901a50ebd7c0b76b209374631d1e181abecba7b4c2f3e",
+   "status": "APPROVED",
+   "title": "Stage 2 refinement rule and stage completeness"
+  },
+  "D07": {
+   "approved_by": "Bryan",
+   "approved_on": "2026-10-25",
+   "implementation": {
+    "calibration.py": "fb4f2a1d60f0fd0f7807847a0d02382bd2628580a3609b416d6ce546fa795fa1"
+   },
+   "origin": "proposed",
+   "payload_hash": "cc261ae19fd1ad686d8c09bb97cb02907612353780ff9bbaec50d5cc426b9567",
+   "status": "APPROVED",
+   "title": "Selecting the two B limits"
+  },
+  "D08": {
+   "approved_by": "Bryan",
+   "approved_on": "2026-10-25",
+   "implementation": {
+    "calibration.py": "fb4f2a1d60f0fd0f7807847a0d02382bd2628580a3609b416d6ce546fa795fa1",
+    "references.py": "7e5e2d930dad11c08764472470606de0488f845d158117045635025aefbe7e7c"
+   },
+   "origin": "proposed",
+   "payload_hash": "99a39cd824f437f71bfea388fbbc349c967e6cb04209c22ecd9508838ce7c08e",
+   "status": "APPROVED",
+   "title": "Selecting the global A count"
+  },
+  "D09": {
+   "approved_by": "Bryan",
+   "approved_on": "2026-10-25",
+   "implementation": {
+    "intervals.py": "cb10ee61da6be5cf128899e798444ed24d1713223401bed44a68c58ee7866e3a",
+    "references.py": "7e5e2d930dad11c08764472470606de0488f845d158117045635025aefbe7e7c"
+   },
+   "origin": "design",
+   "payload_hash": "86db9770310b309ff3ae3d430c453a1c3e4687fc525d39e20bc7c925c6591c38",
+   "status": "APPROVED",
+   "title": "Eligibility operationalisation"
+  },
+  "D10": {
+   "approved_by": "Bryan",
+   "approved_on": "2026-10-25",
+   "implementation": {
+    "intervals.py": "cb10ee61da6be5cf128899e798444ed24d1713223401bed44a68c58ee7866e3a",
+    "references.py": "7e5e2d930dad11c08764472470606de0488f845d158117045635025aefbe7e7c"
+   },
+   "origin": "design",
+   "payload_hash": "540aaaf0cd3684f1bf1cff0cf874874409cb60a612121f8bb00061a569a46628",
+   "status": "APPROVED",
+   "title": "Matching operationalisation"
+  },
+  "D11": {
+   "approved_by": "Bryan",
+   "approved_on": "2026-10-25",
+   "implementation": {
+    "references.py": "7e5e2d930dad11c08764472470606de0488f845d158117045635025aefbe7e7c"
+   },
+   "origin": "design",
+   "payload_hash": "32951ab309a6fb20256816bf1bf3f95681fd6ce2c287f3010df2dde1292e5ead",
+   "status": "APPROVED",
+   "title": "Coverage requirements"
+  },
+  "D12": {
+   "approved_by": "Bryan",
+   "approved_on": "2026-10-25",
+   "implementation": {
+    "design.py": "3ce9e8620d7423b95933af2e83fa287f8a0f6e73b115cd42f28758aaa12c772f",
+    "environment.py": "d4946066a56c09e352f288b2854314a337e1574b1e9ce47004ecc1dd50312934",
+    "outcomes.py": "ed51afa4838c6043d3ca0c2aab24169ad3076a405da20be8bfa915e75d928a7c",
+    "runner.py": "33325b0a141656221109289ba010866f8b0534a8402bd05c3af94c7197091d89"
+   },
+   "origin": "proposed",
+   "payload_hash": "1017d22295953f4ae5b319f737b31f638b9e4fa5001715101755a860caaeb629",
+   "status": "APPROVED",
+   "title": "Model panel, decoding, cap, seeds and backend"
+  },
+  "D13": {
+   "approved_by": "Bryan",
+   "approved_on": "2026-10-25",
+   "implementation": {
+    "library.py": "2cc8eba7fee4fbfadd969c8bd9d621f75f6d7567461965d7d223a2da2050e597",
+    "references.py": "7e5e2d930dad11c08764472470606de0488f845d158117045635025aefbe7e7c"
+   },
+   "origin": "proposed",
+   "payload_hash": "7f24d04f57e7fdc822b03cda7bbd8c3152f7da80225ed99614e21113c22f2700",
+   "status": "APPROVED",
+   "title": "Object types and hierarchical weights"
+  },
+  "D14": {
+   "approved_by": "Bryan",
+   "approved_on": "2026-10-25",
+   "implementation": {
+    "stability.py": "cc34cc3bd42e19fab8c61495df16fceda00517257449b11036bedb6fa2c4c8a5"
+   },
+   "origin": "proposed",
+   "payload_hash": "da0bb5bb7c0fcd0fe1d79401549dbf7ccb5b3f69b2b38ebc4137b4fc77a8f51b",
+   "status": "APPROVED",
+   "title": "Membership-stability diagnostics"
+  }
+ },
+ "decoding": {
+  "chunk_size": 512,
+  "enforce_eager": true,
+  "engine_seed": 20261018,
+  "max_new_tokens": 512,
+  "reasoning_mode": "NO_THINKING",
+  "skip_special_tokens": true,
+  "temperature": 0.7,
+  "top_k": 50,
+  "top_p": 0.9
+ },
+ "execution_environment": {
+  "host": {
+   "accelerator_error": null,
+   "distributions": 180,
+   "driver": [
+    "580.126.20"
+   ],
+   "driver_error": null,
+   "executable": "/lambda/nfs/dci/repo/environments/cuda-vllm/.venv/bin/python",
+   "gpu_uuids": [
+    "GPU-1564c5ee-1041-6280-415c-e571914859d3",
+    "GPU-ac504a0d-c8df-2a28-8d95-45bb3721f0e8"
+   ],
+   "hostname": "68-209-75-174",
+   "interpreter": "/lambda/nfs/dci/repo/environments/cuda-vllm/.venv/bin/python",
+   "kernel": "6.8.0-1046-nvidia",
+   "platform": "Linux-6.8.0-1046-nvidia-x86_64-with-glibc2.39"
+  },
+  "identity": {
+   "accelerators": [
+    "NVIDIA H100 80GB HBM3"
+   ],
+   "backend_source_hash": "e4e5f103998db94fa90307bcb7ede9ecad4ae3944040121e8c42608bfa43c9b1",
+   "distributions_hash": "0798627cf0199406eb1d7d9bb6717a90fbd605c3ad0b54d425d48c0de7c4ac72",
+   "gpu_capabilities": [
+    "9.0"
+   ],
+   "gpu_count": 2,
+   "gpu_memory_gib": [
+    79,
+    79
+   ],
+   "implementation": "cpython",
+   "packages": {
+    "flashinfer-python": "0.6.1",
+    "numpy": "2.1.3",
+    "tokenizers": "0.22.2",
+    "torch": "2.9.1+cu129",
+    "transformers": "4.57.6",
+    "triton": "3.5.1",
+    "vllm": "0.15.1",
+    "xformers": null
+   },
+   "python": "3.12.3",
+   "torch_cuda": "12.9",
+   "torch_hip": null
+  },
+  "identity_hash": "82d4b8747daf88517c65f3a669273f146a18266a0bf8487041061f997aa732c3",
+  "requirements": {
+   "backend_python": "3.12",
+   "gpu_compute_capability": "9.0",
+   "gpu_count": 2,
+   "gpu_name": "NVIDIA H100 80GB HBM3",
+   "min_driver": "575.51.03",
+   "packages": {
+    "torch": "2.9.1+cu129",
+    "vllm": "0.15.1"
+   },
+   "torch_cuda": "12.9"
+  },
+  "schema": "dci.batch1/environment-lock/v2",
+  "status": "ATTESTED"
+ },
+ "library": {
+  "hash": "d728981db095c4bc1f4821e7af03196ef043217ef0efc4252b32fef706efb894",
+  "n_references": 51,
+  "spec_hashes": {
+   "A.however.2": "d5573e63a1e674369373c914f2982ef7c25aa9bfe809138b341507e3a5414292",
+   "A.however.4": "38d5c9c89836b319604b9524e3574fd063a8680a0841f61a3757df4e4ea54743",
+   "A.however.6": "d7d940e11b5bafbdb4937b34a764b4b2e7de285f2999fbf0ae4c2732cd67f926",
+   "B.max10": "a37f4fd79720a113efa94da0ee6e79275c96ca28dc350fcaac4227c350597b04",
+   "B.max11": "4b7fd653999348ad99857c98a45d958cdb4c3c43efee7a32c29d4c319dc11d4f",
+   "B.max12": "a268bb8bc7be0554e8a53aea6c51479be573fb50f49018e279614263f341d5d6",
+   "B.max13": "662877e87ca3feedec468c1342ad5602dca65cb41abf6e59659d213f3076adc9",
+   "B.max8": "d6486e5a2596833cea42d3c256ad251c872d00c3b3a56bd5023451f4e1f16cf4",
+   "B.max9": "8aeee06a9d3b769246ced3f80ba8cef6e7a8e92e0a9e811ef5d8ef3e47a84977",
+   "ec.comma.3": "e6abe2fe2db1c08b4d82783d5f884c29b23b35f6ae65377d2abac3748de13811",
+   "ec.comma.6": "4ebfbb43e6955f41e4ff06aaaed1293555bb2a29b53ebf4a215f685ddb4af592",
+   "ec.semicolon.1": "7d5e564cb5173bc1ccba999863f195241626b8a7ab79fa028a756952e03195d1",
+   "ec.semicolon.2": "a01ee65629112d2f29b24a236772a7fd9225c6041bc463e7b09a8a32ad137fb5",
+   "ep.2": "3fa9f0d7ce9a2b9a652ae923f612c12b602662a65f22b9d06489d67299535a70",
+   "ep.3": "f2c81c5cc88e6c85f86401b70837f74fee3214a33a2ad0801f7f09ceb376850d",
+   "es.4": "8bfc1acd9cd7127cfe0d73c9e93ccd8c9bbc3b9b8782b34f10ec6240fe76fb93",
+   "es.7": "467b9e079958e32b1a649ec00d4216acc9855d65967d941d4ad25f2e8cd20aa3",
+   "ew.although.2": "195e87135618c140406741bdd689a79fc77042d2933546d83a5dd9399324c1c1",
+   "ew.although.4": "b8d7eb1a9500b7f839546d08bb9e95316c131afd68c6a9a6175408cff5da880b",
+   "ew.although.6": "b111b8fa6c5bcec9aaa274a69c37790849fd1b7a2f973850aedb5b9af44de4d7",
+   "ew.consequently.2": "23bb40a7e2cd4e6175da2bf6ea5b146d186a2175affc3bba69909d0829150c08",
+   "ew.consequently.4": "c9fa6b626171c688db83c73c7ed052abac815dcd86fc0868f4d16ad090220987",
+   "ew.indeed.2": "47f9168f360b99bda9cfa7f92559c8db5041338786ff0207b0e2a8132d6d1638",
+   "ew.indeed.4": "7bf4e773392bf0c5ed7fa4a26feb15f6ba41cda815094dda305d4897600d0f52",
+   "ew.indeed.6": "0c5525f9fd4e7821cfdb8dbafed6cc3d57e19f91d20393dbe285e83cbad72522",
+   "ew.instead.2": "bf2413abd1aecc66a49a4dd66f6a9dbfc6035be6e0c356577d884cad927b8675",
+   "ew.instead.4": "4fe8f135e9c9edf5150ef057778326585782d965299dc9ba8be51d5d955013f9",
+   "ew.instead.6": "0be6fc918e042b90efd1188feefb991c2e6f472672b11b55451bc59d18fe13a1",
+   "ew.moreover.2": "d5a7c6596f28cd245503e178b33ada667102eb22726da0ebe7204cd8be081f49",
+   "ew.moreover.4": "d74cea9317e5ca6201a4d98ce9930908d03c359bb89e1aded1579750794e553c",
+   "ew.moreover.6": "993cdfdf0b98920848bbdd10c180f171aa4591d212a225169ffe0a986f313574",
+   "ew.nonetheless.2": "92051acc063180adedbf6a3f58e82b4df84710537eab6f9c145038c552768834",
+   "ew.nonetheless.4": "99313c3c3e407040d91bd19472993705eef20ce625cf971a34527f7674752153",
+   "ew.perhaps.2": "fdf6328467b1d3ab41c0d59720233a608afc298a78dd9174906e7d930c179883",
+   "ew.perhaps.4": "46793c8ef715111b6111f53f5b808c98502c8bb48b12a0f4ac6aecdde1226d88",
+   "ew.perhaps.6": "c34eb695ed1eb630575a09d3b223f97aceaf828bff72d14e4b3f0bfe66c2f8a8",
+   "ew.therefore.2": "55600a9a38b0213f27c68fadfa40d89be6678b164334c45f21694d5335469f51",
+   "ew.therefore.4": "228a4595274ac367b9511fab8cc026174e1b4b074c8e20a82eedb59b5a341ad6",
+   "ew.therefore.6": "edcb442e94b80a035c9be9ddc864e33e464793d816134d1e284285365e3e2b33",
+   "inc.remarkable": "1f6a4672b32eb16fce6c05357b122967eebc15ff5ba0eae25b701a683c930a93",
+   "inc.silver+morning+quiet": "8c21081df3aab3fe6d9239ef7509e38af35443c8869602ba1278ce29dee4c53e",
+   "inc.simple": "7cfd3e643ed5c6c4f0f3473775b91f72d8c6d78790f53fcebccebf193e625777",
+   "inc.window+garden": "0d926e0653e957a5435f12610fba734f1b10f679adbc8efe6a84a9104f88181e",
+   "nb.max12": "3417999a145c44e7c861c023860ef3cee5dd00a2b9ae04ecfca38e0aa35e5d10",
+   "nb.max20": "0322c4d20a778fdbc88ac4120ac5f84921ae6fb8a239ca37b56213d2067d61e4",
+   "nb.min10": "9f8ce3c5931e7cf38f986bf17e19beb3b289b3008ce437d736d6ef9dc35de1ea",
+   "ord.alpha4": "11f3f58a2eb6f9bcebb088a81664816bdd0b888ec2316d16174d997117808b57",
+   "ord.dec4": "f5ade9a529a12b2ca383da15b51290a222f5771fde0dd5ffa2578433a2188fe0",
+   "ord.inc4": "3558a26cff3e444bf39728da833138f841a39da8201cbbdea96466de0a08de1f",
+   "ord.inc6": "bc22ccee89555ffb0e32303c9b50c2d3d92170a783e4833c8a20a4df78a334c4",
+   "pro.letter.b": "8d735045b4398a5135792fc64a5d340f6c621d3fbb92144e28af2c712c5bb5b5",
+   "pro.letter.z": "8955ac4d9af23e05a83727f2a044610b4d7dd0202df7cf1d8a15705679e92d29",
+   "pro.word.the": "6dfcf1f9e4d05c4162634f567519949fb2e3b61a26732030bd0704a8fd28124d",
+   "pro.word.very+really+just": "b49933510a29d562664bd083af21f8c0895327775fd889c95e60d5fd440750f7",
+   "rel.letter3": "d828fa78e38f09bd2349d35f6992cb5213bcc1dcd523536caabc8a8ec25d889c",
+   "rel.share4": "f6a0245483592c3e564e4c2fac5a2b6a9fe32ce7bd0b95827780c209d90f7bf0",
+   "rel.word3": "b51e92d8819e605d22d31fff2476d85e5853e3ae832a8bbf72888cd80895e08f",
+   "unq.bigram": "538f28e1e9e043b29dd81ad936f2033420dc7e96982305736553ccc6ac3ec026",
+   "unq.opener3": "d77834dad4faa6289664dcce004d7c70face75123a0506705683bd1dfdb6cf85",
+   "unq.word5": "e36e87a21d70b986fe99dbdd0621825bb18038713195f298774cd8285d0b9ca6"
+  }
+ },
+ "manifest_hash": "93ef9aacc59e033f1681880f07e1443ac2d9aa7c5657a9a48b23391d0431bf3e",
+ "models": [
+  {
+   "chat_template_kwargs": {},
+   "dtype": "bfloat16",
+   "family": "gemma3n",
+   "gpu_memory_utilization": 0.85,
+   "historical_rows_per_second": 9.7,
+   "key": "gemma-3n-e2b-it",
+   "max_model_len": 4096,
+   "model_id": "google/gemma-3n-E2B-it",
+   "revision": "5e092ebca197cdcd8d8b195040accf22693501bc",
+   "tensor_parallel_size": 1,
+   "thinking_policy": "unavailable"
+  },
+  {
+   "chat_template_kwargs": {},
+   "dtype": "bfloat16",
+   "family": "gemma3n",
+   "gpu_memory_utilization": 0.95,
+   "historical_rows_per_second": 4.94,
+   "key": "gemma-3n-e4b-it",
+   "max_model_len": 4096,
+   "model_id": "google/gemma-3n-E4B-it",
+   "revision": "c1221e9c62e34a43ab7ffacd1be0ea71f126ef10",
+   "tensor_parallel_size": 1,
+   "thinking_policy": "unavailable"
+  },
+  {
+   "chat_template_kwargs": {
+    "enable_thinking": false
+   },
+   "dtype": "bfloat16",
+   "family": "qwen3",
+   "gpu_memory_utilization": 0.85,
+   "historical_rows_per_second": 17.4,
+   "key": "qwen3-4b",
+   "max_model_len": 4096,
+   "model_id": "Qwen/Qwen3-4B",
+   "revision": "1cfa9a7208912126459214e8b04321603b3df60c",
+   "tensor_parallel_size": 1,
+   "thinking_policy": "disabled"
+  },
+  {
+   "chat_template_kwargs": {},
+   "dtype": "bfloat16",
+   "family": "qwen3",
+   "gpu_memory_utilization": 0.85,
+   "historical_rows_per_second": 10.1,
+   "key": "qwen3-4b-instruct-2507",
+   "max_model_len": 4096,
+   "model_id": "Qwen/Qwen3-4B-Instruct-2507",
+   "revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+   "tensor_parallel_size": 1,
+   "thinking_policy": "unavailable"
+  }
+ ],
+ "orchestrator": {
+  "frozen_with": {
+   "implementation": "cpython",
+   "minor": "3.12"
+  },
+  "required_python": "3.12",
+  "source_hash_scheme": "dci.batch1/source-tokens/v1"
+ },
+ "prompts": {
+  "one": "{question}\n\nAnswer in 60 to 120 words.\n\n1. {c1}\n\nAnswer:",
+  "zero": "{question}\n\nAnswer in 60 to 120 words.\n\nAnswer:"
+ },
+ "protocol_version": "batch1-pilot/0.1-proposed",
+ "rule_sources": {
+  "__init__.py": "19f2032706d031581d981e6bb9a0b135d0261914ec4cbd3b7477e548cd104117",
+  "__main__.py": "bc713658e3413fada43e1613c2255feaa12add8ffba22ec22a6ddc4e00435fb6",
+  "calibration.py": "fb4f2a1d60f0fd0f7807847a0d02382bd2628580a3609b416d6ce546fa795fa1",
+  "cli.py": "7997e191950ba27531ab367e8d962351a2d3eaaeb3c48bbe6c23f7d36d8a64ed",
+  "compatibility.py": "6b7dc43c6d220f63ca7bdd934eed9e6041ff5f494d1e2cf385b5fa52ab95292e",
+  "config.py": "f2c7adb6ddb754d1b9fd8f49b1a543b3d57c94507ad6ca5b48c5b1dfeb08a2b3",
+  "dci/provenance/hashes.py": "b0db13e53e9e62d18ed2e94a225318b08d44aedd2beddffb044a46e2fc18bdc3",
+  "dci/verifiers/rules.py": "00bed1e904013bcde6cac2c6243bc0c6655b7a1f73f47042b12946e258a63647",
+  "design.py": "3ce9e8620d7423b95933af2e83fa287f8a0f6e73b115cd42f28758aaa12c772f",
+  "environment.py": "d4946066a56c09e352f288b2854314a337e1574b1e9ce47004ecc1dd50312934",
+  "evidence.py": "b74694313b023fde5de8e030992655478b7eee7354cf043fce5eacbabc491727",
+  "freeze.py": "da75241421546694d1336afaf857739bb77e64e273736123a7d26ae6feb9ec28",
+  "intervals.py": "cb10ee61da6be5cf128899e798444ed24d1713223401bed44a68c58ee7866e3a",
+  "library.py": "2cc8eba7fee4fbfadd969c8bd9d621f75f6d7567461965d7d223a2da2050e597",
+  "outcomes.py": "ed51afa4838c6043d3ca0c2aab24169ad3076a405da20be8bfa915e75d928a7c",
+  "pipeline.py": "3aa82bf91110d784ef29708310fb5a3742767ed9b0a20baade5f07e9549062da",
+  "references.py": "7e5e2d930dad11c08764472470606de0488f845d158117045635025aefbe7e7c",
+  "runner.py": "33325b0a141656221109289ba010866f8b0534a8402bd05c3af94c7197091d89",
+  "scoring.py": "b539c120662d42c91e2e9e0736b80f826b00cf03cc109e5a91ddc3e6c1cb305d",
+  "smoke.py": "eb11c47458598b8b536e3c01cf829a063e208dc04d1439b783477f7b715c5bf0",
+  "stability.py": "cc34cc3bd42e19fab8c61495df16fceda00517257449b11036bedb6fa2c4c8a5",
+  "store.py": "d0e6cd674378423230ab135280ad7801cfee67b4e708829aff10ac1fa9db9958",
+  "synthetic.py": "93dbe3bcb50addf7e07248779a65445af2622b6387edb840968164c6410d7b59",
+  "text.py": "dd7d69ab3f943b764d427fa421a936570f3d36d4fa657e397ad17904d54e8145",
+  "topics.py": "8a160c2d2ca19898b7c33ef2a8169f512aa9ccaf476094f4a7c0dacdd901bbcc",
+  "verifiers.py": "7e6bfcd45d8d9bb053f45968ecd95859fc77a64c1837851d5394b3994847094c"
+ },
+ "schema": "dci.batch1/freeze1/v2",
+ "seed_derivation": {
+  "domain": "dci.batch1:gen:v1",
+  "inputs": [
+   "stage",
+   "model_id",
+   "model_revision",
+   "prompt_hash",
+   "draw"
+  ],
+  "root": 202610180
+ },
+ "stage1": {
+  "cells": 484,
+  "design_hash": "ee30db826db957fdd6da178bf301d41e9478f56433e781620b36ba6e189984e8",
+  "rows": 15616
+ },
+ "stage2_bound": {
+  "max_cells": 240,
+  "rows_per_cell": 64
+ },
+ "study_id": "dci-batch1-pilot",
+ "text_semantics_hash": "67fb82741e30dbc48d5bb60ecd26e8c46bba9da3b6fb61008c9e76b30a9b9c0f",
+ "topics": {
+  "bank_hash": "6a5c4dc275612278e87a2a61feefc175f01ad9f21c5242593842efec95f27551",
+  "counts": {
+   "confirmatory_reserved": 480,
+   "stage1": 32,
+   "stage2": 64
+  },
+  "historical_sources": [
+   "dci/v19/task_bank",
+   "dci1/v2",
+   "dci1v3",
+   "dci1v3/candidates",
+   "dci1v4",
+   "dci1v5/calibration_b",
+   "dci1v7/calibration_b_v6"
+  ],
+  "hygiene_clean": true,
+  "hygiene_hash": "9696245314827b6a7658f83a0d22acd943c1c50320b8e87d21004c3e0b3168c4",
+  "overlap_clean": true,
+  "overlap_hash": "0ca1c0ec24413c82e2e3d163976ada0f13e243c7227d321fc82b0d9076d0bbef",
+  "overlap_max_jaccard": {
+   "historical": 0.4706,
+   "internal": 0.4667
+  },
+  "source_file_hash": "c272203f04575adaea769a3b67ff02b877b7aaca7fb24cca4f848b537ed43f8f",
+  "split_hash": "afd65ed122770119c5c62aabf497a7b6c3367e25545231a04aaa586518629dd1"
+ },
+ "verifier_bundle_hash": "5747faa9157c6c23a9988b4888321a3d09a780998352b73e38cbe03a9c9c04ce"
+}

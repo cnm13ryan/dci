@@ -1,0 +1,2436 @@
+{
+ "schema": "dci.batch1/candidate-library/v2-proposal",
+ "status": "PROPOSAL awaiting the researcher (D01 revision); nothing measured",
+ "rules": [
+  "every word target and required word has <= 8 letters, so no candidate is incompatible with B 8 or B 10 by proof (except the 7 kept long-word references)",
+  "every target word, required word and forbidden word must occur in no topic (bank v1, the reserved 480, and the fresh pilot topics); checked by the hygiene report before Freeze 1",
+  "every candidate's B compatibility is established by a constructed witness (compatibility.py), never by model behaviour",
+  "no candidate is assumed matched: Stage A measures it on fresh screening topics, and only Stage C topics decide membership",
+  "ladders give graded difficulty; parameters were chosen from where the existing families sat (floor/ceiling), not from where A sits"
+ ],
+ "counts": {
+  "total": 161,
+  "existing": 51,
+  "new": 110,
+  "by_operation_object": {
+   "exact_count/numeral": 3,
+   "exact_count/paragraph": 5,
+   "exact_count/punctuation": 18,
+   "exact_count/sentence": 7,
+   "exact_count/word": 72,
+   "numerical_bound/sentence": 9,
+   "ordering/sentence": 8,
+   "positional/answer_boundary": 3,
+   "prohibition/letter": 7,
+   "prohibition/word": 4,
+   "relational_dependency/sentence_pair": 8,
+   "required_inclusion/word": 8,
+   "uniqueness/sentence": 4,
+   "uniqueness/word": 4,
+   "uniqueness/word_sequence": 1
+  },
+  "new_verifier_families": [
+   "b1.exact_numeral_count (NEW)",
+   "b1.positional (NEW)"
+  ]
+ },
+ "candidates": [
+  {
+   "cid": "ew.indeed.2",
+   "status": "existing",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "indeed",
+    "n": 2
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.indeed.3",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "indeed",
+    "n": 3
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.indeed.4",
+   "status": "existing",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "indeed",
+    "n": 4
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.indeed.5",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "indeed",
+    "n": 5
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.indeed.6",
+   "status": "existing",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "indeed",
+    "n": 6
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.instead.2",
+   "status": "existing",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "instead",
+    "n": 2
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.instead.3",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "instead",
+    "n": 3
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.instead.4",
+   "status": "existing",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "instead",
+    "n": 4
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.instead.5",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "instead",
+    "n": 5
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.instead.6",
+   "status": "existing",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "instead",
+    "n": 6
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.perhaps.2",
+   "status": "existing",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "perhaps",
+    "n": 2
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.perhaps.3",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "perhaps",
+    "n": 3
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.perhaps.4",
+   "status": "existing",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "perhaps",
+    "n": 4
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.perhaps.5",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "perhaps",
+    "n": 5
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.perhaps.6",
+   "status": "existing",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "perhaps",
+    "n": 6
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.although.2",
+   "status": "existing",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "although",
+    "n": 2
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.although.3",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "although",
+    "n": 3
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.although.4",
+   "status": "existing",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "although",
+    "n": 4
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.although.5",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "although",
+    "n": 5
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.although.6",
+   "status": "existing",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "although",
+    "n": 6
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.moreover.2",
+   "status": "existing",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "moreover",
+    "n": 2
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.moreover.3",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "moreover",
+    "n": 3
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.moreover.4",
+   "status": "existing",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "moreover",
+    "n": 4
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.moreover.5",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "moreover",
+    "n": 5
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.moreover.6",
+   "status": "existing",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "moreover",
+    "n": 6
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.thus.2",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "thus",
+    "n": 2
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.thus.3",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "thus",
+    "n": 3
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.thus.4",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "thus",
+    "n": 4
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.thus.5",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "thus",
+    "n": 5
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.thus.6",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "thus",
+    "n": 6
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.hence.2",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "hence",
+    "n": 2
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.hence.3",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "hence",
+    "n": 3
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.hence.4",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "hence",
+    "n": 4
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.hence.5",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "hence",
+    "n": 5
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.hence.6",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "hence",
+    "n": 6
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.besides.2",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "besides",
+    "n": 2
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.besides.3",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "besides",
+    "n": 3
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.besides.4",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "besides",
+    "n": 4
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.besides.5",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "besides",
+    "n": 5
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.besides.6",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "besides",
+    "n": 6
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.anyway.2",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "anyway",
+    "n": 2
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.anyway.3",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "anyway",
+    "n": 3
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.anyway.4",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "anyway",
+    "n": 4
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.anyway.5",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "anyway",
+    "n": 5
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.anyway.6",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "anyway",
+    "n": 6
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.likewise.2",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "likewise",
+    "n": 2
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.likewise.3",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "likewise",
+    "n": 3
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.likewise.4",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "likewise",
+    "n": 4
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.likewise.5",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "likewise",
+    "n": 5
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.likewise.6",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "likewise",
+    "n": 6
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.overall.2",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "overall",
+    "n": 2
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.overall.3",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "overall",
+    "n": 3
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.overall.4",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "overall",
+    "n": 4
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.overall.5",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "overall",
+    "n": 5
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.overall.6",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "overall",
+    "n": 6
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.notably.2",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "notably",
+    "n": 2
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.notably.3",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "notably",
+    "n": 3
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.notably.4",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "notably",
+    "n": 4
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.notably.5",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "notably",
+    "n": 5
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.notably.6",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "notably",
+    "n": 6
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.namely.2",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "namely",
+    "n": 2
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.namely.3",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "namely",
+    "n": 3
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.namely.4",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "namely",
+    "n": 4
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.namely.5",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "namely",
+    "n": 5
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.namely.6",
+   "status": "candidate",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "word": "namely",
+    "n": 6
+   },
+   "intended_population": "G2 (P1); G1 when matched",
+   "rationale": "count ladder on a discourse connective of <= 8 letters, so compatible with both B limits; a 5-level ladder per word gives each word several chances to land within +/-0.10 of A in every model-frame"
+  },
+  {
+   "cid": "ew.therefore.2",
+   "status": "existing",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "n": 2,
+    "word": "therefore"
+   },
+   "intended_population": "G2 (P1) where compatible",
+   "rationale": "kept unchanged; incompatible with B 8 (all three) and B 10 (nonetheless, consequently) by proof"
+  },
+  {
+   "cid": "ew.therefore.4",
+   "status": "existing",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "n": 4,
+    "word": "therefore"
+   },
+   "intended_population": "G2 (P1) where compatible",
+   "rationale": "kept unchanged; incompatible with B 8 (all three) and B 10 (nonetheless, consequently) by proof"
+  },
+  {
+   "cid": "ew.therefore.6",
+   "status": "existing",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "n": 6,
+    "word": "therefore"
+   },
+   "intended_population": "G2 (P1) where compatible",
+   "rationale": "kept unchanged; incompatible with B 8 (all three) and B 10 (nonetheless, consequently) by proof"
+  },
+  {
+   "cid": "ew.nonetheless.2",
+   "status": "existing",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "n": 2,
+    "word": "nonetheless"
+   },
+   "intended_population": "G2 (P1) where compatible",
+   "rationale": "kept unchanged; incompatible with B 8 (all three) and B 10 (nonetheless, consequently) by proof"
+  },
+  {
+   "cid": "ew.nonetheless.4",
+   "status": "existing",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "n": 4,
+    "word": "nonetheless"
+   },
+   "intended_population": "G2 (P1) where compatible",
+   "rationale": "kept unchanged; incompatible with B 8 (all three) and B 10 (nonetheless, consequently) by proof"
+  },
+  {
+   "cid": "ew.consequently.2",
+   "status": "existing",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "n": 2,
+    "word": "consequently"
+   },
+   "intended_population": "G2 (P1) where compatible",
+   "rationale": "kept unchanged; incompatible with B 8 (all three) and B 10 (nonetheless, consequently) by proof"
+  },
+  {
+   "cid": "ew.consequently.4",
+   "status": "existing",
+   "family_id": "exact_word_count",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_status": "existing",
+   "operation": "exact_count",
+   "object_type": "word",
+   "params": {
+    "n": 4,
+    "word": "consequently"
+   },
+   "intended_population": "G2 (P1) where compatible",
+   "rationale": "kept unchanged; incompatible with B 8 (all three) and B 10 (nonetheless, consequently) by proof"
+  },
+  {
+   "cid": "ec.semicolon.1",
+   "status": "existing",
+   "family_id": "exact_char_count",
+   "verifier_id": "b1.exact_char_count",
+   "verifier_status": "existing",
+   "operation": "exact_count",
+   "object_type": "punctuation",
+   "params": {
+    "char": ";",
+    "n": 1
+   },
+   "intended_population": "G4 (P2 other object); G3 when matched",
+   "rationale": "punctuation-count ladder; no word, so compatible with any B limit"
+  },
+  {
+   "cid": "ec.semicolon.2",
+   "status": "existing",
+   "family_id": "exact_char_count",
+   "verifier_id": "b1.exact_char_count",
+   "verifier_status": "existing",
+   "operation": "exact_count",
+   "object_type": "punctuation",
+   "params": {
+    "char": ";",
+    "n": 2
+   },
+   "intended_population": "G4 (P2 other object); G3 when matched",
+   "rationale": "punctuation-count ladder; no word, so compatible with any B limit"
+  },
+  {
+   "cid": "ec.semicolon.3",
+   "status": "candidate",
+   "family_id": "exact_char_count",
+   "verifier_id": "b1.exact_char_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "punctuation",
+   "params": {
+    "char": ";",
+    "n": 3
+   },
+   "intended_population": "G4 (P2 other object); G3 when matched",
+   "rationale": "punctuation-count ladder; no word, so compatible with any B limit"
+  },
+  {
+   "cid": "ec.semicolon.4",
+   "status": "candidate",
+   "family_id": "exact_char_count",
+   "verifier_id": "b1.exact_char_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "punctuation",
+   "params": {
+    "char": ";",
+    "n": 4
+   },
+   "intended_population": "G4 (P2 other object); G3 when matched",
+   "rationale": "punctuation-count ladder; no word, so compatible with any B limit"
+  },
+  {
+   "cid": "ec.colon.1",
+   "status": "candidate",
+   "family_id": "exact_char_count",
+   "verifier_id": "b1.exact_char_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "punctuation",
+   "params": {
+    "char": ":",
+    "n": 1
+   },
+   "intended_population": "G4 (P2 other object); G3 when matched",
+   "rationale": "punctuation-count ladder; no word, so compatible with any B limit"
+  },
+  {
+   "cid": "ec.colon.2",
+   "status": "candidate",
+   "family_id": "exact_char_count",
+   "verifier_id": "b1.exact_char_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "punctuation",
+   "params": {
+    "char": ":",
+    "n": 2
+   },
+   "intended_population": "G4 (P2 other object); G3 when matched",
+   "rationale": "punctuation-count ladder; no word, so compatible with any B limit"
+  },
+  {
+   "cid": "ec.colon.3",
+   "status": "candidate",
+   "family_id": "exact_char_count",
+   "verifier_id": "b1.exact_char_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "punctuation",
+   "params": {
+    "char": ":",
+    "n": 3
+   },
+   "intended_population": "G4 (P2 other object); G3 when matched",
+   "rationale": "punctuation-count ladder; no word, so compatible with any B limit"
+  },
+  {
+   "cid": "ec.question.1",
+   "status": "candidate",
+   "family_id": "exact_char_count",
+   "verifier_id": "b1.exact_char_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "punctuation",
+   "params": {
+    "char": "?",
+    "n": 1
+   },
+   "intended_population": "G4 (P2 other object); G3 when matched",
+   "rationale": "punctuation-count ladder; no word, so compatible with any B limit"
+  },
+  {
+   "cid": "ec.question.2",
+   "status": "candidate",
+   "family_id": "exact_char_count",
+   "verifier_id": "b1.exact_char_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "punctuation",
+   "params": {
+    "char": "?",
+    "n": 2
+   },
+   "intended_population": "G4 (P2 other object); G3 when matched",
+   "rationale": "punctuation-count ladder; no word, so compatible with any B limit"
+  },
+  {
+   "cid": "ec.question.3",
+   "status": "candidate",
+   "family_id": "exact_char_count",
+   "verifier_id": "b1.exact_char_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "punctuation",
+   "params": {
+    "char": "?",
+    "n": 3
+   },
+   "intended_population": "G4 (P2 other object); G3 when matched",
+   "rationale": "punctuation-count ladder; no word, so compatible with any B limit"
+  },
+  {
+   "cid": "ec.exclaim.1",
+   "status": "candidate",
+   "family_id": "exact_char_count",
+   "verifier_id": "b1.exact_char_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "punctuation",
+   "params": {
+    "char": "!",
+    "n": 1
+   },
+   "intended_population": "G4 (P2 other object); G3 when matched",
+   "rationale": "punctuation-count ladder; no word, so compatible with any B limit"
+  },
+  {
+   "cid": "ec.exclaim.2",
+   "status": "candidate",
+   "family_id": "exact_char_count",
+   "verifier_id": "b1.exact_char_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "punctuation",
+   "params": {
+    "char": "!",
+    "n": 2
+   },
+   "intended_population": "G4 (P2 other object); G3 when matched",
+   "rationale": "punctuation-count ladder; no word, so compatible with any B limit"
+  },
+  {
+   "cid": "ec.exclaim.3",
+   "status": "candidate",
+   "family_id": "exact_char_count",
+   "verifier_id": "b1.exact_char_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "punctuation",
+   "params": {
+    "char": "!",
+    "n": 3
+   },
+   "intended_population": "G4 (P2 other object); G3 when matched",
+   "rationale": "punctuation-count ladder; no word, so compatible with any B limit"
+  },
+  {
+   "cid": "ec.paren.1",
+   "status": "candidate",
+   "family_id": "exact_char_count",
+   "verifier_id": "b1.exact_char_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "punctuation",
+   "params": {
+    "char": "(",
+    "n": 1
+   },
+   "intended_population": "G4 (P2 other object); G3 when matched",
+   "rationale": "punctuation-count ladder; no word, so compatible with any B limit"
+  },
+  {
+   "cid": "ec.paren.2",
+   "status": "candidate",
+   "family_id": "exact_char_count",
+   "verifier_id": "b1.exact_char_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "punctuation",
+   "params": {
+    "char": "(",
+    "n": 2
+   },
+   "intended_population": "G4 (P2 other object); G3 when matched",
+   "rationale": "punctuation-count ladder; no word, so compatible with any B limit"
+  },
+  {
+   "cid": "ec.paren.3",
+   "status": "candidate",
+   "family_id": "exact_char_count",
+   "verifier_id": "b1.exact_char_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "punctuation",
+   "params": {
+    "char": "(",
+    "n": 3
+   },
+   "intended_population": "G4 (P2 other object); G3 when matched",
+   "rationale": "punctuation-count ladder; no word, so compatible with any B limit"
+  },
+  {
+   "cid": "ec.comma.3",
+   "status": "existing",
+   "family_id": "exact_char_count",
+   "verifier_id": "b1.exact_char_count",
+   "verifier_status": "existing",
+   "operation": "exact_count",
+   "object_type": "punctuation",
+   "params": {
+    "char": ",",
+    "n": 3
+   },
+   "intended_population": "G4 (P2 other object); G3 when matched",
+   "rationale": "punctuation-count ladder; no word, so compatible with any B limit"
+  },
+  {
+   "cid": "ec.comma.6",
+   "status": "existing",
+   "family_id": "exact_char_count",
+   "verifier_id": "b1.exact_char_count",
+   "verifier_status": "existing",
+   "operation": "exact_count",
+   "object_type": "punctuation",
+   "params": {
+    "char": ",",
+    "n": 6
+   },
+   "intended_population": "G4 (P2 other object); G3 when matched",
+   "rationale": "punctuation-count ladder; no word, so compatible with any B limit"
+  },
+  {
+   "cid": "es.3",
+   "status": "candidate",
+   "family_id": "exact_sentence_count",
+   "verifier_id": "b1.exact_sentence_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "sentence",
+   "params": {
+    "n": 3
+   },
+   "intended_population": "G4 (P2 other object); G3 when matched",
+   "rationale": "sentence-count ladder; Qwen models were at ceiling at 4 and 7, Gemma at 0.2-0.7"
+  },
+  {
+   "cid": "es.4",
+   "status": "existing",
+   "family_id": "exact_sentence_count",
+   "verifier_id": "b1.exact_sentence_count",
+   "verifier_status": "existing",
+   "operation": "exact_count",
+   "object_type": "sentence",
+   "params": {
+    "n": 4
+   },
+   "intended_population": "G4 (P2 other object); G3 when matched",
+   "rationale": "sentence-count ladder; Qwen models were at ceiling at 4 and 7, Gemma at 0.2-0.7"
+  },
+  {
+   "cid": "es.5",
+   "status": "candidate",
+   "family_id": "exact_sentence_count",
+   "verifier_id": "b1.exact_sentence_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "sentence",
+   "params": {
+    "n": 5
+   },
+   "intended_population": "G4 (P2 other object); G3 when matched",
+   "rationale": "sentence-count ladder; Qwen models were at ceiling at 4 and 7, Gemma at 0.2-0.7"
+  },
+  {
+   "cid": "es.6",
+   "status": "candidate",
+   "family_id": "exact_sentence_count",
+   "verifier_id": "b1.exact_sentence_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "sentence",
+   "params": {
+    "n": 6
+   },
+   "intended_population": "G4 (P2 other object); G3 when matched",
+   "rationale": "sentence-count ladder; Qwen models were at ceiling at 4 and 7, Gemma at 0.2-0.7"
+  },
+  {
+   "cid": "es.7",
+   "status": "existing",
+   "family_id": "exact_sentence_count",
+   "verifier_id": "b1.exact_sentence_count",
+   "verifier_status": "existing",
+   "operation": "exact_count",
+   "object_type": "sentence",
+   "params": {
+    "n": 7
+   },
+   "intended_population": "G4 (P2 other object); G3 when matched",
+   "rationale": "sentence-count ladder; Qwen models were at ceiling at 4 and 7, Gemma at 0.2-0.7"
+  },
+  {
+   "cid": "es.8",
+   "status": "candidate",
+   "family_id": "exact_sentence_count",
+   "verifier_id": "b1.exact_sentence_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "sentence",
+   "params": {
+    "n": 8
+   },
+   "intended_population": "G4 (P2 other object); G3 when matched",
+   "rationale": "sentence-count ladder; Qwen models were at ceiling at 4 and 7, Gemma at 0.2-0.7"
+  },
+  {
+   "cid": "es.9",
+   "status": "candidate",
+   "family_id": "exact_sentence_count",
+   "verifier_id": "b1.exact_sentence_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "sentence",
+   "params": {
+    "n": 9
+   },
+   "intended_population": "G4 (P2 other object); G3 when matched",
+   "rationale": "sentence-count ladder; Qwen models were at ceiling at 4 and 7, Gemma at 0.2-0.7"
+  },
+  {
+   "cid": "ep.2",
+   "status": "existing",
+   "family_id": "exact_paragraph_count",
+   "verifier_id": "b1.exact_paragraph_count",
+   "verifier_status": "existing",
+   "operation": "exact_count",
+   "object_type": "paragraph",
+   "params": {
+    "n": 2
+   },
+   "intended_population": "G4 (P2 other object); G3 when matched",
+   "rationale": "2 and 3 were at 1.00 everywhere; 4-6 paragraphs in 60-120 words are untested"
+  },
+  {
+   "cid": "ep.3",
+   "status": "existing",
+   "family_id": "exact_paragraph_count",
+   "verifier_id": "b1.exact_paragraph_count",
+   "verifier_status": "existing",
+   "operation": "exact_count",
+   "object_type": "paragraph",
+   "params": {
+    "n": 3
+   },
+   "intended_population": "G4 (P2 other object); G3 when matched",
+   "rationale": "2 and 3 were at 1.00 everywhere; 4-6 paragraphs in 60-120 words are untested"
+  },
+  {
+   "cid": "ep.4",
+   "status": "candidate",
+   "family_id": "exact_paragraph_count",
+   "verifier_id": "b1.exact_paragraph_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "paragraph",
+   "params": {
+    "n": 4
+   },
+   "intended_population": "G4 (P2 other object); G3 when matched",
+   "rationale": "2 and 3 were at 1.00 everywhere; 4-6 paragraphs in 60-120 words are untested"
+  },
+  {
+   "cid": "ep.5",
+   "status": "candidate",
+   "family_id": "exact_paragraph_count",
+   "verifier_id": "b1.exact_paragraph_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "paragraph",
+   "params": {
+    "n": 5
+   },
+   "intended_population": "G4 (P2 other object); G3 when matched",
+   "rationale": "2 and 3 were at 1.00 everywhere; 4-6 paragraphs in 60-120 words are untested"
+  },
+  {
+   "cid": "ep.6",
+   "status": "candidate",
+   "family_id": "exact_paragraph_count",
+   "verifier_id": "b1.exact_paragraph_count",
+   "verifier_status": "existing family, new parameters",
+   "operation": "exact_count",
+   "object_type": "paragraph",
+   "params": {
+    "n": 6
+   },
+   "intended_population": "G4 (P2 other object); G3 when matched",
+   "rationale": "2 and 3 were at 1.00 everywhere; 4-6 paragraphs in 60-120 words are untested"
+  },
+  {
+   "cid": "en.1",
+   "status": "candidate",
+   "family_id": "exact_numeral_count",
+   "verifier_id": "b1.exact_numeral_count (NEW)",
+   "verifier_status": "NEW (to implement and self-test)",
+   "operation": "exact_count",
+   "object_type": "numeral",
+   "params": {
+    "n": 1
+   },
+   "intended_population": "G4 (P2 other object); G3 when matched",
+   "rationale": "a new object type: tokens written as digits; digits are not letters, so B is unaffected"
+  },
+  {
+   "cid": "en.2",
+   "status": "candidate",
+   "family_id": "exact_numeral_count",
+   "verifier_id": "b1.exact_numeral_count (NEW)",
+   "verifier_status": "NEW (to implement and self-test)",
+   "operation": "exact_count",
+   "object_type": "numeral",
+   "params": {
+    "n": 2
+   },
+   "intended_population": "G4 (P2 other object); G3 when matched",
+   "rationale": "a new object type: tokens written as digits; digits are not letters, so B is unaffected"
+  },
+  {
+   "cid": "en.3",
+   "status": "candidate",
+   "family_id": "exact_numeral_count",
+   "verifier_id": "b1.exact_numeral_count (NEW)",
+   "verifier_status": "NEW (to implement and self-test)",
+   "operation": "exact_count",
+   "object_type": "numeral",
+   "params": {
+    "n": 3
+   },
+   "intended_population": "G4 (P2 other object); G3 when matched",
+   "rationale": "a new object type: tokens written as digits; digits are not letters, so B is unaffected"
+  },
+  {
+   "cid": "pro.letter.z",
+   "status": "existing",
+   "family_id": "forbid_letter",
+   "verifier_id": "b1.forbid_letter",
+   "verifier_status": "existing",
+   "operation": "prohibition",
+   "object_type": "letter",
+   "params": {
+    "letter": "z"
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "letter-avoidance ladder ordered by English letter frequency (z 0.5-0.7 and b 0.0-0.1 measured)"
+  },
+  {
+   "cid": "pro.letter.b",
+   "status": "existing",
+   "family_id": "forbid_letter",
+   "verifier_id": "b1.forbid_letter",
+   "verifier_status": "existing",
+   "operation": "prohibition",
+   "object_type": "letter",
+   "params": {
+    "letter": "b"
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "letter-avoidance ladder ordered by English letter frequency (z 0.5-0.7 and b 0.0-0.1 measured)"
+  },
+  {
+   "cid": "pro.letter.q",
+   "status": "candidate",
+   "family_id": "forbid_letter",
+   "verifier_id": "b1.forbid_letter",
+   "verifier_status": "existing family, new parameters",
+   "operation": "prohibition",
+   "object_type": "letter",
+   "params": {
+    "letter": "q"
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "letter-avoidance ladder ordered by English letter frequency (z 0.5-0.7 and b 0.0-0.1 measured)"
+  },
+  {
+   "cid": "pro.letter.x",
+   "status": "candidate",
+   "family_id": "forbid_letter",
+   "verifier_id": "b1.forbid_letter",
+   "verifier_status": "existing family, new parameters",
+   "operation": "prohibition",
+   "object_type": "letter",
+   "params": {
+    "letter": "x"
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "letter-avoidance ladder ordered by English letter frequency (z 0.5-0.7 and b 0.0-0.1 measured)"
+  },
+  {
+   "cid": "pro.letter.j",
+   "status": "candidate",
+   "family_id": "forbid_letter",
+   "verifier_id": "b1.forbid_letter",
+   "verifier_status": "existing family, new parameters",
+   "operation": "prohibition",
+   "object_type": "letter",
+   "params": {
+    "letter": "j"
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "letter-avoidance ladder ordered by English letter frequency (z 0.5-0.7 and b 0.0-0.1 measured)"
+  },
+  {
+   "cid": "pro.letter.k",
+   "status": "candidate",
+   "family_id": "forbid_letter",
+   "verifier_id": "b1.forbid_letter",
+   "verifier_status": "existing family, new parameters",
+   "operation": "prohibition",
+   "object_type": "letter",
+   "params": {
+    "letter": "k"
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "letter-avoidance ladder ordered by English letter frequency (z 0.5-0.7 and b 0.0-0.1 measured)"
+  },
+  {
+   "cid": "pro.letter.v",
+   "status": "candidate",
+   "family_id": "forbid_letter",
+   "verifier_id": "b1.forbid_letter",
+   "verifier_status": "existing family, new parameters",
+   "operation": "prohibition",
+   "object_type": "letter",
+   "params": {
+    "letter": "v"
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "letter-avoidance ladder ordered by English letter frequency (z 0.5-0.7 and b 0.0-0.1 measured)"
+  },
+  {
+   "cid": "pro.word.the",
+   "status": "existing",
+   "family_id": "forbid_words",
+   "verifier_id": "b1.forbid_words",
+   "verifier_status": "existing",
+   "operation": "prohibition",
+   "object_type": "word",
+   "params": {
+    "words": [
+     "the"
+    ]
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "word-avoidance ladder; candidate words must not occur in any topic (hygiene)"
+  },
+  {
+   "cid": "pro.word.very+really+just",
+   "status": "existing",
+   "family_id": "forbid_words",
+   "verifier_id": "b1.forbid_words",
+   "verifier_status": "existing",
+   "operation": "prohibition",
+   "object_type": "word",
+   "params": {
+    "words": [
+     "very",
+     "really",
+     "just"
+    ]
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "word-avoidance ladder; candidate words must not occur in any topic (hygiene)"
+  },
+  {
+   "cid": "pro.word.also",
+   "status": "candidate",
+   "family_id": "forbid_words",
+   "verifier_id": "b1.forbid_words",
+   "verifier_status": "existing family, new parameters",
+   "operation": "prohibition",
+   "object_type": "word",
+   "params": {
+    "words": [
+     "also"
+    ]
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "word-avoidance ladder; candidate words must not occur in any topic (hygiene)"
+  },
+  {
+   "cid": "pro.word.this",
+   "status": "candidate",
+   "family_id": "forbid_words",
+   "verifier_id": "b1.forbid_words",
+   "verifier_status": "existing family, new parameters",
+   "operation": "prohibition",
+   "object_type": "word",
+   "params": {
+    "words": [
+     "this"
+    ]
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "word-avoidance ladder; candidate words must not occur in any topic (hygiene)"
+  },
+  {
+   "cid": "inc.simple",
+   "status": "existing",
+   "family_id": "include_words",
+   "verifier_id": "b1.include_words",
+   "verifier_status": "existing",
+   "operation": "required_inclusion",
+   "object_type": "word",
+   "params": {
+    "words": [
+     "simple"
+    ]
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "inclusion ladder by number of unrelated words (1-3 were at 0.7-1.0); every word <= 8 letters and absent from all topics"
+  },
+  {
+   "cid": "inc.window+garden",
+   "status": "existing",
+   "family_id": "include_words",
+   "verifier_id": "b1.include_words",
+   "verifier_status": "existing",
+   "operation": "required_inclusion",
+   "object_type": "word",
+   "params": {
+    "words": [
+     "window",
+     "garden"
+    ]
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "inclusion ladder by number of unrelated words (1-3 were at 0.7-1.0); every word <= 8 letters and absent from all topics"
+  },
+  {
+   "cid": "inc.silver+morning+quiet",
+   "status": "existing",
+   "family_id": "include_words",
+   "verifier_id": "b1.include_words",
+   "verifier_status": "existing",
+   "operation": "required_inclusion",
+   "object_type": "word",
+   "params": {
+    "words": [
+     "silver",
+     "morning",
+     "quiet"
+    ]
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "inclusion ladder by number of unrelated words (1-3 were at 0.7-1.0); every word <= 8 letters and absent from all topics"
+  },
+  {
+   "cid": "inc.remarkable",
+   "status": "existing",
+   "family_id": "include_words",
+   "verifier_id": "b1.include_words",
+   "verifier_status": "existing",
+   "operation": "required_inclusion",
+   "object_type": "word",
+   "params": {
+    "words": [
+     "remarkable"
+    ]
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "inclusion ladder by number of unrelated words (1-3 were at 0.7-1.0); every word <= 8 letters and absent from all topics"
+  },
+  {
+   "cid": "inc.pebble+velvet",
+   "status": "candidate",
+   "family_id": "include_words",
+   "verifier_id": "b1.include_words",
+   "verifier_status": "existing family, new parameters",
+   "operation": "required_inclusion",
+   "object_type": "word",
+   "params": {
+    "words": [
+     "pebble",
+     "velvet"
+    ]
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "inclusion ladder by number of unrelated words (1-3 were at 0.7-1.0); every word <= 8 letters and absent from all topics"
+  },
+  {
+   "cid": "inc.meadow+candle+ribbon",
+   "status": "candidate",
+   "family_id": "include_words",
+   "verifier_id": "b1.include_words",
+   "verifier_status": "existing family, new parameters",
+   "operation": "required_inclusion",
+   "object_type": "word",
+   "params": {
+    "words": [
+     "meadow",
+     "candle",
+     "ribbon"
+    ]
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "inclusion ladder by number of unrelated words (1-3 were at 0.7-1.0); every word <= 8 letters and absent from all topics"
+  },
+  {
+   "cid": "inc.walnut+saddle+beacon+canyon",
+   "status": "candidate",
+   "family_id": "include_words",
+   "verifier_id": "b1.include_words",
+   "verifier_status": "existing family, new parameters",
+   "operation": "required_inclusion",
+   "object_type": "word",
+   "params": {
+    "words": [
+     "walnut",
+     "saddle",
+     "beacon",
+     "canyon"
+    ]
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "inclusion ladder by number of unrelated words (1-3 were at 0.7-1.0); every word <= 8 letters and absent from all topics"
+  },
+  {
+   "cid": "inc.harbor+marble+feather+thimble+ember",
+   "status": "candidate",
+   "family_id": "include_words",
+   "verifier_id": "b1.include_words",
+   "verifier_status": "existing family, new parameters",
+   "operation": "required_inclusion",
+   "object_type": "word",
+   "params": {
+    "words": [
+     "harbor",
+     "marble",
+     "feather",
+     "thimble",
+     "ember"
+    ]
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "inclusion ladder by number of unrelated words (1-3 were at 0.7-1.0); every word <= 8 letters and absent from all topics"
+  },
+  {
+   "cid": "nb.max6",
+   "status": "candidate",
+   "family_id": "sentence_word_bound",
+   "verifier_id": "b1.sentence_word_bound",
+   "verifier_status": "existing family, new parameters",
+   "operation": "numerical_bound",
+   "object_type": "sentence",
+   "params": {
+    "bound": "max",
+    "k": 6
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "sentence-length ladder (max 12/20 near ceiling; min 10 at 0.16-1.0)"
+  },
+  {
+   "cid": "nb.max8",
+   "status": "candidate",
+   "family_id": "sentence_word_bound",
+   "verifier_id": "b1.sentence_word_bound",
+   "verifier_status": "existing family, new parameters",
+   "operation": "numerical_bound",
+   "object_type": "sentence",
+   "params": {
+    "bound": "max",
+    "k": 8
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "sentence-length ladder (max 12/20 near ceiling; min 10 at 0.16-1.0)"
+  },
+  {
+   "cid": "nb.max10",
+   "status": "candidate",
+   "family_id": "sentence_word_bound",
+   "verifier_id": "b1.sentence_word_bound",
+   "verifier_status": "existing family, new parameters",
+   "operation": "numerical_bound",
+   "object_type": "sentence",
+   "params": {
+    "bound": "max",
+    "k": 10
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "sentence-length ladder (max 12/20 near ceiling; min 10 at 0.16-1.0)"
+  },
+  {
+   "cid": "nb.max12",
+   "status": "existing",
+   "family_id": "sentence_word_bound",
+   "verifier_id": "b1.sentence_word_bound",
+   "verifier_status": "existing",
+   "operation": "numerical_bound",
+   "object_type": "sentence",
+   "params": {
+    "bound": "max",
+    "k": 12
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "sentence-length ladder (max 12/20 near ceiling; min 10 at 0.16-1.0)"
+  },
+  {
+   "cid": "nb.max20",
+   "status": "existing",
+   "family_id": "sentence_word_bound",
+   "verifier_id": "b1.sentence_word_bound",
+   "verifier_status": "existing",
+   "operation": "numerical_bound",
+   "object_type": "sentence",
+   "params": {
+    "bound": "max",
+    "k": 20
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "sentence-length ladder (max 12/20 near ceiling; min 10 at 0.16-1.0)"
+  },
+  {
+   "cid": "nb.min10",
+   "status": "existing",
+   "family_id": "sentence_word_bound",
+   "verifier_id": "b1.sentence_word_bound",
+   "verifier_status": "existing",
+   "operation": "numerical_bound",
+   "object_type": "sentence",
+   "params": {
+    "bound": "min",
+    "k": 10
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "sentence-length ladder (max 12/20 near ceiling; min 10 at 0.16-1.0)"
+  },
+  {
+   "cid": "nb.min12",
+   "status": "candidate",
+   "family_id": "sentence_word_bound",
+   "verifier_id": "b1.sentence_word_bound",
+   "verifier_status": "existing family, new parameters",
+   "operation": "numerical_bound",
+   "object_type": "sentence",
+   "params": {
+    "bound": "min",
+    "k": 12
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "sentence-length ladder (max 12/20 near ceiling; min 10 at 0.16-1.0)"
+  },
+  {
+   "cid": "nb.min14",
+   "status": "candidate",
+   "family_id": "sentence_word_bound",
+   "verifier_id": "b1.sentence_word_bound",
+   "verifier_status": "existing family, new parameters",
+   "operation": "numerical_bound",
+   "object_type": "sentence",
+   "params": {
+    "bound": "min",
+    "k": 14
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "sentence-length ladder (max 12/20 near ceiling; min 10 at 0.16-1.0)"
+  },
+  {
+   "cid": "nb.min16",
+   "status": "candidate",
+   "family_id": "sentence_word_bound",
+   "verifier_id": "b1.sentence_word_bound",
+   "verifier_status": "existing family, new parameters",
+   "operation": "numerical_bound",
+   "object_type": "sentence",
+   "params": {
+    "bound": "min",
+    "k": 16
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "sentence-length ladder (max 12/20 near ceiling; min 10 at 0.16-1.0)"
+  },
+  {
+   "cid": "unq.word4",
+   "status": "candidate",
+   "family_id": "no_repeated_words",
+   "verifier_id": "b1.no_repeated_words",
+   "verifier_status": "existing family, new parameters",
+   "operation": "uniqueness",
+   "object_type": "word",
+   "params": {
+    "min_letters": 4
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "uniqueness ladder by word length (5 letters was at floor); vacuity rule min_words applies"
+  },
+  {
+   "cid": "unq.word5",
+   "status": "existing",
+   "family_id": "no_repeated_words",
+   "verifier_id": "b1.no_repeated_words",
+   "verifier_status": "existing",
+   "operation": "uniqueness",
+   "object_type": "word",
+   "params": {
+    "min_letters": 5
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "uniqueness ladder by word length (5 letters was at floor); vacuity rule min_words applies"
+  },
+  {
+   "cid": "unq.word6",
+   "status": "candidate",
+   "family_id": "no_repeated_words",
+   "verifier_id": "b1.no_repeated_words",
+   "verifier_status": "existing family, new parameters",
+   "operation": "uniqueness",
+   "object_type": "word",
+   "params": {
+    "min_letters": 6
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "uniqueness ladder by word length (5 letters was at floor); vacuity rule min_words applies"
+  },
+  {
+   "cid": "unq.word7",
+   "status": "candidate",
+   "family_id": "no_repeated_words",
+   "verifier_id": "b1.no_repeated_words",
+   "verifier_status": "existing family, new parameters",
+   "operation": "uniqueness",
+   "object_type": "word",
+   "params": {
+    "min_letters": 7
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "uniqueness ladder by word length (5 letters was at floor); vacuity rule min_words applies"
+  },
+  {
+   "cid": "unq.bigram",
+   "status": "existing",
+   "family_id": "no_repeated_bigrams",
+   "verifier_id": "b1.no_repeated_bigrams",
+   "verifier_status": "existing",
+   "operation": "uniqueness",
+   "object_type": "word_sequence",
+   "params": {},
+   "intended_population": "G6 (P3)",
+   "rationale": "kept"
+  },
+  {
+   "cid": "unq.opener3",
+   "status": "existing",
+   "family_id": "distinct_openers",
+   "verifier_id": "b1.distinct_openers",
+   "verifier_status": "existing",
+   "operation": "uniqueness",
+   "object_type": "sentence",
+   "params": {
+    "min_sentences": 3
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "distinct-opener ladder (3 was at 0.5-1.0)"
+  },
+  {
+   "cid": "unq.opener4",
+   "status": "candidate",
+   "family_id": "distinct_openers",
+   "verifier_id": "b1.distinct_openers",
+   "verifier_status": "existing family, new parameters",
+   "operation": "uniqueness",
+   "object_type": "sentence",
+   "params": {
+    "min_sentences": 4
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "distinct-opener ladder (3 was at 0.5-1.0)"
+  },
+  {
+   "cid": "unq.opener5",
+   "status": "candidate",
+   "family_id": "distinct_openers",
+   "verifier_id": "b1.distinct_openers",
+   "verifier_status": "existing family, new parameters",
+   "operation": "uniqueness",
+   "object_type": "sentence",
+   "params": {
+    "min_sentences": 5
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "distinct-opener ladder (3 was at 0.5-1.0)"
+  },
+  {
+   "cid": "unq.opener6",
+   "status": "candidate",
+   "family_id": "distinct_openers",
+   "verifier_id": "b1.distinct_openers",
+   "verifier_status": "existing family, new parameters",
+   "operation": "uniqueness",
+   "object_type": "sentence",
+   "params": {
+    "min_sentences": 6
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "distinct-opener ladder (3 was at 0.5-1.0)"
+  },
+  {
+   "cid": "ord.inc3",
+   "status": "candidate",
+   "family_id": "length_order",
+   "verifier_id": "b1.length_order",
+   "verifier_status": "existing family, new parameters",
+   "operation": "ordering",
+   "object_type": "sentence",
+   "params": {
+    "direction": "increasing",
+    "min_sentences": 3
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "length-order ladder: 4 and 6 were at floor, so 3 is added"
+  },
+  {
+   "cid": "ord.inc4",
+   "status": "existing",
+   "family_id": "length_order",
+   "verifier_id": "b1.length_order",
+   "verifier_status": "existing",
+   "operation": "ordering",
+   "object_type": "sentence",
+   "params": {
+    "direction": "increasing",
+    "min_sentences": 4
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "length-order ladder: 4 and 6 were at floor, so 3 is added"
+  },
+  {
+   "cid": "ord.inc6",
+   "status": "existing",
+   "family_id": "length_order",
+   "verifier_id": "b1.length_order",
+   "verifier_status": "existing",
+   "operation": "ordering",
+   "object_type": "sentence",
+   "params": {
+    "direction": "increasing",
+    "min_sentences": 6
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "length-order ladder: 4 and 6 were at floor, so 3 is added"
+  },
+  {
+   "cid": "ord.dec3",
+   "status": "candidate",
+   "family_id": "length_order",
+   "verifier_id": "b1.length_order",
+   "verifier_status": "existing family, new parameters",
+   "operation": "ordering",
+   "object_type": "sentence",
+   "params": {
+    "direction": "decreasing",
+    "min_sentences": 3
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "length-order ladder: 4 and 6 were at floor, so 3 is added"
+  },
+  {
+   "cid": "ord.dec4",
+   "status": "existing",
+   "family_id": "length_order",
+   "verifier_id": "b1.length_order",
+   "verifier_status": "existing",
+   "operation": "ordering",
+   "object_type": "sentence",
+   "params": {
+    "direction": "decreasing",
+    "min_sentences": 4
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "length-order ladder: 4 and 6 were at floor, so 3 is added"
+  },
+  {
+   "cid": "ord.alpha3",
+   "status": "candidate",
+   "family_id": "alphabetical_openers",
+   "verifier_id": "b1.alphabetical_openers",
+   "verifier_status": "existing family, new parameters",
+   "operation": "ordering",
+   "object_type": "sentence",
+   "params": {
+    "min_sentences": 3
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "alphabetical-opener ladder (4 was at 0.0-0.5)"
+  },
+  {
+   "cid": "ord.alpha4",
+   "status": "existing",
+   "family_id": "alphabetical_openers",
+   "verifier_id": "b1.alphabetical_openers",
+   "verifier_status": "existing",
+   "operation": "ordering",
+   "object_type": "sentence",
+   "params": {
+    "min_sentences": 4
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "alphabetical-opener ladder (4 was at 0.0-0.5)"
+  },
+  {
+   "cid": "ord.alpha5",
+   "status": "candidate",
+   "family_id": "alphabetical_openers",
+   "verifier_id": "b1.alphabetical_openers",
+   "verifier_status": "existing family, new parameters",
+   "operation": "ordering",
+   "object_type": "sentence",
+   "params": {
+    "min_sentences": 5
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "alphabetical-opener ladder (4 was at 0.0-0.5)"
+  },
+  {
+   "cid": "rel.word2",
+   "status": "candidate",
+   "family_id": "chain_word",
+   "verifier_id": "b1.chain_word",
+   "verifier_status": "existing family, new parameters",
+   "operation": "relational_dependency",
+   "object_type": "sentence_pair",
+   "params": {
+    "min_sentences": 2
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "chain ladder: 3 sentences were at floor, so 2 is added"
+  },
+  {
+   "cid": "rel.word3",
+   "status": "existing",
+   "family_id": "chain_word",
+   "verifier_id": "b1.chain_word",
+   "verifier_status": "existing",
+   "operation": "relational_dependency",
+   "object_type": "sentence_pair",
+   "params": {
+    "min_sentences": 3
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "chain ladder: 3 sentences were at floor, so 2 is added"
+  },
+  {
+   "cid": "rel.letter2",
+   "status": "candidate",
+   "family_id": "chain_letter",
+   "verifier_id": "b1.chain_letter",
+   "verifier_status": "existing family, new parameters",
+   "operation": "relational_dependency",
+   "object_type": "sentence_pair",
+   "params": {
+    "min_sentences": 2
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "chain ladder: 3 sentences were at floor, so 2 is added"
+  },
+  {
+   "cid": "rel.letter3",
+   "status": "existing",
+   "family_id": "chain_letter",
+   "verifier_id": "b1.chain_letter",
+   "verifier_status": "existing",
+   "operation": "relational_dependency",
+   "object_type": "sentence_pair",
+   "params": {
+    "min_sentences": 3
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "chain ladder: 3 sentences were at floor, so 2 is added"
+  },
+  {
+   "cid": "rel.share3",
+   "status": "candidate",
+   "family_id": "adjacent_shared_word",
+   "verifier_id": "b1.adjacent_shared_word",
+   "verifier_status": "existing family, new parameters",
+   "operation": "relational_dependency",
+   "object_type": "sentence_pair",
+   "params": {
+    "min_letters": 3,
+    "min_sentences": 3
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "shared-word ladder (4 letters, 3 sentences was at 0.06-0.54)"
+  },
+  {
+   "cid": "rel.share4",
+   "status": "existing",
+   "family_id": "adjacent_shared_word",
+   "verifier_id": "b1.adjacent_shared_word",
+   "verifier_status": "existing",
+   "operation": "relational_dependency",
+   "object_type": "sentence_pair",
+   "params": {
+    "min_letters": 4,
+    "min_sentences": 3
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "shared-word ladder (4 letters, 3 sentences was at 0.06-0.54)"
+  },
+  {
+   "cid": "rel.share5",
+   "status": "candidate",
+   "family_id": "adjacent_shared_word",
+   "verifier_id": "b1.adjacent_shared_word",
+   "verifier_status": "existing family, new parameters",
+   "operation": "relational_dependency",
+   "object_type": "sentence_pair",
+   "params": {
+    "min_letters": 5,
+    "min_sentences": 3
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "shared-word ladder (4 letters, 3 sentences was at 0.06-0.54)"
+  },
+  {
+   "cid": "rel.share4.s4",
+   "status": "candidate",
+   "family_id": "adjacent_shared_word",
+   "verifier_id": "b1.adjacent_shared_word",
+   "verifier_status": "existing family, new parameters",
+   "operation": "relational_dependency",
+   "object_type": "sentence_pair",
+   "params": {
+    "min_letters": 4,
+    "min_sentences": 4
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "shared-word ladder (4 letters, 3 sentences was at 0.06-0.54)"
+  },
+  {
+   "cid": "pos.start.word",
+   "status": "candidate",
+   "family_id": "positional",
+   "verifier_id": "b1.positional (NEW)",
+   "verifier_status": "NEW (to implement and self-test)",
+   "operation": "positional",
+   "object_type": "answer_boundary",
+   "params": {
+    "word": "today"
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "begin the answer with a named word (<= 8 letters, absent from topics); a new operation that the brief lists and the library lacked"
+  },
+  {
+   "cid": "pos.end.question",
+   "status": "candidate",
+   "family_id": "positional",
+   "verifier_id": "b1.positional (NEW)",
+   "verifier_status": "NEW (to implement and self-test)",
+   "operation": "positional",
+   "object_type": "answer_boundary",
+   "params": {},
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "end the answer with a question; a new operation that the brief lists and the library lacked"
+  },
+  {
+   "cid": "pos.end.word",
+   "status": "candidate",
+   "family_id": "positional",
+   "verifier_id": "b1.positional (NEW)",
+   "verifier_status": "NEW (to implement and self-test)",
+   "operation": "positional",
+   "object_type": "answer_boundary",
+   "params": {
+    "word": "onward"
+   },
+   "intended_population": "G6 (P3 other operation); G5 when matched",
+   "rationale": "end the answer with a named word; a new operation that the brief lists and the library lacked"
+  }
+ ]
+}
