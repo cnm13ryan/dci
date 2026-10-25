@@ -73,13 +73,14 @@ class DesignAuthenticationError(RunError):
 
 
 def config_of(freeze1: Mapping[str, Any]) -> CFG.PilotConfig:
+    """The configuration a Freeze 1 binds; also makes its library version
+    the active one, so every later step renders and scores that library."""
     return CFG.PilotConfig(**{k: tuple(v) if isinstance(v, list) else v
-                              for k, v in freeze1["config"].items()})
+                              for k, v in freeze1["config"].items()}).activate()
 
 
 def split_of(cfg: CFG.PilotConfig) -> TOP.TopicSplit:
-    return TOP.split_bank(TOP.load_bank(), pilot_topics=cfg.pilot_topics,
-                          stage1_topics=cfg.stage1_topics)
+    return TOP.split_for(cfg)
 
 
 def _plan_path(root: Path, stage: str) -> Path:
@@ -381,6 +382,19 @@ def tables_for(evidences: Iterable[StageEvidence], *, synthetic: bool
     scored = [r for ev in evidences for r in ev.scored.values()]
     designs = [r for ev in evidences for r in ev.design]
     return S.build_tables(scored, designs, synthetic=synthetic)
+
+
+def decision_stages(stages: Mapping[str, StageEvidence], cfg: CFG.PilotConfig
+                    ) -> list[StageEvidence]:
+    """The evidence membership is decided from: both stages pooled (v1), or
+    T2 alone (v2, R7: T1 screens and never enters a membership decision)."""
+    if cfg.protocol == "v2":
+        return [stages[D.STAGE2]]
+    return [stages[D.STAGE1], stages[D.STAGE2]]
+
+
+def early_stopped(selection: Mapping[str, Any]) -> bool:
+    return selection.get("status") == "EARLY_STOP"
 
 
 def stage1_selection(ev1: StageEvidence, cfg: CFG.PilotConfig

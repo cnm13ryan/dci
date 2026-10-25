@@ -202,6 +202,23 @@ class PilotConfig:
     near_threshold_margin: int = 2
     generation_root_seed: int = 202610180
     seed_domain: str = "dci.batch1:gen:v1"
+    # ---- protocol v2 (revision 2026-10; researcher's decisions R1-R13 of
+    # 2026-10-26, docs/batch1/revision/APPROVALS_2026-10-26.md). The v1
+    # defaults reproduce the pilot of 2026-10-25 exactly.
+    protocol: str = "v1"              # v1: refine-and-pool; v2: screen T1, measure T2
+    library_version: str = "v1"       # R1, R2 (library.LIBRARY_VERSIONS)
+    topic_bank: str = "v1"            # R6
+    fixed_a: str = ""                 # R3: v2 fixes A instead of selecting it
+    # R7: the T1 -> T2 carry rule (posterior P(|p_X - p_A| <= tol) in at least
+    # one configuration), its cap, and the Stage B forecast (R8 early stop).
+    carry_min_posterior: float = 0.05
+    carry_max_references: int = 110
+    forecast_min_feasible: float = 0.20
+    forecast_draws: int = 2000
+    forecast_seed: int = 20261026
+    max_total_rows: int = 30976       # R7: the run's response budget
+    weights_mode: str = "variant"     # R10: "variant" (v1) or "word_then_count"
+    truncation_review_min_rows: int = 1   # R11: v2 needs at least 2 rows
 
     def __post_init__(self):
         if self.pilot_topics != self.stage1_topics + self.stage2_topics:
@@ -212,10 +229,23 @@ class PilotConfig:
             raise ValueError(f"unconfigured models {sorted(unknown)}")
         if not set(self.frames) <= set(L.FRAMES):
             raise ValueError(f"frames {self.frames}")
-        if not set(self.a_counts) <= set(L.A_COUNTS) or \
+        if not set(self.a_counts) <= set(L.A_COUNTS) | set(L.A_COUNTS_V2) or \
                 not set(self.b_limits) <= set(L.B_LIMITS):
             raise ValueError("A counts and B limits must come from the "
                              "library's candidates")
+        if self.protocol not in ("v1", "v2") or \
+                self.library_version not in L.LIBRARY_VERSIONS or \
+                self.topic_bank not in ("v1", "v2") or \
+                self.weights_mode not in ("variant", "word_then_count"):
+            raise ValueError("unknown protocol, library, topic bank or "
+                             "weights mode")
+        if self.protocol == "v2" and not self.fixed_a:
+            raise ValueError("protocol v2 fixes A (R3)")
+
+    def activate(self) -> "PilotConfig":
+        """Make this configuration's library the process's active one."""
+        L.set_library_version(self.library_version)
+        return self
 
     def state(self) -> dict[str, Any]:
         return asdict(self)
@@ -226,6 +256,20 @@ class PilotConfig:
 
 
 DEFAULT_CONFIG = PilotConfig()
+
+#: The revised protocol (revision 2026-10, R1-R13): library v2, fresh topic
+#: bank v2 split into T1 (48 screening topics) and T2 (96 membership
+#: topics), A fixed at however x 6 and B at 8 and 10 (screened A counts 4
+#: and 5 are diagnostics), every other rule unchanged (D09-D11 as approved).
+REVISION_CONFIG = PilotConfig(
+    protocol="v2", library_version="v2", topic_bank="v2",
+    a_counts=(4, 5, 6), b_limits=(8, 10), fixed_a="A.however.6",
+    stage1_topics=48, stage1_draws=1, task_only_draws=1,
+    stage2_topics=96, stage2_draws=1, stage2_max_cells=920, pilot_topics=144,
+    max_total_rows=185000, weights_mode="word_then_count",
+    truncation_review_min_rows=2, seed_domain="dci.batch1:gen:v2")
+
+CONFIGS = {"v1": DEFAULT_CONFIG, "v2": REVISION_CONFIG}
 
 
 # ---------------------------------------------------------------- decisions
@@ -278,9 +322,18 @@ def _fields(cfg: PilotConfig, *names: str) -> dict[str, Any]:
 
 def _topic_payload(cfg: PilotConfig) -> dict[str, Any]:
     from dci.batch1 import topics as TOP
-    bank = TOP.load_bank()
-    split = TOP.split_bank(bank, pilot_topics=cfg.pilot_topics,
-                           stage1_topics=cfg.stage1_topics)
+    split = TOP.split_for(cfg)
+    if cfg.topic_bank == "v2":
+        return {"bank": "v2", "bank_hash": split.bank_hash,
+                "split_hash": split.split_hash,
+                "historical_sources": sorted(TOP.HISTORICAL_SOURCES_V2),
+                "screen": {"wordset": TOP.WORDSET_SCREEN,
+                           "content": TOP.CONTENT_SCREEN,
+                           "rare_stem_df": TOP.RARE_STEM_DF,
+                           "rare_stem_min_shared": TOP.RARE_STEM_MIN_SHARED,
+                           "rare_stem_min_letters": TOP.RARE_STEM_MIN_LETTERS},
+                "review_hash": sha_file(TOP.REVIEW_PATH_V2),
+                "semantic_review_hash": sha_file(TOP.SEMANTIC_REVIEW_PATH_V2)}
     return {"bank_hash": split.bank_hash, "split_hash": split.split_hash,
             "historical_sources": sorted(TOP.HISTORICAL_SOURCES),
             "screen": {"wordset": TOP.WORDSET_SCREEN,
@@ -300,6 +353,11 @@ def _backend_source_hash() -> str:
 def decisions(cfg: PilotConfig = DEFAULT_CONFIG) -> tuple[Decision, ...]:
     refs = L.reference_library()
     proposed = [c for c in refs if c.status == L.STATUS_PROPOSED]
+    v2 = cfg.protocol == "v2"
+
+    def extra(*names: str, **values: Any) -> dict[str, Any]:
+        """Protocol-v2 fields; v1 payloads are unchanged by the revision."""
+        return {**_fields(cfg, *names), **values} if v2 else {}
 
     def d(decision_id, title, origin, summary, payload):
         return Decision(decision_id, title, origin, summary,
@@ -308,9 +366,12 @@ def decisions(cfg: PilotConfig = DEFAULT_CONFIG) -> tuple[Decision, ...]:
                          "orchestrator_python": ORCHESTRATOR_PYTHON})
 
     return (
-        d("D01", "Parameters of the 29 proposed variants", "proposed",
-          "Concrete targets, counts and minima for the 29 slots the "
-          "design left open.",
+        d("D01", f"Parameters of the {len(proposed)} proposed variants",
+          "proposed",
+          f"Concrete targets, counts and minima for the {len(proposed)} "
+          "slots the design left open"
+          + (" (library v2: the v1 slots plus the R1 additions)." if v2
+             else "."),
           {c.cid: c.spec_hash for c in proposed}),
         d("D02", "The two wording frames and the prompt", "proposed",
           "F0 imperative, F1 requirement; A's strings are v8.1 A "
@@ -319,7 +380,10 @@ def decisions(cfg: PilotConfig = DEFAULT_CONFIG) -> tuple[Decision, ...]:
           {"templates": {k: f.state()["templates"]
                          for k, f in sorted(L.FAMILIES.items())},
            "frames": list(cfg.frames), "prompt_zero": PROMPT_ZERO,
-           "prompt_one": PROMPT_ONE}),
+           "prompt_one": PROMPT_ONE,
+           **extra("library_version", quoted_targets=True,
+                   renderings={c.cid: {f: c.render(f) for f in L.FRAMES}
+                               for c in L.all_constraints()})}),
         d("D03", "Text semantics", "proposed",
           "Historical alpha-run words for every family; certified "
           "sentence segmentation; A folded per word (differs from "
@@ -343,17 +407,19 @@ def decisions(cfg: PilotConfig = DEFAULT_CONFIG) -> tuple[Decision, ...]:
           "topic bank and its split as reviewed.",
           {**_fields(cfg, "stage1_topics", "stage1_draws", "task_only_draws",
                      "pilot_topics"),
-           "topics": _topic_payload(cfg)}),
+           "topics": _topic_payload(cfg), **extra("topic_bank")}),
         d("D06", "Stage 2 refinement rule and stage completeness", "proposed",
           "One bounded round, selected only from complete, authenticated "
           "Stage 1 evidence: boundary cells ranked by class, then by "
           "standardised distance to the boundary; 64 new-topic responses "
           "each; at most stage2_max_cells cells. Finalisation needs both "
           "stages complete; there is no partial-completion rule.",
-          _fields(cfg, "stage2_topics", "stage2_draws", "stage2_max_cells",
+          {**_fields(cfg, "stage2_topics", "stage2_draws", "stage2_max_cells",
                   "z", "a_headroom_band", "b_informative_band",
                   "eligibility_threshold", "extension_threshold",
-                  "matching_tolerance", "min_cell_fraction")),
+                  "matching_tolerance", "min_cell_fraction"),
+           **extra("protocol", "carry_min_posterior", "carry_max_references",
+                   "max_total_rows")}),
         d("D07", "Selecting the two B limits", "proposed",
           "Admissible pairs: gap >= b_min_gap; median B-only separation "
           ">= b_min_median_separation; that separation in >= "
@@ -372,9 +438,10 @@ def decisions(cfg: PilotConfig = DEFAULT_CONFIG) -> tuple[Decision, ...]:
           "prefer N=4, then the smaller N. Uninformative-A configurations "
           "never count toward feasibility. No admissible N fails A "
           "selection; no per-model fallback.",
-          _fields(cfg, "a_counts", "a_headroom_band",
+          {**_fields(cfg, "a_counts", "a_headroom_band",
                   "a_min_informative_model_frames",
-                  "a_min_informative_models", "preferred_a_count")),
+                  "a_min_informative_models", "preferred_a_count"),
+           **extra("fixed_a")}),
         d("D09", "Eligibility operationalisation", "design",
           "Point estimate >= 20% in at least one model-frame, on all "
           "stand-alone responses of that cell (Stage 1 + 2); 10% "
@@ -393,10 +460,11 @@ def decisions(cfg: PilotConfig = DEFAULT_CONFIG) -> tuple[Decision, ...]:
           "needs 3 additional other-operation references (researcher's "
           "decision 2026-10-25; the design value was 2) and |G3| >= "
           "p3_min_g3.",
-          _fields(cfg, "g1_min_distinct_words", "p1_min_additional",
+          {**_fields(cfg, "g1_min_distinct_words", "p1_min_additional",
                   "p2_min_additional_other_object",
                   "p3_min_additional_other_operation", "p3_min_g3",
-                  "feasibility_min_configs", "feasibility_min_models")),
+                  "feasibility_min_configs", "feasibility_min_models"),
+           **extra("forecast_min_feasible", "forecast_draws", "forecast_seed")}),
         d("D12", "Model panel, decoding, cap, seeds and backend", "proposed",
           "Historical four-model panel and decoding; cap 512 tokens, with "
           "any cell truncating above truncation_review_share listed for "
@@ -424,7 +492,8 @@ def decisions(cfg: PilotConfig = DEFAULT_CONFIG) -> tuple[Decision, ...]:
           "parameter variants (so a word with three count variants "
           "carries three variant shares).",
           {"objects": {c.cid: c.object_type for c in refs},
-           "operations": {c.cid: c.operation for c in refs}}),
+           "operations": {c.cid: c.operation for c in refs},
+           **extra("weights_mode")}),
         d("D14", "Membership-stability diagnostics", "proposed",
           "Topic-cluster bootstrap of the pilot: inclusion frequency per "
           "reference, A/B selection and FEASIBLE shares, borderline "
@@ -433,9 +502,10 @@ def decisions(cfg: PilotConfig = DEFAULT_CONFIG) -> tuple[Decision, ...]:
           "is to the target, within near_threshold_margin. Diagnostic "
           "only, never a gate: membership stays the point-estimate rule; "
           "instability is flagged for review, never auto-corrected.",
-          _fields(cfg, "stability_replicates", "stability_seed",
+          {**_fields(cfg, "stability_replicates", "stability_seed",
                   "stability_unstable_band", "stability_stable_threshold",
-                  "stability_min_feasible_share", "near_threshold_margin")),
+                  "stability_min_feasible_share", "near_threshold_margin"),
+           **extra("truncation_review_min_rows")}),
     )
 
 

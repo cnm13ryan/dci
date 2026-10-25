@@ -162,8 +162,8 @@ def test_overlap_detection_catches_a_sequestered_question(bank, monkeypatch):
     secret = "How do bridges carry heavy loads safely?"
     real = TOP._historical
 
-    def with_secret():
-        released, hashes, missing = real()
+    def with_secret(*args):
+        released, hashes, missing = real(*args)
         return released, hashes | {hashlib.sha256(secret.encode()).hexdigest()}, missing
     monkeypatch.setattr(TOP, "_historical", with_secret)
     report = TOP.overlap_report([TOP.Topic("b1-x-1", "x", secret)])

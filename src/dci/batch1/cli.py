@@ -86,20 +86,27 @@ def _approvals(path: str | None) -> dict[str, Any]:
 
 
 def cmd_write_review_artifacts(args) -> int:
-    out = Path(args.out)
+    cfg = args.cfg
+    out = Path(args.out or (DOCS if cfg.protocol == "v1"
+                            else DOCS / cfg.protocol))
     manifest = L.library_manifest()
     matrix = COMPAT.compatibility_matrix()
-    bank = TOP.load_bank()
-    split = TOP.split_bank(bank, pilot_topics=CFG.DEFAULT_CONFIG.pilot_topics,
-                           stage1_topics=CFG.DEFAULT_CONFIG.stage1_topics)
-    est = D.estimate(split=split)
-    approvals = F.approvals_template()
-    f1 = F.freeze1_manifest(approvals=approvals)
+    v2 = cfg.topic_bank == "v2"
+    source = TOP.SOURCE_PATH_V2 if v2 else TOP.SOURCE_PATH
+    semantic = TOP.load_semantic_review(TOP.SEMANTIC_REVIEW_PATH_V2 if v2
+                                        else None)
+    bank = TOP.load_bank(source)
+    split = TOP.split_for(cfg)
+    overlap = TOP.overlap_report(bank, bank=cfg.topic_bank)
+    hygiene = TOP.hygiene_report(bank, split)
+    est = D.estimate(cfg, split=split)
+    approvals = F.approvals_template(cfg)
+    f1 = F.freeze1_manifest(cfg, approvals=approvals)
     F.write_json(out / "library_manifest.json", manifest)
     F.write_json(out / "compatibility_matrix.json", matrix)
     F.write_json(out / "topic_split.json", split.manifest())
-    F.write_json(out / "topic_overlap.json", TOP.overlap_report(bank))
-    F.write_json(out / "topic_hygiene.json", TOP.hygiene_report(bank, split))
+    F.write_json(out / "topic_overlap.json", overlap)
+    F.write_json(out / "topic_hygiene.json", hygiene)
     F.write_json(out / "estimate.json", est)
     F.write_json(out / "approvals_template.json", approvals)
     F.write_json(out / "freeze1_proposed.json", f1)
@@ -108,10 +115,15 @@ def cmd_write_review_artifacts(args) -> int:
         REP.compatibility_review(matrix))
     (out / "estimate.md").write_text(REP.estimate_review(est))
     (out / "decisions.md").write_text(REP.decisions_review(approvals))
-    revisions = json.loads(TOP.SOURCE_PATH.read_text()).get("revisions", [])
+    revisions = json.loads(source.read_text()).get("revisions", [])
     (out / "topic_screen_report.md").write_text(REP.topic_review(
-        TOP.overlap_report(bank), TOP.hygiene_report(bank, split), revisions,
-        {t.topic_id: t.question for t in bank}, TOP.load_semantic_review()))
+        overlap, hygiene, revisions, {t.topic_id: t.question for t in bank},
+        semantic))
+    if v2:
+        _print({"written": str(out), "freeze1_hash": f1["manifest_hash"],
+                "pilot_authorizable":
+                    f1["authorization"]["pilot_authorizable"]})
+        return 0
     # TOPIC_REVIEW.md is written by hand except its replacement tables,
     # which are generated into the marked block (D05 2026-10-25: they cite
     # each overlapped question as it stood when it was reviewed).
@@ -177,7 +189,8 @@ def cmd_freeze_protocol(args) -> int:
     approvals = _approvals(args.approvals)
     lock = F.read_json(Path(args.environment_lock)) \
         if args.environment_lock else None
-    manifest = F.freeze1_manifest(approvals=approvals, environment_lock=lock)
+    manifest = F.freeze1_manifest(args.cfg, approvals=approvals,
+                                  environment_lock=lock)
     root = Path(args.root)
     F.write_json(root / "freeze1.json", manifest)
     F.write_json(root / "approvals.json", approvals)
@@ -215,7 +228,7 @@ def cmd_plan(args) -> int:
 
 
 def cmd_estimate(args) -> int:
-    cfg = CFG.DEFAULT_CONFIG
+    cfg = args.cfg
     _print(D.estimate(cfg, split=P.split_of(cfg)))
     return 0
 
@@ -367,6 +380,9 @@ def cmd_demo(args) -> int:
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="python -m dci.batch1",
                                 description=__doc__.splitlines()[0])
+    p.add_argument("--protocol", choices=sorted(CFG.CONFIGS), default="v1",
+                   help="the configuration for commands that do not read a "
+                        "run root's Freeze 1 (v2: revision 2026-10)")
     sub = p.add_subparsers(dest="command", required=True)
 
     def add(name, fn, *, root=False, stage=False):
@@ -384,7 +400,8 @@ def main(argv: list[str] | None = None) -> int:
     add("check-compatibility", cmd_check_compatibility).add_argument("--out")
     add("estimate", cmd_estimate)
     add("write-review-artifacts", cmd_write_review_artifacts).add_argument(
-        "--out", default=str(DOCS))
+        "--out", default=None, help="default docs/batch1 (v1), "
+                                    "docs/batch1/v2 (v2)")
     ae = add("attest-environment", cmd_attest_environment)
     ae.add_argument("--backend-python")
     ae.add_argument("--out", required=True)
@@ -427,6 +444,11 @@ def main(argv: list[str] | None = None) -> int:
         "--replicates", type=int, default=None,
         help="stability resamples (default: the configured number)")
     args = p.parse_args(argv)
+    args.cfg = CFG.CONFIGS[args.protocol].activate()
+    root = getattr(args, "root", None)
+    if root and (Path(root) / "freeze1.json").exists():
+        # A run root's own Freeze 1 decides its protocol and library.
+        args.cfg = P.config_of(_freeze1(Path(root)))
     try:
         ENV.require_orchestrator()
         return args.fn(args)

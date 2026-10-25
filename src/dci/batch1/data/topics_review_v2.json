@@ -1,0 +1,194 @@
+{
+  "schema": "dci.batch1/topic-review/v2",
+  "reviewer": "agent (Claude), 2026-10-26, under the researcher's R6 approval of the process (not of each pair)",
+  "procedure": "every pair the overlap screen flags against the historical banks, bank v1 and within bank v2 was read; all were judged distinct and kept with a rationale. A decision binds both questions' text: editing either voids it.",
+  "kept_distinct": [
+    {
+      "topic_id": "b2-art-and-design-00",
+      "neighbour_source": "dci1v3",
+      "neighbour_id": "sport-51",
+      "question_sha256": "f2d5f1210806c0ee0efcccf24937c02252114b43e9fc8b22db86ecc08b7ac06e",
+      "neighbour_sha256": "4620b980528327a12b735cfb1e62de3fee1b234f60293805764623f245191d3a",
+      "wordset_jaccard": 0.0476,
+      "content_jaccard": 0.1818,
+      "decision": "kept_distinct",
+      "rationale": "shares only 'bend' and 'curve'; steaming timber for furniture vs a footballer's run-up"
+    },
+    {
+      "topic_id": "b2-art-and-design-00",
+      "neighbour_source": "dci1v3/candidates",
+      "neighbour_id": "sport#3",
+      "question_sha256": "f2d5f1210806c0ee0efcccf24937c02252114b43e9fc8b22db86ecc08b7ac06e",
+      "neighbour_sha256": "4620b980528327a12b735cfb1e62de3fee1b234f60293805764623f245191d3a",
+      "wordset_jaccard": 0.0476,
+      "content_jaccard": 0.1818,
+      "decision": "kept_distinct",
+      "rationale": "shares only 'bend' and 'curve'; steaming timber for furniture vs a footballer's run-up"
+    },
+    {
+      "topic_id": "b2-food-09",
+      "neighbour_source": "dci/batch1/bank_v1",
+      "neighbour_id": "b1-food-44",
+      "question_sha256": "7de72be8729a03154207ef17efabbcbfa19adb9fc63b1c6d97406f60ecf91383",
+      "neighbour_sha256": "444e755a6c67443903b9948fd0ab4f953762d8028271154e165d7d7b82b3c04c",
+      "wordset_jaccard": 0.2667,
+      "content_jaccard": 0.2222,
+      "decision": "kept_distinct",
+      "rationale": "both thicken, by different means: a cooked flour-and-fat paste (starch gelatinisation) vs pureed vegetables with no flour"
+    },
+    {
+      "topic_id": "b2-history-02",
+      "neighbour_source": "dci/v19/task_bank",
+      "neighbour_id": "CALIBRATION_TOPICS#19",
+      "question_sha256": "f6cb9913076fc2187da8ee4d6c6897c9fed6c86e30743cb3410504103a8f7544",
+      "neighbour_sha256": "1fdeb0cd449835ddbc9066bed62ba64ff1580088757f1b73bd57f37b0d3892b0",
+      "wordset_jaccard": 0.2,
+      "content_jaccard": 0.25,
+      "decision": "kept_distinct",
+      "rationale": "shares only 'aircraft wings'; the historical case for biplanes vs wing dihedral for roll stability"
+    },
+    {
+      "topic_id": "b2-history-02",
+      "neighbour_source": "dci/v19/task_bank",
+      "neighbour_id": "CONFIRMATORY_TOPICS#23",
+      "question_sha256": "f6cb9913076fc2187da8ee4d6c6897c9fed6c86e30743cb3410504103a8f7544",
+      "neighbour_sha256": "46e0aa9d84a8e7d1780ee6ca0825205e7b652550c220725a89aa8b6fad8c2036",
+      "wordset_jaccard": 0.2,
+      "content_jaccard": 0.2222,
+      "decision": "kept_distinct",
+      "rationale": "shares only 'aircraft wings'; biplane history vs de-icing at airports"
+    },
+    {
+      "topic_id": "b2-history-10",
+      "neighbour_source": "dci/v19/task_bank",
+      "neighbour_id": "PRESCREEN_TOPICS#2",
+      "question_sha256": "ae64cb58c2c68f35fdabe0c947bf52d1255cb800abdfcb560f4d8159a17aef9e",
+      "neighbour_sha256": "31b76e4c1ed358dcc31d19753ac8df1bd775fee526d73242a6023fc7c94fc78d",
+      "wordset_jaccard": 0.1333,
+      "content_jaccard": 0.375,
+      "decision": "kept_distinct",
+      "rationale": "both keep time; water clocks (flow) before mechanical clocks vs a pendulum's regular swing"
+    },
+    {
+      "topic_id": "b2-music-06",
+      "neighbour_source": "dci/batch1/bank_v1",
+      "neighbour_id": "b1-music-46",
+      "question_sha256": "d469a3332c94b1f150e6b152a241047ffc9da9c85ab5d4e547b37b5f10cd0f9c",
+      "neighbour_sha256": "f4589c30c2e311bf8ff11cd5327642f17f8bf2c4033d2626eb86f6cdba56039a",
+      "wordset_jaccard": 0.25,
+      "content_jaccard": 0.2,
+      "decision": "kept_distinct",
+      "rationale": "shares only 'electric guitar'; how a pickup senses strings (induction) vs the instrument's cultural impact"
+    },
+    {
+      "topic_id": "b2-music-08",
+      "neighbour_source": "dci1v4",
+      "neighbour_id": "art-and-design-21",
+      "question_sha256": "8564e39fcc17e854866e7e7cedde909fcc55f683313d0e01e0339eecf317a2a0",
+      "neighbour_sha256": "b3e2704a9145edab0a29dc4d51a1c79b3e53671c92e292e2200695ae6b94f961",
+      "wordset_jaccard": 0.5,
+      "content_jaccard": 0.1429,
+      "decision": "kept_distinct",
+      "rationale": "shares only the 'How does a ... change ...' frame; a trumpet mute vs how does a typeface change the feeling of a page"
+    },
+    {
+      "topic_id": "b2-music-08",
+      "neighbour_source": "dci1v4",
+      "neighbour_id": "food-13",
+      "question_sha256": "8564e39fcc17e854866e7e7cedde909fcc55f683313d0e01e0339eecf317a2a0",
+      "neighbour_sha256": "53044620c3af41f56842472109dd599dd0c6af7e414b0d33775ad65729919f2b",
+      "wordset_jaccard": 0.5,
+      "content_jaccard": 0.1429,
+      "decision": "kept_distinct",
+      "rationale": "shares only the 'How does a ... change ...' frame; a trumpet mute vs how does the acidity of a marinade change meat"
+    },
+    {
+      "topic_id": "b2-music-08",
+      "neighbour_source": "dci1v4",
+      "neighbour_id": "food-20",
+      "question_sha256": "8564e39fcc17e854866e7e7cedde909fcc55f683313d0e01e0339eecf317a2a0",
+      "neighbour_sha256": "53c482a246df5f1df914c3e6cf4cdea12ab6404e8081f97f436275d7f65422b6",
+      "wordset_jaccard": 0.5,
+      "content_jaccard": 0.1429,
+      "decision": "kept_distinct",
+      "rationale": "shares only the 'How does a ... change ...' frame; a trumpet mute vs how does the ripeness of tomatoes change a sauce"
+    },
+    {
+      "topic_id": "b2-music-08",
+      "neighbour_source": "dci1v4",
+      "neighbour_id": "music-11",
+      "question_sha256": "8564e39fcc17e854866e7e7cedde909fcc55f683313d0e01e0339eecf317a2a0",
+      "neighbour_sha256": "7ff29449c7d06fa003af81693b55ebd2319554299556dac21fced26099458e4d",
+      "wordset_jaccard": 0.5833,
+      "content_jaccard": 0.2857,
+      "decision": "kept_distinct",
+      "rationale": "shares only the 'How does a ... change ...' frame; a trumpet mute vs how does a room change the sound of a live performance"
+    },
+    {
+      "topic_id": "b2-music-08",
+      "neighbour_source": "dci1v4",
+      "neighbour_id": "music-25",
+      "question_sha256": "8564e39fcc17e854866e7e7cedde909fcc55f683313d0e01e0339eecf317a2a0",
+      "neighbour_sha256": "9b81d0adbdd1fa71ae7577630b7c4e4aa83e11f3884827ddbe36f2281d82ea28",
+      "wordset_jaccard": 0.5385,
+      "content_jaccard": 0.3333,
+      "decision": "kept_distinct",
+      "rationale": "shares only the 'How does a ... change ...' frame; a trumpet mute vs how does the sound of a piano change as it ages"
+    },
+    {
+      "topic_id": "b2-music-08",
+      "neighbour_source": "dci1v4",
+      "neighbour_id": "sport-21",
+      "question_sha256": "8564e39fcc17e854866e7e7cedde909fcc55f683313d0e01e0339eecf317a2a0",
+      "neighbour_sha256": "05f2608565a0cf98b7d1e9b1c0a5ab96f64f4dcbda68f2e052feba8b62147117",
+      "wordset_jaccard": 0.5,
+      "content_jaccard": 0.1429,
+      "decision": "kept_distinct",
+      "rationale": "shares only the 'How does a ... change ...' frame; a trumpet mute vs how does the timing of a substitution change a match"
+    },
+    {
+      "topic_id": "b2-music-08",
+      "neighbour_source": "dci1v4",
+      "neighbour_id": "work-and-organisations-02",
+      "question_sha256": "8564e39fcc17e854866e7e7cedde909fcc55f683313d0e01e0339eecf317a2a0",
+      "neighbour_sha256": "ada1cd914ff0a54a70909c032f2a75f160782ca3f84e4633a438201123844136",
+      "wordset_jaccard": 0.5,
+      "content_jaccard": 0.1429,
+      "decision": "kept_distinct",
+      "rationale": "shares only the 'How does a ... change ...' frame; a trumpet mute vs how does a crisis change the authority of a manager"
+    },
+    {
+      "topic_id": "b2-sport-06",
+      "neighbour_source": "dci/batch1/bank_v1",
+      "neighbour_id": "b1-sport-04",
+      "question_sha256": "689946f3843dee05b709196f992986f0278995a73d36438755cf74fb29a4f049",
+      "neighbour_sha256": "e44a810dbd9c607417a28419346360723efba28f560dc11ac97846dc857fcb8e",
+      "wordset_jaccard": 0.4667,
+      "content_jaccard": 0.3333,
+      "decision": "kept_distinct",
+      "rationale": "shares the 'how does a bowler make the ball' frame; a tenpin ball hooking on the lane (spin and oil) vs cricket swing in the air (seam aerodynamics)"
+    },
+    {
+      "topic_id": "b2-sport-09",
+      "neighbour_source": "dci/batch1/bank_v1",
+      "neighbour_id": "b1-technology-00",
+      "question_sha256": "ad76e3fcae6a9e3ab9403a77f00348b9d35ffed182259ede96dd8076de5324d3",
+      "neighbour_sha256": "578cd5eea99cf97d444bb693d010d0b90bd0cc664860a0bededccf0c5de1160b",
+      "wordset_jaccard": 0.3571,
+      "content_jaccard": 0.25,
+      "decision": "kept_distinct",
+      "rationale": "shares only 'detect ... touch'; a fencing circuit closing on a hit vs capacitive sensing of a finger"
+    },
+    {
+      "topic_id": "b2-technology-01",
+      "neighbour_source": "batch1",
+      "neighbour_id": "b2-work-and-organisations-00",
+      "question_sha256": "e88b4e24815321788d008b8e7d506c49c94eb881568ced6f9fb91c098cdd8a23",
+      "neighbour_sha256": "842b46fd1fd2cca6de2f215ffa8da6ae1190b23651071def4784e592810c522e",
+      "wordset_jaccard": 0.2353,
+      "content_jaccard": 0.1818,
+      "decision": "kept_distinct",
+      "rationale": "shares only 'airlines', 'flight'; phone flight mode (radio interference) vs overbooking (no-show economics)"
+    }
+  ]
+}

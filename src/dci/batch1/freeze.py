@@ -204,12 +204,14 @@ def _orchestrator(recorded: Mapping[str, Any] | None) -> dict[str, Any]:
 def _body1(cfg: CFG.PilotConfig, approvals: Mapping[str, Any],
            environment_lock: Mapping[str, Any] | None,
            orchestrator: Mapping[str, Any] | None = None) -> dict[str, Any]:
+    cfg.activate()
     library = L.library_manifest()
     matrix = COMPAT.compatibility_matrix()
-    bank = TOP.load_bank()
-    split = TOP.split_bank(bank, pilot_topics=cfg.pilot_topics,
-                           stage1_topics=cfg.stage1_topics)
-    overlap = TOP.overlap_report(bank)
+    source_path = TOP.SOURCE_PATH_V2 if cfg.topic_bank == "v2" \
+        else TOP.SOURCE_PATH
+    bank = TOP.load_bank(source_path)
+    split = TOP.split_for(cfg)
+    overlap = TOP.overlap_report(bank, bank=cfg.topic_bank)
     hygiene = TOP.hygiene_report(bank, split)
     cells = D.stage1_cells(cfg)
     rows = D.rows_for_cells(cells, split, cfg)
@@ -249,7 +251,7 @@ def _body1(cfg: CFG.PilotConfig, approvals: Mapping[str, Any],
                           "task_level_counts": task["counts"],
                           "task_level_unresolved": task["unresolved"]},
         "topics": {"bank_hash": split.bank_hash,
-                   "source_file_hash": sha_file(TOP.SOURCE_PATH),
+                   "source_file_hash": sha_file(source_path),
                    "split_hash": split.split_hash,
                    "counts": split.manifest()["counts"],
                    "overlap_clean": overlap["clean"],
@@ -431,13 +433,24 @@ def freeze2_manifest(freeze1: Mapping[str, Any], bundle: Mapping[str, Any], *,
                           "Stage 1 evidence")
     cfg = EV.config_of(freeze1)
     matrix = COMPAT.compatibility_matrix()
-    tables = EV.tables_for(stages.values(), synthetic=synthetic)
-    result = CAL.finalize(tables, cfg, matrix)
-    scored = [r for ev in stages.values() for r in ev.scored.values()]
-    stability = STAB.diagnostics(scored, result, cfg, matrix,
-                                 synthetic=synthetic, replicates=replicates)
-    stability["stage1_only"] = STAB.stage1_only(
-        stages[D.STAGE1], result, cfg, matrix, synthetic=synthetic)
+    deciding = EV.decision_stages(stages, cfg)
+    tables = EV.tables_for(deciding, synthetic=synthetic)
+    early_stop = EV.early_stopped(selection)
+    result = CAL.finalize(tables, cfg, matrix, early_stop=early_stop)
+    scored = [r for ev in deciding for r in ev.scored.values()]
+    if early_stop:
+        stability = {"schema": "dci.batch1/stability/v1",
+                     "skipped": "EARLY_STOP: no T2 evidence (R8)",
+                     "replicates": replicates, "flags": []}
+    else:
+        stability = STAB.diagnostics(scored, result, cfg, matrix,
+                                     synthetic=synthetic,
+                                     replicates=replicates)
+    if cfg.protocol == "v2":
+        stability["forecast"] = selection["forecast"]
+    else:
+        stability["stage1_only"] = STAB.stage1_only(
+            stages[D.STAGE1], result, cfg, matrix, synthetic=synthetic)
     feasible = result["status"] == "FEASIBLE"
     configs = {}
     for rep in result["configurations"]:
@@ -456,7 +469,8 @@ def freeze2_manifest(freeze1: Mapping[str, Any], bundle: Mapping[str, Any], *,
                           f", but the bundle is {'synthetic' if synthetic else 'real'}")
     flags = a.get("flags", []) + stability["flags"]
     body = {
-        "schema": "dci.batch1/freeze2/v4",
+        "schema": "dci.batch1/freeze2/v4" if cfg.protocol == "v1"
+        else "dci.batch1/freeze2/v5",
         "freeze1_hash": freeze1["manifest_hash"],
         "synthetic": synthetic,
         "namespace": "synthetic" if synthetic else "real",
@@ -468,7 +482,7 @@ def freeze2_manifest(freeze1: Mapping[str, Any], bundle: Mapping[str, Any], *,
         "tables_hash": tables_hash(tables),
         "pilot_record": _pilot_record(stages),
         "selected": {"a": a.get("selected"),
-                     "b_limits": result["b"]["selected"]},
+                     "b_limits": (result.get("b") or {}).get("selected")},
         "eligible_20": result.get("eligible_20", []),
         "extension_10_only": result.get("extension_10_only", []),
         "configurations": configs,
@@ -490,6 +504,16 @@ def freeze2_manifest(freeze1: Mapping[str, Any], bundle: Mapping[str, Any], *,
                  "researcher approves it" if not synthetic else
                  "SYNTHETIC demonstration; not evidence"),
     }
+    if cfg.protocol != "v1":       # v1 manifests keep their historical body
+        body["protocol"] = cfg.protocol
+        # Bank v2 reserves nothing; the confirmatory study keeps bank v1's
+        # reserved topics, which neither pilot has used (revision brief).
+        reserved = TOP.split_for(CFG.DEFAULT_CONFIG)
+        body["confirmatory_interface"]["confirmatory_topic_split_hash"] = \
+            reserved.split_hash
+        body["confirmatory_interface"]["confirmatory_topics"] = {
+            "bank": "v1", "reserved": len(reserved.confirmatory),
+            "bank_hash": reserved.bank_hash}
     return {**body, "manifest_hash": sha(["batch1/freeze2", body])}
 
 

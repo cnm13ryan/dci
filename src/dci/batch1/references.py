@@ -183,9 +183,15 @@ def assert_nesting(pops: Mapping[str, Iterable[str]]) -> None:
             raise AssertionError(f"{small} is not a subset of {big}")
 
 
-def hierarchical_weights(members: Iterable[str]) -> dict[str, Fraction]:
+def hierarchical_weights(members: Iterable[str], mode: str = "variant"
+                         ) -> dict[str, Fraction]:
     """Equal over operations, then object types within an operation, then
-    variants within an operation-object group. Exact; sums to one."""
+    variants within an operation-object group. Exact; sums to one.
+
+    ``mode="word_then_count"`` (revision 2026-10, R10): inside a group of
+    exact-word-count variants, each target word gets an equal share, split
+    equally over that word's count variants, so a word with several matched
+    counts does not outweigh one with a single matched count."""
     by_id = L.constraint_by_id()
     members = sorted(set(members))
     if not members:
@@ -197,9 +203,21 @@ def hierarchical_weights(members: Iterable[str]) -> dict[str, Fraction]:
     weights: dict[str, Fraction] = {}
     for op, objects in tree.items():
         for obj, cids in objects.items():
+            group = Fraction(1, len(tree)) * Fraction(1, len(objects))
+            words = {}
+            if mode == "word_then_count":
+                for cid in cids:
+                    c = by_id[cid]
+                    if c.family_id == "exact_word_count":
+                        words.setdefault(c.p["word"], []).append(cid)
+            if words and sum(map(len, words.values())) == len(cids):
+                for variants in words.values():
+                    for cid in variants:
+                        weights[cid] = group * Fraction(1, len(words)) * \
+                            Fraction(1, len(variants))
+                continue
             for cid in cids:
-                weights[cid] = Fraction(1, len(tree)) * \
-                    Fraction(1, len(objects)) * Fraction(1, len(cids))
+                weights[cid] = group * Fraction(1, len(cids))
     if sum(weights.values()) != 1:
         raise AssertionError("hierarchical weights do not sum to one")
     return dict(sorted(weights.items()))
@@ -333,7 +351,8 @@ def configuration_report(tables: PilotTables, cfg: CFG.PilotConfig,
         "p_a": pa.p, "n_a": pa.n, "a_informative": a_informative,
         "populations": primary,
         "weights": {gname: {cid: str(w) for cid, w in
-                            hierarchical_weights(members).items()}
+                            hierarchical_weights(members,
+                                                 cfg.weights_mode).items()}
                     for gname, members in primary.items()},
         "counts_by_operation_object": {
             gname: _taxonomy_counts(members)

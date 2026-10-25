@@ -91,6 +91,9 @@ def _se(boundary: float, n: int) -> float:
 
 def select_stage2(tables: PilotTables, cfg: CFG.PilotConfig
                   ) -> dict[str, Any]:
+    if cfg.protocol == "v2":
+        from dci.batch1 import revision as REV
+        return REV.select_carry(tables, cfg)
     candidates: dict[tuple[str, str, str], tuple[int, float, str]] = {}
 
     def offer(model, frame, cid, cls, dist):
@@ -349,8 +352,13 @@ def select_a(tables: PilotTables, cfg: CFG.PilotConfig,
 
 
 def finalize(tables: PilotTables, cfg: CFG.PilotConfig,
-             compat: Mapping[str, Any]) -> dict[str, Any]:
-    """Everything Freeze 2 needs, from stand-alone tables only."""
+             compat: Mapping[str, Any], *, early_stop: bool = False
+             ) -> dict[str, Any]:
+    """Everything Freeze 2 needs, from stand-alone tables only. Protocol v2
+    reads T2 tables only and fixes A and B (``revision.finalize_fixed``)."""
+    if cfg.protocol == "v2":
+        from dci.batch1 import revision as REV
+        return REV.finalize_fixed(tables, cfg, compat, early_stop=early_stop)
     b = select_b(tables, cfg)
     elig = R.eligibility(tables, cfg)
     review = _f(cfg.truncation_review_share)

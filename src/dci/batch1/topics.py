@@ -69,6 +69,13 @@ __all__ = ["Topic", "SOURCE_PATH", "REVIEW_PATH", "load_bank", "split_bank",
 
 _HERE = Path(__file__).resolve().parent
 SOURCE_PATH = _HERE / "data" / "topics_source.json"
+#: Topic bank v2 (revision 2026-10, R6): 144 fresh questions, 12 per area,
+#: split into T1 (48, screening) and T2 (96, membership); no reserved part,
+#: and screened against bank v1 (every one of its 576 questions) as well as
+#: the historical banks. The reserved 480 of bank v1 are never read here.
+SOURCE_PATH_V2 = _HERE / "data" / "topics_source_v2.json"
+REVIEW_PATH_V2 = _HERE / "data" / "topics_review_v2.json"
+SEMANTIC_REVIEW_PATH_V2 = _HERE / "data" / "topics_semantic_review_v2.json"
 _REPO = _HERE.parents[2]
 
 REVIEW_PATH = _HERE / "data" / "topics_review.json"
@@ -90,6 +97,10 @@ HISTORICAL_SOURCES = {
         _REPO / "src/dci/pipeline/stages/c142_constraints_and_tasks.py",
         "python_lists"),
 }
+#: Bank v2 is screened against every historical bank and against all 576
+#: questions of bank v1 (the 96 pilot topics and the reserved 480 alike).
+HISTORICAL_SOURCES_V2 = {**HISTORICAL_SOURCES,
+                         "dci/batch1/bank_v1": (SOURCE_PATH, "batch1_bank")}
 SEQUESTERED_SOURCES = {
     "dci1v3/sequestered": _REPO / "dci1/src/dci1v3/topics/data/sequestered_v3.json",
     "dci1v4/sequestered": _REPO / "dci1/src/dci1v4/topics/data/sequestered_v4.json",
@@ -179,8 +190,19 @@ class TopicSplit:
         raise KeyError(topic_id)
 
 
+def split_for(cfg: Any) -> "TopicSplit":
+    """The split a configuration names: bank v1 (stage 1, stage 2, the
+    reserved confirmatory bank) or bank v2 (T1, T2, nothing reserved)."""
+    if cfg.topic_bank == "v2":
+        return split_bank(load_bank(SOURCE_PATH_V2),
+                          pilot_topics=cfg.pilot_topics,
+                          stage1_topics=cfg.stage1_topics, reserve=False)
+    return split_bank(load_bank(), pilot_topics=cfg.pilot_topics,
+                      stage1_topics=cfg.stage1_topics)
+
+
 def split_bank(topics: Iterable[Topic], *, pilot_topics: int,
-               stage1_topics: int) -> TopicSplit:
+               stage1_topics: int, reserve: bool = True) -> TopicSplit:
     topics = tuple(topics)
     areas = sorted({t.area for t in topics})
     if pilot_topics % len(areas):
@@ -192,8 +214,11 @@ def split_bank(topics: Iterable[Topic], *, pilot_topics: int,
     for area in areas:
         ordered = sorted((t for t in topics if t.area == area),
                          key=lambda t: _order(t.topic_id))
-        if len(ordered) <= per_area:
+        if reserve and len(ordered) <= per_area:
             raise ValueError(f"area {area!r} has no topics left to reserve")
+        if len(ordered) < per_area:
+            raise ValueError(f"area {area!r} has {len(ordered)} topics, fewer "
+                             f"than {per_area}")
         pilot_by_area[area] = ordered[:per_area]
         confirmatory += ordered[per_area:]
     dealt: list[Topic] = []
@@ -237,6 +262,9 @@ def _jaccard(a: frozenset[str], b: frozenset[str]) -> float:
 
 
 def _read_source(name: str, path: Path, kind: str) -> list[dict[str, Any]]:
+    if kind == "batch1_bank":
+        return [{"source": name, "id": r["topic_id"], "question": r["question"]}
+                for r in json.loads(path.read_text())["topics"]]
     if kind == "records":
         return [{"source": name, "id": r["topic_id"], "question": r["question"]}
                 for r in json.loads(path.read_text())]
@@ -260,34 +288,50 @@ def _read_source(name: str, path: Path, kind: str) -> list[dict[str, Any]]:
     raise ValueError(f"source format {kind!r}")
 
 
-def _source_key() -> tuple:
+def _source_key(sources: Mapping[str, tuple[Path, str]] | None = None
+                ) -> tuple:
+    sources = HISTORICAL_SOURCES if sources is None else sources
+
     def stamp(path: Path):
         return (str(path), path.stat().st_mtime_ns if path.exists() else None)
-    return (tuple((n, stamp(p), k) for n, (p, k) in HISTORICAL_SOURCES.items()),
+    return (tuple((n, stamp(p), k) for n, (p, k) in sources.items()),
             tuple((n, stamp(p)) for n, p in SEQUESTERED_SOURCES.items()))
 
 
-@lru_cache(maxsize=4)
+@lru_cache(maxsize=8)
 def _historical_cached(key: tuple) -> tuple[tuple, frozenset, tuple]:
     released: list[dict[str, Any]] = []
     missing: list[str] = []
-    for name, (path, kind) in HISTORICAL_SOURCES.items():
-        if path.exists():
-            released += _read_source(name, path, kind)
+    for name, (path, _), kind in key[0]:
+        if Path(path).exists():
+            released += _read_source(name, Path(path), kind)
         else:
             missing.append(name)
     hashes: set[str] = set()
-    for name, path in SEQUESTERED_SOURCES.items():
-        if path.exists():
-            hashes |= {e["sha256"] for e in json.loads(path.read_text())}
+    for name, (path, _) in key[1]:
+        if Path(path).exists():
+            hashes |= {e["sha256"] for e in json.loads(Path(path).read_text())}
         else:
             missing.append(name)
     return tuple(released), frozenset(hashes), tuple(missing)
 
 
-def _historical() -> tuple[list[dict[str, Any]], set[str], list[str]]:
-    released, hashes, missing = _historical_cached(_source_key())
+def _historical(sources: Mapping[str, tuple[Path, str]] | None = None
+                ) -> tuple[list[dict[str, Any]], set[str], list[str]]:
+    released, hashes, missing = _historical_cached(_source_key(sources))
     return [dict(r) for r in released], set(hashes), list(missing)
+
+
+def _bank_paths(bank: str) -> tuple[Mapping[str, tuple[Path, str]], Path,
+                                     Path, Path]:
+    """bank -> (historical sources, review, semantic review, source file),
+    read from the module's current paths (tests may substitute them)."""
+    if bank == "v2":
+        return (HISTORICAL_SOURCES_V2, REVIEW_PATH_V2, SEMANTIC_REVIEW_PATH_V2,
+                SOURCE_PATH_V2)
+    if bank == "v1":
+        return HISTORICAL_SOURCES, REVIEW_PATH, SEMANTIC_REVIEW_PATH, SOURCE_PATH
+    raise ValueError(f"topic bank {bank!r}")
 
 
 def _question_hash(question: str) -> str:
@@ -334,17 +378,20 @@ def _stamp(path: Path) -> tuple:
     return (str(path), path.stat().st_mtime_ns if path.exists() else None)
 
 
-def overlap_report(topics: Iterable[Topic]) -> dict[str, Any]:
-    return json.loads(_overlap_cached(tuple(topics), _source_key(),
-                                      (_stamp(REVIEW_PATH),
-                                       _stamp(SEMANTIC_REVIEW_PATH))))
+def overlap_report(topics: Iterable[Topic], *, bank: str = "v1"
+                   ) -> dict[str, Any]:
+    sources, review, semantic, _ = _bank_paths(bank)
+    return json.loads(_overlap_cached(tuple(topics), _source_key(sources),
+                                      (_stamp(review), _stamp(semantic)),
+                                      bank))
 
 
 @lru_cache(maxsize=8)
 def _overlap_cached(topics: tuple[Topic, ...], source_key: tuple,
-                    review_key: tuple) -> str:
-    released, hashes, missing = _historical()
-    review = load_review()
+                    review_key: tuple, bank: str = "v1") -> str:
+    sources, review_path, semantic_path, source_path = _bank_paths(bank)
+    released, hashes, missing = _historical(sources)
+    review = load_review(review_path)
     hist_text = {_normal(r["question"]): r for r in released}
     df = _document_frequency([t.question for t in topics]
                              + [r["question"] for r in released])
@@ -388,7 +435,7 @@ def _overlap_cached(topics: tuple[Topic, ...], source_key: tuple,
                 internal.append(_pair(ta, "batch1", tb.topic_id, tb.question,
                                       wj, cj, review, shared))
     unreviewed = [p for p in flagged + internal if not p["reviewed"]]
-    semantic = load_semantic_review()
+    semantic = load_semantic_review(semantic_path)
     current = {t.topic_id: _question_hash(t.question) for t in topics}
     open_semantic = sorted(
         f["topic_id"] for f in semantic.get("findings", [])
@@ -399,7 +446,7 @@ def _overlap_cached(topics: tuple[Topic, ...], source_key: tuple,
     return json.dumps({
         "schema": "dci.batch1/topic-overlap/v3", "clean": clean,
         "n_topics": len(topics), "historical_released": len(released),
-        "historical_sources": sorted(HISTORICAL_SOURCES),
+        "historical_sources": sorted(sources),
         "historical_sequestered_hashes": len(hashes),
         "historical_sources_missing": missing,
         "screen": {"wordset_jaccard": WORDSET_SCREEN,
@@ -408,8 +455,8 @@ def _overlap_cached(topics: tuple[Topic, ...], source_key: tuple,
                                   "min_shared": RARE_STEM_MIN_SHARED,
                                   "min_letters": RARE_STEM_MIN_LETTERS}},
         "semantic_review": {
-            "file_hash": sha_file(SEMANTIC_REVIEW_PATH)
-            if SEMANTIC_REVIEW_PATH.exists() else None,
+            "file_hash": sha_file(semantic_path)
+            if semantic_path.exists() else None,
             "findings": len(semantic.get("findings", [])),
             "restatements_still_in_bank": open_semantic},
         "exact_matches": exact, "sequestered_matches": sequestered,
@@ -421,10 +468,10 @@ def _overlap_cached(topics: tuple[Topic, ...], source_key: tuple,
                                    "historical": max_hist[2]},
         "max_jaccard_internal": {"value": round(max_new[0], 4),
                                  "a": max_new[1], "b": max_new[2]},
-        "review_file_hash": sha_file(REVIEW_PATH)
-        if REVIEW_PATH.exists() else None,
-        "source_file_hash": sha_file(SOURCE_PATH)
-        if SOURCE_PATH.exists() else None}, sort_keys=True)
+        "review_file_hash": sha_file(review_path)
+        if review_path.exists() else None,
+        "source_file_hash": sha_file(source_path)
+        if source_path.exists() else None}, sort_keys=True)
 
 
 def _pair(t: Topic, source: str, nid: str, question: str, wj: float,

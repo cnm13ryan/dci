@@ -84,18 +84,26 @@
   "b_min_informative_model_frames": 4,
   "b_min_median_separation": 0.15,
   "b_min_separated_models": 3,
+  "carry_max_references": 110,
+  "carry_min_posterior": 0.05,
   "eligibility_threshold": 0.2,
   "extension_threshold": 0.1,
   "feasibility_min_configs": 12,
   "feasibility_min_models": 3,
+  "fixed_a": "",
+  "forecast_draws": 2000,
+  "forecast_min_feasible": 0.2,
+  "forecast_seed": 20261026,
   "frames": [
    "F0",
    "F1"
   ],
   "g1_min_distinct_words": 3,
   "generation_root_seed": 202610180,
+  "library_version": "v1",
   "matching_tolerance": 0.1,
   "max_technical_attempts": 3,
+  "max_total_rows": 30976,
   "min_cell_fraction": 0.9,
   "models": [
    "gemma-3n-e2b-it",
@@ -110,6 +118,7 @@
   "p3_min_g3": 3,
   "pilot_topics": 96,
   "preferred_a_count": 4,
+  "protocol": "v1",
   "seed_domain": "dci.batch1:gen:v1",
   "stability_min_feasible_share": 0.8,
   "stability_replicates": 200,
@@ -125,20 +134,23 @@
   "stage2_max_cells": 240,
   "stage2_topics": 64,
   "task_only_draws": 2,
+  "topic_bank": "v1",
+  "truncation_review_min_rows": 1,
   "truncation_review_share": 0.02,
+  "weights_mode": "variant",
   "z": 1.959963984540054
  },
- "config_hash": "b8596f836ec24bc2dec4acd1ebe5d9aa1f586b6ef2ec887347d2c69c739d2c92",
+ "config_hash": "3a72dc9258fb1c8547be65b8134f15f8b3b99e4cede349e924663951c4b7449b",
  "decisions": {
   "D01": {
    "approved_by": "",
    "approved_on": "",
    "implementation": {
-    "library.py": "2cc8eba7fee4fbfadd969c8bd9d621f75f6d7567461965d7d223a2da2050e597",
-    "verifiers.py": "7e6bfcd45d8d9bb053f45968ecd95859fc77a64c1837851d5394b3994847094c"
+    "library.py": "bb797cca1253594070694e054ddb94a3397b2a118e00eba8e6e73eebafd8d361",
+    "verifiers.py": "b89baa57803a0ca613b4974473796cd77925db3ee793364ddccf178015626494"
    },
    "origin": "proposed",
-   "payload_hash": "1984255921c07e932cb3bda6d0d1a17c9c52b0ea9a28d9119301672de6461ce0",
+   "payload_hash": "0d894edeedfd8c0bd8bcbfbc84ab5eb18d456a6a6e5d7a7e902de0750458188f",
    "status": "PROPOSED",
    "title": "Parameters of the 29 proposed variants"
   },
@@ -147,10 +159,10 @@
    "approved_on": "",
    "implementation": {
     "design.py": "3ce9e8620d7423b95933af2e83fa287f8a0f6e73b115cd42f28758aaa12c772f",
-    "library.py": "2cc8eba7fee4fbfadd969c8bd9d621f75f6d7567461965d7d223a2da2050e597"
+    "library.py": "bb797cca1253594070694e054ddb94a3397b2a118e00eba8e6e73eebafd8d361"
    },
    "origin": "proposed",
-   "payload_hash": "6b0294a33bb87047d4e9043a3a7efea79bc36e426f31a8f9d7a2fcae1eb96758",
+   "payload_hash": "022c3aef4cefae5f80d8f8663de65b26d4dc9dc2a413fa6c93cfd96da304c91c",
    "status": "PROPOSED",
    "title": "The two wording frames and the prompt"
   },
@@ -171,11 +183,11 @@
    "approved_on": "",
    "implementation": {
     "outcomes.py": "ed51afa4838c6043d3ca0c2aab24169ad3076a405da20be8bfa915e75d928a7c",
-    "scoring.py": "b539c120662d42c91e2e9e0736b80f826b00cf03cc109e5a91ddc3e6c1cb305d",
-    "verifiers.py": "7e6bfcd45d8d9bb053f45968ecd95859fc77a64c1837851d5394b3994847094c"
+    "scoring.py": "94cc60a20881aeaaddb97b0d3ea74ab6a4641b9c9af4c45a6318e295e20ed73f",
+    "verifiers.py": "b89baa57803a0ca613b4974473796cd77925db3ee793364ddccf178015626494"
    },
    "origin": "proposed",
-   "payload_hash": "94c018a1c2dcede3eba5476540e03055aa087198cda1ba0beb6cac516b8e4205",
+   "payload_hash": "714edec047815a70f0604efbe02d8666e0b6cc2b6aceaea8f827dc1342412225",
    "status": "PROPOSED",
    "title": "Outcomes, compliance and vacuity"
   },
@@ -184,10 +196,10 @@
    "approved_on": "",
    "implementation": {
     "design.py": "3ce9e8620d7423b95933af2e83fa287f8a0f6e73b115cd42f28758aaa12c772f",
-    "topics.py": "8a160c2d2ca19898b7c33ef2a8169f512aa9ccaf476094f4a7c0dacdd901bbcc"
+    "topics.py": "9ac7ba7ca11503455859f4304d2dc431f791e1142f54f09c0e62068292365450"
    },
    "origin": "proposed",
-   "payload_hash": "543834c0bba5d23d85c9c7ea68191692495c27effad80b51aedfd411891d953d",
+   "payload_hash": "638a88def86e39eacbc890d494f522de61f543187b06da8b0969181a5b88fee5",
    "status": "PROPOSED",
    "title": "Stage 1 allocation and pilot topics"
   },
@@ -195,13 +207,13 @@
    "approved_by": "",
    "approved_on": "",
    "implementation": {
-    "calibration.py": "fb4f2a1d60f0fd0f7807847a0d02382bd2628580a3609b416d6ce546fa795fa1",
-    "evidence.py": "b74694313b023fde5de8e030992655478b7eee7354cf043fce5eacbabc491727",
+    "calibration.py": "ed9d4c082492d4401ee7b86ee2c01882d9196d4a055141194a02c01e3b0b026e",
+    "evidence.py": "91e8bc3b8404925a128fa4976c0873b96b2302ddd4ae61726265e5420057e0f8",
     "intervals.py": "bd55bfe9a32d81c9612fae61dbc162fef751a4f95c180117ef5aa167b0ab5125",
-    "pipeline.py": "3aa82bf91110d784ef29708310fb5a3742767ed9b0a20baade5f07e9549062da"
+    "pipeline.py": "93c28b2c2bba59c673256da5b4ae0b208b58c485ada33b99b7d0f2c2d7a480b1"
    },
    "origin": "proposed",
-   "payload_hash": "33b033cf4280db11f7dee9a492a2bf96d5fac62346f8d97561763354862c2c21",
+   "payload_hash": "132599f6d36a5a830db68e53c88bb6e26a662c787115103faba372daf9f41b1a",
    "status": "PROPOSED",
    "title": "Stage 2 refinement rule and stage completeness"
   },
@@ -209,10 +221,10 @@
    "approved_by": "",
    "approved_on": "",
    "implementation": {
-    "calibration.py": "fb4f2a1d60f0fd0f7807847a0d02382bd2628580a3609b416d6ce546fa795fa1"
+    "calibration.py": "ed9d4c082492d4401ee7b86ee2c01882d9196d4a055141194a02c01e3b0b026e"
    },
    "origin": "proposed",
-   "payload_hash": "cc261ae19fd1ad686d8c09bb97cb02907612353780ff9bbaec50d5cc426b9567",
+   "payload_hash": "8d3a3c777c3ac3e334fa00e7a9c7ae21464b94ded97a8550b7950b0606ff7b03",
    "status": "PROPOSED",
    "title": "Selecting the two B limits"
   },
@@ -220,11 +232,11 @@
    "approved_by": "",
    "approved_on": "",
    "implementation": {
-    "calibration.py": "fb4f2a1d60f0fd0f7807847a0d02382bd2628580a3609b416d6ce546fa795fa1",
-    "references.py": "7e5e2d930dad11c08764472470606de0488f845d158117045635025aefbe7e7c"
+    "calibration.py": "ed9d4c082492d4401ee7b86ee2c01882d9196d4a055141194a02c01e3b0b026e",
+    "references.py": "1b74d28b56c7d53fe6121e31f1bf0f62e647a517f6fa58e2877dc7d873c668b8"
    },
    "origin": "proposed",
-   "payload_hash": "99a39cd824f437f71bfea388fbbc349c967e6cb04209c22ecd9508838ce7c08e",
+   "payload_hash": "65a592655c3a0c27ca972f71dd93a2b3303185b274e4727fa65950524c8a4724",
    "status": "PROPOSED",
    "title": "Selecting the global A count"
   },
@@ -233,10 +245,10 @@
    "approved_on": "",
    "implementation": {
     "intervals.py": "bd55bfe9a32d81c9612fae61dbc162fef751a4f95c180117ef5aa167b0ab5125",
-    "references.py": "7e5e2d930dad11c08764472470606de0488f845d158117045635025aefbe7e7c"
+    "references.py": "1b74d28b56c7d53fe6121e31f1bf0f62e647a517f6fa58e2877dc7d873c668b8"
    },
    "origin": "design",
-   "payload_hash": "98e78f8c198e8d0f3d8334c9fab75d4756fc68e41bf66dae782cbf78f2045417",
+   "payload_hash": "693a541514b53b19578989a4f18b3c22e760d437db34ca5c39a8c83d5a8681c7",
    "status": "PROPOSED",
    "title": "Eligibility operationalisation"
   },
@@ -245,10 +257,10 @@
    "approved_on": "",
    "implementation": {
     "intervals.py": "bd55bfe9a32d81c9612fae61dbc162fef751a4f95c180117ef5aa167b0ab5125",
-    "references.py": "7e5e2d930dad11c08764472470606de0488f845d158117045635025aefbe7e7c"
+    "references.py": "1b74d28b56c7d53fe6121e31f1bf0f62e647a517f6fa58e2877dc7d873c668b8"
    },
    "origin": "design",
-   "payload_hash": "3e9271ffc7f3de82a3461cc1c8e357eb1e3b00e1c9128f3072385256a23d772e",
+   "payload_hash": "edc7a5928cf79a525e355daceeb14b6b60a721cff4ef0407eb85b7a8a0ca4e22",
    "status": "PROPOSED",
    "title": "Matching operationalisation"
   },
@@ -256,10 +268,10 @@
    "approved_by": "",
    "approved_on": "",
    "implementation": {
-    "references.py": "7e5e2d930dad11c08764472470606de0488f845d158117045635025aefbe7e7c"
+    "references.py": "1b74d28b56c7d53fe6121e31f1bf0f62e647a517f6fa58e2877dc7d873c668b8"
    },
    "origin": "design",
-   "payload_hash": "32951ab309a6fb20256816bf1bf3f95681fd6ce2c287f3010df2dde1292e5ead",
+   "payload_hash": "e3602e83e5c3b234f71cea2a3bcf76fd9409e0c8bdedf20b0b92278cbb17b49c",
    "status": "PROPOSED",
    "title": "Coverage requirements"
   },
@@ -281,11 +293,11 @@
    "approved_by": "",
    "approved_on": "",
    "implementation": {
-    "library.py": "2cc8eba7fee4fbfadd969c8bd9d621f75f6d7567461965d7d223a2da2050e597",
-    "references.py": "7e5e2d930dad11c08764472470606de0488f845d158117045635025aefbe7e7c"
+    "library.py": "bb797cca1253594070694e054ddb94a3397b2a118e00eba8e6e73eebafd8d361",
+    "references.py": "1b74d28b56c7d53fe6121e31f1bf0f62e647a517f6fa58e2877dc7d873c668b8"
    },
    "origin": "proposed",
-   "payload_hash": "7f24d04f57e7fdc822b03cda7bbd8c3152f7da80225ed99614e21113c22f2700",
+   "payload_hash": "4c99616c058ee2d6c3b1af8a1ad9c05982a7e539534d912d251504fd9a2f89ca",
    "status": "PROPOSED",
    "title": "Object types and hierarchical weights"
   },
@@ -316,7 +328,7 @@
   "status": "UNATTESTED"
  },
  "library": {
-  "hash": "d728981db095c4bc1f4821e7af03196ef043217ef0efc4252b32fef706efb894",
+  "hash": "a9cd72b5353573c604c69274b80aabbdff20c6e3f0eb4f4d486d64feb13393a5",
   "n_references": 51,
   "spec_hashes": {
    "A.however.2": "d5573e63a1e674369373c914f2982ef7c25aa9bfe809138b341507e3a5414292",
@@ -381,7 +393,7 @@
    "unq.word5": "e36e87a21d70b986fe99dbdd0621825bb18038713195f298774cd8285d0b9ca6"
   }
  },
- "manifest_hash": "dbc720e1ca268c6a92dd0e2b35a77667ece909cd89086a0f316bd91ff434178e",
+ "manifest_hash": "a153a387b41bbb80b5da1030e6f2b3fa34f0ee280e69c20f12df60cc42b6257a",
  "models": [
   {
    "chat_template_kwargs": {},
@@ -454,30 +466,31 @@
  "rule_sources": {
   "__init__.py": "19f2032706d031581d981e6bb9a0b135d0261914ec4cbd3b7477e548cd104117",
   "__main__.py": "bc713658e3413fada43e1613c2255feaa12add8ffba22ec22a6ddc4e00435fb6",
-  "calibration.py": "fb4f2a1d60f0fd0f7807847a0d02382bd2628580a3609b416d6ce546fa795fa1",
-  "cli.py": "7997e191950ba27531ab367e8d962351a2d3eaaeb3c48bbe6c23f7d36d8a64ed",
-  "compatibility.py": "6b7dc43c6d220f63ca7bdd934eed9e6041ff5f494d1e2cf385b5fa52ab95292e",
-  "config.py": "f2c7adb6ddb754d1b9fd8f49b1a543b3d57c94507ad6ca5b48c5b1dfeb08a2b3",
+  "calibration.py": "ed9d4c082492d4401ee7b86ee2c01882d9196d4a055141194a02c01e3b0b026e",
+  "cli.py": "df016d6f43bd8c6381310cd44120965736321df18f40f142f1394da1847062eb",
+  "compatibility.py": "ca542f3250eb8ea3b30dde03e2ee3bb07c27ca6fa36c394b0a8d6a01ea85bd22",
+  "config.py": "c687c98da5dbc811008ec2d9d0d27af2b276f7d76c8d6bc18abdbb9586f119be",
   "dci/provenance/hashes.py": "b0db13e53e9e62d18ed2e94a225318b08d44aedd2beddffb044a46e2fc18bdc3",
   "dci/verifiers/rules.py": "00bed1e904013bcde6cac2c6243bc0c6655b7a1f73f47042b12946e258a63647",
   "design.py": "3ce9e8620d7423b95933af2e83fa287f8a0f6e73b115cd42f28758aaa12c772f",
   "environment.py": "d4946066a56c09e352f288b2854314a337e1574b1e9ce47004ecc1dd50312934",
-  "evidence.py": "b74694313b023fde5de8e030992655478b7eee7354cf043fce5eacbabc491727",
-  "freeze.py": "da75241421546694d1336afaf857739bb77e64e273736123a7d26ae6feb9ec28",
+  "evidence.py": "91e8bc3b8404925a128fa4976c0873b96b2302ddd4ae61726265e5420057e0f8",
+  "freeze.py": "cddb0f6ecc81e457e8fe18c927b26786a18817a7e04439f9f70720804fea82fb",
   "intervals.py": "bd55bfe9a32d81c9612fae61dbc162fef751a4f95c180117ef5aa167b0ab5125",
-  "library.py": "2cc8eba7fee4fbfadd969c8bd9d621f75f6d7567461965d7d223a2da2050e597",
+  "library.py": "bb797cca1253594070694e054ddb94a3397b2a118e00eba8e6e73eebafd8d361",
   "outcomes.py": "ed51afa4838c6043d3ca0c2aab24169ad3076a405da20be8bfa915e75d928a7c",
-  "pipeline.py": "3aa82bf91110d784ef29708310fb5a3742767ed9b0a20baade5f07e9549062da",
-  "references.py": "7e5e2d930dad11c08764472470606de0488f845d158117045635025aefbe7e7c",
+  "pipeline.py": "93c28b2c2bba59c673256da5b4ae0b208b58c485ada33b99b7d0f2c2d7a480b1",
+  "references.py": "1b74d28b56c7d53fe6121e31f1bf0f62e647a517f6fa58e2877dc7d873c668b8",
+  "revision.py": "c2ba84e259e6b505734e8194fc7631233a9dd14c47200594c459b8895cb02517",
   "runner.py": "33325b0a141656221109289ba010866f8b0534a8402bd05c3af94c7197091d89",
-  "scoring.py": "b539c120662d42c91e2e9e0736b80f826b00cf03cc109e5a91ddc3e6c1cb305d",
+  "scoring.py": "94cc60a20881aeaaddb97b0d3ea74ab6a4641b9c9af4c45a6318e295e20ed73f",
   "smoke.py": "eb11c47458598b8b536e3c01cf829a063e208dc04d1439b783477f7b715c5bf0",
   "stability.py": "cc34cc3bd42e19fab8c61495df16fceda00517257449b11036bedb6fa2c4c8a5",
   "store.py": "d0e6cd674378423230ab135280ad7801cfee67b4e708829aff10ac1fa9db9958",
-  "synthetic.py": "93dbe3bcb50addf7e07248779a65445af2622b6387edb840968164c6410d7b59",
+  "synthetic.py": "47265a48fd52371e8bd99f03e540022449e9b381f0a397be947ac72c2896056d",
   "text.py": "dd7d69ab3f943b764d427fa421a936570f3d36d4fa657e397ad17904d54e8145",
-  "topics.py": "8a160c2d2ca19898b7c33ef2a8169f512aa9ccaf476094f4a7c0dacdd901bbcc",
-  "verifiers.py": "7e6bfcd45d8d9bb053f45968ecd95859fc77a64c1837851d5394b3994847094c"
+  "topics.py": "9ac7ba7ca11503455859f4304d2dc431f791e1142f54f09c0e62068292365450",
+  "verifiers.py": "b89baa57803a0ca613b4974473796cd77925db3ee793364ddccf178015626494"
  },
  "schema": "dci.batch1/freeze1/v2",
  "seed_derivation": {
@@ -529,5 +542,5 @@
   "source_file_hash": "c272203f04575adaea769a3b67ff02b877b7aaca7fb24cca4f848b537ed43f8f",
   "split_hash": "afd65ed122770119c5c62aabf497a7b6c3367e25545231a04aaa586518629dd1"
  },
- "verifier_bundle_hash": "5747faa9157c6c23a9988b4888321a3d09a780998352b73e38cbe03a9c9c04ce"
+ "verifier_bundle_hash": "e52607973ede34acb834b01cdcdc514970203c870e2a436a3df541e71d4e76b6"
 }

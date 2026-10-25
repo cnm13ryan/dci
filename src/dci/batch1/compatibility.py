@@ -81,9 +81,15 @@ SENTENCE_POOL: tuple[str, ...] = (
 #: Words and letters the pool must never contain, gathered from the library
 #: so that a new forbidding or requiring constraint extends the check.
 def _pool_exclusions() -> tuple[set[str], set[str]]:
+    """Read from A and the v1 references. Library v2's additions (R1) forbid
+    or require words and letters (q, x, j, k, v, velvet, ...) that the pools
+    use; the pools stay as they are, so v1's witnesses and matrix hash are
+    unchanged. A v2 addition is served by the verifier-filtered witnesses
+    (``_greedy``, ``_fill``), and ``check`` verifies every witness anyway."""
+    from dci.batch1.library import _reference_library_v1
     words: set[str] = {"however", "the"}
     letters: set[str] = set()
-    for c in a_candidates() + reference_library():
+    for c in a_candidates() + _reference_library_v1():
         p = c.p
         words |= set(c.required_words())
         words |= set(p.get("words", ()))
@@ -237,6 +243,35 @@ def _joined(i: int, j: int, sep: str = " and ") -> str:
     return _strip_stop(_pool(i)) + sep + _lower_first(_pool(j))
 
 
+#: Library v2's marks (R1), one per sentence: the mark ends or joins it.
+_MARKED = (":", "?", "!", "(")
+
+
+def _marked(char: str, pool: Callable[[int], str], i: int) -> str:
+    a, b = _strip_stop(pool(2 * i)), _lower_first(pool(2 * i + 1))
+    if char == ":":
+        return f"{a}: {b}"
+    if char == "(":
+        return f"{a} (and {_strip_stop(b)})."
+    return f"{a}{char}"
+
+
+def _numbered(pool: Callable[[int], str], i: int) -> str:
+    return f"{_strip_stop(pool(i))} {i + 2} times."
+
+
+def _padding(parts: list[str], pool: Callable[[int], str], *,
+             start: int = 20, min_words: int = 24) -> list[str]:
+    """Plain pool sentences after ``parts`` until the text keeps B
+    non-vacuous."""
+    out: list[str] = []
+    i = start
+    while T.word_count(" ".join(parts + out)) < min_words:
+        out.append(pool(i))
+        i += 1
+    return out
+
+
 def _lengthened(target: int) -> str:
     """A sentence of exactly ``target`` words from pool material."""
     words: list[str] = []
@@ -255,11 +290,24 @@ def build_witness(c: Constraint) -> str | None:
         return " ".join(_base(3) + [_carrier(p["word"], i) for i in range(p["n"])])
     if fam == "max_word_length":
         return " ".join(_base(4))
+    if fam == "exact_char_count" and p["char"] in _MARKED:
+        marked = [_marked(p["char"], _pool, i) for i in range(p["n"])]
+        return " ".join(marked + _padding(marked, _pool))
     if fam == "exact_char_count":
         sep = ", and " if p["char"] == "," else "; "
         # One mark per joined pair; two plain sentences keep B non-vacuous.
         joined = [_joined(2 * i, 2 * i + 1, sep) for i in range(p["n"])]
         return " ".join(joined + [_pool(20), _pool(21)])
+    if fam == "exact_numeral_count":
+        counted = [_numbered(_pool, i) for i in range(p["n"])]
+        return " ".join(counted + _padding(counted, _pool))
+    if fam == "positional_word" and p["where"] == "start":
+        first = [f"{p['word'].capitalize()} {_lower_first(_pool(0))}"]
+        return " ".join(first + _padding(first, _pool, start=1))
+    if fam == "positional_word":
+        return " ".join(_padding([], _pool) + [f"We move {p['word']}."])
+    if fam == "positional_question":
+        return " ".join(_padding([], _pool) + ["Who knows why?"])
     if fam == "exact_sentence_count":
         return " ".join(_pool(i) for i in range(p["n"]))
     if fam == "exact_paragraph_count":
@@ -281,7 +329,9 @@ def build_witness(c: Constraint) -> str | None:
         return " ".join(_base(max(p["min_sentences"], 4)))
     if fam == "length_order":
         k = p["min_sentences"]
-        lengths = [4 + i for i in range(k)]
+        # Shortest first sentence that keeps B non-vacuous (4 for k >= 4).
+        first = max(4, -(-(V.NON_VACUITY_MIN_WORDS - k * (k - 1) // 2) // k))
+        lengths = [first + i for i in range(k)]
         if p["direction"] == "decreasing":
             lengths.reverse()
         return " ".join(_lengthened(n) for n in lengths)
@@ -364,10 +414,25 @@ def task_witness(c: Constraint) -> str | None:
                      f"{p['word'].capitalize()}, {_lower_first(_lp(i))}")
                     for i in range(p["n"])]
         return _fill(carriers, keep, start=p["n"])
+    if fam == "exact_char_count" and p["char"] in _MARKED:
+        marked = [_marked(p["char"], _lp, i) for i in range(p["n"])]
+        return _fill(marked, keep, start=2 * p["n"])
     if fam == "exact_char_count":
         sep = ", and " if p["char"] == "," else "; "
         joined = [_lp_join(2 * i, 2 * i + 1, sep) for i in range(p["n"])]
         return _fill(joined, keep, start=2 * p["n"])
+    if fam == "exact_numeral_count":
+        return _fill([_numbered(_lp, i) for i in range(p["n"])], keep,
+                     start=p["n"])
+    if fam == "positional_word" and p["where"] == "start":
+        return _fill([f"{p['word'].capitalize()} {_lower_first(_lp(0))}"],
+                     keep, start=1)
+    if fam == "positional_word":
+        return _fill([], lambda t: True, target=_TASK_TARGET - 3) + \
+            f" We move {p['word']}."
+    if fam == "positional_question":
+        return _fill([], lambda t: True, target=_TASK_TARGET - 3) + \
+            " Who knows why?"
     if fam == "exact_sentence_count":
         n, per = p["n"], 1
         while n * per * 6 < _TASK_TARGET:
@@ -397,8 +462,14 @@ def task_witness(c: Constraint) -> str | None:
             return _fill([], keep)
         out, i = [], 0
         while _wc(out) < _TASK_TARGET:
-            out.append(_lp_join(i, i + 1))
+            # Pairs (v1); longer runs where a pair is shorter than k (v2).
+            parts = [_strip_stop(_lp(i)), _lower_first(_lp(i + 1))]
             i += 2
+            while T.word_count(" and ".join(parts)) < p["k"]:
+                parts = [parts[0]] + [_strip_stop(x) for x in parts[1:]] + \
+                    [_lower_first(_lp(i))]
+                i += 1
+            out.append(" and ".join(parts))
         return " ".join(out)
     if fam == "length_order":
         k = p["min_sentences"]
@@ -555,9 +626,17 @@ _VIOLATION_CANDIDATES: tuple[str, ...] = (
 )
 
 
+#: Library v2's letter bans (q, x, j) need a text that uses them. Kept apart
+#: so that v1's synthetic task-only texts stay as they were.
+_VIOLATION_CANDIDATES_V2: tuple[str, ...] = (
+    " ".join(SENTENCE_POOL[:4]) + " Six jolly quick foxes vex a judge."
+    " This is also so. Gardens and gardens.",
+)
+
+
 def violation_text(c: Constraint) -> str:
     """A non-empty text that ``c``'s verifier FAILS (for synthetic data)."""
-    for candidate in _VIOLATION_CANDIDATES:
+    for candidate in _VIOLATION_CANDIDATES + _VIOLATION_CANDIDATES_V2:
         if not V.VERIFIERS[c.family.verifier_id](candidate, **c.p).passed:
             return candidate
     raise AssertionError(f"no violation text fails {c.cid}")

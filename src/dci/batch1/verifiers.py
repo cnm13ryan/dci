@@ -33,6 +33,7 @@ record, and truncation is never counted as vacuity.
 from __future__ import annotations
 
 import inspect
+import re
 from collections import Counter
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -197,6 +198,34 @@ def adjacent_shared_word(text: str, *, min_sentences: int, min_letters: int
                        {"links": links})
 
 
+# ------------------------------------------- library v2 (revision 2026-10)
+
+#: A number written as digits, optionally with decimal or thousands parts
+#: ("3", "1,200", "2.5"). Digits are not letters, so B never sees them.
+_NUMERAL = re.compile(r"(?<![0-9A-Za-z])[0-9]+(?:[.,][0-9]+)*(?![0-9A-Za-z])")
+
+
+def exact_numeral_count(text: str, *, n: int) -> Measurement:
+    count = len(_NUMERAL.findall(text))
+    return Measurement(count == n, count)
+
+
+def positional_word(text: str, *, where: str, word: str) -> Measurement:
+    """The answer's first (``start``) or last (``end``) word, folded."""
+    found = T.folded_words(text)
+    if where not in ("start", "end"):
+        raise ValueError(f"where={where!r}")
+    edge = (found[0] if where == "start" else found[-1]) if found else ""
+    return Measurement(edge == word, edge)
+
+
+def positional_question(text: str) -> Measurement:
+    """The answer ends with a question mark (trailing space and closing
+    quotes or brackets ignored)."""
+    tail = text.rstrip().rstrip("\"')]\u201d\u2019")
+    return Measurement(tail.endswith("?"), tail[-1:] if tail else "")
+
+
 #: verifier_id -> implementation. The id is what a constraint names; the
 #: function's source enters that constraint's specification hash.
 VERIFIERS: dict[str, Callable[..., Measurement]] = {
@@ -217,6 +246,9 @@ VERIFIERS: dict[str, Callable[..., Measurement]] = {
     "b1.chain_word": chain_word,
     "b1.chain_letter": chain_letter,
     "b1.adjacent_shared_word": adjacent_shared_word,
+    "b1.exact_numeral_count": exact_numeral_count,
+    "b1.positional_word": positional_word,
+    "b1.positional_question": positional_question,
 }
 
 

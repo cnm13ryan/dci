@@ -40,3 +40,13 @@ def string_constants(module_text: str, names: tuple[str, ...]) -> dict[str, str]
             if isinstance(value, str):
                 env[node.targets[0].id] = value
     return {n: env[n] for n in names}
+
+
+@pytest.fixture(autouse=True)
+def library_version():
+    """The library version is process-wide (``library.set_library_version``);
+    every test starts on v1 unless its module overrides this fixture."""
+    from dci.batch1 import library as L
+    L.set_library_version("v1")
+    yield "v1"
+    L.set_library_version("v1")

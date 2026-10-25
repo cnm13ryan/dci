@@ -40,6 +40,9 @@ _FAMILY_BASE = {
     "no_repeated_bigrams": 0.25, "distinct_openers": 0.70,
     "length_order": 0.12, "alphabetical_openers": 0.10, "chain_word": 0.08,
     "chain_letter": 0.05, "adjacent_shared_word": 0.30,
+    # library v2 (revision 2026-10)
+    "exact_numeral_count": 0.40, "positional_word": 0.55,
+    "positional_question": 0.50,
 }
 
 

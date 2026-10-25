@@ -220,6 +220,9 @@ def topic_review(overlap: Mapping[str, Any], hygiene: Mapping[str, Any],
             "≥ 13 | has b | has z | why | how |",
             "|---|---|---|---|---|---|---|---|---|---|---|"]
     for name, prof in hygiene["profiles"].items():
+        if not prof.get("n"):              # bank v2 reserves no topics
+            out.append(f"| {name} | 0 | — | — | — | — | — | — | — | — | — |")
+            continue
         out.append(f"| {name} | {prof['n']} | {prof['mean_words']} | "
                    f"{prof['mean_longest_word']} | {prof['share_longest_ge_9']:.2f}"
                    f" | {prof['share_longest_ge_11']:.2f} | "

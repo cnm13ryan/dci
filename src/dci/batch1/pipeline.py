@@ -98,8 +98,10 @@ def evidence_bundle(root: Path, freeze1: Mapping[str, Any], *,
 
 def build_tables(root: Path, freeze1: Mapping[str, Any] | None = None, *,
                  bundle: Mapping[str, Any] | None = None) -> S.PilotTables:
-    bundle = bundle or evidence_bundle(root, freeze1 or _freeze1(root))
-    tables = EV.tables_for(bundle["stages"].values(),
+    freeze1 = freeze1 or _freeze1(root)
+    bundle = bundle or evidence_bundle(root, freeze1)
+    tables = EV.tables_for(EV.decision_stages(bundle["stages"],
+                                              config_of(freeze1)),
                            synthetic=bundle["synthetic"])
     F.write_json(Path(root) / "tables.json", tables.state())
     return tables
@@ -127,15 +129,19 @@ def write_stage2_plan(root: Path, freeze1: Mapping[str, Any]
 def finalize(root: Path, freeze1: Mapping[str, Any]) -> dict[str, Any]:
     cfg = config_of(freeze1)
     bundle = evidence_bundle(root, freeze1)
-    tables = build_tables(root, bundle=bundle)
+    tables = build_tables(root, freeze1, bundle=bundle)
     matrix = COMPAT.compatibility_matrix()
-    result = CAL.finalize(tables, cfg, matrix)
+    result = CAL.finalize(tables, cfg, matrix,
+                          early_stop=EV.early_stopped(bundle["selection"]))
     out = dict(result)
     out["evidence"] = {stage: ev.manifest()
                        for stage, ev in bundle["stages"].items()}
-    out["sensitivity_stage1_only"] = STAB.stage1_only(
-        bundle["stages"][D.STAGE1], result, cfg, matrix,
-        synthetic=bundle["synthetic"])
+    if cfg.protocol == "v2":
+        out["forecast"] = bundle["selection"]["forecast"]
+    else:
+        out["sensitivity_stage1_only"] = STAB.stage1_only(
+            bundle["stages"][D.STAGE1], result, cfg, matrix,
+            synthetic=bundle["synthetic"])
     F.write_json(Path(root) / "calibration.json", out)
     return out
 
@@ -144,7 +150,7 @@ def freeze_membership(root: Path, freeze1: Mapping[str, Any],
                       approvals: Mapping[str, Any] | None, *,
                       replicates: int | None = None) -> dict[str, Any]:
     bundle = evidence_bundle(root, freeze1)
-    build_tables(root, bundle=bundle)
+    build_tables(root, freeze1, bundle=bundle)
     manifest = F.freeze2_manifest(freeze1, bundle, approvals=approvals,
                                   allow_synthetic=bundle["synthetic"],
                                   replicates=replicates)

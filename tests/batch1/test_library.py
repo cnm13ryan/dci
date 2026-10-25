@@ -18,7 +18,11 @@ def test_the_library_has_51_variants_in_seven_operation_classes():
     summary = L.validate_library()
     assert len(refs) == 51 == summary["n_variants"]
     assert summary["n_operations"] == 7
-    assert {c.operation for c in refs} == set(L.OPERATIONS)
+    # The taxonomy grew in library v2 ("positional", R1); v1 uses, and its
+    # manifest lists, the original seven.
+    assert {c.operation for c in refs} == \
+        set(L.library_manifest()["taxonomy"]["operations"])
+    assert set(L.OPERATIONS) - {c.operation for c in refs} == {"positional"}
 
 
 def test_family_rows_match_the_design_table():
@@ -108,7 +112,8 @@ def _c(**overrides):
     {"family_id": "length_order",
      "params": (("direction", "sideways"), ("min_sentences", 4))},
     {"family_id": "chain_word", "params": (("min_sentences", 1),)},
-    {"family_id": "exact_char_count", "params": (("char", "!"), ("n", 1))},
+    # "!" became a counted mark in library v2 (R1); "#" never was.
+    {"family_id": "exact_char_count", "params": (("char", "#"), ("n", 1))},
 ])
 def test_invalid_specifications_are_rejected(overrides):
     with pytest.raises(L.LibraryError):

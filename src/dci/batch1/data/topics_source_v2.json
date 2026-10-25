@@ -1,0 +1,784 @@
+{
+  "schema": "dci.batch1/topic-source/v2",
+  "provenance": "authored 2026-10-26 for the revised Batch 1 pilot (protocol v2, R6) by an AI writer agent, against the full lists of bank v1 (576) and the historical banks (1,472 distinct); screened by the overlap report and a blind semantic review (topics_semantic_review_v2.json). Never shown to a model before this file. Agent proposals; the researcher approved the process (R6), not each question.",
+  "topics": [
+    {
+      "topic_id": "b2-art-and-design-00",
+      "area": "art and design",
+      "question": "Why do furniture makers steam timber before bending it into curves?"
+    },
+    {
+      "topic_id": "b2-art-and-design-01",
+      "area": "art and design",
+      "question": "Why do dyers treat wool with a mordant before dyeing it?"
+    },
+    {
+      "topic_id": "b2-art-and-design-02",
+      "area": "art and design",
+      "question": "Why do mapmakers shade hills as though lit from the upper left?"
+    },
+    {
+      "topic_id": "b2-art-and-design-03",
+      "area": "art and design",
+      "question": "Why do artists keep pencils that range from hard to soft leads?"
+    },
+    {
+      "topic_id": "b2-art-and-design-04",
+      "area": "art and design",
+      "question": "Why do sculptors model a clay figure over a wire skeleton?"
+    },
+    {
+      "topic_id": "b2-art-and-design-05",
+      "area": "art and design",
+      "question": "Why do enamel artists fire powdered glass onto copper several times?"
+    },
+    {
+      "topic_id": "b2-art-and-design-06",
+      "area": "art and design",
+      "question": "How does the lost wax method turn a wax model into bronze?"
+    },
+    {
+      "topic_id": "b2-art-and-design-07",
+      "area": "art and design",
+      "question": "How does a stencil artist stop spray paint creeping under the edges?"
+    },
+    {
+      "topic_id": "b2-art-and-design-08",
+      "area": "art and design",
+      "question": "How does an origami artist fold a bird from one uncut square?"
+    },
+    {
+      "topic_id": "b2-art-and-design-09",
+      "area": "art and design",
+      "question": "How does a shoemaker shape leather around a wooden last?"
+    },
+    {
+      "topic_id": "b2-art-and-design-10",
+      "area": "art and design",
+      "question": "How does tie dyeing leave pale patterns where the cloth was bound?"
+    },
+    {
+      "topic_id": "b2-art-and-design-11",
+      "area": "art and design",
+      "question": "How does a hat maker press felt into a firm lasting shape?"
+    },
+    {
+      "topic_id": "b2-everyday-science-00",
+      "area": "everyday science",
+      "question": "Why does a bicycle pump grow warm while it inflates a tyre?"
+    },
+    {
+      "topic_id": "b2-everyday-science-01",
+      "area": "everyday science",
+      "question": "Why does chalk squeak on a blackboard when held at some angles?"
+    },
+    {
+      "topic_id": "b2-everyday-science-02",
+      "area": "everyday science",
+      "question": "Why do thin foil blankets help keep a cold runner warm?"
+    },
+    {
+      "topic_id": "b2-everyday-science-03",
+      "area": "everyday science",
+      "question": "Why do cotton towels soak up water better than nylon ones?"
+    },
+    {
+      "topic_id": "b2-everyday-science-04",
+      "area": "everyday science",
+      "question": "How does a hook and loop fastener grip and then peel apart?"
+    },
+    {
+      "topic_id": "b2-everyday-science-05",
+      "area": "everyday science",
+      "question": "Why does boiling water poured into a cold glass sometimes crack it?"
+    },
+    {
+      "topic_id": "b2-everyday-science-06",
+      "area": "everyday science",
+      "question": "How does a rubber suction cup cling to a smooth tile?"
+    },
+    {
+      "topic_id": "b2-everyday-science-07",
+      "area": "everyday science",
+      "question": "How does a pinhole in card project an image of the sun?"
+    },
+    {
+      "topic_id": "b2-everyday-science-08",
+      "area": "everyday science",
+      "question": "How does a pencil eraser lift graphite off a sheet of paper?"
+    },
+    {
+      "topic_id": "b2-everyday-science-09",
+      "area": "everyday science",
+      "question": "How do glow in the dark stickers keep shining after lights go off?"
+    },
+    {
+      "topic_id": "b2-everyday-science-10",
+      "area": "everyday science",
+      "question": "How does a ballpoint pen release ink without leaking it?"
+    },
+    {
+      "topic_id": "b2-everyday-science-11",
+      "area": "everyday science",
+      "question": "How does stirring help sugar dissolve in a cup of tea?"
+    },
+    {
+      "topic_id": "b2-food-00",
+      "area": "food",
+      "question": "Why does mayonnaise thicken as oil is whisked in drop by drop?"
+    },
+    {
+      "topic_id": "b2-food-01",
+      "area": "food",
+      "question": "Why does garlic taste bitter when it is fried until dark brown?"
+    },
+    {
+      "topic_id": "b2-food-02",
+      "area": "food",
+      "question": "Why do cooks salt aubergine slices before frying them?"
+    },
+    {
+      "topic_id": "b2-food-03",
+      "area": "food",
+      "question": "Why does fudge turn grainy if it is stirred while cooling?"
+    },
+    {
+      "topic_id": "b2-food-04",
+      "area": "food",
+      "question": "Why does the first pancake from a pan so often turn out badly?"
+    },
+    {
+      "topic_id": "b2-food-05",
+      "area": "food",
+      "question": "Why is rice for sushi seasoned with vinegar and sugar?"
+    },
+    {
+      "topic_id": "b2-food-06",
+      "area": "food",
+      "question": "How does a cook clarify butter to stop it burning?"
+    },
+    {
+      "topic_id": "b2-food-07",
+      "area": "food",
+      "question": "How do cooks poach an egg so that it holds its shape?"
+    },
+    {
+      "topic_id": "b2-food-08",
+      "area": "food",
+      "question": "How does choux pastry puff up hollow inside the oven?"
+    },
+    {
+      "topic_id": "b2-food-09",
+      "area": "food",
+      "question": "How does a roux of flour and butter thicken a sauce?"
+    },
+    {
+      "topic_id": "b2-food-10",
+      "area": "food",
+      "question": "How does a tandoor oven bake flatbread stuck to its walls?"
+    },
+    {
+      "topic_id": "b2-food-11",
+      "area": "food",
+      "question": "How do makers turn soya milk into firm blocks of tofu?"
+    },
+    {
+      "topic_id": "b2-geography-00",
+      "area": "geography",
+      "question": "Why do the seasons fall at opposite times in the two hemispheres?"
+    },
+    {
+      "topic_id": "b2-geography-01",
+      "area": "geography",
+      "question": "Why does the date change for travellers crossing the middle of the Pacific?"
+    },
+    {
+      "topic_id": "b2-geography-02",
+      "area": "geography",
+      "question": "Why do some lone peaks trail a plume of cloud from one side?"
+    },
+    {
+      "topic_id": "b2-geography-03",
+      "area": "geography",
+      "question": "Why does the soil look deep red across many tropical regions?"
+    },
+    {
+      "topic_id": "b2-geography-04",
+      "area": "geography",
+      "question": "Why is there land under the South Pole but only sea at the North?"
+    },
+    {
+      "topic_id": "b2-geography-05",
+      "area": "geography",
+      "question": "Why is a country's capital often not its largest city?"
+    },
+    {
+      "topic_id": "b2-geography-06",
+      "area": "geography",
+      "question": "How does a tidal bore send a wave racing up a river?"
+    },
+    {
+      "topic_id": "b2-geography-07",
+      "area": "geography",
+      "question": "How do round potholes get drilled into the rock of a riverbed?"
+    },
+    {
+      "topic_id": "b2-geography-08",
+      "area": "geography",
+      "question": "How do granite tors come to stand on top of bare hills?"
+    },
+    {
+      "topic_id": "b2-geography-09",
+      "area": "geography",
+      "question": "How do raised beaches end up high above the present shore?"
+    },
+    {
+      "topic_id": "b2-geography-10",
+      "area": "geography",
+      "question": "How do terraced fields hold water on steep hillsides?"
+    },
+    {
+      "topic_id": "b2-geography-11",
+      "area": "geography",
+      "question": "How did the white chalk of some sea cliffs form?"
+    },
+    {
+      "topic_id": "b2-health-and-the-body-00",
+      "area": "health and the body",
+      "question": "Why do people see small specks drifting across their field of vision?"
+    },
+    {
+      "topic_id": "b2-health-and-the-body-01",
+      "area": "health and the body",
+      "question": "Why does eating ice cream too fast cause a sharp brain freeze?"
+    },
+    {
+      "topic_id": "b2-health-and-the-body-02",
+      "area": "health and the body",
+      "question": "Why do eyes sometimes glow red in flash photographs?"
+    },
+    {
+      "topic_id": "b2-health-and-the-body-03",
+      "area": "health and the body",
+      "question": "Why do the ear canals keep producing a layer of wax?"
+    },
+    {
+      "topic_id": "b2-health-and-the-body-04",
+      "area": "health and the body",
+      "question": "Why does hair on the head grow far longer than hair on the arms?"
+    },
+    {
+      "topic_id": "b2-health-and-the-body-05",
+      "area": "health and the body",
+      "question": "Why does the stomach not digest its own lining?"
+    },
+    {
+      "topic_id": "b2-health-and-the-body-06",
+      "area": "health and the body",
+      "question": "How do the tiny bones of the middle ear pass sound inwards?"
+    },
+    {
+      "topic_id": "b2-health-and-the-body-07",
+      "area": "health and the body",
+      "question": "How do hands build calluses where they grip tools often?"
+    },
+    {
+      "topic_id": "b2-health-and-the-body-08",
+      "area": "health and the body",
+      "question": "How do valves in the heart keep blood flowing one way?"
+    },
+    {
+      "topic_id": "b2-health-and-the-body-09",
+      "area": "health and the body",
+      "question": "How do blinking and eyelashes keep dust out of the eyes?"
+    },
+    {
+      "topic_id": "b2-health-and-the-body-10",
+      "area": "health and the body",
+      "question": "How do the vocal cords change pitch when a person sings higher?"
+    },
+    {
+      "topic_id": "b2-health-and-the-body-11",
+      "area": "health and the body",
+      "question": "How does steady practice make a physical skill feel automatic?"
+    },
+    {
+      "topic_id": "b2-history-00",
+      "area": "history",
+      "question": "Why did Roman aqueducts run on such gentle downhill slopes?"
+    },
+    {
+      "topic_id": "b2-history-01",
+      "area": "history",
+      "question": "Why did monasteries keep rooms where monks copied books by hand?"
+    },
+    {
+      "topic_id": "b2-history-02",
+      "area": "history",
+      "question": "Why did so many early aircraft have two sets of wings?"
+    },
+    {
+      "topic_id": "b2-history-03",
+      "area": "history",
+      "question": "Why did old sailing ships carry copper sheets on their hulls?"
+    },
+    {
+      "topic_id": "b2-history-04",
+      "area": "history",
+      "question": "Why did early photographs require sitters to hold still for so long?"
+    },
+    {
+      "topic_id": "b2-history-05",
+      "area": "history",
+      "question": "Why did the ancient Greeks build theatres into hillsides?"
+    },
+    {
+      "topic_id": "b2-history-06",
+      "area": "history",
+      "question": "How did friction matches change the way people lit fires at home?"
+    },
+    {
+      "topic_id": "b2-history-07",
+      "area": "history",
+      "question": "How did standard screw threads make machines easier to repair?"
+    },
+    {
+      "topic_id": "b2-history-08",
+      "area": "history",
+      "question": "How did the steel shipping container change work at the docks?"
+    },
+    {
+      "topic_id": "b2-history-09",
+      "area": "history",
+      "question": "How did ancient builders move huge stones without engines or cranes?"
+    },
+    {
+      "topic_id": "b2-history-10",
+      "area": "history",
+      "question": "How did water clocks keep time before mechanical clocks existed?"
+    },
+    {
+      "topic_id": "b2-history-11",
+      "area": "history",
+      "question": "How did ancient Egyptians make papyrus sheets from river reeds?"
+    },
+    {
+      "topic_id": "b2-language-and-writing-00",
+      "area": "language and writing",
+      "question": "Why do so many English words keep letters that are never sounded?"
+    },
+    {
+      "topic_id": "b2-language-and-writing-01",
+      "area": "language and writing",
+      "question": "Why do newspaper headlines drop small words like the and a?"
+    },
+    {
+      "topic_id": "b2-language-and-writing-02",
+      "area": "language and writing",
+      "question": "Why does the letter q nearly always come before u in English?"
+    },
+    {
+      "topic_id": "b2-language-and-writing-03",
+      "area": "language and writing",
+      "question": "Why do letters of the alphabet have capital and small forms?"
+    },
+    {
+      "topic_id": "b2-language-and-writing-04",
+      "area": "language and writing",
+      "question": "Why do recipes give each of their steps as a direct command?"
+    },
+    {
+      "topic_id": "b2-language-and-writing-05",
+      "area": "language and writing",
+      "question": "Why do some writing systems use a symbol for each word, not each sound?"
+    },
+    {
+      "topic_id": "b2-language-and-writing-06",
+      "area": "language and writing",
+      "question": "How do some acronyms become ordinary words written in lower case?"
+    },
+    {
+      "topic_id": "b2-language-and-writing-07",
+      "area": "language and writing",
+      "question": "How do braille readers recognise letters through their fingertips?"
+    },
+    {
+      "topic_id": "b2-language-and-writing-08",
+      "area": "language and writing",
+      "question": "How do young children learn to read by sounding out letters?"
+    },
+    {
+      "topic_id": "b2-language-and-writing-09",
+      "area": "language and writing",
+      "question": "How does a limerick build its bouncing rhythm across five lines?"
+    },
+    {
+      "topic_id": "b2-language-and-writing-10",
+      "area": "language and writing",
+      "question": "How does a haiku capture a scene in so few syllables?"
+    },
+    {
+      "topic_id": "b2-language-and-writing-11",
+      "area": "language and writing",
+      "question": "How does a spoonerism swap sounds to make a comic phrase?"
+    },
+    {
+      "topic_id": "b2-music-00",
+      "area": "music",
+      "question": "Why are the sound holes on a violin shaped like the letter f?"
+    },
+    {
+      "topic_id": "b2-music-01",
+      "area": "music",
+      "question": "Why are the black keys on a piano grouped in twos and threes?"
+    },
+    {
+      "topic_id": "b2-music-02",
+      "area": "music",
+      "question": "Why do reed players moisten the reed before they begin to play?"
+    },
+    {
+      "topic_id": "b2-music-03",
+      "area": "music",
+      "question": "Why does a sitar carry extra strings that are never plucked?"
+    },
+    {
+      "topic_id": "b2-music-04",
+      "area": "music",
+      "question": "Why does a band leader count aloud before a song begins?"
+    },
+    {
+      "topic_id": "b2-music-05",
+      "area": "music",
+      "question": "Why did so many older pop records end with a slow fade out?"
+    },
+    {
+      "topic_id": "b2-music-06",
+      "area": "music",
+      "question": "How does an electric guitar pickup sense the movement of steel strings?"
+    },
+    {
+      "topic_id": "b2-music-07",
+      "area": "music",
+      "question": "How does a marimba player choose between hard and soft mallets?"
+    },
+    {
+      "topic_id": "b2-music-08",
+      "area": "music",
+      "question": "How does a mute change the sound of a trumpet?"
+    },
+    {
+      "topic_id": "b2-music-09",
+      "area": "music",
+      "question": "How do some wind players breathe in while still blowing a note?"
+    },
+    {
+      "topic_id": "b2-music-10",
+      "area": "music",
+      "question": "How does a loop pedal let one musician layer many parts?"
+    },
+    {
+      "topic_id": "b2-music-11",
+      "area": "music",
+      "question": "How are steel pans hammered so that one drum plays many notes?"
+    },
+    {
+      "topic_id": "b2-sport-00",
+      "area": "sport",
+      "question": "Why are javelins made to land point first?"
+    },
+    {
+      "topic_id": "b2-sport-01",
+      "area": "sport",
+      "question": "Why do skiers rub wax onto the bases of their skis?"
+    },
+    {
+      "topic_id": "b2-sport-02",
+      "area": "sport",
+      "question": "Why do Olympic lifters wear shoes with a raised solid heel?"
+    },
+    {
+      "topic_id": "b2-sport-03",
+      "area": "sport",
+      "question": "Why are climbing ropes made to stretch when they catch a fall?"
+    },
+    {
+      "topic_id": "b2-sport-04",
+      "area": "sport",
+      "question": "Why does topspin make a table tennis ball dip onto the table?"
+    },
+    {
+      "topic_id": "b2-sport-05",
+      "area": "sport",
+      "question": "Why do ice skates glide so easily across hard ice?"
+    },
+    {
+      "topic_id": "b2-sport-06",
+      "area": "sport",
+      "question": "How does a tenpin bowler make the ball hook into the pins?"
+    },
+    {
+      "topic_id": "b2-sport-07",
+      "area": "sport",
+      "question": "How do hammer throwers use spinning turns to gain distance?"
+    },
+    {
+      "topic_id": "b2-sport-08",
+      "area": "sport",
+      "question": "How does a golfer read the slope of a green before putting?"
+    },
+    {
+      "topic_id": "b2-sport-09",
+      "area": "sport",
+      "question": "How does electric scoring in fencing detect a valid touch?"
+    },
+    {
+      "topic_id": "b2-sport-10",
+      "area": "sport",
+      "question": "How does a kayaker roll back upright after capsizing?"
+    },
+    {
+      "topic_id": "b2-sport-11",
+      "area": "sport",
+      "question": "How do hurdlers keep the same number of strides between barriers?"
+    },
+    {
+      "topic_id": "b2-technology-00",
+      "area": "technology",
+      "question": "Why do older USB plugs fit into a socket only one way up?"
+    },
+    {
+      "topic_id": "b2-technology-01",
+      "area": "technology",
+      "question": "Why do airlines ask passengers to switch phones to flight mode?"
+    },
+    {
+      "topic_id": "b2-technology-02",
+      "area": "technology",
+      "question": "Why does a lightning rod protect a tall building from damage?"
+    },
+    {
+      "topic_id": "b2-technology-03",
+      "area": "technology",
+      "question": "Why do induction hobs heat a pan while the glass stays fairly cool?"
+    },
+    {
+      "topic_id": "b2-technology-04",
+      "area": "technology",
+      "question": "Why can a scratched or torn QR code still scan correctly?"
+    },
+    {
+      "topic_id": "b2-technology-05",
+      "area": "technology",
+      "question": "Why does an optical mouse struggle on a glass or mirror surface?"
+    },
+    {
+      "topic_id": "b2-technology-06",
+      "area": "technology",
+      "question": "How does a phone know to turn its screen when held sideways?"
+    },
+    {
+      "topic_id": "b2-technology-07",
+      "area": "technology",
+      "question": "How does a fingerprint reader recognise the finger of its owner?"
+    },
+    {
+      "topic_id": "b2-technology-08",
+      "area": "technology",
+      "question": "How does an inkjet printer place tiny drops of ink on paper?"
+    },
+    {
+      "topic_id": "b2-technology-09",
+      "area": "technology",
+      "question": "How does a speed camera measure the speed of a passing car?"
+    },
+    {
+      "topic_id": "b2-technology-10",
+      "area": "technology",
+      "question": "How does a phone camera blur the background behind a portrait?"
+    },
+    {
+      "topic_id": "b2-technology-11",
+      "area": "technology",
+      "question": "How does an electronic paper screen hold text with no power?"
+    },
+    {
+      "topic_id": "b2-the-natural-world-00",
+      "area": "the natural world",
+      "question": "Why do herons and gulls often rest standing on one leg?"
+    },
+    {
+      "topic_id": "b2-the-natural-world-01",
+      "area": "the natural world",
+      "question": "Why are flamingos pink when their chicks hatch grey?"
+    },
+    {
+      "topic_id": "b2-the-natural-world-02",
+      "area": "the natural world",
+      "question": "Why do cows bring up their food to chew it a second time?"
+    },
+    {
+      "topic_id": "b2-the-natural-world-03",
+      "area": "the natural world",
+      "question": "How does panting help a dog cool down on a hot day?"
+    },
+    {
+      "topic_id": "b2-the-natural-world-04",
+      "area": "the natural world",
+      "question": "Why do ducks stay dry even after diving underwater?"
+    },
+    {
+      "topic_id": "b2-the-natural-world-05",
+      "area": "the natural world",
+      "question": "Why do cactus plants bear spines where other plants grow leaves?"
+    },
+    {
+      "topic_id": "b2-the-natural-world-06",
+      "area": "the natural world",
+      "question": "How does a snail build its shell larger as it grows?"
+    },
+    {
+      "topic_id": "b2-the-natural-world-07",
+      "area": "the natural world",
+      "question": "How do pearls form inside the shell of an oyster?"
+    },
+    {
+      "topic_id": "b2-the-natural-world-08",
+      "area": "the natural world",
+      "question": "How do geckos cling to smooth walls and ceilings?"
+    },
+    {
+      "topic_id": "b2-the-natural-world-09",
+      "area": "the natural world",
+      "question": "How do snakes use a flicking tongue to follow a scent?"
+    },
+    {
+      "topic_id": "b2-the-natural-world-10",
+      "area": "the natural world",
+      "question": "How do salmon find the river where they hatched years earlier?"
+    },
+    {
+      "topic_id": "b2-the-natural-world-11",
+      "area": "the natural world",
+      "question": "How does a chameleon aim its tongue at a distant insect?"
+    },
+    {
+      "topic_id": "b2-work-and-organisations-00",
+      "area": "work and organisations",
+      "question": "Why do airlines sell more tickets than a flight has seats?"
+    },
+    {
+      "topic_id": "b2-work-and-organisations-01",
+      "area": "work and organisations",
+      "question": "Why do workplaces run fire drills when nothing is burning?"
+    },
+    {
+      "topic_id": "b2-work-and-organisations-02",
+      "area": "work and organisations",
+      "question": "Why do film crews clap a striped board before each take?"
+    },
+    {
+      "topic_id": "b2-work-and-organisations-03",
+      "area": "work and organisations",
+      "question": "Why do new restaurants hold a trial run before the official opening?"
+    },
+    {
+      "topic_id": "b2-work-and-organisations-04",
+      "area": "work and organisations",
+      "question": "Why do firms trial a new product in one town before a wider launch?"
+    },
+    {
+      "topic_id": "b2-work-and-organisations-05",
+      "area": "work and organisations",
+      "question": "Why do companies keep written minutes of their board meetings?"
+    },
+    {
+      "topic_id": "b2-work-and-organisations-06",
+      "area": "work and organisations",
+      "question": "How does a sorting office route letters using their postcodes?"
+    },
+    {
+      "topic_id": "b2-work-and-organisations-07",
+      "area": "work and organisations",
+      "question": "How does a newsroom choose which story leads the front page?"
+    },
+    {
+      "topic_id": "b2-work-and-organisations-08",
+      "area": "work and organisations",
+      "question": "How does a racing pit crew change four tyres in seconds?"
+    },
+    {
+      "topic_id": "b2-work-and-organisations-09",
+      "area": "work and organisations",
+      "question": "How does a shop check that the till balances at closing time?"
+    },
+    {
+      "topic_id": "b2-work-and-organisations-10",
+      "area": "work and organisations",
+      "question": "How does a school fit every class and teacher into one timetable?"
+    },
+    {
+      "topic_id": "b2-work-and-organisations-11",
+      "area": "work and organisations",
+      "question": "How does an auction house set an estimate for each lot?"
+    }
+  ],
+  "revisions": [
+    {
+      "topic_id": "b2-everyday-science-04",
+      "revised_on": "2026-10-26",
+      "reason": "semantic review: RESTATEMENT or CLOSE judged a restatement under the D05 containment rule",
+      "previous_question": "Why does an empty room echo more than the same room furnished?",
+      "previous_sha256": "289cf61303e0eae7c1dbc4a6b8a676a6dc92bae1d76cb8b80276f3f47922895e"
+    },
+    {
+      "topic_id": "b2-everyday-science-08",
+      "revised_on": "2026-10-26",
+      "reason": "semantic review: RESTATEMENT or CLOSE judged a restatement under the D05 containment rule",
+      "previous_question": "How does a plastic bottle crumple as the hot air inside cools?",
+      "previous_sha256": "b852f43da96f98aa49737460fa920fd13ca1398a7b1b2ae1f5b4419b5f395df1"
+    },
+    {
+      "topic_id": "b2-everyday-science-02",
+      "revised_on": "2026-10-26",
+      "reason": "semantic review: RESTATEMENT or CLOSE judged a restatement under the D05 containment rule",
+      "previous_question": "Why does a wet finger make a wine glass sing around its rim?",
+      "previous_sha256": "53fa1c704271ac40897a93300a7781421effd71de8bdeeedaa46fa972e68a032"
+    },
+    {
+      "topic_id": "b2-music-07",
+      "revised_on": "2026-10-26",
+      "reason": "semantic review: RESTATEMENT or CLOSE judged a restatement under the D05 containment rule",
+      "previous_question": "How does a flute sound a note when air is blown across a hole?",
+      "previous_sha256": "0f36c0a3013e9f04ab05f19a9ccaf26e36bc2f43912dbc753f0aa637d8348860"
+    },
+    {
+      "topic_id": "b2-art-and-design-08",
+      "revised_on": "2026-10-26",
+      "reason": "semantic review: RESTATEMENT or CLOSE judged a restatement under the D05 containment rule",
+      "previous_question": "How does a screen printer lay each colour of a design separately?",
+      "previous_sha256": "0a1b98da167919b5ec27b4803db16f7d18bd811369b5b9c75b224fba86837f96"
+    },
+    {
+      "topic_id": "b2-the-natural-world-10",
+      "revised_on": "2026-10-26",
+      "reason": "semantic review: RESTATEMENT or CLOSE judged a restatement under the D05 containment rule",
+      "previous_question": "How do termites build mounds that stay cool inside?",
+      "previous_sha256": "d3fc253bca05938f6a391618f00179d72d59bbc8b4f4973ec92b8c209edae4ab"
+    },
+    {
+      "topic_id": "b2-the-natural-world-11",
+      "revised_on": "2026-10-26",
+      "reason": "semantic review: RESTATEMENT or CLOSE judged a restatement under the D05 containment rule",
+      "previous_question": "How do pine cones open and close with the weather?",
+      "previous_sha256": "9db3b6fa671b80746612118693e0d15f7c585350b971343fbe35fccfc1416480"
+    },
+    {
+      "topic_id": "b2-the-natural-world-03",
+      "revised_on": "2026-10-26",
+      "reason": "form: the old wording implied dogs do not sweat (they do, through paw pads)",
+      "previous_question": "Why do dogs pant to cool down rather than sweat?",
+      "previous_sha256": "5cd55fd8e95f70117644355a212d8f0c8dad0fef1b3795064bb7896de65b5448"
+    }
+  ]
+}

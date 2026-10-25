@@ -24,7 +24,9 @@ checked against, the exact response text (Freeze 2 re-derives every record).
 """
 from __future__ import annotations
 
+import os
 import re
+from concurrent.futures import ProcessPoolExecutor
 from dataclasses import dataclass, field
 from typing import Any, Iterable, Mapping
 
@@ -101,15 +103,40 @@ def score_rows(raws: Iterable[Mapping[str, Any]],
     conflicting one is refused (``store.index_rows``)."""
     by_id = {d["row_id"]: d for d in designs}
     raws_by_id, _ = index_rows(raws, what="generated rows")
-    constraints = L.all_constraints()
-    bundle_hash = V.verifier_bundle_hash()
-    out = []
-    for rid, raw in raws_by_id.items():
+    for rid in raws_by_id:
         if rid not in by_id:
             raise ScoringError(f"generated row {rid} is not in the design")
-        out.append(score_row(raw, by_id[rid], constraints,
-                             bundle_hash=bundle_hash))
-    return out
+    items = [(raw, by_id[rid]) for rid, raw in raws_by_id.items()]
+    workers = min(SCORING_WORKERS, len(items) // PARALLEL_MIN_ROWS)
+    if workers > 1:
+        # Scoring is a pure function of (row, design, library): the same
+        # records, in the same order, as the serial loop.
+        with ProcessPoolExecutor(workers, initializer=_init_worker,
+                                 initargs=(L.library_version(),)) as pool:
+            return list(pool.map(_score_item, items, chunksize=256))
+    _init_worker(L.library_version())
+    return [_score_item(item) for item in items]
+
+
+#: Worker processes for ``score_rows`` (``DCI_SCORING_WORKERS``; 1 = serial),
+#: and the rows each worker must have before a pool is worth starting.
+SCORING_WORKERS = int(os.environ.get("DCI_SCORING_WORKERS",
+                                     min(32, os.cpu_count() or 1)))
+PARALLEL_MIN_ROWS = 1000
+_WORKER: dict[str, Any] = {}
+
+
+def _init_worker(version: str) -> None:
+    L.set_library_version(version)
+    _WORKER.update(version=version, constraints=L.all_constraints(),
+                   bundle_hash=V.verifier_bundle_hash())
+
+
+def _score_item(item: tuple[Mapping[str, Any], Mapping[str, Any]]
+                ) -> dict[str, Any]:
+    raw, design = item
+    return score_row(raw, design, _WORKER["constraints"],
+                     bundle_hash=_WORKER["bundle_hash"])
 
 
 @dataclass
