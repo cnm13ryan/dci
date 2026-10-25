@@ -401,40 +401,6 @@ def check_visibility(environment: Mapping[str, Any],
                        "--accelerator cuda")
 
 
-def generation_attempts(root: Path) -> int:
-    """Every generation attempt the root holds, in both stages: accepted
-    rows, collapsed identical repeats and technical attempts."""
-    used = 0
-    for stage in (D.STAGE1, D.STAGE2):
-        generation, repeats = EV.load_generation(root, stage)
-        used += len(generation) + repeats + \
-            EV.rejected_summary(root, stage)["attempts"]
-    return used
-
-
-def _check_budget(root: Path, freeze1: Mapping[str, Any],
-                  design: Sequence[Mapping[str, Any]]) -> dict[str, Any] | None:
-    """Protocol v2's response budget, enforced at run time (D06): the
-    attempts already made plus the rows this call will request must fit
-    ``max_total_rows``. One call makes at most one attempt per row (a retry
-    is a later ``resume``), so the check is exact. Smoke rows live in their
-    own root and are not counted."""
-    cfg = EV.config_of(freeze1)
-    if cfg.protocol != "v2":
-        return None
-    used = generation_attempts(root)
-    accepted = set()
-    for stage in (D.STAGE1, D.STAGE2):
-        accepted |= set(EV.load_generation(root, stage)[0])
-    requested = sum(1 for r in design if r["row_id"] not in accepted)
-    if used + requested > cfg.max_total_rows:
-        raise RunError(f"budget: {used} generation attempts made and "
-                       f"{requested} requested exceed max_total_rows="
-                       f"{cfg.max_total_rows} (D06)")
-    return {"attempts_so_far": used, "requested": requested,
-            "max_total_rows": cfg.max_total_rows}
-
-
 def execute(root: Path, design: Sequence[Mapping[str, Any]], *,
             freeze1: Mapping[str, Any], approvals: Mapping[str, Any] | None,
             token: str | None = None, generate: GenerateFn | None = None,
@@ -473,7 +439,6 @@ def execute(root: Path, design: Sequence[Mapping[str, Any]], *,
                                "exhausted": [], "groups": []}
     with run_lock(root):
         expected = EV.authenticate_design(root, freeze1, design)
-        summary["budget"] = _check_budget(root, freeze1, design)
         groups: dict[tuple[str, str], list[Mapping[str, Any]]] = {}
         for r in design:
             groups.setdefault((r["stage"], r["model"]), []).append(r)

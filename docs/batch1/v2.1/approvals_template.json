@@ -47,7 +47,7 @@
    "origin": "proposed",
    "payload_hash": "1b59a20a1a4776c45c7cda75a223c9372623ee2c789d99068ef3257faae2edc5",
    "status": "PROPOSED",
-   "summary": "The 144 topics of bank v3, written fresh for v2.1 (distinct from bank v1 with its 480 reserved topics, and from bank v2, whose topics the v2 run of 2026-10-26 measured), in 12 areas, split by a fixed seed into T1 (48 topics, Stage A screening; one response per stand-alone and task-only cell) and T2 (96 topics, Stage C membership); none reserved. Screened against the historical banks and every earlier Batch 1 bank, by word overlap and a blind semantic review; bank v1's 480 reserved topics stay unused, for the confirmatory study.",
+   "summary": "The 144 topics of bank v3, written fresh for v2.1 (distinct from bank v1 with its 480 reserved topics, and from bank v2, whose topics the v2 run of 2026-10-26 measured), in 12 areas, split by a fixed seed into T1 (48 topics, Stage A screening; one response per stand-alone and task-only cell) and T2 (96 topics, Stage C membership); none reserved. Screened against the historical banks and every earlier Batch 1 bank, by word overlap and a blind semantic review; bank v1's 480 reserved topics stay unused, for the confirmatory study (30 of bank v3's 79 CLOSE pairs are close to a reserved topic: same narrow subject, a different question; none is a restatement).",
    "title": "Topic bank v3 and its split"
   },
   "D06": {
@@ -55,17 +55,17 @@
    "approved_on": "",
    "note": "",
    "origin": "proposed",
-   "payload_hash": "ac81bd9a02df5dbb98e1cabe8911dd57a74cf000331431768bf13d07346f38c8",
+   "payload_hash": "0a89b11eae5986cc7c8e69b15da972f1b2a5a520bfd4303cae96a3566b222a74",
    "status": "PROPOSED",
-   "summary": "Stage A measures every reference, A x 4/5/6, B 8 and 10 and the task alone on T1. Stage B draws each T1 cell from its Beta posterior and applies D08-D11 with the fixed-A and fixed-B gates. Early stop: if P(feasible) < forecast_min_feasible for any one contrast, the whole run stops before T2 (no T2 data for any contrast) and the verdict names the reason: EARLY_STOP_LIBRARY_LIMITED (the library cannot reach the target; R9 applies), EARLY_STOP_FIXED_A_OR_B (the fixed A or B fails its own gate), or EARLY_STOP_JOINT. Otherwise Stage C measures every reference in the library, plus A x 6, B 8 and 10 and the task alone, one response per T2 topic. T2 alone decides eligibility, matching and membership; T1 never enters them. No C' top-up. Both stages must be complete (no partial-completion rule). Accounting: max_total_rows bounds every generation attempt in the pilot root, evidence and technical retries alike, in Stages A and C. The Stage C plan is refused if Stage A plus the plan does not fit, and every execute or resume is refused if the attempts already made plus the rows it would request exceed it; retries (at most max_technical_attempts per row) can use only the headroom left by the plan. The smoke test (its own root, at most 96 rows) is outside the bound and reported separately.",
-   "title": "Stages A-D, forecast, early stop and what T2 measures"
+   "summary": "Stage A measures every reference, A x 4/5/6, B 8 and 10 and the task alone on T1. Stage B draws each T1 cell from its Beta posterior (forecast_draws draws, forecast_seed) and applies D08-D11, with the fixed-A (D08) and fixed-B (R4) gates, to every draw. It reports, per contrast, P(feasible), coverage ignoring the gates, coverage given the gates pass, and P(the gates pass), and names what would have limited the run: the library (a contrast's coverage, given the gates pass, reaches the target in < forecast_min_feasible of the draws) and/or the fixed A or B (the gates pass in < forecast_min_feasible of the draws). No early stop (the researcher's decision of 2026-10-26): the forecast is reported, never acted on, and Stage C always runs. Stage C measures every reference in the library, plus A x 6, B 8 and 10 and the task alone, one response per T2 topic. T2 alone decides eligibility, matching and membership; T1 never enters them. No C' top-up. Both stages must be complete (no partial-completion rule). Budget: the Stage C plan is refused if Stage A's planned rows plus it exceed max_total_rows. There is no run-time guard: technical retries (at most max_technical_attempts per row), rows a crashed or blocked backend never delivered, and the smoke test (its own root) are not charged, and are reported in calibration.json's accounting.",
+   "title": "Stages A-D, the T1 forecast, and what T2 measures"
   },
   "D07": {
    "approved_by": "",
    "approved_on": "",
    "note": "",
    "origin": "proposed",
-   "payload_hash": "95f96f776f3a62ce1b1f79391d6d931c48214977e00e300c1ac9f48c0a5aee66",
+   "payload_hash": "cba31502263f1ab208df79d342ae12d7e29839136d913fc28aa0c8b3c4199a45",
    "status": "PROPOSED",
    "summary": "B is fixed (R4), not selected. On T2 each limit must be informative (B-only compliance inside b_informative_band) in >= b_min_informative_model_frames model-frames, or the verdict is B_NOT_INFORMATIVE.",
    "title": "B fixed at 8 and 10, checked on T2"
@@ -75,7 +75,7 @@
    "approved_on": "",
    "note": "",
    "origin": "proposed",
-   "payload_hash": "d12b2fbf451696b70bb744f1920dd177c510d892f8c4faad99d722ad7de18c77",
+   "payload_hash": "8b26ee0565d6253ca77df8014c13479fdfdb8872fd0a924c484a5f1255b5ecf0",
    "status": "PROPOSED",
    "summary": "A is fixed (R3), not selected; A x 4 and x 5 are measured on T1 as diagnostics only. On T2, A must be informative (p_A inside a_headroom_band) in >= a_min_informative_model_frames model-frames across >= a_min_informative_models models, or the verdict is A_NOT_ADMISSIBLE. Uninformative-A configurations never count toward feasibility; a G1 count below the target is flagged A_COVERAGE_INADEQUATE.",
    "title": "A fixed at however x 6, checked on T2"
@@ -95,7 +95,7 @@
    "approved_on": "",
    "note": "",
    "origin": "design",
-   "payload_hash": "9e3ccffcddf50bb126be964cd4d07116f29f1330992c47cb95ae462595162c7b",
+   "payload_hash": "8aea13eb4c32b2759ac701e222f5355d72bdc2e30e10e995a615da1f52b08118",
    "status": "PROPOSED",
    "summary": "|p_X - p_A| <= 0.10 per model-frame on raw T2 compliance, in exact arithmetic (primary, deciding). Reported beside it, never deciding (R5): posterior P(match) per reference and model-frame, and coverage under +/-0.15, +/-0.20, confident matching (Newcombe interval inside +/-0.10) and iota matching.",
    "title": "Matching operationalisation"
@@ -105,7 +105,7 @@
    "approved_on": "",
    "note": "",
    "origin": "design",
-   "payload_hash": "fa29007c56bb82b783379dd716b63fb4a620f39e818ac9868acd9ed29b1ad59d",
+   "payload_hash": "175eff23a2f825d8ea813c460e5805c8ed81e3984485edc2a4cb2ef4d59d82cb",
    "status": "PROPOSED",
    "summary": "Design minima for G1 (3 distinct words), P1 (G2 adds 2) and P2 (G3 adds 2 other-object references). P3 is stricter than the design (the researcher's decision of 2026-10-25): G5 adds 3 other-operation references, not 2, and |G3| >= p3_min_g3 (3). Feasibility needs 12 of 16 configurations, 3 models and both B limits (unchanged). Pools are eligible references logically compatible with the configuration's B limit. Stage B's forecast uses exactly these rules.",
    "title": "Coverage requirements"
@@ -115,7 +115,7 @@
    "approved_on": "",
    "note": "",
    "origin": "proposed",
-   "payload_hash": "cef736f29c425a67f0ce2bd76487bff25f53f6917e91dd5de18f6a9590ed5c3f",
+   "payload_hash": "65989d064bb42931e42467d8615e7d6ab8a65eb7a28929c0f9399afd02ee3e34",
    "status": "PROPOSED",
    "summary": "Historical four-model panel and decoding; cap 512 tokens, with any cell truncating above truncation_review_share listed for review; the seed derivation; the vLLM seam source; Python 3.12 for the orchestrator and the vLLM backend (the CUDA vllm 0.15.1 wheel is cp38-abi3; 3.12 is vLLM's Docker default and native on GPU Base 24.04); the execution requirements (vllm 0.15.1, torch 2.9.1+cu129, 2x H100 SXM, driver >= 575.51.03), one worker per GPU, TP as configured. The execution environment is attested on the host, checked against the requirements and bound by Freeze 1; a bounded, authorised smoke test (never evidence) measures load time, throughput and truncation first.",
    "title": "Model panel, decoding, cap, seeds and backend"
@@ -135,7 +135,7 @@
    "approved_on": "",
    "note": "",
    "origin": "proposed",
-   "payload_hash": "df4ca7e1472d59480970a24d997b223ea6f19e50a6899e9926371acda7d98bef",
+   "payload_hash": "3fa5524377c7a9b5d363aea7a2761e667154d1d4449ea956cbb65ce993b1fa89",
    "status": "PROPOSED",
    "summary": "Topic-cluster bootstrap on T2: inclusion frequency, FEASIBLE share, borderline matches, feasibility on majority-stable members; a near-threshold record; a truncation review of cells above truncation_review_share with >= truncation_review_min_rows truncated rows (R11). Also reported: T1-versus-T2 agreement (eligibility, matching, forecast against verdict). Review rule (the researcher's of 2026-10-25, DECISIONS_2026-10-25.md): every Freeze 2 flag blocks Batch 2 until the researcher reviews it, including FEASIBILITY_UNSTABLE and any truncation-review cell; only MEMBERSHIP_UNSTABLE proceeds, with disclosure. Nothing is auto-corrected and no threshold is changed in response to a result.",
    "title": "Membership-stability diagnostics, their review, and T1-T2 agreement"

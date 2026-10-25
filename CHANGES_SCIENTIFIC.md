@@ -13,6 +13,25 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-10-26 — (Batch 1) v2.1: researcher's decision after the 341f205 audit — no run-time budget guard, no early stop
+
+**Decision.** The researcher responded to the audit of `341f205` (`../audit-batch1-v21-341f205/AUDIT_REPORT.md`: READY WITH FIXES). MAJOR-1 was that the run-time guard charged undelivered rows. MAJOR-2 was that D06's early-stop text and attribution were inexact. The researcher's words, relayed verbatim from the Lambda session: "remove the budget guard. Actually loosen the early-stopping rule, that is un-necessary. Make it run". Both findings are resolved by removal.
+
+**What changed.**
+
+- **Budget.** The run-time guard is removed (`runner._check_budget`, and the Stage C plan check in `pipeline.write_stage2_plan`). What remains is the planning-time check in `revision.select_carry`: Stage A's planned rows plus the Stage C plan must fit `max_total_rows` (190,272 ≤ 192,000). Retries, rows a crashed or blocked backend never delivered, and the smoke test are not charged. They are reported in `calibration.json` under `accounting` (`evidence.budget_report`).
+- **Early stop.** `PilotConfig.forecast_early_stop` was added (True by default, and in v2; False in v2.1). In v2.1 the Stage B forecast is computed and reported in full, but Stage C always runs. The forecast reports:
+  - P(feasible);
+  - coverage ignoring the gates;
+  - coverage given the gates pass;
+  - P(gates pass);
+  - the would-be causes.
+- **D06 text** states exactly this.
+
+**What did not change.** No matching, eligibility, feasibility, coverage, A or B threshold changed, and the v2 configuration and its record are unchanged.
+
+**Payload hashes.** D06 moves (its text, its payload field, and its bound `revision.py` and `runner.py`), as do the other decisions bound to `revision.py`.
+
 ## 2026-10-26 — (Batch 1) protocol v2.1 after the R12(d) audit: every reference measured on T2, C′ dropped, R5/§5.2 D reporting, v2 decision texts corrected
 
 **Why.** The independent audit of v2 (`../audit-batch1-v2-2026-10-26/AUDIT_REPORT.md`, outside the repo) found the following.
@@ -46,8 +65,14 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 - **Status.** It is kept as a record and is not a basis for Batch 2.
 - **Topics** (amended before any v2.1 run, at the researcher's condition of 2026-10-26): v2.1 uses a fresh bank v3 of 144 topics for both T1 and T2. It is screened against the historical banks, bank v1 and bank v2, so v2.1's T2 is independent of the topics the v2 run measured. The 480 reserved topics stay unused.
 - **Texts** (same amendment):
-  - D06 states the accounting rule: the budget bounds planned evidence rows; retries and the smoke test sit outside it and are reported.
-  - D06 also states the exact early-stop behaviour.
+  - D06 states the accounting rule. The budget bounds the responses the backend returns in the pilot root: accepted rows and returned retries. Rows never returned (crash or timeout) and rows of blocked runs are reported, not charged. The smoke root is outside the budget. `runner.execute`/`resume` and the Stage C plan are refused when they would exceed it (`evidence.budget_report`, `check_budget`).
+  - D06 also states the exact early-stop rule. The verdict names every cause that holds:
+    - the library, for each stopped contrast whose coverage, given the fixed gates pass, is below 0.20;
+    - the fixed A or B, when the gates pass in under 0.20 of draws.
+
+    The statuses are `EARLY_STOP_LIBRARY_LIMITED`, `EARLY_STOP_FIXED_A_OR_B`, `EARLY_STOP_LIBRARY_LIMITED_AND_FIXED_A_OR_B` and `EARLY_STOP_JOINT`. R9 applies to a library-limited P2.
+  - D14: truncation-review cells are Freeze 2 flags.
+  - D05 discloses that 30 of bank v3's 79 CLOSE pairs are close to a reserved topic; none is a restatement.
   - D11 states the stricter P3 minimum.
   - D14 states the review rule of 2026-10-25.
 

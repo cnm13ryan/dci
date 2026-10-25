@@ -55,7 +55,7 @@
    "approved_on": "",
    "note": "",
    "origin": "proposed",
-   "payload_hash": "dc174ff8539b9d7a7d0abb19810884ca991a7b7de206415766e7b29da1218f75",
+   "payload_hash": "55b0c1ab52d4adff60674182074c48e8af2f59ef256f4ac9b2ed86a0c2d4b0fc",
    "status": "PROPOSED",
    "summary": "One bounded round, selected only from complete, authenticated Stage 1 evidence: boundary cells ranked by class, then by standardised distance to the boundary; 64 new-topic responses each; at most stage2_max_cells cells. Finalisation needs both stages complete; there is no partial-completion rule.",
    "title": "Stage 2 refinement rule and stage completeness"
@@ -115,7 +115,7 @@
    "approved_on": "",
    "note": "",
    "origin": "proposed",
-   "payload_hash": "99b4dff7c8ae9c23f4641eb2cc55901c3d21b7a4181414698512d3b6694a7d1d",
+   "payload_hash": "714c1fba92df97427111ce29e28d70d94ba0d286f61d2869d8ef3ab43fcdf2ec",
    "status": "PROPOSED",
    "summary": "Historical four-model panel and decoding; cap 512 tokens, with any cell truncating above truncation_review_share listed for review; the seed derivation; the vLLM seam source; Python 3.12 for the orchestrator and the vLLM backend (the CUDA vllm 0.15.1 wheel is cp38-abi3; 3.12 is vLLM's Docker default and native on GPU Base 24.04); the execution requirements (vllm 0.15.1, torch 2.9.1+cu129, 2x H100 SXM, driver >= 575.51.03), one worker per GPU, TP as configured. The execution environment is attested on the host, checked against the requirements and bound by Freeze 1; a bounded, authorised smoke test (never evidence) measures load time, throughput and truncation first.",
    "title": "Model panel, decoding, cap, seeds and backend"

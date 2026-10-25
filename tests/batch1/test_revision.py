@@ -193,6 +193,7 @@ def test_forecast_stops_early_when_a_is_never_admissible(matrix):
     # The fixed A, not the library, is what failed.
     assert fc["fixed_gates_limited"] and fc["p_fixed_gates_pass"] == 0
     assert fc["library_limited"] == [] and fc["stop_reason"] == "fixed_gates"
+    assert fc["library_undetermined"]         # no draw passes the gates
     early = CAL.finalize(SY.tables_from_rates({}, n=96), V2, matrix,
                          early_stop=fc["stop_reason"])
     assert early["status"] == "EARLY_STOP_FIXED_A_OR_B"     # not R9's trigger
@@ -385,7 +386,8 @@ def test_v2_1_carries_everything_within_its_budget(matrix):
         assert len(sel["carried"]) == 161 and not sel["truncated_by_cap"]
         assert sel["max_stage2_rows"] == (161 + 3) * 8 * 96 + 4 * 96
     assert sel["stage1_rows"] == sum(c.n for c in tables.explicit.values())
-    with pytest.raises(ValueError, match="budget"):
+    from dci.batch1.store import RunError
+    with pytest.raises(RunError, match="budget"):
         REV.select_carry(tables, replace(V21, forecast_draws=50,
                                          max_total_rows=150000))
 
@@ -441,24 +443,53 @@ def test_reporting_never_decides_and_covers_r5(matrix):
     assert again["status"] == result["status"]       # reporting changed nothing
 
 
-def test_the_budget_bounds_every_generation_attempt(tmp_path):
-    """D06 (v2.1): execute and resume are refused when the attempts already
-    made plus the rows requested would exceed max_total_rows."""
-    from dci.batch1.store import RunError
-    cfg = replace(SMALL_V2, max_total_rows=1000)
-    base = make_root(tmp_path, cfg=cfg)
+def test_an_early_stop_names_every_cause_that_holds(matrix):
+    """v2.1 audit MAJOR-2: references that never comply limit the library
+    even when the fixed A also fails often; both causes are named, and a
+    library limit is judged on the draws where the gates pass."""
+    refs = {c.cid for c in L.reference_library()}
+    mfs = R.model_frames(V2)
+    base = {k: (0.0 if k[2] in refs else 0.5) for k in _rates(1, 0.0)}
+    cfg = replace(V2, forecast_draws=400)
+    library_only = REV.forecast(SY.tables_from_rates(base, n=48), cfg, matrix)
+    assert library_only["stop_reason"] == "library"
+    assert library_only["library_limited"] == ["P1", "P2", "P3"]
+    both = dict(base)
+    for j, (model, frame) in enumerate(mfs):     # A informative in 5 of 8
+        both[(model, frame, V2.fixed_a)] = 0.5 if j < 5 else 0.98
+    fc = REV.forecast(SY.tables_from_rates(both, n=48), cfg, matrix)
+    assert 0 < fc["p_fixed_gates_pass"] < cfg.forecast_min_feasible
+    assert fc["stop_reason"] == "library+fixed_gates"
+    assert REV.EARLY_STOP_STATUS[fc["stop_reason"]] == \
+        "EARLY_STOP_LIBRARY_LIMITED_AND_FIXED_A_OR_B"
+
+
+def test_v2_1_reports_the_forecast_and_always_runs_stage_c(matrix):
+    """The researcher's decision of 2026-10-26: no early stop in v2.1."""
+    refs = {c.cid for c in L.reference_library()}
+    rates = {k: (0.0 if k[2] in refs else 0.5) for k in _rates(1, 0.0)}
+    tables = SY.tables_from_rates(rates, n=48)
+    v21 = REV.select_carry(tables, replace(V21, forecast_draws=50))
+    assert v21["forecast"]["early_stop"] and not v21["early_stop_enabled"]
+    assert v21["status"] == "CARRIED" and len(v21["carried"]) == 161
+    v2 = REV.select_carry(tables, replace(V2, forecast_draws=50))
+    assert v2["status"] == "EARLY_STOP" and v2["cells"] == []
+
+
+def test_accounting_reports_undelivered_rows_without_charging_them(tmp_path):
+    """Reported, not a gate: a crashed backend's rows are NOT_RETURNED."""
+    base = make_root(tmp_path, cfg=SMALL_V2)
     d1 = P.write_stage1_plan(base["root"], base["freeze1"])
-    assert len(d1) > 1000
-    with pytest.raises(RunError, match="budget"):
-        RUN.execute(base["root"], d1, freeze1=base["freeze1"],
-                    approvals=base["approvals"],
-                    generate=SY.synthetic_generate())
-    assert RUN.generation_attempts(base["root"]) == 0
-    ok = RUN.execute(base["root"], d1[:600], freeze1=base["freeze1"],
-                     approvals=base["approvals"],
-                     generate=SY.synthetic_generate())
-    assert ok["budget"]["requested"] == 600
-    with pytest.raises(RunError, match="budget"):
-        RUN.execute(base["root"], d1[600:1100], freeze1=base["freeze1"],
-                    approvals=base["approvals"],
-                    generate=SY.synthetic_generate())
+    good = SY.synthetic_generate()
+
+    def crash(attempt_dir, plan, design_rows, *args, **kwargs):
+        out = good(attempt_dir, plan, design_rows, *args, **kwargs)
+        return {**out, "rows": [], "returncode": 3}        # a crash
+    from dci.batch1.store import RunError
+    try:
+        RUN.execute(base["root"], d1[:500], freeze1=base["freeze1"],
+                    approvals=base["approvals"], generate=crash)
+    except RunError:
+        pass                                  # the runner reports the crash
+    report = EV.budget_report(base["root"])
+    assert report["charged"] == 0 and report["uncharged"]["NOT_RETURNED"] > 0

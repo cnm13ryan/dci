@@ -118,7 +118,7 @@ def cmd_write_review_artifacts(args) -> int:
     revisions = json.loads(source.read_text()).get("revisions", [])
     (out / "topic_screen_report.md").write_text(REP.topic_review(
         overlap, hygiene, revisions, {t.topic_id: t.question for t in bank},
-        semantic))
+        semantic, bank=cfg.topic_bank))
     if v2:
         _print({"written": str(out), "freeze1_hash": f1["manifest_hash"],
                 "pilot_authorizable":

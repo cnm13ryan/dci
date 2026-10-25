@@ -472,6 +472,10 @@ def freeze2_manifest(freeze1: Mapping[str, Any], bundle: Mapping[str, Any], *,
         raise FreezeError(f"the evidence's provenance is {sorted(map(str, namespaces))}"
                           f", but the bundle is {'synthetic' if synthetic else 'real'}")
     flags = a.get("flags", []) + stability["flags"]
+    if cfg.protocol == "v2" and result.get("truncation_review"):
+        # D14 (v2.1): a truncation-review cell is a Freeze 2 flag, and
+        # blocks until the researcher reviews it.
+        flags = flags + [f"TRUNCATION_REVIEW: {result['truncation_review']}"]
     body = {
         "schema": "dci.batch1/freeze2/v4" if cfg.protocol == "v1"
         else "dci.batch1/freeze2/v5",

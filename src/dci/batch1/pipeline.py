@@ -139,6 +139,7 @@ def finalize(root: Path, freeze1: Mapping[str, Any]) -> dict[str, Any]:
                        for stage, ev in bundle["stages"].items()}
     if cfg.protocol == "v2":
         out["forecast"] = bundle["selection"]["forecast"]
+        out["accounting"] = EV.budget_report(root)      # reported, not a gate
         out["reporting"] = REV.reporting(
             tables, EV.tables_for([bundle["stages"][D.STAGE1]],
                                   synthetic=bundle["synthetic"]),

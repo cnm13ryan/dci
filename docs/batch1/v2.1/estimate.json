@@ -9,36 +9,36 @@
    "historical_rows_per_second": 9.7,
    "stage1_hours_at_historical_rate": 0.458,
    "stage1_rows": 15984,
-   "stage2_hours_if_even": 0.907,
+   "stage2_hours_if_even": 0.904,
    "stage2_hours_max": 0.913,
-   "stage2_rows_if_even": 31680,
+   "stage2_rows_if_even": 31584,
    "stage2_rows_max": 31872
   },
   "gemma-3n-e4b-it": {
    "historical_rows_per_second": 4.94,
    "stage1_hours_at_historical_rate": 0.899,
    "stage1_rows": 15984,
-   "stage2_hours_if_even": 1.781,
+   "stage2_hours_if_even": 1.776,
    "stage2_hours_max": 1.792,
-   "stage2_rows_if_even": 31680,
+   "stage2_rows_if_even": 31584,
    "stage2_rows_max": 31872
   },
   "qwen3-4b": {
    "historical_rows_per_second": 17.4,
    "stage1_hours_at_historical_rate": 0.255,
    "stage1_rows": 15984,
-   "stage2_hours_if_even": 0.506,
+   "stage2_hours_if_even": 0.504,
    "stage2_hours_max": 0.509,
-   "stage2_rows_if_even": 31680,
+   "stage2_rows_if_even": 31584,
    "stage2_rows_max": 31872
   },
   "qwen3-4b-instruct-2507": {
    "historical_rows_per_second": 10.1,
    "stage1_hours_at_historical_rate": 0.44,
    "stage1_rows": 15984,
-   "stage2_hours_if_even": 0.871,
+   "stage2_hours_if_even": 0.869,
    "stage2_hours_max": 0.877,
-   "stage2_rows_if_even": 31680,
+   "stage2_rows_if_even": 31584,
    "stage2_rows_max": 31872
   }
  },
@@ -50,10 +50,10 @@
  },
  "stage1_hours_at_historical_rates": 2.052,
  "stage1_rows": 63936,
- "stage2_hours_if_even": 4.065,
- "stage2_hours_worst_case": 4.078,
- "stage2_max_cells": 1320,
- "stage2_max_rows": 126720,
- "storage_bytes_max": 1525248000,
- "total_max_rows": 190656
+ "stage2_hours_if_even": 4.053,
+ "stage2_hours_worst_case": 4.072,
+ "stage2_max_cells": 1316,
+ "stage2_max_rows": 126336,
+ "storage_bytes_max": 1522176000,
+ "total_max_rows": 190272
 }

@@ -224,6 +224,10 @@ class PilotConfig:
     # G6 are drawn from the whole library and not from a matched-leaning
     # subset. The forecast and early stop are the same in both.
     carry_mode: str = "carry"
+    # R8's early stop. v2 stops before T2 when the forecast says so; v2.1
+    # (the researcher's decision of 2026-10-26 after the 341f205 audit)
+    # computes and reports the forecast but always runs Stage C.
+    forecast_early_stop: bool = True
 
     def __post_init__(self):
         if self.pilot_topics != self.stage1_topics + self.stage2_topics:
@@ -283,8 +287,8 @@ REVISION_CONFIG = PilotConfig(
 #: seed domain.
 REVISION_CONFIG_2_1 = replace(
     REVISION_CONFIG, topic_bank="v3", carry_mode="all",
-    carry_max_references=161,
-    stage2_max_cells=1320, max_total_rows=192000,
+    carry_max_references=161, forecast_early_stop=False,
+    stage2_max_cells=1316, max_total_rows=192000,
     seed_domain="dci.batch1:gen:v2.1")
 
 CONFIGS = {"v1": DEFAULT_CONFIG, "v2": REVISION_CONFIG,
@@ -447,7 +451,8 @@ def decisions(cfg: PilotConfig = DEFAULT_CONFIG) -> tuple[Decision, ...]:
                   "eligibility_threshold", "extension_threshold",
                   "matching_tolerance", "min_cell_fraction"),
            **extra("protocol", "carry_mode", "carry_min_posterior",
-                   "carry_max_references", "max_total_rows")}),
+                   "carry_max_references", "max_total_rows",
+                   "forecast_early_stop")}),
         d("D07", "Selecting the two B limits", "proposed",
           "Admissible pairs: gap >= b_min_gap; median B-only separation "
           ">= b_min_median_separation; that separation in >= "
@@ -575,31 +580,42 @@ def _v2_texts(cfg: PilotConfig) -> dict[str, tuple[str, str]]:
                 "reserved. Screened against the historical banks and every "
                 "earlier Batch 1 bank, by word overlap and a blind semantic "
                 "review; bank v1's 480 reserved topics stay unused, for the "
-                "confirmatory study."),
-        "D06": ("Stages A-D, forecast, early stop and what T2 measures",
+                "confirmatory study"
+                + (" (30 of bank v3's 79 CLOSE pairs are close to a reserved "
+                   "topic: same narrow subject, a different question; none "
+                   "is a restatement)." if cfg.topic_bank == "v3" else ".")),
+        "D06": ("Stages A-D, the T1 forecast, and what T2 measures",
                 "Stage A measures every reference, A x 4/5/6, B 8 and 10 and "
                 "the task alone on T1. Stage B draws each T1 cell from its "
-                "Beta posterior and applies D08-D11 with the fixed-A and "
-                "fixed-B gates. Early stop: if P(feasible) < "
-                "forecast_min_feasible for any one contrast, the whole run "
-                "stops before T2 (no T2 data for any contrast) and the "
-                "verdict names the reason: EARLY_STOP_LIBRARY_LIMITED (the "
-                "library cannot reach the target; R9 applies), "
-                "EARLY_STOP_FIXED_A_OR_B (the fixed A or B fails its own "
-                "gate), or EARLY_STOP_JOINT. Otherwise Stage C measures "
-                f"{measured}, plus A x 6, B 8 and 10 and the task alone, one "
-                "response per T2 topic. T2 alone decides eligibility, "
-                "matching and membership; T1 never enters them. No C' "
-                "top-up. Both stages must be complete (no partial-completion "
-                "rule). Accounting: max_total_rows bounds every generation "
-                "attempt in the pilot root, evidence and technical retries "
-                "alike, in Stages A and C. The Stage C plan is refused if "
-                "Stage A plus the plan does not fit, and every execute or "
-                "resume is refused if the attempts already made plus the "
-                "rows it would request exceed it; retries (at most "
-                "max_technical_attempts per row) can use only the headroom "
-                "left by the plan. The smoke test (its own root, at most 96 "
-                "rows) is outside the bound and reported separately."),
+                "Beta posterior (forecast_draws draws, forecast_seed) and "
+                "applies D08-D11, with the fixed-A (D08) and fixed-B (R4) "
+                "gates, to every draw. It reports, per contrast, P(feasible), "
+                "coverage ignoring the gates, coverage given the gates pass, "
+                "and P(the gates pass), and names what would have limited "
+                "the run: the library (a contrast's coverage, given the gates "
+                "pass, reaches the target in < forecast_min_feasible of the "
+                "draws) and/or the fixed A or B (the gates pass in < "
+                "forecast_min_feasible of the draws)."
+                + (" Early stop: if P(feasible) < forecast_min_feasible for "
+                   "any one contrast, the whole run stops before T2 with "
+                   "EARLY_STOP_LIBRARY_LIMITED, EARLY_STOP_FIXED_A_OR_B, "
+                   "EARLY_STOP_LIBRARY_LIMITED_AND_FIXED_A_OR_B or "
+                   "EARLY_STOP_JOINT; R9 applies to a library-limited P2."
+                   if cfg.forecast_early_stop else
+                   " No early stop (the researcher's decision of 2026-10-26): "
+                   "the forecast is reported, never acted on, and Stage C "
+                   "always runs.")
+                + f" Stage C measures {measured}, plus A x 6, B 8 and 10 and "
+                "the task alone, one response per T2 topic. T2 alone decides "
+                "eligibility, matching and membership; T1 never enters them. "
+                "No C' top-up. Both stages must be complete (no "
+                "partial-completion rule). Budget: the Stage C plan is "
+                "refused if Stage A's planned rows plus it exceed "
+                "max_total_rows. There is no run-time guard: technical "
+                "retries (at most max_technical_attempts per row), rows a "
+                "crashed or blocked backend never delivered, and the smoke "
+                "test (its own root) are not charged, and are reported in "
+                "calibration.json's accounting."),
         "D07": ("B fixed at 8 and 10, checked on T2",
                 "B is fixed (R4), not selected. On T2 each limit must be "
                 "informative (B-only compliance inside b_informative_band) "

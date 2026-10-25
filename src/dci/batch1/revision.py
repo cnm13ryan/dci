@@ -7,7 +7,8 @@ measured, not the scientific rules:
 * **Stage A (``stage1``, T1, 48 topics)** screens every library-v2
   reference, A at 4, 5 and 6 (4 and 5 are diagnostics only, R3), B at 8 and
   10, and the task alone.
-* **Stage B (``forecast``)** draws every T1 cell's compliance from its Beta
+* **Stage B (``forecast``)** (reported only in v2.1: ``forecast_early_stop``
+  is off and Stage C always runs) draws every T1 cell's compliance from its Beta
   posterior and applies D08-D11 exactly as written to each draw: the
   probability that a perfectly measured study would be feasible. If it is
   below ``forecast_min_feasible`` for any contrast the run stops before T2
@@ -46,6 +47,7 @@ from dci.batch1 import library as L
 from dci.batch1 import references as R
 from dci.batch1.intervals import wilson
 from dci.batch1.scoring import PilotTables
+from dci.batch1.store import RunError
 
 __all__ = ["forecast", "select_carry", "finalize_fixed", "check_fixed_b",
            "reporting",
@@ -163,6 +165,7 @@ def forecast(tables: PilotTables, cfg: CFG.PilotConfig,
     counts = {p: [] for p in CONTRASTS}
     feasible = {p: 0 for p in CONTRASTS}
     coverage_only = {p: 0 for p in CONTRASTS}
+    covered_with_gates = {p: 0 for p in CONTRASTS}
     every = gates_passed = 0
     for _ in range(cfg.forecast_draws):
         theta = rng.beta(k + 1, n - k + 1)
@@ -176,6 +179,7 @@ def forecast(tables: PilotTables, cfg: CFG.PilotConfig,
             counts[p].append(len(sup[p]))
             feasible[p] += flags[p]
             coverage_only[p] += covered[p]
+            covered_with_gates[p] += gates and covered[p]
         every += all(flags.values())
     draws = cfg.forecast_draws
     contrasts = {p: {"point_supported": len(point[p]),
@@ -184,19 +188,29 @@ def forecast(tables: PilotTables, cfg: CFG.PilotConfig,
                                      int(np.percentile(counts[p], 95))],
                      "p_feasible": round(feasible[p] / draws, 4),
                      "p_coverage_ignoring_gates":
-                         round(coverage_only[p] / draws, 4)}
+                         round(coverage_only[p] / draws, 4),
+                     "p_coverage_given_gates":
+                         round(covered_with_gates[p] / gates_passed, 4)
+                         if gates_passed else None}
                  for p in CONTRASTS}
     stop = [p for p in CONTRASTS
             if contrasts[p]["p_feasible"] < cfg.forecast_min_feasible]
     p_gates = round(gates_passed / draws, 4)
-    # Whom an early stop blames (audit, minor; A2): a fixed A or B that fails
-    # its own gate is not a library limit (an uninformative A also empties
-    # coverage, so the gates are judged first), and only a library limit
-    # opens R9's library iteration.
+    # What an early stop names (D06; audits A2 and v2.1 MAJOR-2), every cause
+    # that holds:
+    # * fixed gates: the fixed A and B pass their own checks (D08, R4) in
+    #   fewer than forecast_min_feasible of the draws;
+    # * library, per stopped contrast: in the draws where the gates pass,
+    #   coverage reaches the target less often than forecast_min_feasible.
+    #   Undetermined (None) when no draw passes the gates;
+    # * joint: the run stops, but neither cause holds on its own.
     gates_limited = p_gates < cfg.forecast_min_feasible
-    library = [] if gates_limited else [
-        p for p in stop if contrasts[p]["p_coverage_ignoring_gates"]
-        < cfg.forecast_min_feasible]
+    library = [p for p in stop
+               if contrasts[p]["p_coverage_given_gates"] is not None
+               and contrasts[p]["p_coverage_given_gates"]
+               < cfg.forecast_min_feasible]
+    causes = (["library"] if library else []) + \
+        (["fixed_gates"] if gates_limited else [])
     return {"schema": "dci.batch1/forecast/v2", "draws": draws,
             "seed": cfg.forecast_seed, "threshold": cfg.forecast_min_feasible,
             "numpy": np.__version__,
@@ -206,9 +220,9 @@ def forecast(tables: PilotTables, cfg: CFG.PilotConfig,
             "early_stop": bool(stop), "stopped_contrasts": stop,
             "library_limited": library,
             "fixed_gates_limited": gates_limited,
+            "library_undetermined": bool(stop) and not gates_passed,
             "stop_reason": None if not stop else
-            "fixed_gates" if gates_limited else
-            "library" if library else "joint"}
+            "+".join(causes) if causes else "joint"}
 
 
 def select_carry(tables: PilotTables, cfg: CFG.PilotConfig) -> dict[str, Any]:
@@ -254,12 +268,13 @@ def select_carry(tables: PilotTables, cfg: CFG.PilotConfig) -> dict[str, Any]:
     room = max(0, (cfg.max_total_rows - stage1_rows - fixed) // per_ref)
     cap = min(cfg.carry_max_references, room)
     if cfg.carry_mode == "all" and cap < len(ranked):
-        raise ValueError(f"carry mode 'all' needs {len(ranked)} references "
+        raise RunError(f"budget: carry mode 'all' needs {len(ranked)} references "
                          f"on T2 but the budget max_total_rows="
                          f"{cfg.max_total_rows} leaves room for {cap}")
     carried = ranked[:cap]
+    stop = fc["early_stop"] and cfg.forecast_early_stop
     cells = []
-    if not fc["early_stop"]:
+    if not stop:
         for _, cid, best in carried:
             cells += [{"model": m, "frame": f, "condition": cid,
                        "class": "CARRY", "distance": round(best, 4)}
@@ -275,7 +290,8 @@ def select_carry(tables: PilotTables, cfg: CFG.PilotConfig) -> dict[str, Any]:
                  if cfg.carry_mode == "all" else
                  "R7 carry rule; R8 early stop"),
         "carry_mode": cfg.carry_mode, "stage1_rows": stage1_rows,
-        "status": "EARLY_STOP" if fc["early_stop"] else "CARRIED",
+        "status": "EARLY_STOP" if stop else "CARRIED",
+        "early_stop_enabled": cfg.forecast_early_stop,
         "forecast": fc,
         "n_candidates": len(ranked), "cap": cap,
         "truncated_by_cap": len(ranked) > cap,
@@ -327,6 +343,8 @@ def truncation_review(tables: PilotTables, cfg: CFG.PilotConfig
 
 EARLY_STOP_STATUS = {"library": "EARLY_STOP_LIBRARY_LIMITED",
                      "fixed_gates": "EARLY_STOP_FIXED_A_OR_B",
+                     "library+fixed_gates":
+                         "EARLY_STOP_LIBRARY_LIMITED_AND_FIXED_A_OR_B",
                      "joint": "EARLY_STOP_JOINT"}
 
 

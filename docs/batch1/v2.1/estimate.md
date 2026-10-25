@@ -3,17 +3,17 @@
 Generated from `estimate.json`. Historical rates are not a measurement of any cloud instance.
 
 - Stage 1 generations: **63,936** (A 1,152, B 768, reference 61,824, task_only 192)
-- Stage 2 ceiling: **126,720** (1320 cells × 96)
-- Total ceiling: **190,656**
-- Storage ceiling: ~1,525 MB (generated rows plus scored records)
-- Generation time at historical rates: Stage 1 2.052 h; Stage 2 4.065 h if spread evenly, at most 4.078 h
+- Stage 2 ceiling: **126,336** (1316 cells × 96)
+- Total ceiling: **190,272**
+- Storage ceiling: ~1,522 MB (generated rows plus scored records)
+- Generation time at historical rates: Stage 1 2.052 h; Stage 2 4.053 h if spread evenly, at most 4.072 h
 
 | model | Stage 1 rows | Stage 2 rows (even / max) | rows/s (7900 XTX, v8.1) | Stage 1 h | Stage 2 h (even / max) |
 |---|---|---|---|---|---|
-| gemma-3n-e2b-it | 15,984 | 31,680 / 31,872 | 9.7 | 0.458 | 0.907 / 0.913 |
-| gemma-3n-e4b-it | 15,984 | 31,680 / 31,872 | 4.94 | 0.899 | 1.781 / 1.792 |
-| qwen3-4b | 15,984 | 31,680 / 31,872 | 17.4 | 0.255 | 0.506 / 0.509 |
-| qwen3-4b-instruct-2507 | 15,984 | 31,680 / 31,872 | 10.1 | 0.44 | 0.871 / 0.877 |
+| gemma-3n-e2b-it | 15,984 | 31,584 / 31,872 | 9.7 | 0.458 | 0.904 / 0.913 |
+| gemma-3n-e4b-it | 15,984 | 31,584 / 31,872 | 4.94 | 0.899 | 1.776 / 1.792 |
+| qwen3-4b | 15,984 | 31,584 / 31,872 | 17.4 | 0.255 | 0.504 / 0.509 |
+| qwen3-4b-instruct-2507 | 15,984 | 31,584 / 31,872 | 10.1 | 0.44 | 0.869 / 0.877 |
 
 ## Caveats
 

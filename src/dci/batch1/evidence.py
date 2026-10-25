@@ -384,6 +384,34 @@ def tables_for(evidences: Iterable[StageEvidence], *, synthetic: bool
     return S.build_tables(scored, designs, synthetic=synthetic)
 
 
+#: Rejection reasons for rows the backend did not return as responses: never
+#: generated (crash, timeout) or produced by a run the backend itself
+#: reported blocked. They are reported, never charged to the budget.
+UNCHARGED_REASONS = ("NOT_RETURNED", "BLOCKED_RUN")
+
+
+def budget_report(root: Path) -> dict[str, Any]:
+    """D06's accounting (v2.1), reported and never a gate: ``charged`` counts
+    the responses the backend
+    returned in runs it did not report blocked, in both stages: accepted
+    rows, collapsed identical repeats and returned rows rejected as
+    technical. Rows never returned and rows of blocked runs are counted in
+    ``uncharged``, by reason."""
+    charged = 0
+    uncharged: dict[str, int] = {}
+    for stage in (D.STAGE1, D.STAGE2):
+        generation, repeats = load_generation(root, stage)
+        charged += len(generation) + repeats
+        for model_dir in sorted((Path(root) / "generation" / stage).glob("*")):
+            for r in read_jsonl(model_dir / "rejected.jsonl"):
+                head = str(r["reason"]).split(":")[0]
+                if head in UNCHARGED_REASONS:
+                    uncharged[head] = uncharged.get(head, 0) + 1
+                else:
+                    charged += 1
+    return {"charged": charged, "uncharged": dict(sorted(uncharged.items()))}
+
+
 def decision_stages(stages: Mapping[str, StageEvidence], cfg: CFG.PilotConfig
                     ) -> list[StageEvidence]:
     """The evidence membership is decided from: both stages pooled (v1), or

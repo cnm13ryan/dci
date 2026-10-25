@@ -93,6 +93,7 @@
   "feasibility_min_models": 3,
   "fixed_a": "",
   "forecast_draws": 2000,
+  "forecast_early_stop": true,
   "forecast_min_feasible": 0.2,
   "forecast_seed": 20261026,
   "frames": [
@@ -141,7 +142,7 @@
   "weights_mode": "variant",
   "z": 1.959963984540054
  },
- "config_hash": "c40dff96bb16f00dc79307965d7c7bb4fabf38ef41a831f8e54372711a88990e",
+ "config_hash": "3f0c8a4999d89ca9db0d4d987b25f8c9e1e758cefb3cc092b4d1a98117f13775",
  "decisions": {
   "D01": {
    "approved_by": "",
@@ -209,12 +210,12 @@
    "approved_on": "",
    "implementation": {
     "calibration.py": "883e34a6e06d1d0373700abf793166eb9a331402907cc2cca242fb296b734b3a",
-    "evidence.py": "ea502a4b0629b7a0aa4eb6ec9d79caf25d8be96c9834e06baaae7f2e1853d6b7",
+    "evidence.py": "6e5f92cb08ff77fc68fe2cc73b661cc6ece2d0acce6642632b5b40a7b91908c4",
     "intervals.py": "bd55bfe9a32d81c9612fae61dbc162fef751a4f95c180117ef5aa167b0ab5125",
-    "pipeline.py": "4437b8af3a0e9b6e51674221d37ec5264307e2d5cdc3d9a6d92143dceb429174"
+    "pipeline.py": "2b9a36cbe300c1cf4f6d2203bd397215cbd19fa4307a0465225bfa8468038e12"
    },
    "origin": "proposed",
-   "payload_hash": "dc174ff8539b9d7a7d0abb19810884ca991a7b7de206415766e7b29da1218f75",
+   "payload_hash": "55b0c1ab52d4adff60674182074c48e8af2f59ef256f4ac9b2ed86a0c2d4b0fc",
    "status": "PROPOSED",
    "title": "Stage 2 refinement rule and stage completeness"
   },
@@ -283,10 +284,10 @@
     "design.py": "3ce9e8620d7423b95933af2e83fa287f8a0f6e73b115cd42f28758aaa12c772f",
     "environment.py": "d4946066a56c09e352f288b2854314a337e1574b1e9ce47004ecc1dd50312934",
     "outcomes.py": "ed51afa4838c6043d3ca0c2aab24169ad3076a405da20be8bfa915e75d928a7c",
-    "runner.py": "c4e0b432b279c0a084d864d5e848c10588f00f0efb2d1c97b5239c932f066649"
+    "runner.py": "c2b0697cd39e24fda0f15a955713c10071fb7365922ace603c70073f421637a6"
    },
    "origin": "proposed",
-   "payload_hash": "99b4dff7c8ae9c23f4641eb2cc55901c3d21b7a4181414698512d3b6694a7d1d",
+   "payload_hash": "714c1fba92df97427111ce29e28d70d94ba0d286f61d2869d8ef3ab43fcdf2ec",
    "status": "PROPOSED",
    "title": "Model panel, decoding, cap, seeds and backend"
   },
@@ -394,7 +395,7 @@
    "unq.word5": "e36e87a21d70b986fe99dbdd0621825bb18038713195f298774cd8285d0b9ca6"
   }
  },
- "manifest_hash": "2c9108fef41afbeb3b0517e0837dc3701389d1c695974ae2a6c9ad70e4e6d958",
+ "manifest_hash": "ccc8155b3256cc8afe113b0ce9fa3a7b2496adc79e6889c26cf2a0f4744c3512",
  "models": [
   {
    "chat_template_kwargs": {},
@@ -468,22 +469,22 @@
   "__init__.py": "19f2032706d031581d981e6bb9a0b135d0261914ec4cbd3b7477e548cd104117",
   "__main__.py": "bc713658e3413fada43e1613c2255feaa12add8ffba22ec22a6ddc4e00435fb6",
   "calibration.py": "883e34a6e06d1d0373700abf793166eb9a331402907cc2cca242fb296b734b3a",
-  "cli.py": "7e35538148cdead65cad349eac8808f6bf94f1bffcc5ed5e0f73cdf956b08498",
+  "cli.py": "5f441a35713607873f8ca3f32b82a05ab16c58ffd904ddcfa04876c2e94862e6",
   "compatibility.py": "ca542f3250eb8ea3b30dde03e2ee3bb07c27ca6fa36c394b0a8d6a01ea85bd22",
-  "config.py": "83af41b4f5dfb3d02ed1a57f644990b65654efed4ab285a984384b25ae606833",
+  "config.py": "afd37a8ceef5e508d44eda460833b390a53e54863233dc92bf11d4a7d940fca2",
   "dci/provenance/hashes.py": "b0db13e53e9e62d18ed2e94a225318b08d44aedd2beddffb044a46e2fc18bdc3",
   "dci/verifiers/rules.py": "00bed1e904013bcde6cac2c6243bc0c6655b7a1f73f47042b12946e258a63647",
   "design.py": "3ce9e8620d7423b95933af2e83fa287f8a0f6e73b115cd42f28758aaa12c772f",
   "environment.py": "d4946066a56c09e352f288b2854314a337e1574b1e9ce47004ecc1dd50312934",
-  "evidence.py": "ea502a4b0629b7a0aa4eb6ec9d79caf25d8be96c9834e06baaae7f2e1853d6b7",
-  "freeze.py": "5cd15bcbd98d0c6dc1118bdb1362d041fc604c3d05f42da54ab939d32abdb187",
+  "evidence.py": "6e5f92cb08ff77fc68fe2cc73b661cc6ece2d0acce6642632b5b40a7b91908c4",
+  "freeze.py": "7b8cb69b8894a1af00414dbd81137a84e05d9a5dafbcc8a6bdfb532bb0934981",
   "intervals.py": "bd55bfe9a32d81c9612fae61dbc162fef751a4f95c180117ef5aa167b0ab5125",
   "library.py": "bb797cca1253594070694e054ddb94a3397b2a118e00eba8e6e73eebafd8d361",
   "outcomes.py": "ed51afa4838c6043d3ca0c2aab24169ad3076a405da20be8bfa915e75d928a7c",
-  "pipeline.py": "4437b8af3a0e9b6e51674221d37ec5264307e2d5cdc3d9a6d92143dceb429174",
+  "pipeline.py": "2b9a36cbe300c1cf4f6d2203bd397215cbd19fa4307a0465225bfa8468038e12",
   "references.py": "1b74d28b56c7d53fe6121e31f1bf0f62e647a517f6fa58e2877dc7d873c668b8",
-  "revision.py": "6d6d03c5bfabf588dfe5027ec46e7e63618f12f635637714c392e5c4b2c6942c",
-  "runner.py": "c4e0b432b279c0a084d864d5e848c10588f00f0efb2d1c97b5239c932f066649",
+  "revision.py": "aedafc14abf5b1b12103ee91650ba321dac1bcb623bff273f70e64b95f776253",
+  "runner.py": "c2b0697cd39e24fda0f15a955713c10071fb7365922ace603c70073f421637a6",
   "scoring.py": "d964c53dfc7c864bdc96ead215534f8c38cdde7c3f2b588865b3acbd3587c4f0",
   "smoke.py": "eb11c47458598b8b536e3c01cf829a063e208dc04d1439b783477f7b715c5bf0",
   "stability.py": "cc34cc3bd42e19fab8c61495df16fceda00517257449b11036bedb6fa2c4c8a5",
