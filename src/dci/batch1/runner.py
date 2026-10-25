@@ -133,7 +133,7 @@ def seam_plan(model: CFG.ModelConfig, stage: str) -> dict[str, Any]:
         "quantization": "none",
         "tensor_parallel_size": model.tensor_parallel_size,
         "gpu_memory_utilization": model.gpu_memory_utilization,
-        "disable_custom_all_reduce": True, "enforce_eager": True,
+        "disable_custom_all_reduce": True, "enforce_eager": d["enforce_eager"],
         "cpu_offload_gb": 0.0, "max_model_len": model.max_model_len,
         "engine_seed": d["engine_seed"], "trust_remote_code": False,
         "limit_mm_per_prompt": None, "temperature": d["temperature"],

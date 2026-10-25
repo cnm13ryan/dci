@@ -13,6 +13,19 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-10-25 — (Batch 1) D12 amended: 512 requests per generate call; CUDA graphs off made explicit; regeneration is not byte-exact
+
+**What changed.** `config.DECODING["chunk_size"]` goes from 64 to 512, by the researcher's decision after the first pilot run was stopped for low GPU use (`docs/batch1/PILOT_ABORT_2026-10-25.md`). `enforce_eager=True` (CUDA graphs off) moves from a constant in `runner.seam_plan` into `config.DECODING`. Both are in D12's payload.
+
+**Effect on outputs, measured on the 2x H100 instance** (synthetic prompts, pilot decoding; `docs/batch1/throughput-2026-10-25/`):
+- 3.6–5.4x more rows per second;
+- the same finish reasons (100% stop), 0 truncated, 0 empty;
+- mean answer length within 1 token.
+
+**Disclosure.** Rows regenerated in a fresh process are not byte-identical to the first generation: 95.5% identical at the previously approved chunk 64, and 97.2% at chunk 512 (Gemma 3n E2B, 1,024 prompts). vLLM is not batch-invariant here. Evidence is the stored records bound by Freeze 2; regeneration from seeds is not claimed to be exact.
+
+**Affected results.** The abandoned run root `pilot-2026-10-25` (7,808 Stage 1 rows at chunk 64) is not evidence and is not reused. D12's payload hash changes; the other 13 do not. The smoke plan hash changes, so a new smoke test, a new Freeze 1 and a new root follow. No earlier Batch 1 evidence exists to compare.
+
 ## 2026-10-25 — (Batch 1) researcher's decisions applied: topic containment rule, P3 minimum 3, Python 3.12, CUDA backend, environment lock by GPU class, one worker per GPU
 
 **What changed.** Applied from the researcher's decisions of 2026-10-25, recorded for transcription in `docs/batch1/DECISIONS_2026-10-25.md`. No model has generated anything; nothing is approved.

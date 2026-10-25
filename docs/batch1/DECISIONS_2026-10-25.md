@@ -35,7 +35,7 @@ code changed after this file; use the template's and ask why.
 | D09 | Eligibility operationalisation | `86db9770310b309f` |
 | D10 | Matching operationalisation | `540aaaf0cd3684f1` |
 | D11 | Coverage requirements | `32951ab309a6fb20` |
-| D12 | Model panel, decoding, cap, seeds and backend | `c1b1be6d59efd54b` |
+| D12 | Model panel, decoding, cap, seeds and backend | `1017d22295953f4a` |
 | D13 | Object types and hierarchical weights | `7f24d04f57e7fdc8` |
 | D14 | Membership-stability diagnostics | `da0bb5bb7c0fcd0f` |
 
@@ -164,7 +164,15 @@ does not force a Python version; 3.12 is vLLM's Docker default and native on
 Lambda's GPU Base 24.04. Execution requirements: vllm 0.15.1 and torch
 2.9.1+cu129 on 2x H100 SXM with driver >= 575.51.03. One worker per GPU, with
 tensor parallelism as configured (1). Batch invariance off, enforced: the
-runner passes no inherited `VLLM_*` setting to the backend.
+runner passes no inherited `VLLM_*` setting to the backend. Amended the same
+day, after the first pilot run was stopped for low GPU use
+(`PILOT_ABORT_2026-10-25.md`): 512 requests per generate call (was 64), CUDA
+graphs off (now explicit in the payload).
+
+**Disclosure.** A row regenerated in a fresh process is byte-identical to the
+first generation about 97% of the time at these settings (95.5% at the
+earlier chunk 64), not always. vLLM is not batch-invariant here. The evidence
+is the stored records bound by Freeze 2.
 
 **Conditions, checked before you record APPROVED:**
 

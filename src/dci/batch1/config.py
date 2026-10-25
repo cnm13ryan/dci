@@ -120,7 +120,16 @@ DECODING: dict[str, Any] = {
     "temperature": 0.7, "top_p": 0.9, "top_k": 50,
     "max_new_tokens": 512,           # D12, proposed
     "reasoning_mode": "NO_THINKING", "skip_special_tokens": True,
-    "engine_seed": 20261018, "chunk_size": 64,
+    "engine_seed": 20261018,
+    # Requests per llm.generate call (D12; researcher's decision of
+    # 2026-10-25, was 64). 64 left the H100s at ~45% utilisation; 512 runs
+    # 3.6-5.4x faster with the same finish reasons, truncation, empty rate
+    # and answer length (docs/batch1/PILOT_ABORT_2026-10-25.md).
+    "chunk_size": 512,
+    # CUDA graphs off (D12, kept by the same decision): graphs added only
+    # 10-50% speed but cut fresh-process regeneration agreement from 97%
+    # to 11%. Bound here rather than hard-coded in the runner.
+    "enforce_eager": True,
 }
 
 
