@@ -1,0 +1,33 @@
+# Batch 1 CUDA backend environment — the interpreter that runs vLLM generation
+# on NVIDIA hosts (the Lambda 2x H100 instance), passed to the batch1 CLI as
+# --backend-python together with --accelerator cuda.
+#
+# The CUDA counterpart of ../backend (the ROCm stack): same Python, same vLLM
+# and torch versions, same application-level pins. The only difference is the
+# wheel source — vLLM 0.15.1 from PyPI (cp38-abi3, CUDA build, requires
+# torch==2.9.1) and the matching PyPI torch, instead of the vendored ROCm
+# wheels and repo.radeon.com. Separate project, separate lock: neither stack
+# can contaminate the other's resolution.
+#
+# Build (on the generation host):  cd dci1/environments/backend-cuda && uv sync
+# The lock is generated on the host and committed. Install nothing into the
+# resulting .venv after `attest-environment`: the lock binds the hash of every
+# installed distribution.
+[project]
+name = "dci1-backend-cuda"
+version = "1.0.0"
+description = "Pinned CUDA vLLM inference environment for DCI Batch 1"
+requires-python = "==3.12.*"
+dependencies = [
+    "accelerate>=1.4.0",
+    "huggingface-hub>=0.29.2",
+    "numpy>=2.0.0,<=2.1.3",
+    "torch==2.9.1",
+    "torchvision==0.24.1",
+    "transformers>=4.49.0,<5",
+    "triton==3.5.1 ; sys_platform == 'linux'",
+    "vllm==0.15.1",
+]
+
+[tool.uv]
+required-version = ">=0.5.3"
