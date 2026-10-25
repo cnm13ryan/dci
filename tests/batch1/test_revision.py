@@ -312,3 +312,18 @@ def test_v2_freeze2_is_complete_and_validates(run_v2):
     assert confirmatory["bank"] == "v1" and confirmatory["reserved"] == 480
     assert P.validate_membership(run_v2["root"], run_v2["freeze1"],
                                  run_v2["approvals"]) == []
+
+
+@pytest.mark.slow
+def test_v2_cli_summaries_and_report_work(run_v2, capsys):
+    """The readable report must not assume v1's shapes (the first v2 pilot's
+    finalize-calibration exited 1 after writing calibration.json).
+    ``select-refinement``'s summary print still assumes v1 (KeyError
+    'n_selected' after its outputs are written): cli.py is a frozen module
+    and stays as frozen at 8a9422f until that root is analysed."""
+    from dci.batch1 import cli
+    root = str(run_v2["root"])
+    assert cli.main(["finalize-calibration", "--root", root]) == 0
+    report = (run_v2["root"] / "reference_selection.md").read_text()
+    assert "Stage B forecast on T1" in report
+    assert "R4: fixed" in report

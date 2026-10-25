@@ -539,13 +539,27 @@ def selection_report(result: Mapping[str, Any], tables: Any,
         else "Pilot reference selection"
     out = [f"# {head}", "",
            f"Calibration status: **{result['status']}**.", ""]
+    fc = result.get("forecast")
+    if fc:                                    # protocol v2: Stage B on T1
+        out += ["## Stage B forecast on T1 (R8)", "",
+                f"{fc['draws']} posterior draws; early stop below "
+                f"P(feasible) {fc['threshold']}: "
+                f"**{'stopped' if fc['early_stop'] else 'carried to T2'}**; "
+                f"P(all three feasible) {fc['p_all_feasible']}.", "",
+                "| contrast | P(feasible) | mean supported | 90% interval | "
+                "supported at point estimates |", "|---|---|---|---|---|"]
+        for p, c in fc["contrasts"].items():
+            out.append(f"| {p} | {c['p_feasible']} | {c['mean_supported']} | "
+                       f"{c['interval_90']} | {c['point_supported']} |")
+        out.append("")
     b = result["b"]
-    out += ["## B selection (D07)", "",
+    out += ["## B selection (D07)" if not fc else
+            "## B (R4: fixed, checked for informativeness on T2)", "",
             f"Selected: {b.get('selected')} ({b['status']}).", "",
             "| m | informative model-frames | median compliance |",
             "|---|---|---|"]
-    for m, v in b["per_limit"].items():
-        out.append(f"| {m} | {v['informative']} | {_fmt(v['median'])} |")
+    for m, v in (b.get("per_limit") or {}).items():
+        out.append(f"| {m} | {v['informative']} | {_fmt(v.get('median'))} |")
     if b.get("measurement_limitations"):
         out += ["", "Measurement limitations (extreme B compliance, kept, "
                 "not removed):", ""] + [f"- {x}" for x in
