@@ -115,7 +115,7 @@
    "approved_on": "",
    "note": "",
    "origin": "proposed",
-   "payload_hash": "c224998eccf8ebe4de9e70ee0ee99270500637a2932c393fe28329225f789a6d",
+   "payload_hash": "21669e8552cc3d41efaa90d8197ebab758846067fae8df990bc89b7c21d638e2",
    "status": "PROPOSED",
    "summary": "Historical four-model panel and decoding; cap 512 tokens, with any cell truncating above truncation_review_share listed for review; the seed derivation; the vLLM seam source; Python 3.12 for the orchestrator and the vLLM backend (the CUDA vllm 0.15.1 wheel is cp38-abi3; 3.12 is vLLM's Docker default and native on GPU Base 24.04); the execution requirements (vllm 0.15.1, torch 2.9.1+cu129, 2x H100 SXM, driver >= 575.51.03), one worker per GPU, TP as configured. The execution environment is attested on the host, checked against the requirements and bound by Freeze 1; a bounded, authorised smoke test (never evidence) measures load time, throughput and truncation first.",
    "title": "Model panel, decoding, cap, seeds and backend"

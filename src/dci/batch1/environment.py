@@ -9,8 +9,11 @@ on. So nothing here invents it:
 * ``probe(python)`` runs a fixed script in the backend interpreter and
   reports what it finds, or ``UNAVAILABLE`` with the reason;
 * ``lock_from_probe`` turns an AVAILABLE probe into a lock: the comparable
-  identity (versions, the hash of the full distribution list, the
-  accelerator names, the backend source tree) plus host details;
+  identity (versions, the hash of the full distribution list, the GPU class
+  -- model, count, compute capability and memory -- and the backend source
+  tree) plus host details recorded without being bound (hostname, kernel,
+  GPU UUIDs, driver build). It refuses a host that does not meet D12's
+  execution requirements (``requirement_problems``);
 * Freeze 1 carries the lock, or records ``UNATTESTED`` and blocks
   authorisation (``freeze.py``);
 * ``execute`` probes again and ``freeze.assert_authorized`` refuses when the
@@ -40,7 +43,8 @@ from dci.batch1.store import RunError, record_hash, tree_hash
 
 __all__ = ["PROBE_SCRIPT", "probe", "lock_from_probe", "backend_source",
            "BACKEND_DIR", "identity_of", "PythonMismatch", "orchestrator",
-           "python_minor", "require_orchestrator"]
+           "python_minor", "require_orchestrator", "requirement_problems",
+           "HOST_FIELDS"]
 
 
 class PythonMismatch(RunError):
@@ -81,10 +85,11 @@ _REPO = Path(__file__).resolve().parents[3]
 BACKEND_DIR = _REPO / "exploratory" / "vllm_backend"
 
 PROBE_SCRIPT = r"""
-import hashlib, json, platform, sys
+import hashlib, json, platform, subprocess, sys
 import importlib.metadata as md
 out = {"python": sys.version.split()[0], "implementation": sys.implementation.name,
-       "executable": sys.executable, "platform": platform.platform()}
+       "executable": sys.executable, "platform": platform.platform(),
+       "hostname": platform.node(), "kernel": platform.release()}
 packages = {}
 for name in ("vllm", "torch", "transformers", "tokenizers", "triton",
              "xformers", "flashinfer-python", "numpy"):
@@ -101,10 +106,28 @@ try:
     import torch
     out["torch_cuda"] = torch.version.cuda
     out["torch_hip"] = getattr(torch.version, "hip", None)
+    n = torch.cuda.device_count()
     out["accelerators"] = sorted({torch.cuda.get_device_name(i)
-                                  for i in range(torch.cuda.device_count())})
+                                  for i in range(n)})
+    out["gpu_count"] = n
+    out["gpus"] = []
+    for i in range(n):
+        p = torch.cuda.get_device_properties(i)
+        out["gpus"].append({"name": p.name,
+                            "capability": "%d.%d" % (p.major, p.minor),
+                            "memory_gib": round(p.total_memory / 2 ** 30),
+                            "uuid": str(getattr(p, "uuid", "") or "")})
 except Exception as error:
     out["accelerator_error"] = f"{type(error).__name__}: {error}"[:300]
+try:
+    smi = subprocess.run(["nvidia-smi", "--query-gpu=uuid,driver_version",
+                          "--format=csv,noheader"], capture_output=True,
+                         text=True, timeout=60).stdout
+    rows = [[c.strip() for c in l.split(",")] for l in smi.splitlines() if l.strip()]
+    out["gpu_uuids"] = sorted(r[0] for r in rows)
+    out["driver"] = sorted({r[1] for r in rows})
+except Exception as error:
+    out["driver_error"] = f"{type(error).__name__}: {error}"[:300]
 print("DCI_BATCH1_ENV " + json.dumps(out, sort_keys=True))
 """
 
@@ -135,7 +158,11 @@ def probe(python: str, *, timeout: float = 600) -> dict[str, Any]:
 
 
 def identity_of(found: Mapping[str, Any]) -> dict[str, Any]:
-    """The fields two environments must share to count as the same."""
+    """The fields two environments must share to count as the same: the
+    software, and the GPU class (model, count, compute capability, memory;
+    D12, 2026-10-25). Which physical host or GPUs, and the driver build,
+    are recorded in the lock's ``host`` but not compared."""
+    gpus = found.get("gpus") or []
     return {"python": found.get("python"),
             "implementation": found.get("implementation"),
             "packages": found.get("packages"),
@@ -143,7 +170,55 @@ def identity_of(found: Mapping[str, Any]) -> dict[str, Any]:
             "torch_cuda": found.get("torch_cuda"),
             "torch_hip": found.get("torch_hip"),
             "accelerators": found.get("accelerators"),
+            "gpu_count": found.get("gpu_count"),
+            "gpu_capabilities": sorted({g.get("capability") for g in gpus}),
+            "gpu_memory_gib": sorted(g.get("memory_gib") for g in gpus),
             "backend_source_hash": backend_source()["hash"]}
+
+
+#: Recorded in a lock, never compared (D12, 2026-10-25).
+HOST_FIELDS = ("interpreter", "executable", "platform", "hostname", "kernel",
+               "gpu_uuids", "driver", "distributions", "accelerator_error",
+               "driver_error")
+
+
+def _version(text: str) -> tuple[int, ...]:
+    return tuple(int(x) for x in str(text).split(".") if x.isdigit())
+
+
+def requirement_problems(identity: Mapping[str, Any],
+                         host: Mapping[str, Any],
+                         req: Mapping[str, Any] | None = None) -> list[str]:
+    """Where an attested environment falls short of D12's execution
+    requirements (``config.EXECUTION_REQUIREMENTS``): checked when the lock
+    is made and again when Freeze 1 is built."""
+    req = CFG.EXECUTION_REQUIREMENTS if req is None else req
+    problems = []
+    if python_minor(identity.get("python")) != req["backend_python"]:
+        problems.append(f"backend Python {identity.get('python')}, not "
+                        f"{req['backend_python']}")
+    for name, want in req["packages"].items():
+        have = (identity.get("packages") or {}).get(name)
+        if have != want:
+            problems.append(f"{name} {have}, not {want}")
+    if identity.get("torch_cuda") != req["torch_cuda"]:
+        problems.append(f"torch built for CUDA {identity.get('torch_cuda')}, "
+                        f"not {req['torch_cuda']}")
+    if identity.get("accelerators") != [req["gpu_name"]]:
+        problems.append(f"GPUs {identity.get('accelerators')}, not only "
+                        f"{req['gpu_name']}")
+    if identity.get("gpu_count") != req["gpu_count"]:
+        problems.append(f"{identity.get('gpu_count')} visible GPUs, not "
+                        f"{req['gpu_count']}")
+    if identity.get("gpu_capabilities") != [req["gpu_compute_capability"]]:
+        problems.append(f"compute capability {identity.get('gpu_capabilities')}"
+                        f", not {req['gpu_compute_capability']}")
+    drivers = host.get("driver") or []
+    if not drivers or any(_version(d) < _version(req["min_driver"])
+                          for d in drivers):
+        problems.append(f"driver {drivers or 'unknown'}, not >= "
+                        f"{req['min_driver']}")
+    return problems
 
 
 def lock_from_probe(found: Mapping[str, Any]) -> dict[str, Any]:
@@ -158,8 +233,11 @@ def lock_from_probe(found: Mapping[str, Any]) -> dict[str, Any]:
             f"records {CFG.BACKEND_PYTHON} for the vLLM backend (the pinned "
             f"vllm wheel is cp312). Attest the pinned backend environment")
     identity = identity_of(found)
-    return {"schema": "dci.batch1/environment-lock/v1", "status": "ATTESTED",
+    host = {k: found.get(k) for k in HOST_FIELDS}
+    problems = requirement_problems(identity, host)
+    if problems:
+        raise ValueError("this host does not meet D12's execution "
+                         "requirements: " + "; ".join(problems))
+    return {"schema": "dci.batch1/environment-lock/v2", "status": "ATTESTED",
             "identity": identity, "identity_hash": record_hash(identity),
-            "host": {k: found.get(k) for k in ("interpreter", "executable",
-                                               "platform", "distributions",
-                                               "accelerator_error")}}
+            "requirements": dict(CFG.EXECUTION_REQUIREMENTS), "host": host}

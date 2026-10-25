@@ -1,5 +1,7 @@
 # Final approval checklist: everything needed before Freeze 1
 
+**Update 2026-10-25:** your decisions of that day are applied (Python 3.12 for the orchestrator, replacing 3.11; P3 minimum 3; the D05 topic edits; the CUDA backend and one worker per GPU) and are written up for transcription in [`DECISIONS_2026-10-25.md`](DECISIONS_2026-10-25.md). Where this document says otherwise, that file and the code are current.
+
 **Status on 2026-10-19:** not ready for Freeze 1. The implementation is
 ready for your review, but no decision is formally approved, D11 needs your
 choice, and the generation computer has not been set up or attested.
@@ -32,7 +34,7 @@ payload hash, with your name and the date. Explanations:
 | D09 | eligibility at 20% | YOUR DECISION | approve with the disclosure |
 | D10 | matching at ±10 points | YOUR DECISION | approve with the disclosure |
 | D11 | coverage minimums and target | **YOUR DECISION: choose the rule** | choose: P3 minimum 3 (recommended), 3 from ≥ 2 operations, or the design's 2 (see [`COVERAGE_SIMULATION_REVIEW.md`](COVERAGE_SIMULATION_REVIEW.md) §8); then approve |
-| D12 | models, decoding, cap 512, seeds, backend, Python | **Python 3.11 for the orchestrator: APPROVED BY YOU** (2026-10-19); the rest: YOUR DECISION | approve after B3 and B4, including Python 3.12 for the backend |
+| D12 | models, decoding, cap 512, seeds, backend, Python | **Python 3.12 for the orchestrator and backend: YOUR DECISION of 2026-10-25** (replacing 3.11), with the conditions in `DECISIONS_2026-10-25.md` | approve after B3 and B4, including Python 3.12 for the backend |
 | D13 | object types and weights | YOUR DECISION | approve with the disclosure |
 | D14 | stability diagnostics, near-threshold flag | YOUR DECISION | approve; decide how you will read the flags |
 
@@ -46,10 +48,10 @@ after that change.
 | | item | status | notes |
 |---|---|---|---|
 | B1 | independent re-audit findings R1–R4 addressed | **DONE** | [`REMEDIATION_REPORT.md`](REMEDIATION_REPORT.md) §R |
-| B2 | Python 3.11 pinned, recorded and enforced; hashes independent of Python version | **DONE** | `.python-version`; every command refuses another version; tested under 3.11, 3.12 and 3.13 |
+| B2 | Python 3.12 pinned (3.11 until 2026-10-25), recorded and enforced; hashes independent of Python version | **DONE** | `.python-version`; every command refuses another version; tested under 3.11, 3.12 and 3.13 |
 | B3 | build the generation environment (CUDA vLLM for the chosen host) and attest it: `python -m dci.batch1 attest-environment --backend-python <path> --out environment_lock.json` | **TO DO** | no CUDA backend environment exists yet. The lock is refused unless the backend is Python 3.12 and has vLLM |
 | B4 | smoke test on that host: `smoke-plan`, then `smoke --authorize <plan hash> --max-rows 72` | **TO DO** | at most 96 responses, never evidence, no A or B instruction. It measures load time, throughput, truncation at 512 tokens, and whether blank answers arrive as expected |
-| B5 | record approvals: copy `approvals_template.json` to `approvals.json`, and set APPROVED, your name and the date for each decision | **TO DO (yours)** | the template records `orchestrator_python: "3.11"`; the code never writes APPROVED |
+| B5 | record approvals: copy `approvals_template.json` to `approvals.json`, and set APPROVED, your name and the date for each decision | **TO DO (yours)** | the template records `orchestrator_python: "3.12"`; the code never writes APPROVED |
 | B6 | Freeze 1: `python -m dci.batch1 freeze-protocol --root <run root> --approvals approvals.json --environment-lock environment_lock.json` | **TO DO** | after B3–B5; not done yet, as you asked |
 | B7 | `python -m dci.batch1 validate-freeze --root <run root>` returns no problems and the manifest says authorisable | **TO DO** | |
 
@@ -71,4 +73,4 @@ after that change.
 | logs survive retries | one directory per backend attempt (new, R4.3) |
 | a row that always fails cannot loop | it is not retried after 3 technical failures, and the stage stays incomplete (new, R4.4) |
 | the smoke test cannot reveal A or B results | it uses only non-focal instructions (new, R4.2) |
-| the wrong Python cannot sign or run | every command refuses a Python other than 3.11, with the reason (new, R2) |
+| the wrong Python cannot sign or run | every command refuses a Python other than 3.12, with the reason (new, R2) |

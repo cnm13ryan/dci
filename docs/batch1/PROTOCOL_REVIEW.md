@@ -1,10 +1,12 @@
 # Batch 1 pilot protocol: plain-language review of every decision
 
+**Update 2026-10-25:** your decisions of that day are applied (Python 3.12 for the orchestrator, replacing 3.11; P3 minimum 3; the D05 topic edits; the CUDA backend and one worker per GPU) and are written up for transcription in [`DECISIONS_2026-10-25.md`](DECISIONS_2026-10-25.md). Where this document says otherwise, that file and the code are current.
+
 **For:** the researcher, or any reviewer new to the project. No knowledge of
 the code or of earlier DCI studies is assumed. **Status on 2026-10-19:**
 fourteen scientific decisions (D01–D14) define the pilot. One part of one
-decision, Python 3.11 for the controlling program (in D12), has been approved
-by you in conversation. Every other part of every decision is **proposed and
+decision, Python 3.11 for the controlling program (in D12), was approved
+by you in conversation; on 2026-10-25 you replaced it with 3.12. Every other part of every decision is **proposed and
 awaiting your approval**. Nothing has been run on a model.
 
 Part of the Batch 1 review package; start at
@@ -175,7 +177,7 @@ formal state in `approvals.json`: no decision is APPROVED there yet.
 | D09 | eligibility (20%) | design | awaiting approval | approve with the disclosure |
 | D10 | difficulty matching (±10 points) | design | awaiting approval | approve with the disclosure |
 | D11 | coverage minimums and feasibility target | design | awaiting approval | **revise: P3 minimum 3** |
-| D12 | models, decoding, length cap, seeds, backend, Python | proposed | **Python 3.11 approved by you (2026-10-19, in conversation); the rest awaiting** | approve after the smoke test |
+| D12 | models, decoding, length cap, seeds, backend, Python | proposed | **Python 3.12 decided by you (2026-10-25; replaces 3.11); the rest awaiting** | approve after the smoke test |
 | D13 | object types and reference weights | proposed | awaiting approval | approve with the disclosure |
 | D14 | stability diagnostics | proposed | awaiting approval | approve as a diagnostic |
 
@@ -533,7 +535,7 @@ inspect. All paths are relative to the repository root.
    - seeds derived from what each prompt is, never from its position in a
      batch;
    - the existing vLLM backend code;
-   - **Python 3.11** for the controlling program (**approved by you**) and
+   - **Python 3.12** for the controlling program (your decision of 2026-10-25, replacing 3.11) and
      **Python 3.12** for the vLLM backend (proposed: the repository's pinned
      vLLM 0.15.1 build is for Python 3.12, and its CUDA environment requires
      3.12 or later).

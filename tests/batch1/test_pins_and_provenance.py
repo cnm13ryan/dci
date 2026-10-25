@@ -78,7 +78,7 @@ def test_code_and_string_edits_change_the_hash(tmp_path, old, new):
 def _other_interpreters() -> list[str]:
     base = Path.home() / ".local/share/uv/python"
     found = []
-    for minor in ("3.12", "3.13"):
+    for minor in ("3.11", "3.13"):
         hits = sorted(base.glob(f"cpython-{minor}.*/bin/python{minor}"))
         if hits:
             found.append(str(hits[-1]))
@@ -97,7 +97,7 @@ print(json.dumps({p: m.code_hash(repo / p) for p in paths}))
 
 @pytest.mark.skipif(not _other_interpreters(),
                     reason="no other CPython minor version installed")
-def test_every_frozen_source_hashes_the_same_under_3_12_and_3_13():
+def test_every_frozen_source_hashes_the_same_under_3_11_and_3_13():
     """Re-audit R2: the ast.dump hash differed under 3.11, 3.12 and 3.13."""
     sources = {**{f"src/dci/batch1/{n}": n for n in F.RULE_MODULES},
                **{f"src/{n}": n for n in F.EXTERNAL_RULE_MODULES}}
@@ -115,41 +115,41 @@ def test_every_frozen_source_hashes_the_same_under_3_12_and_3_13():
 
 # ----------------------------------------------------- the interpreter pins
 
-def test_the_project_pins_python_3_11():
+def test_the_project_pins_python_3_12():
     assert (REPO / ".python-version").read_text().strip() == \
-        CFG.ORCHESTRATOR_PYTHON == "3.11"
-    assert ENV.require_orchestrator()["minor"] == "3.11"
+        CFG.ORCHESTRATOR_PYTHON == "3.12"
+    assert ENV.require_orchestrator()["minor"] == "3.12"
 
 
 def test_every_payload_and_the_approvals_record_the_orchestrator_python():
     for d in CFG.decisions():
-        assert d.payload["orchestrator_python"] == "3.11"
+        assert d.payload["orchestrator_python"] == "3.12"
     d12 = next(d for d in CFG.decisions() if d.decision_id == "D12")
     assert d12.payload["backend_python"] == CFG.BACKEND_PYTHON == "3.12"
     assert d12.payload["source_hash_scheme"] == store.SOURCE_HASH_SCHEME
     template = F.approvals_template()
-    assert template["orchestrator_python"] == "3.11"
+    assert template["orchestrator_python"] == "3.12"
 
 
 @pytest.fixture
-def python_312(monkeypatch):
+def python_311(monkeypatch):
     monkeypatch.setattr(ENV, "_interpreter",
-                        lambda: ("3.12.9", "cpython", "/usr/bin/python3.12"))
+                        lambda: ("3.11.12", "cpython", "/usr/bin/python3.11"))
 
 
-def test_another_minor_version_is_refused_with_its_reason(python_312, capsys):
-    with pytest.raises(ENV.PythonMismatch, match=r"CPython 3\.11.*3\.12\.9"):
+def test_another_minor_version_is_refused_with_its_reason(python_311, capsys):
+    with pytest.raises(ENV.PythonMismatch, match=r"CPython 3\.12.*3\.11\.12"):
         ENV.require_orchestrator()
-    with pytest.raises(ENV.PythonMismatch, match="3.12.9"):
+    with pytest.raises(ENV.PythonMismatch, match="3.11.12"):
         F.freeze1_manifest(SMALL)
     assert cli.main(["validate-library"]) == 3
-    assert "refused: Batch 1 protocol commands run under CPython 3.11" in \
+    assert "refused: Batch 1 protocol commands run under CPython 3.12" in \
         capsys.readouterr().err
 
 
 def test_validation_names_the_interpreter_not_a_hash(tmp_path, monkeypatch):
     manifest = F.freeze1_manifest(SMALL)
-    assert manifest["orchestrator"]["frozen_with"]["minor"] == "3.11"
+    assert manifest["orchestrator"]["frozen_with"]["minor"] == "3.12"
     assert F.validate_freeze1(manifest, F.approvals_template(SMALL)) == []
     monkeypatch.setattr(ENV, "_interpreter",
                         lambda: ("3.13.7", "cpython", "/opt/py"))
@@ -157,18 +157,18 @@ def test_validation_names_the_interpreter_not_a_hash(tmp_path, monkeypatch):
     assert len(problems) == 1 and "3.13.7" in problems[0]
 
 
-def test_a_patch_release_of_3_11_validates(monkeypatch):
+def test_a_patch_release_of_3_12_validates(monkeypatch):
     manifest = F.freeze1_manifest(SMALL)
     monkeypatch.setattr(ENV, "_interpreter",
-                        lambda: ("3.11.4", "cpython", "/opt/py"))
+                        lambda: ("3.12.3", "cpython", "/opt/py"))
     assert F.validate_freeze1(manifest, F.approvals_template(SMALL)) == []
 
 
 def test_approvals_written_for_another_python_block():
     approvals = F.approvals_template(SMALL)
-    approvals["orchestrator_python"] = "3.12"
+    approvals["orchestrator_python"] = "3.11"
     manifest = F.freeze1_manifest(SMALL, approvals)
-    assert any("orchestrator_python '3.12'" in b
+    assert any("orchestrator_python '3.11'" in b
                for b in manifest["authorization"]["blocking"])
 
 
@@ -263,3 +263,53 @@ def test_near_threshold_flag():
     assert not F.near_threshold(result((16, 16, 15)), CFG.DEFAULT_CONFIG)
     assert not F.near_threshold({"status": "INFEASIBLE_REVISION_REQUIRED",
                                  "feasibility": None}, CFG.DEFAULT_CONFIG)
+
+
+# ------------------------------------- the lock decision (D12, 2026-10-25)
+
+def test_the_lock_binds_the_gpu_class_and_records_the_host():
+    lock = ENV.lock_from_probe(fake_probe())
+    identity = lock["identity"]
+    assert identity["gpu_count"] == 2
+    assert identity["gpu_capabilities"] == ["9.0"]
+    assert identity["gpu_memory_gib"] == [79, 79]
+    for field in ("hostname", "kernel", "gpu_uuids", "driver"):
+        assert field in lock["host"] and field not in identity
+    assert lock["requirements"] == CFG.EXECUTION_REQUIREMENTS
+
+
+def test_the_gpu_class_is_checked_live_but_the_host_is_not():
+    approvals = F.approvals_template(SMALL)
+    manifest = F.freeze1_manifest(SMALL, approvals,
+                                  environment_lock=ENV.lock_from_probe(
+                                      fake_probe()))
+    locked = manifest["execution_environment"]["identity"]
+    one = fake_probe(gpu_count=1, gpus=fake_probe()["gpus"][:1])
+    assert ENV.identity_of(one) != locked
+    other_host = fake_probe(hostname="elsewhere", kernel="6.9",
+                            gpu_uuids=["GPU-x", "GPU-y"],
+                            driver=["580.999.01"])
+    assert ENV.identity_of(other_host) == locked
+
+
+@pytest.mark.parametrize("change,reason", [
+    ({"packages": {**fake_probe()["packages"], "torch": "2.9.1+cu128"}},
+     "torch 2.9.1+cu128"),
+    ({"torch_cuda": "12.8"}, "CUDA 12.8"),
+    ({"accelerators": ["NVIDIA H100 PCIe"]}, "H100 PCIe"),
+    ({"gpu_count": 1}, "1 visible GPUs"),
+    ({"driver": ["570.124.06"]}, "driver"),
+    ({"driver": None}, "driver unknown"),
+])
+def test_a_host_outside_the_d12_requirements_cannot_be_locked(change, reason):
+    with pytest.raises(ValueError, match="execution requirements") as err:
+        ENV.lock_from_probe(fake_probe(**change))
+    assert reason in str(err.value)
+
+
+def test_a_lock_edited_to_another_class_blocks_freeze1():
+    lock = ENV.lock_from_probe(fake_probe())
+    lock["host"]["driver"] = ["560.35.03"]
+    manifest = F.freeze1_manifest(SMALL, environment_lock=lock)
+    assert any("driver" in b and "D12 execution requirements" in b
+               for b in manifest["authorization"]["blocking"])

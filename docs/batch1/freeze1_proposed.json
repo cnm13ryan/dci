@@ -268,12 +268,12 @@
    "approved_on": "",
    "implementation": {
     "design.py": "3ce9e8620d7423b95933af2e83fa287f8a0f6e73b115cd42f28758aaa12c772f",
-    "environment.py": "972ad22a57fcad01cf76d265ea0ba05fc62ec9cb8d479efc791d9add5727b554",
+    "environment.py": "7b802efd70d9a2e502d43276b27205244c188de2d25d58a13bde40969c80f244",
     "outcomes.py": "ed51afa4838c6043d3ca0c2aab24169ad3076a405da20be8bfa915e75d928a7c",
-    "runner.py": "bfe4fafb2140032cd359f650d11e8c3bdaa463ed29e816c324d51395209bbfaf"
+    "runner.py": "2dca6a83a4281c03c81e6f125223dffc6a4cf8c74ffd372f18df6138b3adf1f6"
    },
    "origin": "proposed",
-   "payload_hash": "c224998eccf8ebe4de9e70ee0ee99270500637a2932c393fe28329225f789a6d",
+   "payload_hash": "21669e8552cc3d41efaa90d8197ebab758846067fae8df990bc89b7c21d638e2",
    "status": "PROPOSED",
    "title": "Model panel, decoding, cap, seeds and backend"
   },
@@ -380,7 +380,7 @@
    "unq.word5": "e36e87a21d70b986fe99dbdd0621825bb18038713195f298774cd8285d0b9ca6"
   }
  },
- "manifest_hash": "1573ae3cca500ab398fee4ae7fc74878426b9323c15cff3e4d777602a95af146",
+ "manifest_hash": "40a5633f72de46be362c2adb3506f2f45c3a8ecde7b30f8f31ce3e4ea235d4ec",
  "models": [
   {
    "chat_template_kwargs": {},
@@ -454,21 +454,21 @@
   "__init__.py": "19f2032706d031581d981e6bb9a0b135d0261914ec4cbd3b7477e548cd104117",
   "__main__.py": "bc713658e3413fada43e1613c2255feaa12add8ffba22ec22a6ddc4e00435fb6",
   "calibration.py": "fb4f2a1d60f0fd0f7807847a0d02382bd2628580a3609b416d6ce546fa795fa1",
-  "cli.py": "9f58b78efdcc448afeeac50b3078d3a2c4140ecce02055743e705aa996204d98",
+  "cli.py": "9e221718b57b990eec12bbd01067d0e84496fbe8a3c0331c308e417aeec395b8",
   "compatibility.py": "6b7dc43c6d220f63ca7bdd934eed9e6041ff5f494d1e2cf385b5fa52ab95292e",
   "config.py": "bb3279144c4e13c7f43c9467f93849c78158e0eebdd61bccab09d24e556c65d1",
   "dci/provenance/hashes.py": "b0db13e53e9e62d18ed2e94a225318b08d44aedd2beddffb044a46e2fc18bdc3",
   "dci/verifiers/rules.py": "00bed1e904013bcde6cac2c6243bc0c6655b7a1f73f47042b12946e258a63647",
   "design.py": "3ce9e8620d7423b95933af2e83fa287f8a0f6e73b115cd42f28758aaa12c772f",
-  "environment.py": "972ad22a57fcad01cf76d265ea0ba05fc62ec9cb8d479efc791d9add5727b554",
+  "environment.py": "7b802efd70d9a2e502d43276b27205244c188de2d25d58a13bde40969c80f244",
   "evidence.py": "b74694313b023fde5de8e030992655478b7eee7354cf043fce5eacbabc491727",
-  "freeze.py": "19a82b0545749d11ebef95c4e6e3920eb776126da3362aac778aa13a5e1ef1cf",
+  "freeze.py": "c627c14710436c56fde5256aa5f7c6abf5384570dc46649c4cd6174d65e0d7d7",
   "intervals.py": "cb10ee61da6be5cf128899e798444ed24d1713223401bed44a68c58ee7866e3a",
   "library.py": "2cc8eba7fee4fbfadd969c8bd9d621f75f6d7567461965d7d223a2da2050e597",
   "outcomes.py": "ed51afa4838c6043d3ca0c2aab24169ad3076a405da20be8bfa915e75d928a7c",
   "pipeline.py": "3aa82bf91110d784ef29708310fb5a3742767ed9b0a20baade5f07e9549062da",
   "references.py": "7e5e2d930dad11c08764472470606de0488f845d158117045635025aefbe7e7c",
-  "runner.py": "bfe4fafb2140032cd359f650d11e8c3bdaa463ed29e816c324d51395209bbfaf",
+  "runner.py": "2dca6a83a4281c03c81e6f125223dffc6a4cf8c74ffd372f18df6138b3adf1f6",
   "scoring.py": "b539c120662d42c91e2e9e0736b80f826b00cf03cc109e5a91ddc3e6c1cb305d",
   "smoke.py": "43ee6c8c282e6d726d9bc822937f7d4debe7b66f3aea677740ca1b90b2f6601e",
   "stability.py": "cc34cc3bd42e19fab8c61495df16fceda00517257449b11036bedb6fa2c4c8a5",

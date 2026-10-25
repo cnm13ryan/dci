@@ -181,6 +181,10 @@ def _environment(lock: Mapping[str, Any] | None, blocking: list[str]
         blocking.append(f"environment lock: the backend is Python "
                         f"{lock['identity'].get('python')}, not "
                         f"{CFG.BACKEND_PYTHON} (D12)")
+    for problem in ENV.requirement_problems(lock["identity"],
+                                            lock.get("host") or {}):
+        blocking.append(f"environment lock: {problem} (D12 execution "
+                        "requirements)")
     return lock
 
 

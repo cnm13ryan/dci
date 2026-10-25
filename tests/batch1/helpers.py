@@ -27,16 +27,21 @@ def approved(cfg: CFG.PilotConfig = CFG.DEFAULT_CONFIG) -> dict[str, Any]:
 
 def fake_probe(**changes: Any) -> dict[str, Any]:
     """What ``environment.probe`` would report on a stand-in host."""
+    gpu = {"name": "NVIDIA H100 80GB HBM3", "capability": "9.0",
+           "memory_gib": 79}
     found = {"status": "AVAILABLE", "interpreter": "/opt/backend/bin/python",
              "executable": "/opt/backend/bin/python", "python": "3.12.3",
              "implementation": "cpython", "platform": "Linux-test",
-             "packages": {"vllm": "0.9.9-test", "torch": "2.9.1",
+             "hostname": "test-host", "kernel": "6.8.0-test",
+             "packages": {"vllm": "0.15.1", "torch": "2.9.1+cu129",
                           "transformers": "4.99", "tokenizers": "0.21",
                           "triton": None, "xformers": None,
                           "flashinfer-python": None, "numpy": "2.1"},
              "distributions": 120, "distributions_hash": "d" * 64,
-             "torch_cuda": "12.8", "torch_hip": None,
-             "accelerators": ["Test GPU 80GB"]}
+             "torch_cuda": "12.9", "torch_hip": None,
+             "accelerators": ["NVIDIA H100 80GB HBM3"], "gpu_count": 2,
+             "gpus": [dict(gpu, uuid="GPU-a"), dict(gpu, uuid="GPU-b")],
+             "gpu_uuids": ["GPU-a", "GPU-b"], "driver": ["580.126.20"]}
     found.update(changes)
     return found
 

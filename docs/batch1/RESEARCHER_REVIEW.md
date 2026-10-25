@@ -1,5 +1,7 @@
 # Batch 1 researcher review: start here
 
+**Update 2026-10-25:** your decisions of that day are applied (Python 3.12 for the orchestrator, replacing 3.11; P3 minimum 3; the D05 topic edits; the CUDA backend and one worker per GPU) and are written up for transcription in [`DECISIONS_2026-10-25.md`](DECISIONS_2026-10-25.md). Where this document says otherwise, that file and the code are current.
+
 **Purpose:** everything you need to approve, revise or defer the Batch 1
 pilot protocol, without reading code or knowing the project's history.
 **Date:** 2026-10-19. **State:** implemented and tested on CPU with synthetic
@@ -25,7 +27,7 @@ Freeze 1 has not been made.
 | D05 topic bank | approve after reading the 88 replacements | your review of `TOPIC_REVIEW.md` §3 |
 | D09, D10 | approve with the disclosed noise | your approval |
 | **D11 coverage** | **revise: P3 minimum 3** (P1, P2 stay at 2) | **your choice of rule** |
-| D12 software and models | approve after the host smoke test; Python 3.11 already approved by you | host set-up, attestation, smoke test |
+| D12 software and models | approve after the host smoke test, on the conditions in `DECISIONS_2026-10-25.md` (Python 3.12) | host set-up, attestation, smoke test |
 | D13 weights | approve with the disclosed concentration | your approval |
 | D14 diagnostics | approve as diagnostics, not gates | your approval |
 
@@ -40,7 +42,7 @@ Freeze 1 has not been made.
   matching noise. A P3 minimum of 3 cuts them from 73% to 18% where coverage
   is thin, for about 1 point of extra false INFEASIBLE elsewhere. No minimum
   makes the reference populations cleaner.
-- **Python (D12):** 3.11 is pinned, recorded in every approval and in Freeze
+- **Python (D12):** 3.12 (since 2026-10-25; 3.11 before) is pinned, recorded in every approval and in Freeze
   1, and enforced with a clear message. Code fingerprints are now identical
   under Python 3.11, 3.12 and 3.13. The vLLM backend runs on Python 3.12, its
   pinned version, which needs your approval.

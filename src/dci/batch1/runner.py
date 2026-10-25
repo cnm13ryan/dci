@@ -47,14 +47,24 @@ process on the same root.
 **GPU selection** is a parameter: ``HIP_VISIBLE_DEVICES`` on the ROCm
 workstation, ``CUDA_VISIBLE_DEVICES`` on an NVIDIA host. Inherited
 visibility variables are cleared first.
+
+**One worker per GPU** (D12, 2026-10-25). ``execute(devices=(0, 1))`` runs
+the ``(stage, model)`` groups on one worker per listed device, each group a
+seam subprocess that sees only its own device; a worker takes the next
+group when it is free. Tensor parallelism stays as configured (1), the
+engine arguments are the seam plan's, and the root lock, the design
+authentication and the live environment check stay in this process. Groups
+write disjoint directories, and each backend run records its device.
 """
 from __future__ import annotations
 
 import json
 import os
+import queue
 import subprocess
 import time
-from dataclasses import dataclass
+from concurrent.futures import ThreadPoolExecutor
+from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Any, Callable, Mapping, Sequence
 
@@ -260,7 +270,8 @@ def _run_group(root: Path, stage: str, model_key: str,
                rows: list[Mapping[str, Any]], generate: GenerateFn,
                expected: Mapping[str, Mapping[str, Any]], *,
                generator: str, environment_identity_hash: str | None,
-               max_technical_attempts: int) -> dict[str, Any]:
+               max_technical_attempts: int,
+               device: int | None = None) -> dict[str, Any]:
     run_dir = Path(root) / "generation" / stage / model_key
     rows_path, rejected_path = run_dir / "rows.jsonl", run_dir / "rejected.jsonl"
     prov_path = run_dir / "provenance.jsonl"
@@ -342,6 +353,7 @@ def _run_group(root: Path, stage: str, model_key: str,
                               "generator": generator,
                               "environment_identity_hash":
                                   environment_identity_hash,
+                              "device": device,
                               "attempt_dir": attempt_dir.relative_to(
                                   run_dir).as_posix(),
                               "returncode": returncode, "blocked": blocked,
@@ -367,8 +379,10 @@ def _run_group(root: Path, stage: str, model_key: str,
 def execute(root: Path, design: Sequence[Mapping[str, Any]], *,
             freeze1: Mapping[str, Any], approvals: Mapping[str, Any] | None,
             token: str | None = None, generate: GenerateFn | None = None,
-            backend: BackendSpec | None = None) -> dict[str, Any]:
-    """Generate every row of ``design`` that has no accepted generation."""
+            backend: BackendSpec | None = None,
+            devices: Sequence[int] | None = None) -> dict[str, Any]:
+    """Generate every row of ``design`` that has no accepted generation,
+    with one worker per device in ``devices`` (default: the backend's)."""
     synthetic = generate is not None
     if synthetic and backend is not None:
         raise RunError("a stand-in generator and a real backend were both "
@@ -384,8 +398,12 @@ def execute(root: Path, design: Sequence[Mapping[str, Any]], *,
         F.assert_authorized(freeze1, approvals or {}, token,
                             live_environment=probe_live)
         identity_hash = record_hash(ENV.identity_of(live))
-        generate = subprocess_backend(spec)
-    assert generate is not None
+    devices = tuple(devices) if devices else \
+        ((backend or BackendSpec()).device,)
+    if len(set(devices)) != len(devices):
+        raise RunError(f"a device is listed twice: {list(devices)}")
+    workers = {d: generate if synthetic else
+               subprocess_backend(replace(spec, device=d)) for d in devices}
     limit = EV.config_of(freeze1).max_technical_attempts
     if any(r.get("load", 0) > 1 for r in design):
         raise RunError("a composed row reached the pilot runner")
@@ -398,13 +416,29 @@ def execute(root: Path, design: Sequence[Mapping[str, Any]], *,
         groups: dict[tuple[str, str], list[Mapping[str, Any]]] = {}
         for r in design:
             groups.setdefault((r["stage"], r["model"]), []).append(r)
-        for (stage, model_key), rows in sorted(groups.items()):
-            g = _run_group(root, stage, model_key, rows, generate,
-                           expected[stage],
-                           generator=(SYNTHETIC_GENERATOR if synthetic
-                                      else SEAM_GENERATOR),
-                           environment_identity_hash=identity_hash,
-                           max_technical_attempts=limit)
+        pending = sorted(groups)
+        free: queue.SimpleQueue[int] = queue.SimpleQueue()
+        for d in devices:
+            free.put(d)
+
+        def work(key: tuple[str, str]) -> dict[str, Any]:
+            device = free.get()
+            try:
+                return _run_group(root, key[0], key[1], groups[key],
+                                  workers[device], expected[key[0]],
+                                  generator=(SYNTHETIC_GENERATOR if synthetic
+                                             else SEAM_GENERATOR),
+                                  environment_identity_hash=identity_hash,
+                                  max_technical_attempts=limit,
+                                  device=device)
+            finally:
+                free.put(device)
+        with ThreadPoolExecutor(max_workers=len(devices)) as pool:
+            futures = [pool.submit(work, key) for key in pending]
+        errors = [f.exception() for f in futures if f.exception()]
+        if errors:
+            raise errors[0]
+        for g in (f.result() for f in futures):
             summary["generated"] += g["accepted_now"]
             summary["reused"] += g["reused"]
             summary["rejected"] += g["rejected_now"]

@@ -416,7 +416,7 @@ $P freeze-protocol   --root R --approvals approvals.json \
 $P validate-freeze   --root R
 $P plan              --root R --stage stage1
 $P execute           --root R --stage stage1 --authorize <freeze1 hash> \
-                     [--accelerator rocm|cuda] [--device 0] [--backend-python PATH]
+                     [--accelerator rocm|cuda] [--devices 0,1] [--backend-python PATH]
 $P resume            --root R --stage stage1 --authorize <freeze1 hash>   # same, idempotent
 $P status            --root R        # completeness and open technical failures
 $P score             --root R --stage stage1
@@ -468,9 +468,7 @@ model on the chosen instance, at this cap and a chunk size of 64:
 The precision review recommends no increase in the allocation, so the counts
 are unchanged.
 
-Running on NVIDIA also needs a vLLM CUDA backend interpreter. The runner already
-selects GPUs with `CUDA_VISIBLE_DEVICES`. `environments/cuda` holds a
-transformers stack, not vLLM, and no CUDA backend has been built or tested.
+On NVIDIA (D12, 2026-10-25) the backend is `environments/cuda-vllm`: Python 3.12, vllm 0.15.1 (cp38-abi3) and torch 2.9.1+cu129 from the explicit cu129 index, locked for Linux x86_64. `execute --accelerator cuda --devices 0,1` runs one worker per GPU, each seeing only its own device through `CUDA_VISIBLE_DEVICES`, with TP as configured (1). The environment lock binds the software and the GPU class (model, count, compute capability, memory) and records the hostname, kernel, GPU UUIDs and driver without binding them; a host outside D12's execution requirements cannot be locked or frozen. `scripts/lambda/` holds the host scripts. It has not been built, attested or smoke-tested on the instance yet.
 
 ## 11. Tests
 
@@ -511,7 +509,7 @@ remediation adds disclosures to D09–D11 and D13.
 - **Alphabetical order** compares folded words by code point.
 - **Approvals are plain JSON,** protected by payload hashes that bind code,
   not by an HMAC signature as v8.1's records were.
-- **No CUDA vLLM backend** has been built, attested or smoke-tested.
+- **The CUDA vLLM backend** (`environments/cuda-vllm`) is locked but has not been built, attested or smoke-tested on the instance.
 - **Synthetic results are not evidence.** The demo reaches `FEASIBLE` because
   the invented compliance surface was built to be plausible.
 

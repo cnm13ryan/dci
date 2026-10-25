@@ -27,7 +27,7 @@ jobs:
 
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.12"  # Batch 1 runs under CPython 3.12 only (D12)
           cache: pip
 
       # The scientific core depends on NO GPU stack by design; torch and

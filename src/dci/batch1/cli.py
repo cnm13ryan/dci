@@ -218,17 +218,20 @@ def cmd_execute(args) -> int:
     f1 = _freeze1(root)
     approvals = F.read_json(root / "approvals.json")
     design = P.read_design(root, args.stage)
+    devices = tuple(int(d) for d in args.devices.split(","))
     if args.synthetic:
         summary = RUN.execute(root, design, freeze1=f1, approvals=approvals,
-                              generate=SY.synthetic_generate())
+                              generate=SY.synthetic_generate(),
+                              devices=devices)
     else:
         backend = RUN.BackendSpec(
             python=args.backend_python or RUN.BackendSpec.python,
             visibility_var=("CUDA_VISIBLE_DEVICES" if args.accelerator == "cuda"
                             else "HIP_VISIBLE_DEVICES"),
-            device=args.device)
+            device=devices[0])
         summary = RUN.execute(root, design, freeze1=f1, approvals=approvals,
-                              token=args.authorize, backend=backend)
+                              token=args.authorize, backend=backend,
+                              devices=devices)
     _print(summary)
     return 0 if summary["complete"] else 4
 
@@ -390,7 +393,9 @@ def main(argv: list[str] | None = None) -> int:
         ep.add_argument("--backend-python")
         ep.add_argument("--accelerator", choices=("rocm", "cuda"),
                         default="rocm")
-        ep.add_argument("--device", type=int, default=0)
+        ep.add_argument("--devices", default="0",
+                        help="comma-separated GPU indices; one worker per "
+                             "GPU (D12), e.g. 0,1")
     add("score", cmd_score, root=True, stage=True)
     add("select-refinement", cmd_select_refinement, root=True)
     add("finalize-calibration", cmd_finalize, root=True)

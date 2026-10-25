@@ -9,6 +9,7 @@ import pytest
 
 from dci.batch1 import calibration as CAL
 from dci.batch1 import compatibility as COMPAT
+from dci.batch1 import config as CFG
 from dci.batch1 import coverage_study as C
 from dci.batch1 import library as L
 from dci.batch1 import references as R
@@ -86,7 +87,12 @@ def test_rules_are_paired_and_a_stricter_count_never_adds_support(moderate):
 def test_one_pilot_record_scores_every_rule_on_the_same_draw():
     rec = C._pilot_record("other_operation_harder", S.ALLOCATIONS[0], 7)
     assert set(rec["verdicts"]["actual"]) == {r.name for r in C.RULES}
-    assert bool(rec["verdicts"]["actual"]["D"][0]) == \
+    # The pipeline's own verdict is the study's rule for the configured
+    # minimum: P3k3 since the researcher's D11 decision of 2026-10-25 (the
+    # design rule "D" keeps the design value 2, for comparison).
+    k = CFG.DEFAULT_CONFIG.p3_min_additional_other_operation
+    configured = "D" if k == 2 else f"P3k{k}"
+    assert bool(rec["verdicts"]["actual"][configured][0]) == \
         (rec["status"] == "FEASIBLE")
 
 

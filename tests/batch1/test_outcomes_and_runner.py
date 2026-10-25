@@ -326,3 +326,69 @@ def test_a_crashed_subprocess_keeps_its_complete_rows(run, stub):
         execute(run, stub("crash"))
     assert len(lines(rows_file(run))) == 3
     assert execute(run, stub("ok"))["generated"] == 37
+
+
+# ------------------------------------- one worker per GPU (D12, 2026-10-25)
+
+def _per_model(protocol, n=12):
+    out = []
+    for model in sorted({r["model"] for r in protocol["design"]}):
+        out += [r for r in protocol["design"] if r["model"] == model][:n]
+    return out
+
+
+def test_two_workers_use_both_devices_and_match_one_worker(protocol,
+                                                           tmp_path_factory):
+    import threading
+    import time as _time
+    rows = _per_model(protocol)
+    good = SY.synthetic_generate(empty_rate=0.1, truncation_rate=0.1)
+    active, peak, lock = [0], [0], threading.Lock()
+
+    def slow(run_dir, plan, design_rows):
+        with lock:
+            active[0] += 1
+            peak[0] = max(peak[0], active[0])
+        _time.sleep(0.3)
+        try:
+            return good(run_dir, plan, design_rows)
+        finally:
+            with lock:
+                active[0] -= 1
+    roots = {}
+    for name, devices in (("two", (0, 1)), ("one", None)):
+        root = tmp_path_factory.mktemp(name)
+        make_root(root, freeze1=protocol["freeze1"],
+                  approvals=protocol["approvals"])
+        summary = RUN.execute(root, rows, freeze1=protocol["freeze1"],
+                              approvals=protocol["approvals"],
+                              generate=slow, devices=devices)
+        assert summary["complete"] and summary["generated"] == len(rows)
+        roots[name] = root
+    assert peak[0] == 2
+    models = sorted({r["model"] for r in rows})
+    used = set()
+    for model in models:
+        group = roots["two"] / "generation" / "stage1" / model
+        used |= {e["device"] for e in lines(group / "provenance.jsonl")
+                 if e["event"] == "backend_run"}
+        a = sorted(canonical(r) for r in lines(group / "rows.jsonl"))
+        b = sorted(canonical(r) for r in lines(
+            roots["one"] / "generation" / "stage1" / model / "rows.jsonl"))
+        assert a == b
+    assert used == {0, 1}
+
+
+def test_a_device_listed_twice_is_refused(run):
+    with pytest.raises(RunError, match="listed twice"):
+        RUN.execute(run["root"], run["rows"], freeze1=run["freeze1"],
+                    approvals=run["approvals"],
+                    generate=SY.synthetic_generate(), devices=(0, 0))
+
+
+def test_each_worker_sees_only_its_own_gpu():
+    spec = RUN.BackendSpec(visibility_var="CUDA_VISIBLE_DEVICES", device=0)
+    from dataclasses import replace
+    envs = [replace(spec, device=d).env() for d in (0, 1)]
+    assert [e["CUDA_VISIBLE_DEVICES"] for e in envs] == ["0", "1"]
+    assert all("HIP_VISIBLE_DEVICES" not in e for e in envs)

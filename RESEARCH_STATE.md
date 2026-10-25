@@ -46,11 +46,15 @@ is a different study, currently paused; v8.1 does not supersede it.
 A fourth line, **Batch 1** of a new reference-selection study, lives in
 `src/dci/batch1/` and imports nothing from `dci1/`. It reuses DCI-1's A, B,
 model panel and decoding, but has a new library, new topics and its own
-freezes. As of 2026-10-19 it is implemented, independently audited twice,
+freezes. As of 2026-10-25 it is implemented, independently audited twice,
 remediated after both, and validated on synthetic data only. No pilot has run.
-Its 14 protocol decisions await the researcher's approval: Python 3.11 for the
-orchestrator is approved, and D11's coverage rule awaits a choice. The
-generation host is not yet attested. Review package:
+The researcher's decisions of 2026-10-25 are applied in the code (topic
+containment rule, P3 minimum 3, Python 3.12, a CUDA vLLM backend for a 2x H100
+host, one worker per GPU) and written up for transcription in
+[`docs/batch1/DECISIONS_2026-10-25.md`](docs/batch1/DECISIONS_2026-10-25.md);
+none is recorded in `approvals.json` yet. The changes await an independent
+audit ([`docs/batch1/AUDIT_REQUEST.md`](docs/batch1/AUDIT_REQUEST.md)), and
+the generation host is not yet attested. Review package:
 [`docs/batch1/RESEARCHER_REVIEW.md`](docs/batch1/RESEARCHER_REVIEW.md).
 
 ## 3. Experiment families
