@@ -92,10 +92,9 @@ def cmd_write_review_artifacts(args) -> int:
                             else DOCS / args.protocol))
     manifest = L.library_manifest()
     matrix = COMPAT.compatibility_matrix()
-    v2 = cfg.topic_bank == "v2"
-    source = TOP.SOURCE_PATH_V2 if v2 else TOP.SOURCE_PATH
-    semantic = TOP.load_semantic_review(TOP.SEMANTIC_REVIEW_PATH_V2 if v2
-                                        else None)
+    v2 = cfg.topic_bank != "v1"
+    _, _, semantic_path, source = TOP.bank_paths(cfg.topic_bank)
+    semantic = TOP.load_semantic_review(semantic_path)
     bank = TOP.load_bank(source)
     split = TOP.split_for(cfg)
     overlap = TOP.overlap_report(bank, bank=cfg.topic_bank)
@@ -115,7 +114,7 @@ def cmd_write_review_artifacts(args) -> int:
     (out / "compatibility_review.md").write_text(
         REP.compatibility_review(matrix))
     (out / "estimate.md").write_text(REP.estimate_review(est))
-    (out / "decisions.md").write_text(REP.decisions_review(approvals))
+    (out / "decisions.md").write_text(REP.decisions_review(approvals, cfg))
     revisions = json.loads(source.read_text()).get("revisions", [])
     (out / "topic_screen_report.md").write_text(REP.topic_review(
         overlap, hygiene, revisions, {t.topic_id: t.question for t in bank},

@@ -500,7 +500,55 @@ DECISION_NOTES: dict[str, tuple[str, str]] = {
 }
 
 
-def decisions_review(approvals: Mapping[str, Any]) -> str:
+#: Protocol v2.1's notes (audit A1): what changed from v1 and what an
+#: approval accepts. v1's notes (``DECISION_NOTES``) describe v1.
+V2_DECISION_NOTES: dict[str, tuple[str, str]] = {
+    "D01": ("Library v2 (R1): v1's slots plus 110 additions.",
+            "Accept the parameters listed in `library_review.md`."),
+    "D02": ("Frames and prompt as v1; target words are quoted (R2).",
+            "Accept the quoted renderings (every rendering is in the "
+            "payload)."),
+    "D03": ("Unchanged.", "As v1."),
+    "D04": ("Unchanged rules; three new verifiers (numerals, positional "
+            "word, final question).", "As v1."),
+    "D05": ("Bank v3: 144 topics written fresh for v2.1 (T1 48 / T2 96, none "
+            "reserved), screened against every earlier bank, including bank "
+            "v2, which the v2 run measured.",
+            "Accept bank v3 and its reviews (`topic_screen_report.md`)."),
+    "D06": ("Stages A-D; every reference measured on T2 (v2.1, audit B1); "
+            "no C' top-up (R7 option b); budget 192,000 rows.",
+            "Accept the three departures from R7(a): C' dropped, the budget, "
+            "and carrying all 161 instead of at most 110."),
+    "D07": ("B fixed at 8 and 10 (R4); checked on T2, not selected.",
+            "Accept B_NOT_INFORMATIVE as the outcome if a limit fails."),
+    "D08": ("A fixed at however x 6 (R3); A x 4 and x 5 diagnostics only.",
+            "Accept A_NOT_ADMISSIBLE as the outcome if A fails on T2."),
+    "D09": ("T2 responses only (R7).", "As v1 otherwise."),
+    "D10": ("Primary rule unchanged; R5(a) reports added, never deciding. "
+            "Confident matching is expected near zero at n = 96 (the "
+            "interval's half-width is about 0.14).",
+            "Accept the reports as labelled sensitivities."),
+    "D11": ("Unchanged minima and target; P3 needs 3 additional "
+            "other-operation references, stricter than the design's 2 (the "
+            "researcher's decision of 2026-10-25); the forecast uses them.",
+            "As approved for v1 and v2."),
+    "D12": ("Seed domain dci.batch1:gen:v2.1; otherwise as re-approved "
+            "for 0cde3b9 (R13).",
+            "Re-approve after the v2.1 smoke test."),
+    "D13": ("Word-then-count weights (R10): equal over target words, then "
+            "over a word's count variants.", "Accept R10's weights."),
+    "D14": ("T2 bootstrap; truncation review needs >= 2 rows (R11); "
+            "T1-versus-T2 agreement reported; the review rule of 2026-10-25 "
+            "is stated in the decision itself.",
+            "Every Freeze 2 flag blocks Batch 2 until you review it; only "
+            "MEMBERSHIP_UNSTABLE proceeds with disclosure."),
+}
+
+
+def decisions_review(approvals: Mapping[str, Any],
+                     cfg: CFG.PilotConfig | None = None) -> str:
+    cfg = cfg or CFG.DEFAULT_CONFIG
+    notes = V2_DECISION_NOTES if cfg.protocol == "v2" else DECISION_NOTES
     out = ["# Decisions requiring approval before the pilot", "",
            "Every decision must be APPROVED in `approvals.json` against its "
            "payload hash before `execute` will run real generation. "
@@ -513,19 +561,24 @@ def decisions_review(approvals: Mapping[str, Any]) -> str:
            "| id | decision | origin | status | payload hash | implementing "
            "code |", "|---|---|---|---|---|---|"]
     impl = {d.decision_id: ", ".join(f"`{m}`" for m in
-                                     CFG.IMPLEMENTATION[d.decision_id])
-            for d in CFG.decisions()}
+                                     d.payload["implementation"])
+            for d in CFG.decisions(cfg)}
     for did, d in approvals["decisions"].items():
         summary = d["summary"].replace("|", "\\|")
         out.append(f"| {did} | **{d['title']}**: {summary} | "
                    f"{d['origin']} | {d['status']} | `{d['payload_hash'][:16]}`"
                    f" | {impl.get(did, '')} |")
-    out += ["", "## Changes since the first audit, and what to settle",
-            "", "Every payload hash changed in this revision (each now binds "
-            "its implementing code), so no earlier approval carries over; "
-            "none had been given.", ""]
+    if cfg.protocol == "v2":
+        out += ["", "## Changes from v1, and what an approval accepts", "",
+                "No v1 or v2 approval carries over: every payload binds the "
+                "v2.1 code.", ""]
+    else:
+        out += ["", "## Changes since the first audit, and what to settle",
+                "", "Every payload hash changed in this revision (each now "
+                "binds its implementing code), so no earlier approval "
+                "carries over; none had been given.", ""]
     for did in approvals["decisions"]:
-        change, ask = DECISION_NOTES.get(did, ("", ""))
+        change, ask = notes.get(did, ("", ""))
         out += [f"### {did} — {approvals['decisions'][did]['title']}", "",
                 f"- **Change:** {change}", f"- **To settle:** {ask}", ""]
     return "\n".join(out).rstrip() + "\n"

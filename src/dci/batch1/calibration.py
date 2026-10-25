@@ -352,7 +352,7 @@ def select_a(tables: PilotTables, cfg: CFG.PilotConfig,
 
 
 def finalize(tables: PilotTables, cfg: CFG.PilotConfig,
-             compat: Mapping[str, Any], *, early_stop: bool = False
+             compat: Mapping[str, Any], *, early_stop: bool | str = False
              ) -> dict[str, Any]:
     """Everything Freeze 2 needs, from stand-alone tables only. Protocol v2
     reads T2 tables only and fixes A and B (``revision.finalize_fixed``)."""

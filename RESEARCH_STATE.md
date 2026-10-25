@@ -48,24 +48,34 @@ A fourth line, **Batch 1** of a new reference-selection study, lives in
 model panel and decoding, but has a new library, new topics and its own
 freezes.
 
-**The pilot ran on 2026-10-25** on a 2x H100 instance: 30,976 stand-alone
-responses, Freeze 1 `93ef9aac…`, Freeze 2 `4946c194…`. **Its verdict is
-INFEASIBLE (`REVISION_REQUIRED`):**
+**Pilot 1 (2026-10-25)** was INFEASIBLE: P1 7, P2 0, P3 1 of 16 configurations
+(Freeze 2 `4946c194…`; [`docs/batch1/RESULTS_2026-10-25.md`](docs/batch1/RESULTS_2026-10-25.md)).
+The library was structurally short. The researcher approved a revision (R1–R13,
+[`docs/batch1/revision/`](docs/batch1/revision/)): library v2, a fresh topic bank,
+screening on T1, membership on T2, and fixed A and B.
 
-| contrast | configurations supported (12 of 16 needed) |
-|---|---|
-| P1 | 7 |
-| P2 | 0 |
-| P3 | 1 |
+**The v2 pilot (2026-10-26)** came out **FEASIBLE at the point estimates**:
+P1 14, P2 12, P3 12 of 16 (Freeze 2 `85900f0c…`). **It is provisional and not a
+basis for Batch 2:**
 
-Difficulty matching to A (however × 6) leaves 1-5 matched references per
-configuration. B limits 8 and 10 and A × 6 were selected. Batch 2 cannot be
-designed on this Freeze 2; the next step is a design revision.
+- it is FEASIBLE in only 15% of topic resamples, and that flag and one
+  truncation cell block under D14;
+- the audit found the carry rule restricts the relaxed populations (B1).
 
-Results, with the per-configuration table and limitations (including a
-Freeze 2 hash that validates on Linux but not macOS):
-[`docs/batch1/RESULTS_2026-10-25.md`](docs/batch1/RESULTS_2026-10-25.md).
-Decisions: [`docs/batch1/DECISIONS_2026-10-25.md`](docs/batch1/DECISIONS_2026-10-25.md).
+A stability analysis finds P1 robust (0.90) and P2 likely short in truth.
+[`docs/batch1/RESULTS_2026-10-26_v2.md`](docs/batch1/RESULTS_2026-10-26_v2.md).
+
+**Next: protocol v2.1**, a new calibration experiment:
+
+- every reference measured on T2;
+- a fresh bank v3 for T1 and T2;
+- no C′;
+- R5 sensitivities and T1-versus-T2 agreement reported;
+- corrected decision texts.
+
+It waits for the researcher's formal approvals, a clean audit and a D12 smoke
+test at the execution commit. Batch 2 waits for a Freeze 2 that is FEASIBLE
+without blocking flags. The 480 reserved confirmatory topics are untouched.
 
 ## 3. Experiment families
 

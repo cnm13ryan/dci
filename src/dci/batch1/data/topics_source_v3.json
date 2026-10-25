@@ -1,0 +1,770 @@
+{
+  "schema": "dci.batch1/topic-source/v3",
+  "provenance": "authored 2026-10-26 for Batch 1 protocol v2.1 (the researcher's condition: fresh T1 and T2) by an AI writer agent, against the full lists of the historical banks (1,472 distinct), bank v1 (576) and bank v2 (144 + 8 earlier wordings); screened by the overlap report and a blind semantic review (topics_semantic_review_v3.json). Never shown to a model before this file. Agent proposals; the researcher set the condition, not each question.",
+  "topics": [
+    {
+      "topic_id": "b3-art-and-design-00",
+      "area": "art and design",
+      "question": "Why do oil paintings turn yellow when they hang in dim rooms?"
+    },
+    {
+      "topic_id": "b3-art-and-design-01",
+      "area": "art and design",
+      "question": "Why do potters knead and slam their clay before shaping it?"
+    },
+    {
+      "topic_id": "b3-art-and-design-02",
+      "area": "art and design",
+      "question": "How does a stone carver copy a small model at full size?"
+    },
+    {
+      "topic_id": "b3-art-and-design-03",
+      "area": "art and design",
+      "question": "Why do some timber frames use wooden pegs rather than iron nails?"
+    },
+    {
+      "topic_id": "b3-art-and-design-04",
+      "area": "art and design",
+      "question": "Why do printers add black ink to cyan, magenta and yellow?"
+    },
+    {
+      "topic_id": "b3-art-and-design-05",
+      "area": "art and design",
+      "question": "Why do classical columns bulge slightly towards the middle?"
+    },
+    {
+      "topic_id": "b3-art-and-design-06",
+      "area": "art and design",
+      "question": "Why do type designers let round letters dip below the baseline?"
+    },
+    {
+      "topic_id": "b3-art-and-design-07",
+      "area": "art and design",
+      "question": "Why was the finest blue pigment once dearer than gold?"
+    },
+    {
+      "topic_id": "b3-art-and-design-08",
+      "area": "art and design",
+      "question": "Why do artists spray charcoal drawings once they are finished?"
+    },
+    {
+      "topic_id": "b3-art-and-design-09",
+      "area": "art and design",
+      "question": "How does a stacking chair nest neatly on top of another?"
+    },
+    {
+      "topic_id": "b3-art-and-design-10",
+      "area": "art and design",
+      "question": "How does a pop up book make a shape rise as it opens?"
+    },
+    {
+      "topic_id": "b3-art-and-design-11",
+      "area": "art and design",
+      "question": "How does blasting glass with fine grit make it look frosted?"
+    },
+    {
+      "topic_id": "b3-everyday-science-00",
+      "area": "everyday science",
+      "question": "How does clicking a metal disc make a gel hand warmer heat up?"
+    },
+    {
+      "topic_id": "b3-everyday-science-01",
+      "area": "everyday science",
+      "question": "How does an instant ice pack turn cold when it is squeezed?"
+    },
+    {
+      "topic_id": "b3-everyday-science-02",
+      "area": "everyday science",
+      "question": "Why does a small ball dropped on a big one rebound so high?"
+    },
+    {
+      "topic_id": "b3-everyday-science-03",
+      "area": "everyday science",
+      "question": "How does superglue set hard within seconds of touching a surface?"
+    },
+    {
+      "topic_id": "b3-everyday-science-04",
+      "area": "everyday science",
+      "question": "Why does a sharp knife cut with less effort than a blunt one?"
+    },
+    {
+      "topic_id": "b3-everyday-science-05",
+      "area": "everyday science",
+      "question": "Why do tea leaves gather in the middle of a stirred cup?"
+    },
+    {
+      "topic_id": "b3-everyday-science-06",
+      "area": "everyday science",
+      "question": "Why do water drops skate across a pan that is far too hot?"
+    },
+    {
+      "topic_id": "b3-everyday-science-07",
+      "area": "everyday science",
+      "question": "How does breathing helium make a voice sound squeaky?"
+    },
+    {
+      "topic_id": "b3-everyday-science-08",
+      "area": "everyday science",
+      "question": "Why does the tip of a whip make a loud crack?"
+    },
+    {
+      "topic_id": "b3-everyday-science-09",
+      "area": "everyday science",
+      "question": "Why does a spinning coin rattle ever faster as it settles flat?"
+    },
+    {
+      "topic_id": "b3-everyday-science-10",
+      "area": "everyday science",
+      "question": "Why do a heavy ball and a light ball fall together in a vacuum?"
+    },
+    {
+      "topic_id": "b3-everyday-science-11",
+      "area": "everyday science",
+      "question": "Why does a drop of washing up liquid send pepper rushing outwards?"
+    },
+    {
+      "topic_id": "b3-food-00",
+      "area": "food",
+      "question": "Why does a hard boiled egg grow a green ring around its yolk?"
+    },
+    {
+      "topic_id": "b3-food-01",
+      "area": "food",
+      "question": "How does fresh pineapple stop a jelly from setting?"
+    },
+    {
+      "topic_id": "b3-food-02",
+      "area": "food",
+      "question": "Why does popping candy crackle and fizz on the tongue?"
+    },
+    {
+      "topic_id": "b3-food-03",
+      "area": "food",
+      "question": "Why are pretzels dipped in an alkaline bath before baking?"
+    },
+    {
+      "topic_id": "b3-food-04",
+      "area": "food",
+      "question": "Why do potatoes taste sweet after a spell in a cold store?"
+    },
+    {
+      "topic_id": "b3-food-05",
+      "area": "food",
+      "question": "How does chocolate make chewing gum fall apart in the mouth?"
+    },
+    {
+      "topic_id": "b3-food-06",
+      "area": "food",
+      "question": "How do factories turn brewed coffee into instant granules?"
+    },
+    {
+      "topic_id": "b3-food-07",
+      "area": "food",
+      "question": "How does curing keep ham pink after it has been cooked?"
+    },
+    {
+      "topic_id": "b3-food-08",
+      "area": "food",
+      "question": "Why does hot mustard sting the nose rather than the tongue?"
+    },
+    {
+      "topic_id": "b3-food-09",
+      "area": "food",
+      "question": "Why are cashew nuts sold to shoppers already out of their shells?"
+    },
+    {
+      "topic_id": "b3-food-10",
+      "area": "food",
+      "question": "Why do cooks blanch vegetables before freezing them?"
+    },
+    {
+      "topic_id": "b3-food-11",
+      "area": "food",
+      "question": "Why do mushrooms turn soggy when a pan is too crowded?"
+    },
+    {
+      "topic_id": "b3-geography-00",
+      "area": "geography",
+      "question": "How did ice sheets mould farmland into low oval hills called drumlins?"
+    },
+    {
+      "topic_id": "b3-geography-01",
+      "area": "geography",
+      "question": "Why do some geysers erupt on a fairly regular schedule?"
+    },
+    {
+      "topic_id": "b3-geography-02",
+      "area": "geography",
+      "question": "Why are auroras seen mostly in skies near the poles?"
+    },
+    {
+      "topic_id": "b3-geography-03",
+      "area": "geography",
+      "question": "How does freezing ground sort loose stones into rings and polygons?"
+    },
+    {
+      "topic_id": "b3-geography-04",
+      "area": "geography",
+      "question": "How do tall columns of basalt form as a lava flow cools?"
+    },
+    {
+      "topic_id": "b3-geography-05",
+      "area": "geography",
+      "question": "Why is the Earth slightly wider at the equator than pole to pole?"
+    },
+    {
+      "topic_id": "b3-geography-06",
+      "area": "geography",
+      "question": "Why do dry desert valleys flood so suddenly after distant storms?"
+    },
+    {
+      "topic_id": "b3-geography-07",
+      "area": "geography",
+      "question": "Why do so many tornadoes strike the central plains of North America?"
+    },
+    {
+      "topic_id": "b3-geography-08",
+      "area": "geography",
+      "question": "How does an undersea earthquake raise a tsunami?"
+    },
+    {
+      "topic_id": "b3-geography-09",
+      "area": "geography",
+      "question": "How do strong whirlpools form in some narrow sea straits?"
+    },
+    {
+      "topic_id": "b3-geography-10",
+      "area": "geography",
+      "question": "How do tall earth pillars come to wear a boulder on top?"
+    },
+    {
+      "topic_id": "b3-geography-11",
+      "area": "geography",
+      "question": "How does a glacier creep downhill when it is solid ice?"
+    },
+    {
+      "topic_id": "b3-health-and-the-body-00",
+      "area": "health and the body",
+      "question": "Why do people never notice the blind spot in each eye?"
+    },
+    {
+      "topic_id": "b3-health-and-the-body-01",
+      "area": "health and the body",
+      "question": "Why do people see stars when they stand up too quickly?"
+    },
+    {
+      "topic_id": "b3-health-and-the-body-02",
+      "area": "health and the body",
+      "question": "Why does scratching an itch bring relief yet make it worse?"
+    },
+    {
+      "topic_id": "b3-health-and-the-body-03",
+      "area": "health and the body",
+      "question": "How does staring at a bright colour leave a ghostly afterimage?"
+    },
+    {
+      "topic_id": "b3-health-and-the-body-04",
+      "area": "health and the body",
+      "question": "Why do cold drinks make some teeth twinge sharply?"
+    },
+    {
+      "topic_id": "b3-health-and-the-body-05",
+      "area": "health and the body",
+      "question": "Why does one nostril often feel more blocked than the other?"
+    },
+    {
+      "topic_id": "b3-health-and-the-body-06",
+      "area": "health and the body",
+      "question": "How does knocking the funny bone send a jolt down the arm?"
+    },
+    {
+      "topic_id": "b3-health-and-the-body-07",
+      "area": "health and the body",
+      "question": "Why is a newborn baby born with more bones than an adult?"
+    },
+    {
+      "topic_id": "b3-health-and-the-body-08",
+      "area": "health and the body",
+      "question": "How does the throat stop food from going down the windpipe?"
+    },
+    {
+      "topic_id": "b3-health-and-the-body-09",
+      "area": "health and the body",
+      "question": "What job do eyebrows do for the eyes beneath them?"
+    },
+    {
+      "topic_id": "b3-health-and-the-body-10",
+      "area": "health and the body",
+      "question": "Why must donated blood match the type of the person receiving it?"
+    },
+    {
+      "topic_id": "b3-health-and-the-body-11",
+      "area": "health and the body",
+      "question": "Why do people hold small print further away in middle age?"
+    },
+    {
+      "topic_id": "b3-history-00",
+      "area": "history",
+      "question": "How has some Roman concrete lasted for centuries in seawater?"
+    },
+    {
+      "topic_id": "b3-history-01",
+      "area": "history",
+      "question": "How did chains of signal towers send messages before electric telegraphs?"
+    },
+    {
+      "topic_id": "b3-history-02",
+      "area": "history",
+      "question": "Why did lemons and limes become standard rations on naval ships?"
+    },
+    {
+      "topic_id": "b3-history-03",
+      "area": "history",
+      "question": "Why were the edges of many old coins given fine ridges?"
+    },
+    {
+      "topic_id": "b3-history-04",
+      "area": "history",
+      "question": "Why did early railways quarrel over the gap between their rails?"
+    },
+    {
+      "topic_id": "b3-history-05",
+      "area": "history",
+      "question": "How did merchants use an abacus to add large sums quickly?"
+    },
+    {
+      "topic_id": "b3-history-06",
+      "area": "history",
+      "question": "How did notched tally sticks record a debt between two people?"
+    },
+    {
+      "topic_id": "b3-history-07",
+      "area": "history",
+      "question": "How did plate armour let a knight move freely in battle?"
+    },
+    {
+      "topic_id": "b3-history-08",
+      "area": "history",
+      "question": "How did a hypocaust heat the floors of Roman buildings?"
+    },
+    {
+      "topic_id": "b3-history-09",
+      "area": "history",
+      "question": "How did sailors measure a ship's speed with a knotted rope?"
+    },
+    {
+      "topic_id": "b3-history-10",
+      "area": "history",
+      "question": "How did medieval scribes make lasting ink from oak galls?"
+    },
+    {
+      "topic_id": "b3-history-11",
+      "area": "history",
+      "question": "Why did early motor cars need a hand crank to start?"
+    },
+    {
+      "topic_id": "b3-language-and-writing-00",
+      "area": "language and writing",
+      "question": "How did the word sandwich come from the title of an earl?"
+    },
+    {
+      "topic_id": "b3-language-and-writing-01",
+      "area": "language and writing",
+      "question": "Why do so many languages have a word like mama for mother?"
+    },
+    {
+      "topic_id": "b3-language-and-writing-02",
+      "area": "language and writing",
+      "question": "How did the ampersand grow out of a short Latin word?"
+    },
+    {
+      "topic_id": "b3-language-and-writing-03",
+      "area": "language and writing",
+      "question": "Why do some languages put the verb at the end of a sentence?"
+    },
+    {
+      "topic_id": "b3-language-and-writing-04",
+      "area": "language and writing",
+      "question": "Why do nouns in French and German each carry a gender?"
+    },
+    {
+      "topic_id": "b3-language-and-writing-05",
+      "area": "language and writing",
+      "question": "How can a whistled language carry whole sentences across valleys?"
+    },
+    {
+      "topic_id": "b3-language-and-writing-06",
+      "area": "language and writing",
+      "question": "Why did some old scripts run words together with no spaces?"
+    },
+    {
+      "topic_id": "b3-language-and-writing-07",
+      "area": "language and writing",
+      "question": "How do blends like brunch and smog become ordinary words?"
+    },
+    {
+      "topic_id": "b3-language-and-writing-08",
+      "area": "language and writing",
+      "question": "Why do the letters of the alphabet come in their familiar order?"
+    },
+    {
+      "topic_id": "b3-language-and-writing-09",
+      "area": "language and writing",
+      "question": "How did slanted italic type come to mark emphasis?"
+    },
+    {
+      "topic_id": "b3-language-and-writing-10",
+      "area": "language and writing",
+      "question": "Why does Morse code give the shortest signals to the commonest letters?"
+    },
+    {
+      "topic_id": "b3-language-and-writing-11",
+      "area": "language and writing",
+      "question": "How did American and British spellings come to differ in words like colour?"
+    },
+    {
+      "topic_id": "b3-music-00",
+      "area": "music",
+      "question": "What does the sustain pedal on a piano do to the strings?"
+    },
+    {
+      "topic_id": "b3-music-01",
+      "area": "music",
+      "question": "Why does a note an octave higher sound like the same note?"
+    },
+    {
+      "topic_id": "b3-music-02",
+      "area": "music",
+      "question": "How do throat singers sound two notes at once?"
+    },
+    {
+      "topic_id": "b3-music-03",
+      "area": "music",
+      "question": "How does pitch correction nudge a singer's stray notes into tune?"
+    },
+    {
+      "topic_id": "b3-music-04",
+      "area": "music",
+      "question": "How does a theremin make music without being touched?"
+    },
+    {
+      "topic_id": "b3-music-05",
+      "area": "music",
+      "question": "How does a needle turn the wiggles in a record groove into sound?"
+    },
+    {
+      "topic_id": "b3-music-06",
+      "area": "music",
+      "question": "How does a snare drum get a crisp rattle that a tom lacks?"
+    },
+    {
+      "topic_id": "b3-music-07",
+      "area": "music",
+      "question": "How does a harpsichord pluck a string when a key is pressed?"
+    },
+    {
+      "topic_id": "b3-music-08",
+      "area": "music",
+      "question": "Why does a guitar howl when held too close to its amplifier?"
+    },
+    {
+      "topic_id": "b3-music-09",
+      "area": "music",
+      "question": "Why does a gong swell louder for a moment after it is struck?"
+    },
+    {
+      "topic_id": "b3-music-10",
+      "area": "music",
+      "question": "Why do the lowest piano strings have copper wire wound around them?"
+    },
+    {
+      "topic_id": "b3-music-11",
+      "area": "music",
+      "question": "How does a DJ keep two records playing at the same tempo?"
+    },
+    {
+      "topic_id": "b3-sport-00",
+      "area": "sport",
+      "question": "Why do boxers bind their hands in wraps before putting gloves on?"
+    },
+    {
+      "topic_id": "b3-sport-01",
+      "area": "sport",
+      "question": "Why do mown football pitches show light and dark stripes?"
+    },
+    {
+      "topic_id": "b3-sport-02",
+      "area": "sport",
+      "question": "How does a spin bowler make a cricket ball turn off the pitch?"
+    },
+    {
+      "topic_id": "b3-sport-03",
+      "area": "sport",
+      "question": "Why is a marathon a little over twenty six miles long?"
+    },
+    {
+      "topic_id": "b3-sport-04",
+      "area": "sport",
+      "question": "How does a photo finish camera separate runners who cross together?"
+    },
+    {
+      "topic_id": "b3-sport-05",
+      "area": "sport",
+      "question": "Why do lifters hold their breath while raising a heavy bar?"
+    },
+    {
+      "topic_id": "b3-sport-06",
+      "area": "sport",
+      "question": "How do upside down wings help racing cars grip in corners?"
+    },
+    {
+      "topic_id": "b3-sport-07",
+      "area": "sport",
+      "question": "Why do sprint records not count with a strong tailwind?"
+    },
+    {
+      "topic_id": "b3-sport-08",
+      "area": "sport",
+      "question": "How do decathlon scoring tables turn ten events into one total?"
+    },
+    {
+      "topic_id": "b3-sport-09",
+      "area": "sport",
+      "question": "Why are the numbers on a dartboard set in a jumbled order?"
+    },
+    {
+      "topic_id": "b3-sport-10",
+      "area": "sport",
+      "question": "Why do jockeys ride crouched high above the horse on short stirrups?"
+    },
+    {
+      "topic_id": "b3-sport-11",
+      "area": "sport",
+      "question": "Why do dinghy sailors lean far out over the side of the boat?"
+    },
+    {
+      "topic_id": "b3-technology-00",
+      "area": "technology",
+      "question": "How does a seat belt lock tight in a sudden stop?"
+    },
+    {
+      "topic_id": "b3-technology-01",
+      "area": "technology",
+      "question": "How does a car airbag inflate fast enough to cushion a crash?"
+    },
+    {
+      "topic_id": "b3-technology-02",
+      "area": "technology",
+      "question": "How does a laser read music from the tiny pits on a CD?"
+    },
+    {
+      "topic_id": "b3-technology-03",
+      "area": "technology",
+      "question": "How does a drone with four rotors tilt and turn without a rudder?"
+    },
+    {
+      "topic_id": "b3-technology-04",
+      "area": "technology",
+      "question": "Why are the wires inside network cables twisted in pairs?"
+    },
+    {
+      "topic_id": "b3-technology-05",
+      "area": "technology",
+      "question": "How does a jet engine push an aircraft forward?"
+    },
+    {
+      "topic_id": "b3-technology-06",
+      "area": "technology",
+      "question": "Why can a running microwave oven slow down home wireless internet?"
+    },
+    {
+      "topic_id": "b3-technology-07",
+      "area": "technology",
+      "question": "How does a combination lock open only to the right sequence?"
+    },
+    {
+      "topic_id": "b3-technology-08",
+      "area": "technology",
+      "question": "How does the hologram on a bank card show depth?"
+    },
+    {
+      "topic_id": "b3-technology-09",
+      "area": "technology",
+      "question": "How does a camera find focus by itself in a split second?"
+    },
+    {
+      "topic_id": "b3-technology-10",
+      "area": "technology",
+      "question": "How does a hovercraft ride on a cushion of trapped air?"
+    },
+    {
+      "topic_id": "b3-technology-11",
+      "area": "technology",
+      "question": "How does an escalator keep its steps level all the way up?"
+    },
+    {
+      "topic_id": "b3-the-natural-world-00",
+      "area": "the natural world",
+      "question": "How do cats produce their low rumbling purr?"
+    },
+    {
+      "topic_id": "b3-the-natural-world-01",
+      "area": "the natural world",
+      "question": "How do archerfish shoot down insects with jets of water?"
+    },
+    {
+      "topic_id": "b3-the-natural-world-02",
+      "area": "the natural world",
+      "question": "How do electric eels produce shocks strong enough to stun prey?"
+    },
+    {
+      "topic_id": "b3-the-natural-world-03",
+      "area": "the natural world",
+      "question": "How do leafcutter ants grow fungus as food inside their nests?"
+    },
+    {
+      "topic_id": "b3-the-natural-world-04",
+      "area": "the natural world",
+      "question": "Why do the crowns of some trees leave gaps rather than touch?"
+    },
+    {
+      "topic_id": "b3-the-natural-world-05",
+      "area": "the natural world",
+      "question": "How do mosquitoes find a person to bite in the dark?"
+    },
+    {
+      "topic_id": "b3-the-natural-world-06",
+      "area": "the natural world",
+      "question": "How do tiny tardigrades survive being dried out for years?"
+    },
+    {
+      "topic_id": "b3-the-natural-world-07",
+      "area": "the natural world",
+      "question": "Why are so many deep sea animals coloured red?"
+    },
+    {
+      "topic_id": "b3-the-natural-world-08",
+      "area": "the natural world",
+      "question": "How do sea otters stay warm in icy water without blubber?"
+    },
+    {
+      "topic_id": "b3-the-natural-world-09",
+      "area": "the natural world",
+      "question": "How does a mantis shrimp strike hard enough to crack shells?"
+    },
+    {
+      "topic_id": "b3-the-natural-world-10",
+      "area": "the natural world",
+      "question": "Why do hunted animals tend to have eyes on the sides of their heads?"
+    },
+    {
+      "topic_id": "b3-the-natural-world-11",
+      "area": "the natural world",
+      "question": "How does a basilisk lizard run across the surface of water?"
+    },
+    {
+      "topic_id": "b3-work-and-organisations-00",
+      "area": "work and organisations",
+      "question": "Why do shops price goods a penny below a round number?"
+    },
+    {
+      "topic_id": "b3-work-and-organisations-01",
+      "area": "work and organisations",
+      "question": "Why do airlines board passengers in a set order of groups?"
+    },
+    {
+      "topic_id": "b3-work-and-organisations-02",
+      "area": "work and organisations",
+      "question": "How does an emergency department decide who is seen first?"
+    },
+    {
+      "topic_id": "b3-work-and-organisations-03",
+      "area": "work and organisations",
+      "question": "How do kanban cards tell a factory when to make more parts?"
+    },
+    {
+      "topic_id": "b3-work-and-organisations-04",
+      "area": "work and organisations",
+      "question": "Why do parcel firms send packages through a central hub?"
+    },
+    {
+      "topic_id": "b3-work-and-organisations-05",
+      "area": "work and organisations",
+      "question": "Why do some firms pay sales staff mostly by commission?"
+    },
+    {
+      "topic_id": "b3-work-and-organisations-06",
+      "area": "work and organisations",
+      "question": "How does a restaurant work out what to charge for a dish?"
+    },
+    {
+      "topic_id": "b3-work-and-organisations-07",
+      "area": "work and organisations",
+      "question": "Why do train fares rise as the day of travel draws near?"
+    },
+    {
+      "topic_id": "b3-work-and-organisations-08",
+      "area": "work and organisations",
+      "question": "Why do some orchestras audition players from behind a screen?"
+    },
+    {
+      "topic_id": "b3-work-and-organisations-09",
+      "area": "work and organisations",
+      "question": "Why do buses on the same route often arrive in bunches?"
+    },
+    {
+      "topic_id": "b3-work-and-organisations-10",
+      "area": "work and organisations",
+      "question": "Why does one queue feeding many tills move faster than several?"
+    },
+    {
+      "topic_id": "b3-work-and-organisations-11",
+      "area": "work and organisations",
+      "question": "Why do some employers give staff a share of the profits?"
+    }
+  ],
+  "revisions": [
+    {
+      "topic_id": "b3-everyday-science-05",
+      "revised_on": "2026-10-26",
+      "reason": "containment re-judgement by the author: index-matching (glass rod vanishing in oil) shares refraction with the bent-straw question",
+      "previous_question": "Why does a glass rod seem to vanish when dipped in cooking oil?",
+      "previous_sha256": "0717129f9877265a083984ad2336e28524f536dd86faa8183119bdd270e3161a"
+    },
+    {
+      "topic_id": "b3-technology-11",
+      "revised_on": "2026-10-26",
+      "reason": "containment re-judgement by the author: a submarine's ballast answer is largely buoyancy, as in the float-or-sink question",
+      "previous_question": "How does a submarine dive and then rise back to the surface?",
+      "previous_sha256": "d638b52a88977ede42de93e8f4ee6f2eff378e1b56214af47ec05a0f31ed9c31"
+    },
+    {
+      "topic_id": "b3-the-natural-world-08",
+      "revised_on": "2026-10-26",
+      "reason": "containment re-judgement by the author: a falling cat's righting turn shares angular momentum with the spinning-skater question",
+      "previous_question": "How do cats twist in mid air to land on their feet?",
+      "previous_sha256": "38ef056f66182cf06a0995e57418ec66a89032a6d7bc37afcaa0ea5dabdd6434"
+    },
+    {
+      "topic_id": "b3-everyday-science-10",
+      "revised_on": "2026-10-26",
+      "reason": "form: the premise held only without air resistance",
+      "previous_question": "Why do a heavy ball and a light ball land at the same time?",
+      "previous_sha256": "22805035ab9f1fd673501580065b187b5f7c57135ef8d4a06e884bc211e5e557"
+    },
+    {
+      "topic_id": "b3-food-09",
+      "revised_on": "2026-10-26",
+      "reason": "form: 'never sold in their shells' overstated (raw in-shell cashews are traded wholesale)",
+      "previous_question": "Why are cashew nuts never sold still inside their shells?",
+      "previous_sha256": "a04f94ddf362f4af902a69bad83d4665b8b653ba47e2450a5e226dc5ef6136b7"
+    },
+    {
+      "topic_id": "b3-sport-08",
+      "revised_on": "2026-10-26",
+      "reason": "form: 'fairly' assumed a disputed balance between events",
+      "previous_question": "How do decathlon points let ten different events add up fairly?",
+      "previous_sha256": "4ae2274661a79d6b719287627c324b0b451d4e3f18ff54e7fe5c187dcf60b352"
+    }
+  ]
+}

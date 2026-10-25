@@ -393,8 +393,11 @@ def decision_stages(stages: Mapping[str, StageEvidence], cfg: CFG.PilotConfig
     return [stages[D.STAGE1], stages[D.STAGE2]]
 
 
-def early_stopped(selection: Mapping[str, Any]) -> bool:
-    return selection.get("status") == "EARLY_STOP"
+def early_stopped(selection: Mapping[str, Any]) -> bool | str:
+    """False, or the early stop's reason (``revision.EARLY_STOP_STATUS``)."""
+    if selection.get("status") != "EARLY_STOP":
+        return False
+    return selection["forecast"].get("stop_reason") or "library"
 
 
 def stage1_selection(ev1: StageEvidence, cfg: CFG.PilotConfig

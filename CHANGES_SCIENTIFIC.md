@@ -44,7 +44,12 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 - **Verdict.** It was FEASIBLE (14 / 12 / 12) under the v2 carry rule, with blocking D14 flags: FEASIBLE in 15% of topic resamples, and one truncation cell to review. B1 applies to it.
 - **Validation.** It validates at its producing commit 8a9422f, not at later commits, because the frozen modules changed.
 - **Status.** It is kept as a record and is not a basis for Batch 2.
-- **Topics.** v2.1 reuses bank v2's T1 and T2 topics (calibration topics, not the confirmatory 480), with fresh seeds. Its T2 measurement is therefore not independent of the v2 run's topics. This is disclosed.
+- **Topics** (amended before any v2.1 run, at the researcher's condition of 2026-10-26): v2.1 uses a fresh bank v3 of 144 topics for both T1 and T2. It is screened against the historical banks, bank v1 and bank v2, so v2.1's T2 is independent of the topics the v2 run measured. The 480 reserved topics stay unused.
+- **Texts** (same amendment):
+  - D06 states the accounting rule: the budget bounds planned evidence rows; retries and the smoke test sit outside it and are reported.
+  - D06 also states the exact early-stop behaviour.
+  - D11 states the stricter P3 minimum.
+  - D14 states the review rule of 2026-10-25.
 
 ## 2026-10-26 — (Batch 1) protocol v2 implemented (revision R1–R13): library v2, fresh topic bank v2, screen on T1 and decide on T2, fixed A and B
 

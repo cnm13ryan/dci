@@ -69,16 +69,16 @@
     "the natural world": 4,
     "work and organisations": 4
    },
-   "mean_longest_word": 7.896,
-   "mean_words": 11.188,
+   "mean_longest_word": 7.771,
+   "mean_words": 11.167,
    "n": 48,
-   "share_how": 0.4792,
+   "share_how": 0.375,
    "share_longest_ge_11": 0.0208,
    "share_longest_ge_13": 0.0,
-   "share_longest_ge_9": 0.3333,
-   "share_why": 0.5208,
-   "share_with_letter_b": 0.5208,
-   "share_with_letter_z": 0.0208
+   "share_longest_ge_9": 0.3542,
+   "share_why": 0.6042,
+   "share_with_letter_b": 0.4375,
+   "share_with_letter_z": 0.0417
   },
   "stage2": {
    "areas": {
@@ -95,16 +95,16 @@
     "the natural world": 8,
     "work and organisations": 8
    },
-   "mean_longest_word": 7.844,
-   "mean_words": 11.26,
+   "mean_longest_word": 7.938,
+   "mean_words": 11.167,
    "n": 96,
    "share_how": 0.5312,
-   "share_longest_ge_11": 0.0521,
+   "share_longest_ge_11": 0.0208,
    "share_longest_ge_13": 0.0,
    "share_longest_ge_9": 0.2917,
-   "share_why": 0.4688,
-   "share_with_letter_b": 0.4479,
-   "share_with_letter_z": 0.0208
+   "share_why": 0.4583,
+   "share_with_letter_b": 0.4688,
+   "share_with_letter_z": 0.0521
   }
  },
  "schema": "dci.batch1/topic-hygiene/v1"

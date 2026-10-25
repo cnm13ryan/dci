@@ -208,8 +208,7 @@ def _body1(cfg: CFG.PilotConfig, approvals: Mapping[str, Any],
     cfg.activate()
     library = L.library_manifest()
     matrix = COMPAT.compatibility_matrix()
-    source_path = TOP.SOURCE_PATH_V2 if cfg.topic_bank == "v2" \
-        else TOP.SOURCE_PATH
+    source_path = TOP.bank_paths(cfg.topic_bank)[3]
     bank = TOP.load_bank(source_path)
     split = TOP.split_for(cfg)
     overlap = TOP.overlap_report(bank, bank=cfg.topic_bank)

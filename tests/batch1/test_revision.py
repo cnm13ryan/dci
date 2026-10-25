@@ -125,6 +125,27 @@ def test_bank_v2_is_fresh_screened_and_split_t1_t2():
     assert TOP.hygiene_report(bank, split)["clean"]
 
 
+def test_bank_v3_is_fresh_against_every_earlier_bank_and_screened():
+    """v2.1's topics (the researcher's condition of 2026-10-26): new T1 and
+    T2, disjoint from bank v1 (and so from the 480 reserved) and from bank
+    v2, which the v2 run measured."""
+    bank = TOP.load_bank(TOP.SOURCE_PATH_V3)
+    split = TOP.split_for(V21)
+    assert (len(split.stage1), len(split.stage2), len(split.confirmatory)) \
+        == (48, 96, 0)
+    for earlier in (TOP.load_bank(), TOP.load_bank(TOP.SOURCE_PATH_V2)):
+        assert not {t.topic_id for t in bank} & {t.topic_id for t in earlier}
+        assert not {t.question for t in bank} & {t.question for t in earlier}
+    v2_old = {r["previous_question"] for r in json.loads(
+        TOP.SOURCE_PATH_V2.read_text())["revisions"]}
+    assert not {t.question for t in bank} & v2_old
+    overlap = TOP.overlap_report(bank, bank="v3")
+    assert overlap["clean"], overlap["unreviewed"]
+    assert {"dci/batch1/bank_v1", "dci/batch1/bank_v2"} <= \
+        set(overlap["historical_sources"])
+    assert TOP.hygiene_report(bank, split)["clean"]
+
+
 # ------------------------------------------------- the forecast is the rule
 
 @pytest.mark.parametrize("seed, spread", [(1, 0.3), (2, 0.45), (3, 0.6),
@@ -171,6 +192,10 @@ def test_forecast_stops_early_when_a_is_never_admissible(matrix):
     assert fc["early_stop"] and fc["stopped_contrasts"] == ["P1", "P2", "P3"]
     # The fixed A, not the library, is what failed.
     assert fc["fixed_gates_limited"] and fc["p_fixed_gates_pass"] == 0
+    assert fc["library_limited"] == [] and fc["stop_reason"] == "fixed_gates"
+    early = CAL.finalize(SY.tables_from_rates({}, n=96), V2, matrix,
+                         early_stop=fc["stop_reason"])
+    assert early["status"] == "EARLY_STOP_FIXED_A_OR_B"     # not R9's trigger
 
 
 def test_carry_selection_is_bounded_and_empty_on_early_stop(matrix):
@@ -365,6 +390,15 @@ def test_v2_1_carries_everything_within_its_budget(matrix):
                                          max_total_rows=150000))
 
 
+def test_v2_decisions_page_has_v2_notes_and_modules():
+    from dci.batch1 import report as REP
+    V21.activate()
+    page = REP.decisions_review(F.approvals_template(V21), V21)
+    assert "Changes from v1" in page and "`revision.py`" in page
+    assert "three variant shares" not in page and "Unchanged wordings" \
+        not in page
+
+
 def test_v2_decision_texts_describe_v2_and_bind_its_code():
     V21.activate()
     ds = {d.decision_id: d for d in CFG.decisions(V21)}
@@ -405,3 +439,26 @@ def test_reporting_never_decides_and_covers_r5(matrix):
         assert len(rep["posterior_match_t2"]["by_model_frame"]) == 8
     again = CAL.finalize(t2, cfg, matrix)
     assert again["status"] == result["status"]       # reporting changed nothing
+
+
+def test_the_budget_bounds_every_generation_attempt(tmp_path):
+    """D06 (v2.1): execute and resume are refused when the attempts already
+    made plus the rows requested would exceed max_total_rows."""
+    from dci.batch1.store import RunError
+    cfg = replace(SMALL_V2, max_total_rows=1000)
+    base = make_root(tmp_path, cfg=cfg)
+    d1 = P.write_stage1_plan(base["root"], base["freeze1"])
+    assert len(d1) > 1000
+    with pytest.raises(RunError, match="budget"):
+        RUN.execute(base["root"], d1, freeze1=base["freeze1"],
+                    approvals=base["approvals"],
+                    generate=SY.synthetic_generate())
+    assert RUN.generation_attempts(base["root"]) == 0
+    ok = RUN.execute(base["root"], d1[:600], freeze1=base["freeze1"],
+                     approvals=base["approvals"],
+                     generate=SY.synthetic_generate())
+    assert ok["budget"]["requested"] == 600
+    with pytest.raises(RunError, match="budget"):
+        RUN.execute(base["root"], d1[600:1100], freeze1=base["freeze1"],
+                    approvals=base["approvals"],
+                    generate=SY.synthetic_generate())

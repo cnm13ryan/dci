@@ -189,10 +189,14 @@ def forecast(tables: PilotTables, cfg: CFG.PilotConfig,
     stop = [p for p in CONTRASTS
             if contrasts[p]["p_feasible"] < cfg.forecast_min_feasible]
     p_gates = round(gates_passed / draws, 4)
-    # Whom an early stop blames (audit, minor): the library, or the fixed
-    # A and B, which no library can rescue.
-    library = [p for p in stop if contrasts[p]["p_coverage_ignoring_gates"]
-               < cfg.forecast_min_feasible]
+    # Whom an early stop blames (audit, minor; A2): a fixed A or B that fails
+    # its own gate is not a library limit (an uninformative A also empties
+    # coverage, so the gates are judged first), and only a library limit
+    # opens R9's library iteration.
+    gates_limited = p_gates < cfg.forecast_min_feasible
+    library = [] if gates_limited else [
+        p for p in stop if contrasts[p]["p_coverage_ignoring_gates"]
+        < cfg.forecast_min_feasible]
     return {"schema": "dci.batch1/forecast/v2", "draws": draws,
             "seed": cfg.forecast_seed, "threshold": cfg.forecast_min_feasible,
             "numpy": np.__version__,
@@ -201,7 +205,10 @@ def forecast(tables: PilotTables, cfg: CFG.PilotConfig,
             "p_all_feasible": round(every / draws, 4),
             "early_stop": bool(stop), "stopped_contrasts": stop,
             "library_limited": library,
-            "fixed_gates_limited": p_gates < cfg.forecast_min_feasible}
+            "fixed_gates_limited": gates_limited,
+            "stop_reason": None if not stop else
+            "fixed_gates" if gates_limited else
+            "library" if library else "joint"}
 
 
 def select_carry(tables: PilotTables, cfg: CFG.PilotConfig) -> dict[str, Any]:
@@ -243,7 +250,7 @@ def select_carry(tables: PilotTables, cfg: CFG.PilotConfig) -> dict[str, Any]:
         sum(task_rows.values())
     per_ref = len(mfs) * cfg.stage2_topics * cfg.stage2_draws
     fixed = (1 + len(cfg.b_limits)) * len(mfs) * cfg.stage2_topics * \
-        cfg.stage2_draws + len(cfg.models) * cfg.stage2_topics
+        cfg.stage2_draws + len(cfg.models) * cfg.stage2_topics * cfg.stage2_draws
     room = max(0, (cfg.max_total_rows - stage1_rows - fixed) // per_ref)
     cap = min(cfg.carry_max_references, room)
     if cfg.carry_mode == "all" and cap < len(ranked):
@@ -318,17 +325,24 @@ def truncation_review(tables: PilotTables, cfg: CFG.PilotConfig
                   and Fraction(c.truncated, c.n) > share)
 
 
+EARLY_STOP_STATUS = {"library": "EARLY_STOP_LIBRARY_LIMITED",
+                     "fixed_gates": "EARLY_STOP_FIXED_A_OR_B",
+                     "joint": "EARLY_STOP_JOINT"}
+
+
 def finalize_fixed(tables: PilotTables, cfg: CFG.PilotConfig,
-                   compat: Mapping[str, Any], *, early_stop: bool = False
-                   ) -> dict[str, Any]:
+                   compat: Mapping[str, Any], *,
+                   early_stop: bool | str = False) -> dict[str, Any]:
     """Stage D: D09-D11 on T2, with A and B fixed (R3, R4). After an early
-    stop (R8) there is no T2 evidence and the verdict is
-    ``EARLY_STOP_LIBRARY_LIMITED``."""
+    stop (R8) there is no T2 evidence; the verdict names the stop's reason
+    (``EARLY_STOP_STATUS``: the library, the fixed A or B, or neither alone;
+    a bare ``True`` is read as the library)."""
     from dci.batch1 import calibration as CAL
     out: dict[str, Any] = {"schema": "dci.batch1/calibration/v3-fixed",
                            "synthetic": tables.synthetic}
     if early_stop:
-        out.update(status="EARLY_STOP_LIBRARY_LIMITED", eligibility={},
+        reason = early_stop if isinstance(early_stop, str) else "library"
+        out.update(status=EARLY_STOP_STATUS[reason], eligibility={},
                    truncation_review=[], a=None,
                    b={"status": "NOT_MEASURED", "selected": None},
                    configurations=[], feasibility=None)

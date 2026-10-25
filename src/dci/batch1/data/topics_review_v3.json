@@ -1,0 +1,95 @@
+{
+  "schema": "dci.batch1/topic-review/v2",
+  "reviewer": "agent (Claude), 2026-10-26, for protocol v2.1 bank v3 (the researcher set the fresh-topics condition, not each pair)",
+  "procedure": "every pair the overlap screen flags against the historical banks, bank v1, bank v2 and within bank v3 was read; all were judged distinct and kept with a rationale. A decision binds both questions' text: editing either voids it.",
+  "kept_distinct": [
+    {
+      "topic_id": "b3-art-and-design-01",
+      "neighbour_source": "dci/v19/task_bank",
+      "neighbour_id": "CONFIRMATORY_TOPICS#9",
+      "question_sha256": "dbfc2afc955c7cc505b0a695761b751c1370d46564c19b206f0d659adf4639bf",
+      "neighbour_sha256": "afd1629ac2ddf4db0c09c20845c25ee3e0a0d3450b13b00fa7af5d97a617539d",
+      "wordset_jaccard": 0.2143,
+      "content_jaccard": 0.2857,
+      "decision": "kept_distinct",
+      "rationale": "shares only 'potters ... clay'; wedging clay to remove air and align it vs firing twice (bisque then glaze)"
+    },
+    {
+      "topic_id": "b3-art-and-design-01",
+      "neighbour_source": "dci/batch1/bank_v1",
+      "neighbour_id": "b1-art-and-design-46",
+      "question_sha256": "dbfc2afc955c7cc505b0a695761b751c1370d46564c19b206f0d659adf4639bf",
+      "neighbour_sha256": "ad9866812a2e3f09f50a8443a6eeca2eaef76f79fbebfd1279669d5b41df2f11",
+      "wordset_jaccard": 0.0476,
+      "content_jaccard": 0.2222,
+      "decision": "kept_distinct",
+      "rationale": "shares only 'potter ... clay'; wedging before shaping vs centring on the wheel"
+    },
+    {
+      "topic_id": "b3-art-and-design-02",
+      "neighbour_source": "dci/batch1/bank_v1",
+      "neighbour_id": "b1-art-and-design-27",
+      "question_sha256": "f675a69d8efbc70b5fb1d3ea5099f169edab9ea9b12f93cd2c37f6361e549732",
+      "neighbour_sha256": "be6eee9aeef3db0ee56adf49004ab7783feca31b8fea8c0d34fa33c3cb957ac5",
+      "wordset_jaccard": 0.2222,
+      "content_jaccard": 0.4444,
+      "decision": "kept_distinct",
+      "rationale": "shares 'small model ... full size'; pointing-machine copying by a carver vs why architects make models at all"
+    },
+    {
+      "topic_id": "b3-art-and-design-10",
+      "neighbour_source": "dci/batch1/bank_v1",
+      "neighbour_id": "b1-art-and-design-04",
+      "question_sha256": "60e1d007cae61270fd30f80ea4a734ce3bcb488c2119f191dae343a935e5012d",
+      "neighbour_sha256": "b9baf3ed9e79b3adca355ea945eb0e86f21d91e570b82b0444834fed685f0227",
+      "wordset_jaccard": 0.4,
+      "content_jaccard": 0.375,
+      "decision": "kept_distinct",
+      "rationale": "shares 'book ... opens'; pop-up paper engineering vs a binding that lies flat"
+    },
+    {
+      "topic_id": "b3-everyday-science-05",
+      "neighbour_source": "dci/batch1/bank_v2",
+      "neighbour_id": "b2-everyday-science-11",
+      "question_sha256": "79f6db3dce36e060330836d8d7f583220ee2116c9a9cc33f36b672bd7c2d186f",
+      "neighbour_sha256": "9a7361df734f90f171379110b360c1ba337a041d103634af198d41844328c4f8",
+      "wordset_jaccard": 0.2778,
+      "content_jaccard": 0.3333,
+      "decision": "kept_distinct",
+      "rationale": "shares 'stirred cup'; the tea-leaf paradox (secondary flow piles leaves at the centre) vs stirring speeding dissolution"
+    },
+    {
+      "topic_id": "b3-sport-02",
+      "neighbour_source": "dci/batch1/bank_v1",
+      "neighbour_id": "b1-sport-04",
+      "question_sha256": "d14ba8941728f6aeaac6aaed0e269122d26e36016f2266eec9a02e4f7a23d78f",
+      "neighbour_sha256": "e44a810dbd9c607417a28419346360723efba28f560dc11ac97846dc857fcb8e",
+      "wordset_jaccard": 0.5333,
+      "content_jaccard": 0.4,
+      "decision": "kept_distinct",
+      "rationale": "shares the 'bowler make the ball' frame; spin turning off the pitch (friction at the bounce) vs swing in the air (seam aerodynamics)"
+    },
+    {
+      "topic_id": "b3-work-and-organisations-01",
+      "neighbour_source": "dci/batch1/bank_v2",
+      "neighbour_id": "b2-technology-01",
+      "question_sha256": "fe76fc3ea01b5d7f7b5c9150bee63367d6df4f569c3795926c582893ba2bddb8",
+      "neighbour_sha256": "e88b4e24815321788d008b8e7d506c49c94eb881568ced6f9fb91c098cdd8a23",
+      "wordset_jaccard": 0.2353,
+      "content_jaccard": 0.1818,
+      "decision": "kept_distinct",
+      "rationale": "shares only 'airlines ... passengers'; boarding-order queueing vs phone flight mode"
+    },
+    {
+      "topic_id": "b3-music-00",
+      "neighbour_source": "batch1",
+      "neighbour_id": "b3-music-10",
+      "question_sha256": "a4d984da8ffc22ad3a6b9dbab62df63f13841ea4a5e569349006b92efdf45ff0",
+      "neighbour_sha256": "ac17875dde86c57a82163a1984d7772d985329f90d1d5c1865a1025df31b6826",
+      "wordset_jaccard": 0.2105,
+      "content_jaccard": 0.2,
+      "decision": "kept_distinct",
+      "rationale": "shares 'piano ... strings'; the sustain pedal lifting dampers vs wound bass strings adding mass"
+    }
+  ]
+}

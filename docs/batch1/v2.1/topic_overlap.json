@@ -3,244 +3,129 @@
  "exact_matches": [],
  "flagged_historical": [
   {
-   "content_jaccard": 0.1818,
-   "decision": "shares only 'bend' and 'curve'; steaming timber for furniture vs a footballer's run-up",
-   "neighbour": "Why does a curved run-up help a footballer bend a free kick?",
-   "neighbour_id": "sport-51",
-   "neighbour_source": "dci1v3",
-   "question": "Why do furniture makers steam timber before bending it into curves?",
+   "content_jaccard": 0.2857,
+   "decision": "shares only 'potters ... clay'; wedging clay to remove air and align it vs firing twice (bisque then glaze)",
+   "neighbour": "Describe why potters fire clay twice.",
+   "neighbour_id": "CONFIRMATORY_TOPICS#9",
+   "neighbour_source": "dci/v19/task_bank",
+   "question": "Why do potters knead and slam their clay before shaping it?",
    "rare_shared": [
-    "bend",
-    "curv"
+    "clay",
+    "pott"
    ],
    "reviewed": true,
-   "topic_id": "b2-art-and-design-00",
-   "wordset_jaccard": 0.0476
-  },
-  {
-   "content_jaccard": 0.1818,
-   "decision": "shares only 'bend' and 'curve'; steaming timber for furniture vs a footballer's run-up",
-   "neighbour": "Why does a curved run-up help a footballer bend a free kick?",
-   "neighbour_id": "sport#3",
-   "neighbour_source": "dci1v3/candidates",
-   "question": "Why do furniture makers steam timber before bending it into curves?",
-   "rare_shared": [
-    "bend",
-    "curv"
-   ],
-   "reviewed": true,
-   "topic_id": "b2-art-and-design-00",
-   "wordset_jaccard": 0.0476
+   "topic_id": "b3-art-and-design-01",
+   "wordset_jaccard": 0.2143
   },
   {
    "content_jaccard": 0.2222,
-   "decision": "both thicken, by different means: a cooked flour-and-fat paste (starch gelatinisation) vs pureed vegetables with no flour",
-   "neighbour": "How do blended vegetables thicken a soup without flour?",
-   "neighbour_id": "b1-food-44",
+   "decision": "shares only 'potter ... clay'; wedging before shaping vs centring on the wheel",
+   "neighbour": "How does a potter centre a lump of clay on a spinning wheel?",
+   "neighbour_id": "b1-art-and-design-46",
    "neighbour_source": "dci/batch1/bank_v1",
-   "question": "How does a roux of flour and butter thicken a sauce?",
+   "question": "Why do potters knead and slam their clay before shaping it?",
    "rare_shared": [
-    "flour",
-    "thicken"
+    "clay",
+    "pott"
    ],
    "reviewed": true,
-   "topic_id": "b2-food-09",
-   "wordset_jaccard": 0.2667
+   "topic_id": "b3-art-and-design-01",
+   "wordset_jaccard": 0.0476
   },
   {
-   "content_jaccard": 0.25,
-   "decision": "shares only 'aircraft wings'; the historical case for biplanes vs wing dihedral for roll stability",
-   "neighbour": "Describe why aircraft wings are given dihedral.",
-   "neighbour_id": "CALIBRATION_TOPICS#19",
-   "neighbour_source": "dci/v19/task_bank",
-   "question": "Why did so many early aircraft have two sets of wings?",
+   "content_jaccard": 0.4444,
+   "decision": "shares 'small model ... full size'; pointing-machine copying by a carver vs why architects make models at all",
+   "neighbour": "Why do architects build small models before building at full size?",
+   "neighbour_id": "b1-art-and-design-27",
+   "neighbour_source": "dci/batch1/bank_v1",
+   "question": "How does a stone carver copy a small model at full size?",
    "rare_shared": [
-    "aircraft",
-    "wing"
+    "full",
+    "model"
    ],
    "reviewed": true,
-   "topic_id": "b2-history-02",
-   "wordset_jaccard": 0.2
-  },
-  {
-   "content_jaccard": 0.2222,
-   "decision": "shares only 'aircraft wings'; biplane history vs de-icing at airports",
-   "neighbour": "Describe why airports de-ice aircraft wings.",
-   "neighbour_id": "CONFIRMATORY_TOPICS#23",
-   "neighbour_source": "dci/v19/task_bank",
-   "question": "Why did so many early aircraft have two sets of wings?",
-   "rare_shared": [
-    "aircraft",
-    "wing"
-   ],
-   "reviewed": true,
-   "topic_id": "b2-history-02",
-   "wordset_jaccard": 0.2
+   "topic_id": "b3-art-and-design-02",
+   "wordset_jaccard": 0.2222
   },
   {
    "content_jaccard": 0.375,
-   "decision": "both keep time; water clocks (flow) before mechanical clocks vs a pendulum's regular swing",
-   "neighbour": "Explain how a pendulum clock keeps regular time.",
-   "neighbour_id": "PRESCREEN_TOPICS#2",
-   "neighbour_source": "dci/v19/task_bank",
-   "question": "How did water clocks keep time before mechanical clocks existed?",
-   "rare_shared": [
-    "clock"
-   ],
-   "reviewed": true,
-   "topic_id": "b2-history-10",
-   "wordset_jaccard": 0.1333
-  },
-  {
-   "content_jaccard": 0.2,
-   "decision": "shares only 'electric guitar'; how a pickup senses strings (induction) vs the instrument's cultural impact",
-   "neighbour": "How did the electric guitar change popular music?",
-   "neighbour_id": "b1-music-46",
+   "decision": "shares 'book ... opens'; pop-up paper engineering vs a binding that lies flat",
+   "neighbour": "How does a bookbinder make a book that opens flat?",
+   "neighbour_id": "b1-art-and-design-04",
    "neighbour_source": "dci/batch1/bank_v1",
-   "question": "How does an electric guitar pickup sense the movement of steel strings?",
+   "question": "How does a pop up book make a shape rise as it opens?",
+   "rare_shared": [],
+   "reviewed": true,
+   "topic_id": "b3-art-and-design-10",
+   "wordset_jaccard": 0.4
+  },
+  {
+   "content_jaccard": 0.3333,
+   "decision": "shares 'stirred cup'; the tea-leaf paradox (secondary flow piles leaves at the centre) vs stirring speeding dissolution",
+   "neighbour": "How does stirring help sugar dissolve in a cup of tea?",
+   "neighbour_id": "b2-everyday-science-11",
+   "neighbour_source": "dci/batch1/bank_v2",
+   "question": "Why do tea leaves gather in the middle of a stirred cup?",
    "rare_shared": [
-    "electric",
-    "guitar"
+    "stirr"
    ],
    "reviewed": true,
-   "topic_id": "b2-music-06",
-   "wordset_jaccard": 0.25
+   "topic_id": "b3-everyday-science-05",
+   "wordset_jaccard": 0.2778
   },
   {
-   "content_jaccard": 0.1429,
-   "decision": "shares only the 'How does a ... change ...' frame; a trumpet mute vs how does a typeface change the feeling of a page",
-   "neighbour": "How does a typeface change the feeling of a page?",
-   "neighbour_id": "art-and-design-21",
-   "neighbour_source": "dci1v4",
-   "question": "How does a mute change the sound of a trumpet?",
-   "rare_shared": [],
-   "reviewed": true,
-   "topic_id": "b2-music-08",
-   "wordset_jaccard": 0.5
-  },
-  {
-   "content_jaccard": 0.1429,
-   "decision": "shares only the 'How does a ... change ...' frame; a trumpet mute vs how does the acidity of a marinade change meat",
-   "neighbour": "How does the acidity of a marinade change meat?",
-   "neighbour_id": "food-13",
-   "neighbour_source": "dci1v4",
-   "question": "How does a mute change the sound of a trumpet?",
-   "rare_shared": [],
-   "reviewed": true,
-   "topic_id": "b2-music-08",
-   "wordset_jaccard": 0.5
-  },
-  {
-   "content_jaccard": 0.1429,
-   "decision": "shares only the 'How does a ... change ...' frame; a trumpet mute vs how does the ripeness of tomatoes change a sauce",
-   "neighbour": "How does the ripeness of tomatoes change a sauce?",
-   "neighbour_id": "food-20",
-   "neighbour_source": "dci1v4",
-   "question": "How does a mute change the sound of a trumpet?",
-   "rare_shared": [],
-   "reviewed": true,
-   "topic_id": "b2-music-08",
-   "wordset_jaccard": 0.5
-  },
-  {
-   "content_jaccard": 0.2857,
-   "decision": "shares only the 'How does a ... change ...' frame; a trumpet mute vs how does a room change the sound of a live performance",
-   "neighbour": "How does a room change the sound of a live performance?",
-   "neighbour_id": "music-11",
-   "neighbour_source": "dci1v4",
-   "question": "How does a mute change the sound of a trumpet?",
-   "rare_shared": [],
-   "reviewed": true,
-   "topic_id": "b2-music-08",
-   "wordset_jaccard": 0.5833
-  },
-  {
-   "content_jaccard": 0.3333,
-   "decision": "shares only the 'How does a ... change ...' frame; a trumpet mute vs how does the sound of a piano change as it ages",
-   "neighbour": "How does the sound of a piano change as it ages?",
-   "neighbour_id": "music-25",
-   "neighbour_source": "dci1v4",
-   "question": "How does a mute change the sound of a trumpet?",
-   "rare_shared": [],
-   "reviewed": true,
-   "topic_id": "b2-music-08",
-   "wordset_jaccard": 0.5385
-  },
-  {
-   "content_jaccard": 0.1429,
-   "decision": "shares only the 'How does a ... change ...' frame; a trumpet mute vs how does the timing of a substitution change a match",
-   "neighbour": "How does the timing of a substitution change a match?",
-   "neighbour_id": "sport-21",
-   "neighbour_source": "dci1v4",
-   "question": "How does a mute change the sound of a trumpet?",
-   "rare_shared": [],
-   "reviewed": true,
-   "topic_id": "b2-music-08",
-   "wordset_jaccard": 0.5
-  },
-  {
-   "content_jaccard": 0.1429,
-   "decision": "shares only the 'How does a ... change ...' frame; a trumpet mute vs how does a crisis change the authority of a manager",
-   "neighbour": "How does a crisis change the authority of a manager?",
-   "neighbour_id": "work-and-organisations-02",
-   "neighbour_source": "dci1v4",
-   "question": "How does a mute change the sound of a trumpet?",
-   "rare_shared": [],
-   "reviewed": true,
-   "topic_id": "b2-music-08",
-   "wordset_jaccard": 0.5
-  },
-  {
-   "content_jaccard": 0.3333,
-   "decision": "shares the 'how does a bowler make the ball' frame; a tenpin ball hooking on the lane (spin and oil) vs cricket swing in the air (seam aerodynamics)",
+   "content_jaccard": 0.4,
+   "decision": "shares the 'bowler make the ball' frame; spin turning off the pitch (friction at the bounce) vs swing in the air (seam aerodynamics)",
    "neighbour": "How does a cricket bowler make the ball swing in the air?",
    "neighbour_id": "b1-sport-04",
    "neighbour_source": "dci/batch1/bank_v1",
-   "question": "How does a tenpin bowler make the ball hook into the pins?",
+   "question": "How does a spin bowler make a cricket ball turn off the pitch?",
    "rare_shared": [
-    "bowl"
+    "bowl",
+    "cricket"
    ],
    "reviewed": true,
-   "topic_id": "b2-sport-06",
-   "wordset_jaccard": 0.4667
+   "topic_id": "b3-sport-02",
+   "wordset_jaccard": 0.5333
   },
   {
-   "content_jaccard": 0.25,
-   "decision": "shares only 'detect ... touch'; a fencing circuit closing on a hit vs capacitive sensing of a finger",
-   "neighbour": "How does a touchscreen detect the touch of a finger?",
-   "neighbour_id": "b1-technology-00",
-   "neighbour_source": "dci/batch1/bank_v1",
-   "question": "How does electric scoring in fencing detect a valid touch?",
+   "content_jaccard": 0.1818,
+   "decision": "shares only 'airlines ... passengers'; boarding-order queueing vs phone flight mode",
+   "neighbour": "Why do airlines ask passengers to switch phones to flight mode?",
+   "neighbour_id": "b2-technology-01",
+   "neighbour_source": "dci/batch1/bank_v2",
+   "question": "Why do airlines board passengers in a set order of groups?",
    "rare_shared": [
-    "detect",
-    "touch"
+    "airlin",
+    "passeng"
    ],
    "reviewed": true,
-   "topic_id": "b2-sport-09",
-   "wordset_jaccard": 0.3571
+   "topic_id": "b3-work-and-organisations-01",
+   "wordset_jaccard": 0.2353
   }
  ],
  "flagged_internal": [
   {
-   "content_jaccard": 0.1818,
-   "decision": "shares only 'airlines', 'flight'; phone flight mode (radio interference) vs overbooking (no-show economics)",
-   "neighbour": "Why do airlines sell more tickets than a flight has seats?",
-   "neighbour_id": "b2-work-and-organisations-00",
+   "content_jaccard": 0.2,
+   "decision": "shares 'piano ... strings'; the sustain pedal lifting dampers vs wound bass strings adding mass",
+   "neighbour": "Why do the lowest piano strings have copper wire wound around them?",
+   "neighbour_id": "b3-music-10",
    "neighbour_source": "batch1",
-   "question": "Why do airlines ask passengers to switch phones to flight mode?",
+   "question": "What does the sustain pedal on a piano do to the strings?",
    "rare_shared": [
-    "airlin",
-    "flight"
+    "piano",
+    "string"
    ],
    "reviewed": true,
-   "topic_id": "b2-technology-01",
-   "wordset_jaccard": 0.2353
+   "topic_id": "b3-music-00",
+   "wordset_jaccard": 0.2105
   }
  ],
- "historical_released": 2672,
+ "historical_released": 2816,
  "historical_sequestered_hashes": 192,
  "historical_sources": [
   "dci/batch1/bank_v1",
+  "dci/batch1/bank_v2",
   "dci/v19/task_bank",
   "dci1/v2",
   "dci1v3",
@@ -251,17 +136,17 @@
  ],
  "historical_sources_missing": [],
  "max_jaccard_historical": {
-  "historical": "dci1v4:music-11",
-  "topic": "b2-music-08",
-  "value": 0.5833
+  "historical": "dci/batch1/bank_v1:b1-sport-04",
+  "topic": "b3-sport-02",
+  "value": 0.5333
  },
  "max_jaccard_internal": {
-  "a": "b2-music-08",
-  "b": "b2-technology-09",
-  "value": 0.3571
+  "a": "b3-everyday-science-01",
+  "b": "b3-geography-11",
+  "value": 0.3529
  },
  "n_topics": 144,
- "review_file_hash": "d653cb633748aeb0e4059d19baff05f1deecf38e473360bca4f1a15114de0484",
+ "review_file_hash": "f28e0ca08d7cdb71b8294fdd5e74b31e10db67e7db3650569816c459f9fc32db",
  "schema": "dci.batch1/topic-overlap/v3",
  "screen": {
   "content_jaccard": 0.3,
@@ -273,11 +158,11 @@
   "wordset_jaccard": 0.5
  },
  "semantic_review": {
-  "file_hash": "4adc22f506c9bfa69109a1eae8e8e846e63462a387dfa49126b2730fa899b97f",
-  "findings": 52,
+  "file_hash": "78d508c08cdb799a891dcc5da35ab35c528a141466b32a3a2dd9920ebfbdc67b",
+  "findings": 80,
   "restatements_still_in_bank": []
  },
  "sequestered_matches": [],
- "source_file_hash": "9dbdd36af32c3b3360ee9ba88115400db785180e5c05ce224d066dc55d916b99",
+ "source_file_hash": "fea7326e41f6c96c8f9853b5dcd7220d9986c73876dc7ff03d685a466e2ce3a0",
  "unreviewed": []
 }

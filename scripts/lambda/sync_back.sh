@@ -26,7 +26,9 @@ for d in "${DIRS[@]}"; do
     if [ -n \"\$odd\" ]; then echo \"non-regular files in $d: \$odd\" >&2; exit 3; fi
     (cd '$REMOTE/repo' 2>/dev/null && git rev-parse HEAD || echo unknown) > SYNC_CHECKOUT_SHA
     find . -type f ! -name MANIFEST.sha256 -print0 | sort -z | xargs -0 -r sha256sum > MANIFEST.sha256"
-  rsync -a --delete -e "${SSH[*]}" "$HOST:$REMOTE/$d/" "$LOCAL/$d/"
+  # --checksum: compare contents, not size and mtime, so a re-sync repairs
+  # a same-size local corruption (openrsync on macOS skipped it).
+  rsync -a --checksum --delete -e "${SSH[*]}" "$HOST:$REMOTE/$d/" "$LOCAL/$d/"
   (
     cd "$LOCAL/$d"
     odd="$(find . ! -type f ! -type d | head -5)"

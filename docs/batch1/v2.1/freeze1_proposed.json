@@ -5,7 +5,7 @@
    "D02 The two wording frames and the prompt: PROPOSED",
    "D03 Text semantics: PROPOSED",
    "D04 Outcomes, compliance and vacuity: PROPOSED",
-   "D05 Topic bank v2 and its split: PROPOSED",
+   "D05 Topic bank v3 and its split: PROPOSED",
    "D06 Stages A-D, forecast, early stop and what T2 measures: PROPOSED",
    "D07 B fixed at 8 and 10, checked on T2: PROPOSED",
    "D08 A fixed at however x 6, checked on T2: PROPOSED",
@@ -14,7 +14,7 @@
    "D11 Coverage requirements: PROPOSED",
    "D12 Model panel, decoding, cap, seeds and backend: PROPOSED",
    "D13 Object types and hierarchical weights: PROPOSED",
-   "D14 Membership-stability diagnostics and T1-T2 agreement: PROPOSED",
+   "D14 Membership-stability diagnostics, their review, and T1-T2 agreement: PROPOSED",
    "execution environment UNATTESTED: run `attest-environment` on the generation host and freeze with --environment-lock"
   ],
   "pilot_authorizable": false
@@ -131,13 +131,13 @@
   "stage2_max_cells": 1320,
   "stage2_topics": 96,
   "task_only_draws": 1,
-  "topic_bank": "v2",
+  "topic_bank": "v3",
   "truncation_review_min_rows": 2,
   "truncation_review_share": 0.02,
   "weights_mode": "word_then_count",
   "z": 1.959963984540054
  },
- "config_hash": "57f8f921568ed64f8a281f2d81a5d58fa05f9660b1512d1ff118ffe63579cc98",
+ "config_hash": "0e988976241b457065693ed4c13e36d37a675f35035c902f33fe6cb10b7e3c28",
  "decisions": {
   "D01": {
    "approved_by": "",
@@ -193,25 +193,26 @@
    "approved_on": "",
    "implementation": {
     "design.py": "3ce9e8620d7423b95933af2e83fa287f8a0f6e73b115cd42f28758aaa12c772f",
-    "topics.py": "9ac7ba7ca11503455859f4304d2dc431f791e1142f54f09c0e62068292365450"
+    "topics.py": "8946733d1aaf13b6b3a57306b32bc2dadd05f6f90ddfff01d0a68a7aa3d553c5"
    },
    "origin": "proposed",
-   "payload_hash": "f7c83feda84ac7c447465c85101d67b5b9eebf998e5c2f07527b6114e09c9271",
+   "payload_hash": "1b59a20a1a4776c45c7cda75a223c9372623ee2c789d99068ef3257faae2edc5",
    "status": "PROPOSED",
-   "title": "Topic bank v2 and its split"
+   "title": "Topic bank v3 and its split"
   },
   "D06": {
    "approved_by": "",
    "approved_on": "",
    "implementation": {
-    "calibration.py": "ed9d4c082492d4401ee7b86ee2c01882d9196d4a055141194a02c01e3b0b026e",
-    "evidence.py": "91e8bc3b8404925a128fa4976c0873b96b2302ddd4ae61726265e5420057e0f8",
+    "calibration.py": "883e34a6e06d1d0373700abf793166eb9a331402907cc2cca242fb296b734b3a",
+    "evidence.py": "ea502a4b0629b7a0aa4eb6ec9d79caf25d8be96c9834e06baaae7f2e1853d6b7",
     "intervals.py": "bd55bfe9a32d81c9612fae61dbc162fef751a4f95c180117ef5aa167b0ab5125",
     "pipeline.py": "4437b8af3a0e9b6e51674221d37ec5264307e2d5cdc3d9a6d92143dceb429174",
-    "revision.py": "66f698b0d8fe886f6513045f3d81a0d6618eecd095489faf4017ac87dfe3ffbe"
+    "revision.py": "6d6d03c5bfabf588dfe5027ec46e7e63618f12f635637714c392e5c4b2c6942c",
+    "runner.py": "c4e0b432b279c0a084d864d5e848c10588f00f0efb2d1c97b5239c932f066649"
    },
    "origin": "proposed",
-   "payload_hash": "cf0c6c96beafe2ad65c66304674b4cdd2bdfdee1feaf47df2cb609ec9861b26d",
+   "payload_hash": "ac81bd9a02df5dbb98e1cabe8911dd57a74cf000331431768bf13d07346f38c8",
    "status": "PROPOSED",
    "title": "Stages A-D, forecast, early stop and what T2 measures"
   },
@@ -219,11 +220,11 @@
    "approved_by": "",
    "approved_on": "",
    "implementation": {
-    "calibration.py": "ed9d4c082492d4401ee7b86ee2c01882d9196d4a055141194a02c01e3b0b026e",
-    "revision.py": "66f698b0d8fe886f6513045f3d81a0d6618eecd095489faf4017ac87dfe3ffbe"
+    "calibration.py": "883e34a6e06d1d0373700abf793166eb9a331402907cc2cca242fb296b734b3a",
+    "revision.py": "6d6d03c5bfabf588dfe5027ec46e7e63618f12f635637714c392e5c4b2c6942c"
    },
    "origin": "proposed",
-   "payload_hash": "aab11eb22e6165198f4ff13c3c7f82e1615e7255497b61a17c270cce7454b7ed",
+   "payload_hash": "95f96f776f3a62ce1b1f79391d6d931c48214977e00e300c1ac9f48c0a5aee66",
    "status": "PROPOSED",
    "title": "B fixed at 8 and 10, checked on T2"
   },
@@ -231,12 +232,12 @@
    "approved_by": "",
    "approved_on": "",
    "implementation": {
-    "calibration.py": "ed9d4c082492d4401ee7b86ee2c01882d9196d4a055141194a02c01e3b0b026e",
+    "calibration.py": "883e34a6e06d1d0373700abf793166eb9a331402907cc2cca242fb296b734b3a",
     "references.py": "1b74d28b56c7d53fe6121e31f1bf0f62e647a517f6fa58e2877dc7d873c668b8",
-    "revision.py": "66f698b0d8fe886f6513045f3d81a0d6618eecd095489faf4017ac87dfe3ffbe"
+    "revision.py": "6d6d03c5bfabf588dfe5027ec46e7e63618f12f635637714c392e5c4b2c6942c"
    },
    "origin": "proposed",
-   "payload_hash": "7b2dc3a8d51c55d116652f25a707e5cf7ebbafc06ced407f3a09b4d855b9e987",
+   "payload_hash": "d12b2fbf451696b70bb744f1920dd177c510d892f8c4faad99d722ad7de18c77",
    "status": "PROPOSED",
    "title": "A fixed at however x 6, checked on T2"
   },
@@ -258,10 +259,10 @@
    "implementation": {
     "intervals.py": "bd55bfe9a32d81c9612fae61dbc162fef751a4f95c180117ef5aa167b0ab5125",
     "references.py": "1b74d28b56c7d53fe6121e31f1bf0f62e647a517f6fa58e2877dc7d873c668b8",
-    "revision.py": "66f698b0d8fe886f6513045f3d81a0d6618eecd095489faf4017ac87dfe3ffbe"
+    "revision.py": "6d6d03c5bfabf588dfe5027ec46e7e63618f12f635637714c392e5c4b2c6942c"
    },
    "origin": "design",
-   "payload_hash": "0c3fe100d51b8e9b53b0a5775875afbbe0f29ee386b9217456a06577e71d2b6e",
+   "payload_hash": "9e3ccffcddf50bb126be964cd4d07116f29f1330992c47cb95ae462595162c7b",
    "status": "PROPOSED",
    "title": "Matching operationalisation"
   },
@@ -271,10 +272,10 @@
    "implementation": {
     "compatibility.py": "ca542f3250eb8ea3b30dde03e2ee3bb07c27ca6fa36c394b0a8d6a01ea85bd22",
     "references.py": "1b74d28b56c7d53fe6121e31f1bf0f62e647a517f6fa58e2877dc7d873c668b8",
-    "revision.py": "66f698b0d8fe886f6513045f3d81a0d6618eecd095489faf4017ac87dfe3ffbe"
+    "revision.py": "6d6d03c5bfabf588dfe5027ec46e7e63618f12f635637714c392e5c4b2c6942c"
    },
    "origin": "design",
-   "payload_hash": "b4f7d95a4ad24ef40ce93a9699b889945fce9957987410c85cb4715c3c5944b1",
+   "payload_hash": "fa29007c56bb82b783379dd716b63fb4a620f39e818ac9868acd9ed29b1ad59d",
    "status": "PROPOSED",
    "title": "Coverage requirements"
   },
@@ -285,10 +286,10 @@
     "design.py": "3ce9e8620d7423b95933af2e83fa287f8a0f6e73b115cd42f28758aaa12c772f",
     "environment.py": "d4946066a56c09e352f288b2854314a337e1574b1e9ce47004ecc1dd50312934",
     "outcomes.py": "ed51afa4838c6043d3ca0c2aab24169ad3076a405da20be8bfa915e75d928a7c",
-    "runner.py": "33325b0a141656221109289ba010866f8b0534a8402bd05c3af94c7197091d89"
+    "runner.py": "c4e0b432b279c0a084d864d5e848c10588f00f0efb2d1c97b5239c932f066649"
    },
    "origin": "proposed",
-   "payload_hash": "d8efa6f0b569b89b60355078b587a189ab83564b066173d740749702318ff37b",
+   "payload_hash": "cef736f29c425a67f0ce2bd76487bff25f53f6917e91dd5de18f6a9590ed5c3f",
    "status": "PROPOSED",
    "title": "Model panel, decoding, cap, seeds and backend"
   },
@@ -308,13 +309,13 @@
    "approved_by": "",
    "approved_on": "",
    "implementation": {
-    "revision.py": "66f698b0d8fe886f6513045f3d81a0d6618eecd095489faf4017ac87dfe3ffbe",
+    "revision.py": "6d6d03c5bfabf588dfe5027ec46e7e63618f12f635637714c392e5c4b2c6942c",
     "stability.py": "cc34cc3bd42e19fab8c61495df16fceda00517257449b11036bedb6fa2c4c8a5"
    },
    "origin": "proposed",
-   "payload_hash": "f55f14e471d649032a0d334c1ec4c1fbd84082c79cd99cc1d43e488f7c6869c1",
+   "payload_hash": "df4ca7e1472d59480970a24d997b223ea6f19e50a6899e9926371acda7d98bef",
    "status": "PROPOSED",
-   "title": "Membership-stability diagnostics and T1-T2 agreement"
+   "title": "Membership-stability diagnostics, their review, and T1-T2 agreement"
   }
  },
  "decoding": {
@@ -507,7 +508,7 @@
    "unq.word7": "d2450aeb6668243307b0032782475f44758c9a30de4051bbca6d8fb67b87ae6d"
   }
  },
- "manifest_hash": "38cd9731d65b38dcb6336df50eb29713c51f1ff885eb06e3d8c9e70e4ec77402",
+ "manifest_hash": "c35e9f704aba3c90c52a15bdd0a2ce9bc0b8b88f24bdbaa57883d3809d61a0da",
  "models": [
   {
    "chat_template_kwargs": {},
@@ -580,30 +581,30 @@
  "rule_sources": {
   "__init__.py": "19f2032706d031581d981e6bb9a0b135d0261914ec4cbd3b7477e548cd104117",
   "__main__.py": "bc713658e3413fada43e1613c2255feaa12add8ffba22ec22a6ddc4e00435fb6",
-  "calibration.py": "ed9d4c082492d4401ee7b86ee2c01882d9196d4a055141194a02c01e3b0b026e",
-  "cli.py": "c03f013c1e6fdfa254e452e9575a482910a6827ba7d509520ee0bbd3e651528f",
+  "calibration.py": "883e34a6e06d1d0373700abf793166eb9a331402907cc2cca242fb296b734b3a",
+  "cli.py": "7e35538148cdead65cad349eac8808f6bf94f1bffcc5ed5e0f73cdf956b08498",
   "compatibility.py": "ca542f3250eb8ea3b30dde03e2ee3bb07c27ca6fa36c394b0a8d6a01ea85bd22",
-  "config.py": "436e287bb26f5dd29601113dbb388ff76d74cedaaf1619099cba855cb58e54ac",
+  "config.py": "83af41b4f5dfb3d02ed1a57f644990b65654efed4ab285a984384b25ae606833",
   "dci/provenance/hashes.py": "b0db13e53e9e62d18ed2e94a225318b08d44aedd2beddffb044a46e2fc18bdc3",
   "dci/verifiers/rules.py": "00bed1e904013bcde6cac2c6243bc0c6655b7a1f73f47042b12946e258a63647",
   "design.py": "3ce9e8620d7423b95933af2e83fa287f8a0f6e73b115cd42f28758aaa12c772f",
   "environment.py": "d4946066a56c09e352f288b2854314a337e1574b1e9ce47004ecc1dd50312934",
-  "evidence.py": "91e8bc3b8404925a128fa4976c0873b96b2302ddd4ae61726265e5420057e0f8",
-  "freeze.py": "067c7852613e342a6fcd05663773edae435d65c5dd3924e1b73fb1e016cf3c85",
+  "evidence.py": "ea502a4b0629b7a0aa4eb6ec9d79caf25d8be96c9834e06baaae7f2e1853d6b7",
+  "freeze.py": "5cd15bcbd98d0c6dc1118bdb1362d041fc604c3d05f42da54ab939d32abdb187",
   "intervals.py": "bd55bfe9a32d81c9612fae61dbc162fef751a4f95c180117ef5aa167b0ab5125",
   "library.py": "bb797cca1253594070694e054ddb94a3397b2a118e00eba8e6e73eebafd8d361",
   "outcomes.py": "ed51afa4838c6043d3ca0c2aab24169ad3076a405da20be8bfa915e75d928a7c",
   "pipeline.py": "4437b8af3a0e9b6e51674221d37ec5264307e2d5cdc3d9a6d92143dceb429174",
   "references.py": "1b74d28b56c7d53fe6121e31f1bf0f62e647a517f6fa58e2877dc7d873c668b8",
-  "revision.py": "66f698b0d8fe886f6513045f3d81a0d6618eecd095489faf4017ac87dfe3ffbe",
-  "runner.py": "33325b0a141656221109289ba010866f8b0534a8402bd05c3af94c7197091d89",
+  "revision.py": "6d6d03c5bfabf588dfe5027ec46e7e63618f12f635637714c392e5c4b2c6942c",
+  "runner.py": "c4e0b432b279c0a084d864d5e848c10588f00f0efb2d1c97b5239c932f066649",
   "scoring.py": "d964c53dfc7c864bdc96ead215534f8c38cdde7c3f2b588865b3acbd3587c4f0",
   "smoke.py": "eb11c47458598b8b536e3c01cf829a063e208dc04d1439b783477f7b715c5bf0",
   "stability.py": "cc34cc3bd42e19fab8c61495df16fceda00517257449b11036bedb6fa2c4c8a5",
   "store.py": "d0e6cd674378423230ab135280ad7801cfee67b4e708829aff10ac1fa9db9958",
   "synthetic.py": "47265a48fd52371e8bd99f03e540022449e9b381f0a397be947ac72c2896056d",
   "text.py": "dd7d69ab3f943b764d427fa421a936570f3d36d4fa657e397ad17904d54e8145",
-  "topics.py": "9ac7ba7ca11503455859f4304d2dc431f791e1142f54f09c0e62068292365450",
+  "topics.py": "8946733d1aaf13b6b3a57306b32bc2dadd05f6f90ddfff01d0a68a7aa3d553c5",
   "verifiers.py": "b89baa57803a0ca613b4974473796cd77925db3ee793364ddccf178015626494"
  },
  "schema": "dci.batch1/freeze1/v2",
@@ -620,7 +621,7 @@
  },
  "stage1": {
   "cells": 1332,
-  "design_hash": "2ec1dc39b135db4726434ca174f82b95b2d3dd7c8deb08b362064ca51bb869fc",
+  "design_hash": "acb1ae1871be3edb969fd667965e54ccb2ecd8642da82b88f247380f8eb7220f",
   "rows": 63936
  },
  "stage2_bound": {
@@ -630,7 +631,7 @@
  "study_id": "dci-batch1-pilot",
  "text_semantics_hash": "67fb82741e30dbc48d5bb60ecd26e8c46bba9da3b6fb61008c9e76b30a9b9c0f",
  "topics": {
-  "bank_hash": "902cfb6513bd4e51d6418a3aa71303e60bbe86f7ac098ee8a2b5146400cfb1c5",
+  "bank_hash": "fd32bc41a318bb634528fb7835ef070e31349977a07c25e0def5798bfc644758",
   "counts": {
    "confirmatory_reserved": 0,
    "stage1": 48,
@@ -638,6 +639,7 @@
   },
   "historical_sources": [
    "dci/batch1/bank_v1",
+   "dci/batch1/bank_v2",
    "dci/v19/task_bank",
    "dci1/v2",
    "dci1v3",
@@ -647,15 +649,15 @@
    "dci1v7/calibration_b_v6"
   ],
   "hygiene_clean": true,
-  "hygiene_hash": "6518f8c21c5d779a97a7ccaed9049248bfc5df4dddb69b992e98670281212c95",
+  "hygiene_hash": "93a24fe3d1a7a75356f6ef8dbd31a768ca1536ae4d2dadc8dc537c0898781c11",
   "overlap_clean": true,
-  "overlap_hash": "e2cf375e8234d78210f918eaea5e02439d7c336a743bb092eee074a09dc1cbeb",
+  "overlap_hash": "173788bffb2dea87bdcce8f561d587171a05971bc5e272f116f366c56f614abf",
   "overlap_max_jaccard": {
-   "historical": 0.5833,
-   "internal": 0.3571
+   "historical": 0.5333,
+   "internal": 0.3529
   },
-  "source_file_hash": "9dbdd36af32c3b3360ee9ba88115400db785180e5c05ce224d066dc55d916b99",
-  "split_hash": "55368de42a57324b5bb57f4c1eeb6331d5c596c2d79f1ee7e710b1d75b2753a6"
+  "source_file_hash": "fea7326e41f6c96c8f9853b5dcd7220d9986c73876dc7ff03d685a466e2ce3a0",
+  "split_hash": "d8930e4886f2f5af7c728ded4ee0e5afa6db19ca5d9feafaf3349bb5259688b6"
  },
  "verifier_bundle_hash": "e52607973ede34acb834b01cdcdc514970203c870e2a436a3df541e71d4e76b6"
 }

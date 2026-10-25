@@ -64,7 +64,7 @@ __all__ = ["Topic", "SOURCE_PATH", "REVIEW_PATH", "load_bank", "split_bank",
            "TopicSplit", "overlap_report", "hygiene_report", "assert_clean",
            "HISTORICAL_SOURCES", "SEQUESTERED_SOURCES", "WORDSET_SCREEN",
            "CONTENT_SCREEN", "RARE_STEM_DF", "RARE_STEM_MIN_SHARED",
-           "RARE_STEM_MIN_LETTERS", "SEMANTIC_REVIEW_PATH", "SPLIT_SEED",
+           "RARE_STEM_MIN_LETTERS", "SEMANTIC_REVIEW_PATH", "SPLIT_SEED", "bank_paths",
            "content_words", "load_semantic_review"]
 
 _HERE = Path(__file__).resolve().parent
@@ -76,6 +76,11 @@ SOURCE_PATH = _HERE / "data" / "topics_source.json"
 SOURCE_PATH_V2 = _HERE / "data" / "topics_source_v2.json"
 REVIEW_PATH_V2 = _HERE / "data" / "topics_review_v2.json"
 SEMANTIC_REVIEW_PATH_V2 = _HERE / "data" / "topics_semantic_review_v2.json"
+#: Bank v3 (v2.1, the researcher's condition of 2026-10-26): 144 fresh topics,
+#: since bank v2's were measured, and its verdict seen, in the v2 run.
+SOURCE_PATH_V3 = _HERE / "data" / "topics_source_v3.json"
+REVIEW_PATH_V3 = _HERE / "data" / "topics_review_v3.json"
+SEMANTIC_REVIEW_PATH_V3 = _HERE / "data" / "topics_semantic_review_v3.json"
 _REPO = _HERE.parents[2]
 
 REVIEW_PATH = _HERE / "data" / "topics_review.json"
@@ -101,6 +106,9 @@ HISTORICAL_SOURCES = {
 #: questions of bank v1 (the 96 pilot topics and the reserved 480 alike).
 HISTORICAL_SOURCES_V2 = {**HISTORICAL_SOURCES,
                          "dci/batch1/bank_v1": (SOURCE_PATH, "batch1_bank")}
+#: Bank v3 is screened against all of those and against bank v2.
+HISTORICAL_SOURCES_V3 = {**HISTORICAL_SOURCES_V2,
+                         "dci/batch1/bank_v2": (SOURCE_PATH_V2, "batch1_bank")}
 SEQUESTERED_SOURCES = {
     "dci1v3/sequestered": _REPO / "dci1/src/dci1v3/topics/data/sequestered_v3.json",
     "dci1v4/sequestered": _REPO / "dci1/src/dci1v4/topics/data/sequestered_v4.json",
@@ -193,8 +201,8 @@ class TopicSplit:
 def split_for(cfg: Any) -> "TopicSplit":
     """The split a configuration names: bank v1 (stage 1, stage 2, the
     reserved confirmatory bank) or bank v2 (T1, T2, nothing reserved)."""
-    if cfg.topic_bank == "v2":
-        return split_bank(load_bank(SOURCE_PATH_V2),
+    if cfg.topic_bank in ("v2", "v3"):
+        return split_bank(load_bank(bank_paths(cfg.topic_bank)[3]),
                           pilot_topics=cfg.pilot_topics,
                           stage1_topics=cfg.stage1_topics, reserve=False)
     return split_bank(load_bank(), pilot_topics=cfg.pilot_topics,
@@ -322,13 +330,16 @@ def _historical(sources: Mapping[str, tuple[Path, str]] | None = None
     return [dict(r) for r in released], set(hashes), list(missing)
 
 
-def _bank_paths(bank: str) -> tuple[Mapping[str, tuple[Path, str]], Path,
+def bank_paths(bank: str) -> tuple[Mapping[str, tuple[Path, str]], Path,
                                      Path, Path]:
     """bank -> (historical sources, review, semantic review, source file),
     read from the module's current paths (tests may substitute them)."""
     if bank == "v2":
         return (HISTORICAL_SOURCES_V2, REVIEW_PATH_V2, SEMANTIC_REVIEW_PATH_V2,
                 SOURCE_PATH_V2)
+    if bank == "v3":
+        return (HISTORICAL_SOURCES_V3, REVIEW_PATH_V3, SEMANTIC_REVIEW_PATH_V3,
+                SOURCE_PATH_V3)
     if bank == "v1":
         return HISTORICAL_SOURCES, REVIEW_PATH, SEMANTIC_REVIEW_PATH, SOURCE_PATH
     raise ValueError(f"topic bank {bank!r}")
@@ -380,7 +391,7 @@ def _stamp(path: Path) -> tuple:
 
 def overlap_report(topics: Iterable[Topic], *, bank: str = "v1"
                    ) -> dict[str, Any]:
-    sources, review, semantic, _ = _bank_paths(bank)
+    sources, review, semantic, _ = bank_paths(bank)
     return json.loads(_overlap_cached(tuple(topics), _source_key(sources),
                                       (_stamp(review), _stamp(semantic)),
                                       bank))
@@ -389,7 +400,7 @@ def overlap_report(topics: Iterable[Topic], *, bank: str = "v1"
 @lru_cache(maxsize=8)
 def _overlap_cached(topics: tuple[Topic, ...], source_key: tuple,
                     review_key: tuple, bank: str = "v1") -> str:
-    sources, review_path, semantic_path, source_path = _bank_paths(bank)
+    sources, review_path, semantic_path, source_path = bank_paths(bank)
     released, hashes, missing = _historical(sources)
     review = load_review(review_path)
     hist_text = {_normal(r["question"]): r for r in released}

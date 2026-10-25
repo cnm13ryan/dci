@@ -45,7 +45,7 @@
    "approved_on": "",
    "note": "",
    "origin": "proposed",
-   "payload_hash": "638a88def86e39eacbc890d494f522de61f543187b06da8b0969181a5b88fee5",
+   "payload_hash": "e5bd9122b1bd8aa58a4e53aa742f17e92ce349dfa423d873060b043050d340b7",
    "status": "PROPOSED",
    "summary": "32 responses per stand-alone cell on one shared set of 32 new topics; task-only 64 per model; 96 pilot topics; the topic bank and its split as reviewed.",
    "title": "Stage 1 allocation and pilot topics"
@@ -55,7 +55,7 @@
    "approved_on": "",
    "note": "",
    "origin": "proposed",
-   "payload_hash": "76d92c4f44cd22ffc4ae1f2c7efe72e99fe3d9e8d9ea979945240a59ff171ec9",
+   "payload_hash": "dc174ff8539b9d7a7d0abb19810884ca991a7b7de206415766e7b29da1218f75",
    "status": "PROPOSED",
    "summary": "One bounded round, selected only from complete, authenticated Stage 1 evidence: boundary cells ranked by class, then by standardised distance to the boundary; 64 new-topic responses each; at most stage2_max_cells cells. Finalisation needs both stages complete; there is no partial-completion rule.",
    "title": "Stage 2 refinement rule and stage completeness"
@@ -65,7 +65,7 @@
    "approved_on": "",
    "note": "",
    "origin": "proposed",
-   "payload_hash": "8d3a3c777c3ac3e334fa00e7a9c7ae21464b94ded97a8550b7950b0606ff7b03",
+   "payload_hash": "7db391c0e39fb7f2a1bf48accac1b392c2df34c0efe4e011d54d38725ac759ef",
    "status": "PROPOSED",
    "summary": "Admissible pairs: gap >= b_min_gap; median B-only separation >= b_min_median_separation; that separation in >= b_min_separated_models models; each limit informative in >= b_min_informative_model_frames model-frames. Rank by informative cells, the worse limit, then separation. No admissible pair fails B selection.",
    "title": "Selecting the two B limits"
@@ -75,7 +75,7 @@
    "approved_on": "",
    "note": "",
    "origin": "proposed",
-   "payload_hash": "65a592655c3a0c27ca972f71dd93a2b3303185b274e4727fa65950524c8a4724",
+   "payload_hash": "409c5c6e6025815f8eb35ab9c23fada2f0a9e188263fa4fc8988a04f735d4dc6",
    "status": "PROPOSED",
    "summary": "Admissible N: p_A inside a_headroom_band in >= a_min_informative_model_frames model-frames across >= a_min_informative_models models. Then maximise configurations with G1 support and an informative A, then headroom, then prefer N=4, then the smaller N. Uninformative-A configurations never count toward feasibility. No admissible N fails A selection; no per-model fallback.",
    "title": "Selecting the global A count"
@@ -115,7 +115,7 @@
    "approved_on": "",
    "note": "",
    "origin": "proposed",
-   "payload_hash": "1017d22295953f4ae5b319f737b31f638b9e4fa5001715101755a860caaeb629",
+   "payload_hash": "99b4dff7c8ae9c23f4641eb2cc55901c3d21b7a4181414698512d3b6694a7d1d",
    "status": "PROPOSED",
    "summary": "Historical four-model panel and decoding; cap 512 tokens, with any cell truncating above truncation_review_share listed for review; the seed derivation; the vLLM seam source; Python 3.12 for the orchestrator and the vLLM backend (the CUDA vllm 0.15.1 wheel is cp38-abi3; 3.12 is vLLM's Docker default and native on GPU Base 24.04); the execution requirements (vllm 0.15.1, torch 2.9.1+cu129, 2x H100 SXM, driver >= 575.51.03), one worker per GPU, TP as configured. The execution environment is attested on the host, checked against the requirements and bound by Freeze 1; a bounded, authorised smoke test (never evidence) measures load time, throughput and truncation first.",
    "title": "Model panel, decoding, cap, seeds and backend"
