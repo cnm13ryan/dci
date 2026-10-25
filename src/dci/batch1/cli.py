@@ -31,6 +31,7 @@ from dci.batch1 import environment as ENV
 from dci.batch1 import evidence as EV
 from dci.batch1 import freeze as F
 from dci.batch1 import library as L
+from dci.batch1 import outcomes as OUT
 from dci.batch1 import pipeline as P
 from dci.batch1 import report as REP
 from dci.batch1 import runner as RUN
@@ -262,6 +263,15 @@ def cmd_smoke(args) -> int:
                              models=args.models or tuple(CFG.MODEL_BY_KEY),
                              backend=backend)
     _print(report)
+    # Exit 0 only when every model ran cleanly: none blocked or crashed, and
+    # no TECHNICAL outcome (D12's smoke condition; the report has the rest).
+    failed = [k for k, m in report["models"].items()
+              if m.get("blocked") or m.get("returncode") not in RUN.OK_EXITS
+              or m.get("outcome_classes", {}).get(OUT.TECHNICAL)]
+    if failed:
+        print(f"smoke FAILED for {failed}: see smoke_report.json and each "
+              "model's backend.log", file=sys.stderr)
+        return 4
     return 0
 
 

@@ -313,3 +313,23 @@ def test_a_lock_edited_to_another_class_blocks_freeze1():
     manifest = F.freeze1_manifest(SMALL, environment_lock=lock)
     assert any("driver" in b and "D12 execution requirements" in b
                for b in manifest["authorization"]["blocking"])
+
+
+@pytest.mark.parametrize("model,code", [
+    ({"returncode": 0, "blocked": False, "outcome_classes": {"VALID": 18}}, 0),
+    ({"returncode": 1, "blocked": False, "outcome_classes": {"VALID": 18}}, 0),
+    ({"returncode": 2, "blocked": True, "outcome_classes": {"TECHNICAL": 18}}, 4),
+    ({"returncode": 3, "blocked": False, "outcome_classes": {"VALID": 5}}, 4),
+    ({"returncode": 0, "blocked": False,
+      "outcome_classes": {"VALID": 17, "TECHNICAL": 1}}, 4),
+])
+def test_the_smoke_command_fails_when_any_model_fails(monkeypatch, capsys,
+                                                      tmp_path, model, code):
+    """The provisional smoke test of 2026-10-25 exited 0 although both Gemma
+    models were blocked; the exit status is now a pass signal."""
+    ok = {"returncode": 0, "blocked": False, "outcome_classes": {"VALID": 18}}
+    monkeypatch.setattr(SMOKE, "run_smoke", lambda *a, **k: {
+        "models": {"qwen3-4b": ok, "gemma-3n-e2b-it": model}})
+    assert cli.main(["smoke", "--root", str(tmp_path), "--authorize", "x",
+                     "--max-rows", "72"]) == code
+    assert ("smoke FAILED" in capsys.readouterr().err) == bool(code)

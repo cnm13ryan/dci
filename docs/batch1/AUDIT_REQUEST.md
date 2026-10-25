@@ -133,6 +133,19 @@ flag-to-action rule, the D12 wording and conditions), `README.md` §9-10,
 
 - **Check:** that they match the code.
 
+**Follow-up after the first provisional smoke test.** This commit follows
+`8a89f6e`. The smoke test on the instance blocked both Gemma 3n models with
+"TimmWrapperModel requires the timm library". The PyPI CUDA vllm wheel does
+not pull in timm; the ROCm wheel does. Two changes follow:
+
+- `environments/cuda-vllm` adds `timm==1.0.28` (re-locked, with torch
+  unchanged);
+- `smoke` now exits 4 when any model is blocked, crashes or has a TECHNICAL
+  outcome. It had exited 0.
+
+**Check:** that the lock change adds only timm, and that the exit rule
+matches D12's smoke condition.
+
 ## 3. Known facts about the instance
 
 These were reported by another session; not verified here, and not to be

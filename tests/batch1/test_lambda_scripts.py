@@ -71,6 +71,13 @@ def test_the_cuda_backend_lock_pins_d12():
     assert lock["torch"]["source"]["registry"] == \
         "https://download.pytorch.org/whl/cu129"
     assert lock["vllm"]["version"] == "0.15.1"
+    # Gemma 3n needs timm (TimmWrapper); the PyPI CUDA vllm wheel does not
+    # pull it in, so the provisional smoke test of 2026-10-25 blocked both
+    # Gemma models without it. Same version as the ROCm backend's lock.
+    rocm = {p["name"]: p for p in tomllib.loads(
+        (DIR.parents[1] / "dci1/environments/backend/uv.lock").read_text()
+    )["package"]}
+    assert lock["timm"]["version"] == rocm["timm"]["version"] == "1.0.28"
 
 
 @pytest.mark.skipif(not all(shutil.which(t) for t in ("sha256sum", "rsync")),
