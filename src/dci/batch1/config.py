@@ -91,17 +91,30 @@ MODEL_BY_KEY = {m.key: m for m in MODELS}
 
 #: D12. The interpreter that runs this package: it computes every payload
 #: and code hash, writes and validates both freezes, and drives the backend.
-#: Python 3.11 was approved by the researcher on 2026-10-19, subject to the
-#: backend's compatibility (the backend runs in its own interpreter, below).
-#: The code hash no longer depends on it (``store.code_hash``); it is pinned
-#: so that what was reviewed is what runs.
-ORCHESTRATOR_PYTHON = "3.11"
-#: D12 (proposed). The backend interpreter that runs vLLM, in a separate
-#: process. The repository's pinned backend (dci1/environments/backend:
-#: vllm 0.15.1+rocm720, a cp312 wheel) and its CUDA environment
-#: (environments/cuda, requires-python >= 3.12) are Python 3.12, so 3.11
-#: cannot be the backend's version.
+#: Python 3.12, the researcher's decision of 2026-10-25 (it replaces the
+#: 3.11 approved on 2026-10-19): native on Lambda's GPU Base 24.04 image, so
+#: the orchestrator and the backend share one interpreter version there.
+#: The code hash does not depend on it (``store.code_hash``); it is pinned so
+#: that what was reviewed is what runs.
+ORCHESTRATOR_PYTHON = "3.12"
+#: D12. The backend interpreter that runs vLLM, in a separate process
+#: (environments/cuda-vllm). The CUDA vllm 0.15.1 wheel is cp38-abi3, so the
+#: wheel does not force a version; 3.12 is vLLM's Docker default and native on
+#: GPU Base 24.04.
 BACKEND_PYTHON = "3.12"
+#: D12 (researcher's conditions, 2026-10-25). What an attested environment
+#: must be before it can be locked or frozen: these are checked, not merely
+#: recorded (``environment.requirement_problems``). The driver is a minimum:
+#: torch 2.9.1+cu129 needs a CUDA 12.9 driver.
+EXECUTION_REQUIREMENTS: dict[str, Any] = {
+    "backend_python": BACKEND_PYTHON,
+    "packages": {"vllm": "0.15.1", "torch": "2.9.1+cu129"},
+    "torch_cuda": "12.9",
+    "gpu_name": "NVIDIA H100 80GB HBM3",
+    "gpu_count": 2,
+    "gpu_compute_capability": "9.0",
+    "min_driver": "575.51.03",
+}
 
 DECODING: dict[str, Any] = {
     "temperature": 0.7, "top_p": 0.9, "top_k": 50,
@@ -148,7 +161,9 @@ class PilotConfig:
     g1_min_distinct_words: int = 3
     p1_min_additional: int = 2
     p2_min_additional_other_object: int = 2
-    p3_min_additional_other_operation: int = 2
+    # D11, researcher's decision 2026-10-25 (COVERAGE_SIMULATION_REVIEW.md
+    # §8, rule P3k3); the design value was 2.
+    p3_min_additional_other_operation: int = 3
     p3_min_g3: int = 3
     feasibility_min_configs: int = 12
     feasibility_min_models: int = 3
@@ -374,10 +389,13 @@ def decisions(cfg: PilotConfig = DEFAULT_CONFIG) -> tuple[Decision, ...]:
         d("D12", "Model panel, decoding, cap, seeds and backend", "proposed",
           "Historical four-model panel and decoding; cap 512 tokens, with "
           "any cell truncating above truncation_review_share listed for "
-          "review; the seed derivation; the vLLM seam source; Python 3.11 "
-          "for the orchestrator (researcher-approved 2026-10-19) and 3.12 "
-          "for the vLLM backend (proposed; its pinned wheel is cp312). The "
-          "execution environment is attested separately and bound by "
+          "review; the seed derivation; the vLLM seam source; Python 3.12 "
+          "for the orchestrator and the vLLM backend (the CUDA vllm 0.15.1 "
+          "wheel is cp38-abi3; 3.12 is vLLM's Docker default and native on "
+          "GPU Base 24.04); the execution requirements (vllm 0.15.1, torch "
+          "2.9.1+cu129, 2x H100 SXM, driver >= 575.51.03), one worker per "
+          "GPU, TP as configured. The execution environment is attested "
+          "on the host, checked against the requirements and bound by "
           "Freeze 1; a bounded, authorised smoke test (never evidence) "
           "measures load time, throughput and truncation first.",
           {"models": [asdict(MODEL_BY_KEY[k]) for k in cfg.models],
@@ -386,6 +404,8 @@ def decisions(cfg: PilotConfig = DEFAULT_CONFIG) -> tuple[Decision, ...]:
                      "truncation_review_share"),
            "backend_source_hash": _backend_source_hash(),
            "backend_python": BACKEND_PYTHON,
+           "orchestrator_python": ORCHESTRATOR_PYTHON,
+           "execution_requirements": EXECUTION_REQUIREMENTS,
            "source_hash_scheme": SOURCE_HASH_SCHEME}),
         d("D13", "Object types and hierarchical weights", "proposed",
           "Commas and semicolons share the object type punctuation; "

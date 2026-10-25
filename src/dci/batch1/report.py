@@ -12,7 +12,9 @@ from dci.batch1 import library as L
 from dci.batch1 import references as R
 
 __all__ = ["library_review", "compatibility_review", "estimate_review",
-           "decisions_review", "selection_report", "topic_review"]
+           "decisions_review", "selection_report", "topic_review",
+           "topic_replacements", "splice_generated", "GENERATED_BEGIN",
+           "GENERATED_END"]
 
 
 _SHORT = {"gemma-3n-e2b-it": "e2b", "gemma-3n-e4b-it": "e4b",
@@ -193,6 +195,22 @@ def topic_review(overlap: Mapping[str, Any], hygiene: Mapping[str, Any],
             out.append(f"| {f['pass']} | `{f['topic_id']}` | {f['question']} | "
                        f"{f['matched']} ({f['matched_source']}) | "
                        f"{f['rationale']} |")
+        contained = [f for f in semantic.get("findings", [])
+                     if f["pass"].startswith("containment")]
+        if contained:
+            out += ["", f"## Containment pass: the kept CLOSE pairs re-judged "
+                    f"({len(contained)})", "",
+                    "Rule (D05, 2026-10-25): a pair is a restatement when a "
+                    "good answer to either question would largely answer the "
+                    "other, in either direction. Two judges, each blind to "
+                    "the other; a restatement by either is rewritten.", "",
+                    "| topic | question | close to | verdict | judges |",
+                    "|---|---|---|---|---|"]
+            for f in contained:
+                out.append(f"| `{f['topic_id']}` | {f['question']} | "
+                           f"{f['matched']} ({f['matched_source']}) | "
+                           f"{f['verdict']} ({f['action']}) | "
+                           f"{f['rationale']} |")
     out += ["", "## Stage 1, Stage 2 and reserved topic characteristics", "",
             "Refined cells pool Stage 1 and Stage 2 topics; unrefined cells see "
             "Stage 1 only. Differences here can move difficulty "
@@ -210,6 +228,110 @@ def topic_review(overlap: Mapping[str, Any], hygiene: Mapping[str, Any],
                    f"{prof['share_with_letter_z']:.2f} | {prof['share_why']:.2f}"
                    f" | {prof['share_how']:.2f} |")
     return "\n".join(out) + "\n"
+
+
+#: The generated block inside the hand-written ``TOPIC_REVIEW.md``.
+GENERATED_BEGIN = ("<!-- BEGIN GENERATED: topic replacement tables "
+                   "(python -m dci.batch1 write-review-artifacts) -->")
+GENERATED_END = "<!-- END GENERATED -->"
+
+#: Which revision records each replacement table shows, by reason prefix,
+#: and how its reason column reads.
+_REPLACEMENT_KINDS = (
+    ("re-audit R1", "a", "restatement (named by the re-audit)"),
+    ("semantic sweep 2026-10-19: restated", "b",
+     "restatement (found by the semantic review)"),
+    ("semantic sweep 2026-10-19: same subject", "b",
+     "close to a historical question"),
+    ("semantic sweep 2026-10-19: duplicated", "b",
+     "duplicate of another new question"),
+    ("D05 2026-10-25: containment rule", "c",
+     "restatement under the containment rule"),
+    ("D05 2026-10-25: long word restored", "c",
+     "reworded to restore an 11+-letter word in Stage 1"),
+)
+_USED_IN = {"stage1": "Stage 1 (pilot)", "stage2": "Stage 2 (pilot)",
+            "confirmatory": "reserved confirmatory"}
+
+
+def _partner_at_review(r: Mapping[str, Any],
+                       findings: list[Mapping[str, Any]]) -> str | None:
+    """A bank partner's text as the reviewer read it: the finding against
+    this revision's previous question, not the partner's text today."""
+    matched = r.get("matched") or {}
+    if matched.get("question"):
+        return matched["question"]
+    for f in findings:
+        if f.get("topic_id") == r["topic_id"] and \
+                f.get("matched_source") == matched.get("id") and \
+                f.get("question_sha256") == r.get("previous_sha256"):
+            return f.get("matched")
+    return None
+
+
+def topic_replacements(revisions: list[Mapping[str, Any]],
+                       current: Mapping[str, str],
+                       used_in: Mapping[str, str],
+                       areas: Mapping[str, str],
+                       semantic: Mapping[str, Any] | None = None) -> str:
+    """``TOPIC_REVIEW.md`` §3: every replacement since the re-audit, with
+    the original, the replacement and what it overlapped. A replacement
+    that was itself replaced later shows the text it had, and says so."""
+    findings = list((semantic or {}).get("findings", []))
+    shown = []
+    for i, r in enumerate(revisions):
+        kind = next((k for k in _REPLACEMENT_KINDS
+                     if r["reason"].startswith(k[0])), None)
+        if kind is None:
+            continue
+        later = next((x for x in revisions[i + 1:]
+                      if x["topic_id"] == r["topic_id"]), None)
+        shown.append((kind, r, later))
+    order = {"stage1": 0, "stage2": 1, "confirmatory": 2}
+
+    def row(kind, r, later) -> str:
+        tid = r["topic_id"]
+        text = later["previous_question"] if later else current[tid]
+        note = " *(changed again on 2026-10-25, §3c)*" if later else ""
+        matched = r.get("matched") or {}
+        partner = _partner_at_review(r, findings)
+        if not matched:
+            cited = "—"
+        elif matched.get("source") == "batch1":
+            pid = matched.get("id")
+            cited = f"new question `{pid}`: {partner} *(new bank)*"
+            if partner != current.get(pid):
+                cited += (f" — since rewritten as: {current.get(pid)}")
+        else:
+            cited = f"{partner} *({matched.get('source')})*"
+        return (f"| `{tid}` | {areas[tid]} | {_USED_IN[used_in[tid]]} | "
+                f"{r['previous_question']} | **{text}**{note} | {cited} | "
+                f"{kind[2]} |")
+
+    head = ["| topic id | category | used in | original question | "
+            "replacement | question it overlapped *(source)* | reason |",
+            "|---|---|---|---|---|---|---|"]
+    out = []
+    titles = {"a": "### 3a. The {n} restatements named by the re-audit",
+              "b": "### 3b. The other {n} replacements of 2026-10-19",
+              "c": "### 3c. The {n} questions rewritten on 2026-10-25 "
+                   "(D05 decision)"}
+    for section in ("a", "b", "c"):
+        rows = sorted((x for x in shown if x[0][1] == section),
+                      key=lambda x: (order[used_in[x[1]["topic_id"]]],
+                                     x[1]["topic_id"]))
+        if not rows:
+            continue
+        out += ["", titles[section].format(n=len(rows)), ""] + head + \
+            [row(*x) for x in rows]
+    return "\n".join(out).strip("\n") + "\n"
+
+
+def splice_generated(document: str, block: str) -> str:
+    """Replace the text between the generated-block markers."""
+    start = document.index(GENERATED_BEGIN) + len(GENERATED_BEGIN)
+    end = document.index(GENERATED_END)
+    return document[:start] + "\n\n" + block + "\n" + document[end:]
 
 
 def estimate_review(est: Mapping[str, Any]) -> str:

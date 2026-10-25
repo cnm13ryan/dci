@@ -290,36 +290,6 @@
    "wordset_jaccard": 0.3333
   },
   {
-   "content_jaccard": 0.1667,
-   "decision": "history of shorthand vs employee values clashing with business: share only 'business' and 'value'",
-   "neighbour": "What happens when an employee's values clash with a profitable line of business?",
-   "neighbour_id": "work-and-organisations-40",
-   "neighbour_source": "dci1/v2",
-   "question": "How did shorthand writing become a valued business skill?",
-   "rare_shared": [
-    "busines",
-    "valu"
-   ],
-   "reviewed": true,
-   "topic_id": "b1-history-28",
-   "wordset_jaccard": 0.0952
-  },
-  {
-   "content_jaccard": 0.1667,
-   "decision": "history of shorthand vs employee values clashing with business: share only 'business' and 'value'",
-   "neighbour": "What happens when an employee's values clash with a profitable line of business?",
-   "neighbour_id": "work-and-organisations-40",
-   "neighbour_source": "dci1v3",
-   "question": "How did shorthand writing become a valued business skill?",
-   "rare_shared": [
-    "busines",
-    "valu"
-   ],
-   "reviewed": true,
-   "topic_id": "b1-history-28",
-   "wordset_jaccard": 0.0952
-  },
-  {
    "content_jaccard": 0.3,
    "decision": "shared structure of folk tales vs similarity of lullabies; different form (narrative vs song)",
    "neighbour": "Why do lullabies sound similar across very different cultures?",
@@ -756,21 +726,6 @@
    "wordset_jaccard": 0.1667
   },
   {
-   "content_jaccard": 0.2222,
-   "decision": "binocular depth perception vs an ultrasonic parking sensor: share only 'judge distance'",
-   "neighbour": "How does a parking sensor judge the distance to a wall?",
-   "neighbour_id": "b1-technology-40",
-   "neighbour_source": "batch1",
-   "question": "How do two eyes working together judge distance?",
-   "rare_shared": [
-    "distance",
-    "judge"
-   ],
-   "reviewed": true,
-   "topic_id": "b1-health-and-the-body-45",
-   "wordset_jaccard": 0.2
-  },
-  {
    "content_jaccard": 0.2,
    "decision": "the sewing machine's history vs how a spin cycle works: share only 'machine' and 'clothes'",
    "neighbour": "How does a washing machine spin clothes nearly dry?",
@@ -866,11 +821,11 @@
   "wordset_jaccard": 0.5
  },
  "semantic_review": {
-  "file_hash": "3b697389e6247d9367118e89ac02f9dd43cb53f961d36bf366ab086b0c493ea5",
-  "findings": 255,
+  "file_hash": "0587cf31a4397075845133e486da4f50de52d36634f218aa954c5001d4223398",
+  "findings": 350,
   "restatements_still_in_bank": []
  },
  "sequestered_matches": [],
- "source_file_hash": "05322ea4aab2747c69831646b592e55ae689cfb577057bdc297dc6d04a6927c2",
+ "source_file_hash": "c272203f04575adaea769a3b67ff02b877b7aaca7fb24cca4f848b537ed43f8f",
  "unreviewed": []
 }

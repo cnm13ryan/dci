@@ -5,7 +5,7 @@
    "approved_on": "",
    "note": "",
    "origin": "proposed",
-   "payload_hash": "750df75fc97b117068aa805786b4c0150e4d80c4e860b6fac23a1ee08a21cf89",
+   "payload_hash": "1984255921c07e932cb3bda6d0d1a17c9c52b0ea9a28d9119301672de6461ce0",
    "status": "PROPOSED",
    "summary": "Concrete targets, counts and minima for the 29 slots the design left open.",
    "title": "Parameters of the 29 proposed variants"
@@ -15,7 +15,7 @@
    "approved_on": "",
    "note": "",
    "origin": "proposed",
-   "payload_hash": "5801a3b53fe7bcb51fa56472bef4e5f382ea3dee1da5efa6067dadbd8b3609f6",
+   "payload_hash": "6b0294a33bb87047d4e9043a3a7efea79bc36e426f31a8f9d7a2fcae1eb96758",
    "status": "PROPOSED",
    "summary": "F0 imperative, F1 requirement; A's strings are v8.1 A frames 0/1, B's are historical B wordings 1/0; the carried DCI-1 prompt template with one numbered instruction.",
    "title": "The two wording frames and the prompt"
@@ -25,7 +25,7 @@
    "approved_on": "",
    "note": "",
    "origin": "proposed",
-   "payload_hash": "404c501ee92089074bdb88fd15706bdc47503cb826a723e6db3046b6827a8d8e",
+   "payload_hash": "f013531202272bc8576a7f1414912438e453f942dea41fdbaf816a5f9577c2e7",
    "status": "PROPOSED",
    "summary": "Historical alpha-run words for every family; certified sentence segmentation; A folded per word (differs from historical S0 only on U+0130).",
    "title": "Text semantics"
@@ -35,7 +35,7 @@
    "approved_on": "",
    "note": "",
    "origin": "proposed",
-   "payload_hash": "faf788812b5ef142769fe86a8098575e8d55f0dc197d23b54ec7b913c54a23ce",
+   "payload_hash": "94c018a1c2dcede3eba5476540e03055aa087198cda1ba0beb6cac516b8e4205",
    "status": "PROPOSED",
    "summary": "Compliant = PASS on a non-empty, untruncated, non-vacuous answer. A completed blank generation (the seam's CHANNEL_INVALID under NO_THINKING) is an EMPTY answer: in n, never compliant, not regenerated. A technical failure is never evidence and stays open for resume, up to max_technical_attempts per row. Literal passes and the reason a pass is excluded are recorded.",
    "title": "Outcomes, compliance and vacuity"
@@ -45,7 +45,7 @@
    "approved_on": "",
    "note": "",
    "origin": "proposed",
-   "payload_hash": "8a12b1dfa1ea6db0d143d4b1bb72a5edcfbb85cac4afd2a63682ad83da4e0e22",
+   "payload_hash": "543834c0bba5d23d85c9c7ea68191692495c27effad80b51aedfd411891d953d",
    "status": "PROPOSED",
    "summary": "32 responses per stand-alone cell on one shared set of 32 new topics; task-only 64 per model; 96 pilot topics; the topic bank and its split as reviewed.",
    "title": "Stage 1 allocation and pilot topics"
@@ -55,7 +55,7 @@
    "approved_on": "",
    "note": "",
    "origin": "proposed",
-   "payload_hash": "60cd061a6bf9567ec2c1b06a227a36d66ec90e5e24f89446949e22de6b95c940",
+   "payload_hash": "c0cb71842c0f3bb8f09901a50ebd7c0b76b209374631d1e181abecba7b4c2f3e",
    "status": "PROPOSED",
    "summary": "One bounded round, selected only from complete, authenticated Stage 1 evidence: boundary cells ranked by class, then by standardised distance to the boundary; 64 new-topic responses each; at most stage2_max_cells cells. Finalisation needs both stages complete; there is no partial-completion rule.",
    "title": "Stage 2 refinement rule and stage completeness"
@@ -65,7 +65,7 @@
    "approved_on": "",
    "note": "",
    "origin": "proposed",
-   "payload_hash": "3be9d5940f2106764bc118419c0255db54b08f84ea9ae288ea7ff92674aa5689",
+   "payload_hash": "cc261ae19fd1ad686d8c09bb97cb02907612353780ff9bbaec50d5cc426b9567",
    "status": "PROPOSED",
    "summary": "Admissible pairs: gap >= b_min_gap; median B-only separation >= b_min_median_separation; that separation in >= b_min_separated_models models; each limit informative in >= b_min_informative_model_frames model-frames. Rank by informative cells, the worse limit, then separation. No admissible pair fails B selection.",
    "title": "Selecting the two B limits"
@@ -75,7 +75,7 @@
    "approved_on": "",
    "note": "",
    "origin": "proposed",
-   "payload_hash": "6f2f69abfbaa72017c69708db52f39ded38c02d143d64dc28ad934999bcc0e2b",
+   "payload_hash": "99a39cd824f437f71bfea388fbbc349c967e6cb04209c22ecd9508838ce7c08e",
    "status": "PROPOSED",
    "summary": "Admissible N: p_A inside a_headroom_band in >= a_min_informative_model_frames model-frames across >= a_min_informative_models models. Then maximise configurations with G1 support and an informative A, then headroom, then prefer N=4, then the smaller N. Uninformative-A configurations never count toward feasibility. No admissible N fails A selection; no per-model fallback.",
    "title": "Selecting the global A count"
@@ -85,7 +85,7 @@
    "approved_on": "",
    "note": "",
    "origin": "design",
-   "payload_hash": "7e50ba8f0a5226ca35c80812509ead87311b0b09cc1357f009643e3803750e2a",
+   "payload_hash": "86db9770310b309ff3ae3d430c453a1c3e4687fc525d39e20bc7c925c6591c38",
    "status": "PROPOSED",
    "summary": "Point estimate >= 20% in at least one model-frame, on all stand-alone responses of that cell (Stage 1 + 2); 10% extension reported separately. The OR over eight cells admits candidates whose true rate is below 20% (disclosed).",
    "title": "Eligibility operationalisation"
@@ -95,7 +95,7 @@
    "approved_on": "",
    "note": "",
    "origin": "design",
-   "payload_hash": "b4765b94a1dc3727cb5677f937a601a4a34bfcef2e7533ae914ff7e3861f0cda",
+   "payload_hash": "540aaaf0cd3684f1bf1cff0cf874874409cb60a612121f8bb00061a569a46628",
    "status": "PROPOSED",
    "summary": "|p_X - p_A| <= 0.10 per model-frame on raw compliance; iota uses task-only kappa per model (frame-invariant prompt); undefined iota is unmatched and flagged. Matching is a noisy classification at pilot sample sizes (see D14).",
    "title": "Matching operationalisation"
@@ -105,7 +105,7 @@
    "approved_on": "",
    "note": "",
    "origin": "design",
-   "payload_hash": "16cdce2934876babc4ee88b0625fa8922100c9332623dbb66a906d17577d89e2",
+   "payload_hash": "32951ab309a6fb20256816bf1bf3f95681fd6ce2c287f3010df2dde1292e5ead",
    "status": "PROPOSED",
    "summary": "Design minima for G1, P1, P2, P3 and the 12-of-16 target; proposed: P3 also needs |G3| >= p3_min_g3.",
    "title": "Coverage requirements"
@@ -115,9 +115,9 @@
    "approved_on": "",
    "note": "",
    "origin": "proposed",
-   "payload_hash": "b21391da5d7e145eccdf18ab95cfe60127aef56088aa72389e54c67c24fcd47d",
+   "payload_hash": "c224998eccf8ebe4de9e70ee0ee99270500637a2932c393fe28329225f789a6d",
    "status": "PROPOSED",
-   "summary": "Historical four-model panel and decoding; cap 512 tokens, with any cell truncating above truncation_review_share listed for review; the seed derivation; the vLLM seam source; Python 3.11 for the orchestrator (researcher-approved 2026-10-19) and 3.12 for the vLLM backend (proposed; its pinned wheel is cp312). The execution environment is attested separately and bound by Freeze 1; a bounded, authorised smoke test (never evidence) measures load time, throughput and truncation first.",
+   "summary": "Historical four-model panel and decoding; cap 512 tokens, with any cell truncating above truncation_review_share listed for review; the seed derivation; the vLLM seam source; Python 3.12 for the orchestrator and the vLLM backend (the CUDA vllm 0.15.1 wheel is cp38-abi3; 3.12 is vLLM's Docker default and native on GPU Base 24.04); the execution requirements (vllm 0.15.1, torch 2.9.1+cu129, 2x H100 SXM, driver >= 575.51.03), one worker per GPU, TP as configured. The execution environment is attested on the host, checked against the requirements and bound by Freeze 1; a bounded, authorised smoke test (never evidence) measures load time, throughput and truncation first.",
    "title": "Model panel, decoding, cap, seeds and backend"
   },
   "D13": {
@@ -125,7 +125,7 @@
    "approved_on": "",
    "note": "",
    "origin": "proposed",
-   "payload_hash": "c98866130ab43754bce38e73f33ae845eb0aaa7f96bead2e72db3d159110a484",
+   "payload_hash": "7f24d04f57e7fdc822b03cda7bbd8c3152f7da80225ed99614e21113c22f2700",
    "status": "PROPOSED",
    "summary": "Commas and semicolons share the object type punctuation; weights equal over operations, then object types, then parameter variants (so a word with three count variants carries three variant shares).",
    "title": "Object types and hierarchical weights"
@@ -135,14 +135,14 @@
    "approved_on": "",
    "note": "",
    "origin": "proposed",
-   "payload_hash": "cae73152de09cf5b4ce21c51eef0ec3681f4ba8b0f0842829f1f7fb05a3a3c3f",
+   "payload_hash": "da0bb5bb7c0fcd0fe1d79401549dbf7ccb5b3f69b2b38ebc4137b4fc77a8f51b",
    "status": "PROPOSED",
    "summary": "Topic-cluster bootstrap of the pilot: inclusion frequency per reference, A/B selection and FEASIBLE shares, borderline matches, and feasibility on majority-stable members; a flag when a FEASIBLE verdict's weakest contrast is within near_threshold_margin of the target. Diagnostic only, never a gate: membership stays the point-estimate rule; instability is flagged for review, never auto-corrected.",
    "title": "Membership-stability diagnostics"
   }
  },
  "instructions": "Set status to APPROVED, and fill approved_by and approved_on (YYYY-MM-DD), only for a decision whose payload you have reviewed. Editing a decision, or the code that implements it, changes its payload hash and voids its approval.",
- "orchestrator_python": "3.11",
+ "orchestrator_python": "3.12",
  "schema": "dci.batch1/approvals/v2",
  "source_hash_scheme": "dci.batch1/source-tokens/v1"
 }

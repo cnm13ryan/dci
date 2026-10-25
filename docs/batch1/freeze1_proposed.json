@@ -106,7 +106,7 @@
   "near_threshold_margin": 2,
   "p1_min_additional": 2,
   "p2_min_additional_other_object": 2,
-  "p3_min_additional_other_operation": 2,
+  "p3_min_additional_other_operation": 3,
   "p3_min_g3": 3,
   "pilot_topics": 96,
   "preferred_a_count": 4,
@@ -128,7 +128,7 @@
   "truncation_review_share": 0.02,
   "z": 1.959963984540054
  },
- "config_hash": "433d81ca7fc02b9899f0816da8a5f8e51c6514524b4ce459cc6594795b4a6d1a",
+ "config_hash": "b8596f836ec24bc2dec4acd1ebe5d9aa1f586b6ef2ec887347d2c69c739d2c92",
  "decisions": {
   "D01": {
    "approved_by": "",
@@ -138,7 +138,7 @@
     "verifiers.py": "7e6bfcd45d8d9bb053f45968ecd95859fc77a64c1837851d5394b3994847094c"
    },
    "origin": "proposed",
-   "payload_hash": "750df75fc97b117068aa805786b4c0150e4d80c4e860b6fac23a1ee08a21cf89",
+   "payload_hash": "1984255921c07e932cb3bda6d0d1a17c9c52b0ea9a28d9119301672de6461ce0",
    "status": "PROPOSED",
    "title": "Parameters of the 29 proposed variants"
   },
@@ -150,7 +150,7 @@
     "library.py": "2cc8eba7fee4fbfadd969c8bd9d621f75f6d7567461965d7d223a2da2050e597"
    },
    "origin": "proposed",
-   "payload_hash": "5801a3b53fe7bcb51fa56472bef4e5f382ea3dee1da5efa6067dadbd8b3609f6",
+   "payload_hash": "6b0294a33bb87047d4e9043a3a7efea79bc36e426f31a8f9d7a2fcae1eb96758",
    "status": "PROPOSED",
    "title": "The two wording frames and the prompt"
   },
@@ -162,7 +162,7 @@
     "text.py": "dd7d69ab3f943b764d427fa421a936570f3d36d4fa657e397ad17904d54e8145"
    },
    "origin": "proposed",
-   "payload_hash": "404c501ee92089074bdb88fd15706bdc47503cb826a723e6db3046b6827a8d8e",
+   "payload_hash": "f013531202272bc8576a7f1414912438e453f942dea41fdbaf816a5f9577c2e7",
    "status": "PROPOSED",
    "title": "Text semantics"
   },
@@ -175,7 +175,7 @@
     "verifiers.py": "7e6bfcd45d8d9bb053f45968ecd95859fc77a64c1837851d5394b3994847094c"
    },
    "origin": "proposed",
-   "payload_hash": "faf788812b5ef142769fe86a8098575e8d55f0dc197d23b54ec7b913c54a23ce",
+   "payload_hash": "94c018a1c2dcede3eba5476540e03055aa087198cda1ba0beb6cac516b8e4205",
    "status": "PROPOSED",
    "title": "Outcomes, compliance and vacuity"
   },
@@ -187,7 +187,7 @@
     "topics.py": "8a160c2d2ca19898b7c33ef2a8169f512aa9ccaf476094f4a7c0dacdd901bbcc"
    },
    "origin": "proposed",
-   "payload_hash": "8a12b1dfa1ea6db0d143d4b1bb72a5edcfbb85cac4afd2a63682ad83da4e0e22",
+   "payload_hash": "543834c0bba5d23d85c9c7ea68191692495c27effad80b51aedfd411891d953d",
    "status": "PROPOSED",
    "title": "Stage 1 allocation and pilot topics"
   },
@@ -201,7 +201,7 @@
     "pipeline.py": "3aa82bf91110d784ef29708310fb5a3742767ed9b0a20baade5f07e9549062da"
    },
    "origin": "proposed",
-   "payload_hash": "60cd061a6bf9567ec2c1b06a227a36d66ec90e5e24f89446949e22de6b95c940",
+   "payload_hash": "c0cb71842c0f3bb8f09901a50ebd7c0b76b209374631d1e181abecba7b4c2f3e",
    "status": "PROPOSED",
    "title": "Stage 2 refinement rule and stage completeness"
   },
@@ -212,7 +212,7 @@
     "calibration.py": "fb4f2a1d60f0fd0f7807847a0d02382bd2628580a3609b416d6ce546fa795fa1"
    },
    "origin": "proposed",
-   "payload_hash": "3be9d5940f2106764bc118419c0255db54b08f84ea9ae288ea7ff92674aa5689",
+   "payload_hash": "cc261ae19fd1ad686d8c09bb97cb02907612353780ff9bbaec50d5cc426b9567",
    "status": "PROPOSED",
    "title": "Selecting the two B limits"
   },
@@ -224,7 +224,7 @@
     "references.py": "7e5e2d930dad11c08764472470606de0488f845d158117045635025aefbe7e7c"
    },
    "origin": "proposed",
-   "payload_hash": "6f2f69abfbaa72017c69708db52f39ded38c02d143d64dc28ad934999bcc0e2b",
+   "payload_hash": "99a39cd824f437f71bfea388fbbc349c967e6cb04209c22ecd9508838ce7c08e",
    "status": "PROPOSED",
    "title": "Selecting the global A count"
   },
@@ -236,7 +236,7 @@
     "references.py": "7e5e2d930dad11c08764472470606de0488f845d158117045635025aefbe7e7c"
    },
    "origin": "design",
-   "payload_hash": "7e50ba8f0a5226ca35c80812509ead87311b0b09cc1357f009643e3803750e2a",
+   "payload_hash": "86db9770310b309ff3ae3d430c453a1c3e4687fc525d39e20bc7c925c6591c38",
    "status": "PROPOSED",
    "title": "Eligibility operationalisation"
   },
@@ -248,7 +248,7 @@
     "references.py": "7e5e2d930dad11c08764472470606de0488f845d158117045635025aefbe7e7c"
    },
    "origin": "design",
-   "payload_hash": "b4765b94a1dc3727cb5677f937a601a4a34bfcef2e7533ae914ff7e3861f0cda",
+   "payload_hash": "540aaaf0cd3684f1bf1cff0cf874874409cb60a612121f8bb00061a569a46628",
    "status": "PROPOSED",
    "title": "Matching operationalisation"
   },
@@ -259,7 +259,7 @@
     "references.py": "7e5e2d930dad11c08764472470606de0488f845d158117045635025aefbe7e7c"
    },
    "origin": "design",
-   "payload_hash": "16cdce2934876babc4ee88b0625fa8922100c9332623dbb66a906d17577d89e2",
+   "payload_hash": "32951ab309a6fb20256816bf1bf3f95681fd6ce2c287f3010df2dde1292e5ead",
    "status": "PROPOSED",
    "title": "Coverage requirements"
   },
@@ -273,7 +273,7 @@
     "runner.py": "bfe4fafb2140032cd359f650d11e8c3bdaa463ed29e816c324d51395209bbfaf"
    },
    "origin": "proposed",
-   "payload_hash": "b21391da5d7e145eccdf18ab95cfe60127aef56088aa72389e54c67c24fcd47d",
+   "payload_hash": "c224998eccf8ebe4de9e70ee0ee99270500637a2932c393fe28329225f789a6d",
    "status": "PROPOSED",
    "title": "Model panel, decoding, cap, seeds and backend"
   },
@@ -285,7 +285,7 @@
     "references.py": "7e5e2d930dad11c08764472470606de0488f845d158117045635025aefbe7e7c"
    },
    "origin": "proposed",
-   "payload_hash": "c98866130ab43754bce38e73f33ae845eb0aaa7f96bead2e72db3d159110a484",
+   "payload_hash": "7f24d04f57e7fdc822b03cda7bbd8c3152f7da80225ed99614e21113c22f2700",
    "status": "PROPOSED",
    "title": "Object types and hierarchical weights"
   },
@@ -296,7 +296,7 @@
     "stability.py": "cc34cc3bd42e19fab8c61495df16fceda00517257449b11036bedb6fa2c4c8a5"
    },
    "origin": "proposed",
-   "payload_hash": "cae73152de09cf5b4ce21c51eef0ec3681f4ba8b0f0842829f1f7fb05a3a3c3f",
+   "payload_hash": "da0bb5bb7c0fcd0fe1d79401549dbf7ccb5b3f69b2b38ebc4137b4fc77a8f51b",
    "status": "PROPOSED",
    "title": "Membership-stability diagnostics"
   }
@@ -380,7 +380,7 @@
    "unq.word5": "e36e87a21d70b986fe99dbdd0621825bb18038713195f298774cd8285d0b9ca6"
   }
  },
- "manifest_hash": "7741c196df195fd63cd96d1bcaf7f011668c3abc2b9868cf7c771d32d01ba416",
+ "manifest_hash": "1573ae3cca500ab398fee4ae7fc74878426b9323c15cff3e4d777602a95af146",
  "models": [
   {
    "chat_template_kwargs": {},
@@ -440,9 +440,9 @@
  "orchestrator": {
   "frozen_with": {
    "implementation": "cpython",
-   "minor": "3.11"
+   "minor": "3.12"
   },
-  "required_python": "3.11",
+  "required_python": "3.12",
   "source_hash_scheme": "dci.batch1/source-tokens/v1"
  },
  "prompts": {
@@ -454,9 +454,9 @@
   "__init__.py": "19f2032706d031581d981e6bb9a0b135d0261914ec4cbd3b7477e548cd104117",
   "__main__.py": "bc713658e3413fada43e1613c2255feaa12add8ffba22ec22a6ddc4e00435fb6",
   "calibration.py": "fb4f2a1d60f0fd0f7807847a0d02382bd2628580a3609b416d6ce546fa795fa1",
-  "cli.py": "a722a90a20a7e8ae4ebaa524a4d4a24e62ca39c9faccb84428e22608a66dd7b6",
+  "cli.py": "9f58b78efdcc448afeeac50b3078d3a2c4140ecce02055743e705aa996204d98",
   "compatibility.py": "6b7dc43c6d220f63ca7bdd934eed9e6041ff5f494d1e2cf385b5fa52ab95292e",
-  "config.py": "985e2ab6231b842738f0175527db4be54af1598af32ec2bca76e2800c54f94c6",
+  "config.py": "bb3279144c4e13c7f43c9467f93849c78158e0eebdd61bccab09d24e556c65d1",
   "dci/provenance/hashes.py": "b0db13e53e9e62d18ed2e94a225318b08d44aedd2beddffb044a46e2fc18bdc3",
   "dci/verifiers/rules.py": "00bed1e904013bcde6cac2c6243bc0c6655b7a1f73f47042b12946e258a63647",
   "design.py": "3ce9e8620d7423b95933af2e83fa287f8a0f6e73b115cd42f28758aaa12c772f",
@@ -492,7 +492,7 @@
  },
  "stage1": {
   "cells": 484,
-  "design_hash": "8c3dc7fe1a2da2e92111689683ccb3fbd6c4a07a6192ef49952c1644c5ca61f0",
+  "design_hash": "ee30db826db957fdd6da178bf301d41e9478f56433e781620b36ba6e189984e8",
   "rows": 15616
  },
  "stage2_bound": {
@@ -502,7 +502,7 @@
  "study_id": "dci-batch1-pilot",
  "text_semantics_hash": "67fb82741e30dbc48d5bb60ecd26e8c46bba9da3b6fb61008c9e76b30a9b9c0f",
  "topics": {
-  "bank_hash": "51698e9ac7b87729ce397566661aead85b5c59b8fdbcf47dfbfe869428e95965",
+  "bank_hash": "6a5c4dc275612278e87a2a61feefc175f01ad9f21c5242593842efec95f27551",
   "counts": {
    "confirmatory_reserved": 480,
    "stage1": 32,
@@ -518,15 +518,15 @@
    "dci1v7/calibration_b_v6"
   ],
   "hygiene_clean": true,
-  "hygiene_hash": "f0d4bf11bd2bb20a7d32dffc8e8afbdd77ceb7d60e18dc8e7af93c2098c588d4",
+  "hygiene_hash": "9696245314827b6a7658f83a0d22acd943c1c50320b8e87d21004c3e0b3168c4",
   "overlap_clean": true,
-  "overlap_hash": "9a54b2e096eaddf15f61c79ab1f9ba7a4d277ce0551d77cea920db2ee221a505",
+  "overlap_hash": "0ca1c0ec24413c82e2e3d163976ada0f13e243c7227d321fc82b0d9076d0bbef",
   "overlap_max_jaccard": {
    "historical": 0.4706,
    "internal": 0.4667
   },
-  "source_file_hash": "05322ea4aab2747c69831646b592e55ae689cfb577057bdc297dc6d04a6927c2",
-  "split_hash": "b1b80906b8cfb627800a998fa7973484ffeb2253892d405b5f599bdd35bf3b84"
+  "source_file_hash": "c272203f04575adaea769a3b67ff02b877b7aaca7fb24cca4f848b537ed43f8f",
+  "split_hash": "afd65ed122770119c5c62aabf497a7b6c3367e25545231a04aaa586518629dd1"
  },
  "verifier_bundle_hash": "5747faa9157c6c23a9988b4888321a3d09a780998352b73e38cbe03a9c9c04ce"
 }

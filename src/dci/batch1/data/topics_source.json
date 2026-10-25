@@ -1,11 +1,11 @@
 {
  "schema": "dci.batch1/topic-source/v1",
- "provenance": "authored 2026-10-18 for DCI Batch 1 (agent-drafted); 42 questions revised 2026-10-19 after the independent audit (F4): checked against every historical DCI question bank in the repository (topics.HISTORICAL_SOURCES) and the v3/v4 sequestered hashes, with each screened pair reviewed in topics_review.json. The bank and the review are agent proposals and are UNREVIEWED by the researcher (decision D05). Never shown to a model before this file. 88 further questions revised 2026-10-19 after the independent re-audit (R1) and a semantic review of every bank question against every historical question (data/topics_semantic_review.json): the 11 restatements the re-audit named, 49 more the semantic review found, one question of each of 5 internal duplicate pairs, and 23 questions judged close enough to a historical question to rewrite. Topic ids, areas and therefore the pilot/confirmatory split are unchanged. Still UNREVIEWED by the researcher (D05).",
+ "provenance": "authored 2026-10-18 for DCI Batch 1 (agent-drafted); 42 questions revised 2026-10-19 after the independent audit (F4): checked against every historical DCI question bank in the repository (topics.HISTORICAL_SOURCES) and the v3/v4 sequestered hashes, with each screened pair reviewed in topics_review.json. The bank and the review are agent proposals and are UNREVIEWED by the researcher (decision D05). Never shown to a model before this file. 88 further questions revised 2026-10-19 after the independent re-audit (R1) and a semantic review of every bank question against every historical question (data/topics_semantic_review.json): the 11 restatements the re-audit named, 49 more the semantic review found, one question of each of 5 internal duplicate pairs, and 23 questions judged close enough to a historical question to rewrite. Topic ids, areas and therefore the pilot/confirmatory split are unchanged. Still UNREVIEWED by the researcher (D05). 26 further questions revised 2026-10-25 under the researcher's D05 decision: 24 kept CLOSE questions that failed the containment rule, and 2 Stage 1 replacements reworded to restore an 11+-letter word; see data/topics_semantic_review.json.",
  "topics": [
   {
    "topic_id": "b1-art-and-design-00",
    "area": "art and design",
-   "question": "How does a mosaic artist choose the size of each tile?"
+   "question": "How does a maze maker keep walkers lost for so long?"
   },
   {
    "topic_id": "b1-art-and-design-01",
@@ -315,7 +315,7 @@
   {
    "topic_id": "b1-everyday-science-14",
    "area": "everyday science",
-   "question": "Why does an empty room produce echoes that a furnished one does not?"
+   "question": "Why does a shower curtain sometimes drift inwards while the hot water runs?"
   },
   {
    "topic_id": "b1-everyday-science-15",
@@ -365,7 +365,7 @@
   {
    "topic_id": "b1-everyday-science-24",
    "area": "everyday science",
-   "question": "Why do aeroplanes leave white trails across a clear sky?"
+   "question": "Why do old newspapers turn yellow as the years pass?"
   },
   {
    "topic_id": "b1-everyday-science-25",
@@ -395,7 +395,7 @@
   {
    "topic_id": "b1-everyday-science-30",
    "area": "everyday science",
-   "question": "Why can water freezing in a pipe split the pipe open?"
+   "question": "Why does a frozen lake sometimes make strange singing noises?"
   },
   {
    "topic_id": "b1-everyday-science-31",
@@ -440,7 +440,7 @@
   {
    "topic_id": "b1-everyday-science-39",
    "area": "everyday science",
-   "question": "Why does painted wood fade after years in strong sunshine?"
+   "question": "Why does a metal tape measure stay rigid when extended?"
   },
   {
    "topic_id": "b1-everyday-science-40",
@@ -555,7 +555,7 @@
   {
    "topic_id": "b1-food-14",
    "area": "food",
-   "question": "Why does a pinch of salt make sweet foods taste sweeter?"
+   "question": "Why does cooked spinach shrink to almost nothing in the pan?"
   },
   {
    "topic_id": "b1-food-15",
@@ -565,12 +565,12 @@
   {
    "topic_id": "b1-food-16",
    "area": "food",
-   "question": "How does milk turn into yoghurt?"
+   "question": "How does coffee lose its caffeine?"
   },
   {
    "topic_id": "b1-food-17",
    "area": "food",
-   "question": "Why are mushrooms so rich in savoury flavour?"
+   "question": "Why are pistachio shells often already split open?"
   },
   {
    "topic_id": "b1-food-18",
@@ -665,7 +665,7 @@
   {
    "topic_id": "b1-food-36",
    "area": "food",
-   "question": "How does curing turn a leg of pork into ham?"
+   "question": "How does a wok give food that smoky charred taste?"
   },
   {
    "topic_id": "b1-food-37",
@@ -700,7 +700,7 @@
   {
    "topic_id": "b1-food-43",
    "area": "food",
-   "question": "Why do some cooks salt aubergines before frying them?"
+   "question": "Why do some cooks bruise lemongrass before adding it?"
   },
   {
    "topic_id": "b1-food-44",
@@ -725,7 +725,7 @@
   {
    "topic_id": "b1-geography-00",
    "area": "geography",
-   "question": "How do meandering rivers gradually cut off loops of water?"
+   "question": "How do scientists read past climates from layers of lake mud?"
   },
   {
    "topic_id": "b1-geography-01",
@@ -1005,7 +1005,7 @@
   {
    "topic_id": "b1-health-and-the-body-08",
    "area": "health and the body",
-   "question": "Why does laughing make people feel good?"
+   "question": "Why does the voice crack during emotional moments?"
   },
   {
    "topic_id": "b1-health-and-the-body-09",
@@ -1165,7 +1165,7 @@
   {
    "topic_id": "b1-health-and-the-body-40",
    "area": "health and the body",
-   "question": "Why does your nose run when you breathe cold air?"
+   "question": "Why does your skin bruise more easily as you get older?"
   },
   {
    "topic_id": "b1-health-and-the-body-41",
@@ -1230,7 +1230,7 @@
   {
    "topic_id": "b1-history-05",
    "area": "history",
-   "question": "How did the spread of reading among ordinary people change society?"
+   "question": "How did the rise of seaside holidays change coastal towns?"
   },
   {
    "topic_id": "b1-history-06",
@@ -1345,7 +1345,7 @@
   {
    "topic_id": "b1-history-28",
    "area": "history",
-   "question": "How did shorthand writing become a valued business skill?"
+   "question": "How did shorthand writing become a valued professional skill?"
   },
   {
    "topic_id": "b1-history-29",
@@ -1510,12 +1510,12 @@
   {
    "topic_id": "b1-language-and-writing-13",
    "area": "language and writing",
-   "question": "How does sarcasm work when the listener has only the voice to go on?"
+   "question": "How does a person learn to lip read when they cannot hear the speaker?"
   },
   {
    "topic_id": "b1-language-and-writing-14",
    "area": "language and writing",
-   "question": "Why do some stories begin in the middle of the action?"
+   "question": "Why do some books get a new title in another country?"
   },
   {
    "topic_id": "b1-language-and-writing-15",
@@ -1645,7 +1645,7 @@
   {
    "topic_id": "b1-language-and-writing-40",
    "area": "language and writing",
-   "question": "How does an author decide how a story should end?"
+   "question": "How does a writer of radio plays set a scene?"
   },
   {
    "topic_id": "b1-language-and-writing-41",
@@ -1675,7 +1675,7 @@
   {
    "topic_id": "b1-language-and-writing-46",
    "area": "language and writing",
-   "question": "Why do people from neighbouring regions often struggle to understand each other's speech?"
+   "question": "Why do historians place a full bibliography at the back of their books?"
   },
   {
    "topic_id": "b1-language-and-writing-47",
@@ -1705,7 +1705,7 @@
   {
    "topic_id": "b1-music-04",
    "area": "music",
-   "question": "How does an unaccompanied choir stay in tune?"
+   "question": "How does piano accompaniment support a nervous soloist?"
   },
   {
    "topic_id": "b1-music-05",
@@ -1745,7 +1745,7 @@
   {
    "topic_id": "b1-music-12",
    "area": "music",
-   "question": "How does a songwriter build a chorus that people remember?"
+   "question": "How does a backing vocalist harmonise with the lead singer?"
   },
   {
    "topic_id": "b1-music-13",
@@ -2265,7 +2265,7 @@
   {
    "topic_id": "b1-technology-20",
    "area": "technology",
-   "question": "How does a smartwatch estimate the steps someone takes?"
+   "question": "How does a smartwatch approximate the steps someone takes?"
   },
   {
    "topic_id": "b1-technology-21",
@@ -2365,7 +2365,7 @@
   {
    "topic_id": "b1-technology-40",
    "area": "technology",
-   "question": "How does a parking sensor judge the distance to a wall?"
+   "question": "How does a digital kitchen scale measure the weight of flour?"
   },
   {
    "topic_id": "b1-technology-41",
@@ -2665,7 +2665,7 @@
   {
    "topic_id": "b1-work-and-organisations-04",
    "area": "work and organisations",
-   "question": "Why do some organisations ask staff to wear uniforms?"
+   "question": "Why do some organisations send mystery shoppers into their stores?"
   },
   {
    "topic_id": "b1-work-and-organisations-05",
@@ -2715,7 +2715,7 @@
   {
    "topic_id": "b1-work-and-organisations-14",
    "area": "work and organisations",
-   "question": "How does a team handle disagreement between two capable members?"
+   "question": "How does a gym keep members paying their monthly subscription?"
   },
   {
    "topic_id": "b1-work-and-organisations-15",
@@ -2745,7 +2745,7 @@
   {
    "topic_id": "b1-work-and-organisations-20",
    "area": "work and organisations",
-   "question": "Why do some firms give candidates a trial project before hiring them?"
+   "question": "Why do some firms allow employees to bring dogs into the workplace?"
   },
   {
    "topic_id": "b1-work-and-organisations-21",
@@ -4145,6 +4145,287 @@
     "source": "dci1/v2,dci1v3",
     "question": "What makes the first weeks in a new job decisive for whether a hire stays or leaves?"
    }
+  },
+  {
+   "topic_id": "b1-art-and-design-00",
+   "revised_on": "2026-10-25",
+   "reason": "D05 2026-10-25: containment rule (a good answer to either question would largely answer the other, in either direction); judged a restatement by the author; replaced with a new topic under the same id",
+   "previous_question": "How does a mosaic artist choose the size of each tile?",
+   "previous_sha256": "971277f609b4b4de4abd51af254ae59b81b636837826783c9cbc293147cdc424",
+   "matched": {
+    "source": "dci1v4",
+    "question": "How does a mosaic hold together as an image?"
+   }
+  },
+  {
+   "topic_id": "b1-everyday-science-14",
+   "revised_on": "2026-10-25",
+   "reason": "D05 2026-10-25: containment rule (a good answer to either question would largely answer the other, in either direction); judged a restatement by both; replaced with a new topic under the same id",
+   "previous_question": "Why does an empty room produce echoes that a furnished one does not?",
+   "previous_sha256": "942afbf56d5ad2c981bf50f24cad06f66cea6a7c9d0367641f7c358baaedbb62",
+   "matched": {
+    "source": "dci1v4",
+    "question": "How does a room change the sound of a live performance?"
+   }
+  },
+  {
+   "topic_id": "b1-everyday-science-24",
+   "revised_on": "2026-10-25",
+   "reason": "D05 2026-10-25: containment rule (a good answer to either question would largely answer the other, in either direction); judged a restatement by the author; replaced with a new topic under the same id",
+   "previous_question": "Why do aeroplanes leave white trails across a clear sky?",
+   "previous_sha256": "36140a126c0a858353f57b85627e2d033fde70d53f982e2adb7f1da26df01706",
+   "matched": {
+    "source": "dci1/v2,dci1v3",
+    "question": "Why can you see your breath on a cold morning but not in summer?"
+   }
+  },
+  {
+   "topic_id": "b1-everyday-science-30",
+   "revised_on": "2026-10-25",
+   "reason": "D05 2026-10-25: containment rule (a good answer to either question would largely answer the other, in either direction); judged a restatement by the author; replaced with a new topic under the same id",
+   "previous_question": "Why can water freezing in a pipe split the pipe open?",
+   "previous_sha256": "268dfbc5dbda30384dd81e9df6348444cf395387f3912fa64de07d2394897efd",
+   "matched": {
+    "source": "dci/v19/task_bank",
+    "question": "Describe why potholes form after a cold winter."
+   }
+  },
+  {
+   "topic_id": "b1-everyday-science-39",
+   "revised_on": "2026-10-25",
+   "reason": "D05 2026-10-25: containment rule (a good answer to either question would largely answer the other, in either direction); judged a restatement by both; replaced with a new topic under the same id",
+   "previous_question": "Why does painted wood fade after years in strong sunshine?",
+   "previous_sha256": "299d8fcef99a708f6d8306a6ec0f9ce91c5bc078bfb0463166782c1ff5dbebd0",
+   "matched": {
+    "source": "dci/v19/task_bank",
+    "question": "Describe why museums dim the lights near old textiles."
+   }
+  },
+  {
+   "topic_id": "b1-food-14",
+   "revised_on": "2026-10-25",
+   "reason": "D05 2026-10-25: containment rule (a good answer to either question would largely answer the other, in either direction); judged a restatement by the author; replaced with a new topic under the same id",
+   "previous_question": "Why does a pinch of salt make sweet foods taste sweeter?",
+   "previous_sha256": "7d954c2f5f0a3b0ffca9e61369be980ea91e3009f3a8d2aea45a374c61a31830",
+   "matched": {
+    "source": "dci1/v2,dci1v3",
+    "question": "How does salt do far more in cooking than simply making dishes salty?"
+   }
+  },
+  {
+   "topic_id": "b1-food-16",
+   "revised_on": "2026-10-25",
+   "reason": "D05 2026-10-25: containment rule (a good answer to either question would largely answer the other, in either direction); judged a restatement by the author; replaced with a new topic under the same id",
+   "previous_question": "How does milk turn into yoghurt?",
+   "previous_sha256": "247958f796a14c17a91c13884a259b108fbc4556722af91dd50a593e4c7c9c1c",
+   "matched": {
+    "source": "dci1/v2,dci1v3",
+    "question": "What gives fermented foods like yogurt and kimchi their distinctive tang?"
+   }
+  },
+  {
+   "topic_id": "b1-food-17",
+   "revised_on": "2026-10-25",
+   "reason": "D05 2026-10-25: containment rule (a good answer to either question would largely answer the other, in either direction); judged a restatement by both; replaced with a new topic under the same id",
+   "previous_question": "Why are mushrooms so rich in savoury flavour?",
+   "previous_sha256": "81bdeb5acdf9772c82defa1da194b49eb3a24ebfc5c15bae1fc4ad9792f30844",
+   "matched": {
+    "source": "dci1/v2,dci1v3",
+    "question": "Why do cooks treat savory umami as a taste of its own, and which foods supply it richly?"
+   }
+  },
+  {
+   "topic_id": "b1-food-36",
+   "revised_on": "2026-10-25",
+   "reason": "D05 2026-10-25: containment rule (a good answer to either question would largely answer the other, in either direction); judged a restatement by the author; replaced with a new topic under the same id",
+   "previous_question": "How does curing turn a leg of pork into ham?",
+   "previous_sha256": "feae170113eb8aa4c29a6433b01a63d4771c30a4ad0097545af3de3316733d86",
+   "matched": {
+    "source": "dci1/v2",
+    "question": "Why are some hams and cheeses aged for years, and what changes during the wait?"
+   }
+  },
+  {
+   "topic_id": "b1-food-43",
+   "revised_on": "2026-10-25",
+   "reason": "D05 2026-10-25: containment rule (a good answer to either question would largely answer the other, in either direction); judged a restatement by the author; replaced with a new topic under the same id",
+   "previous_question": "Why do some cooks salt aubergines before frying them?",
+   "previous_sha256": "2b995d4892dd93ffab197de11d9ebd3719313b11645a8583623cac064cf7a432",
+   "matched": {
+    "source": "dci1v4",
+    "question": "How does salt change the texture of vegetables as they cook?"
+   }
+  },
+  {
+   "topic_id": "b1-health-and-the-body-08",
+   "revised_on": "2026-10-25",
+   "reason": "D05 2026-10-25: containment rule (a good answer to either question would largely answer the other, in either direction); judged a restatement by the author; replaced with a new topic under the same id",
+   "previous_question": "Why does laughing make people feel good?",
+   "previous_sha256": "3e3a2951e72db4055dbf2ef0b87ae7b21addf7bf50297c4e9cf195e97531d954",
+   "matched": {
+    "source": "dci1/v2,dci1v3",
+    "question": "How does laughter affect the body beyond simply lifting the mood?"
+   }
+  },
+  {
+   "topic_id": "b1-history-05",
+   "revised_on": "2026-10-25",
+   "reason": "D05 2026-10-25: containment rule (a good answer to either question would largely answer the other, in either direction); judged a restatement by both; replaced with a new topic under the same id",
+   "previous_question": "How did the spread of reading among ordinary people change society?",
+   "previous_sha256": "bc847a14b81e7c23dd32a8fe6fa586eafd91bfab06dc38ed20bea6442876bb05",
+   "matched": {
+    "source": "dci1/v2,dci1v3",
+    "question": "How did the spread of printing change who could join public debate?"
+   }
+  },
+  {
+   "topic_id": "b1-language-and-writing-13",
+   "revised_on": "2026-10-25",
+   "reason": "D05 2026-10-25: containment rule (a good answer to either question would largely answer the other, in either direction); judged a restatement by the author; replaced with a new topic under the same id",
+   "previous_question": "How does sarcasm work when the listener has only the voice to go on?",
+   "previous_sha256": "7bc10c6c22ed9f8951acddc11796b37be1926e57ab8db1e97248807f9da850ae",
+   "matched": {
+    "source": "dci1/v2,dci1v3",
+    "question": "What happens to meaning when sarcasm moves from speech to text?"
+   }
+  },
+  {
+   "topic_id": "b1-language-and-writing-14",
+   "revised_on": "2026-10-25",
+   "reason": "D05 2026-10-25: containment rule (a good answer to either question would largely answer the other, in either direction); judged a restatement by the author; replaced with a new topic under the same id",
+   "previous_question": "Why do some stories begin in the middle of the action?",
+   "previous_sha256": "92b609452c1a7a5aba60422e03a66b664bd02232282fbdc26faa5a51b75a549c",
+   "matched": {
+    "source": "dci1/v2",
+    "question": "What makes some openings of novels pull readers in immediately?"
+   }
+  },
+  {
+   "topic_id": "b1-language-and-writing-40",
+   "revised_on": "2026-10-25",
+   "reason": "D05 2026-10-25: containment rule (a good answer to either question would largely answer the other, in either direction); judged a restatement by the independent reviewer; replaced with a new topic under the same id",
+   "previous_question": "How does an author decide how a story should end?",
+   "previous_sha256": "607b20fb841f72d3314b1ec2c7b6439f5dd700883ab955d634ba3c0d474407f0",
+   "matched": {
+    "source": "dci1/v2,dci1v3",
+    "question": "What makes an ending feel earned rather than abrupt in a piece of fiction?"
+   }
+  },
+  {
+   "topic_id": "b1-language-and-writing-46",
+   "revised_on": "2026-10-25",
+   "reason": "D05 2026-10-25: containment rule (a good answer to either question would largely answer the other, in either direction); judged a restatement by both; replaced with a new topic under the same id",
+   "previous_question": "Why do people from neighbouring regions often struggle to understand each other's speech?",
+   "previous_sha256": "f3f9a79da0aee6798d1f342002dba1821f028f9c372e0b9ea3d4f01ea332b274",
+   "matched": {
+    "source": "dci1/v2,dci1v3",
+    "question": "How do regional dialects develop within a single shared language?"
+   }
+  },
+  {
+   "topic_id": "b1-music-04",
+   "revised_on": "2026-10-25",
+   "reason": "D05 2026-10-25: containment rule (a good answer to either question would largely answer the other, in either direction); judged a restatement by both; replaced with a new topic under the same id",
+   "previous_question": "How does an unaccompanied choir stay in tune?",
+   "previous_sha256": "4d367a97f02048906c7c136aef418aa6769f3d8d1372d4ae7932d927ba044457",
+   "matched": {
+    "source": "dci1/v2,dci1v3",
+    "question": "What happens to a choir's sound when singers listen closely to one another rather than to themselves?"
+   }
+  },
+  {
+   "topic_id": "b1-music-12",
+   "revised_on": "2026-10-25",
+   "reason": "D05 2026-10-25: containment rule (a good answer to either question would largely answer the other, in either direction); judged a restatement by both; replaced with a new topic under the same id",
+   "previous_question": "How does a songwriter build a chorus that people remember?",
+   "previous_sha256": "4580d143333f1707861be563b87d4167339a6a8175ac735be7a26c1cfd25ccc2",
+   "matched": {
+    "source": "dci1/v2,dci1v3",
+    "question": "Why are choruses usually the part of a song that crowds sing loudest?"
+   }
+  },
+  {
+   "topic_id": "b1-technology-40",
+   "revised_on": "2026-10-25",
+   "reason": "D05 2026-10-25: containment rule (a good answer to either question would largely answer the other, in either direction); judged a restatement by the author; replaced with a new topic under the same id",
+   "previous_question": "How does a parking sensor judge the distance to a wall?",
+   "previous_sha256": "8ff5685806d5b88dbcbee0b0b7756b3f2d01168b6635a391779ef0cba2b90253",
+   "matched": {
+    "source": "dci1/v2,dci1v3",
+    "question": "How do sensors in a modern car help drivers avoid collisions?"
+   }
+  },
+  {
+   "topic_id": "b1-work-and-organisations-04",
+   "revised_on": "2026-10-25",
+   "reason": "D05 2026-10-25: containment rule (a good answer to either question would largely answer the other, in either direction); judged a restatement by the author; replaced with a new topic under the same id",
+   "previous_question": "Why do some organisations ask staff to wear uniforms?",
+   "previous_sha256": "e9bc59ba064f1fb36fffd58ef1099458b92a951608c4238e1b85367bbbb4c59c",
+   "matched": {
+    "source": "dci1/v2",
+    "question": "In what ways do uniforms and dress codes shape behaviour at work?"
+   }
+  },
+  {
+   "topic_id": "b1-work-and-organisations-14",
+   "revised_on": "2026-10-25",
+   "reason": "D05 2026-10-25: containment rule (a good answer to either question would largely answer the other, in either direction); judged a restatement by both; replaced with a new topic under the same id",
+   "previous_question": "How does a team handle disagreement between two capable members?",
+   "previous_sha256": "d7e13ea3274ed1adb14dfac8f05562b6efef8688db61cbba039762eec08e2a1d",
+   "matched": {
+    "source": "dci1/v2,dci1v3",
+    "question": "What makes some teams argue productively while others just argue?"
+   }
+  },
+  {
+   "topic_id": "b1-work-and-organisations-20",
+   "revised_on": "2026-10-25",
+   "reason": "D05 2026-10-25: containment rule (a good answer to either question would largely answer the other, in either direction); judged a restatement by the author; replaced with a new topic under the same id",
+   "previous_question": "Why do some firms give candidates a trial project before hiring them?",
+   "previous_sha256": "d28c42d0b20dc9f0105e05dacef9a56e5a39885cfb03e8015a9b6738e64448db",
+   "matched": {
+    "source": "dci1/v2,dci1v3",
+    "question": "What makes a job interview a poor predictor of how someone will actually perform?"
+   }
+  },
+  {
+   "topic_id": "b1-geography-00",
+   "revised_on": "2026-10-25",
+   "reason": "D05 2026-10-25: containment rule (a good answer to either question would largely answer the other, in either direction); judged a restatement by both; replaced with a new topic under the same id",
+   "previous_question": "How do meandering rivers gradually cut off loops of water?",
+   "previous_sha256": "3d601e1396ace2fbbf7522fa3aba7fa140040273302a53b5a7eb6571df14b826",
+   "matched": {
+    "source": "historical",
+    "question": "How does the course of a river change over time?"
+   }
+  },
+  {
+   "topic_id": "b1-health-and-the-body-40",
+   "revised_on": "2026-10-25",
+   "reason": "D05 2026-10-25: containment rule (a good answer to either question would largely answer the other, in either direction); judged a restatement by the author; replaced with a new topic under the same id",
+   "previous_question": "Why does your nose run when you breathe cold air?",
+   "previous_sha256": "f37d4b41e348d9c4750d195e6e482a6e7c4353fe0b87c02da7b2d07dfb40b930",
+   "matched": {
+    "source": "batch1",
+    "id": "b1-health-and-the-body-26",
+    "question": "How does the nose warm and clean air before it reaches the lungs?"
+   }
+  },
+  {
+   "topic_id": "b1-history-28",
+   "revised_on": "2026-10-25",
+   "reason": "D05 2026-10-25: long word restored: this Stage 1 replacement was reworded to carry a word of 11 or more letters, as its original did, keeping its length, letters b and z, and opening word",
+   "previous_question": "How did shorthand writing become a valued business skill?",
+   "previous_sha256": "e4591b0dde57ac32c92bc5637c983c76b8e01f2f59d3fee267d5d58e2803b191",
+   "matched": {}
+  },
+  {
+   "topic_id": "b1-technology-20",
+   "revised_on": "2026-10-25",
+   "reason": "D05 2026-10-25: long word restored: this Stage 1 replacement was reworded to carry a word of 11 or more letters, as its original did, keeping its length, letters b and z, and opening word",
+   "previous_question": "How does a smartwatch estimate the steps someone takes?",
+   "previous_sha256": "cb464c8c695cb2fad9c45d9039383e205b8706b4d519553d7e33553809e4094a",
+   "matched": {}
   }
  ]
 }

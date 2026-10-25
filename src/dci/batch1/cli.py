@@ -112,6 +112,15 @@ def cmd_write_review_artifacts(args) -> int:
     (out / "topic_screen_report.md").write_text(REP.topic_review(
         TOP.overlap_report(bank), TOP.hygiene_report(bank, split), revisions,
         {t.topic_id: t.question for t in bank}, TOP.load_semantic_review()))
+    # TOPIC_REVIEW.md is written by hand except its replacement tables,
+    # which are generated into the marked block (D05 2026-10-25: they cite
+    # each overlapped question as it stood when it was reviewed).
+    tables = REP.topic_replacements(
+        revisions, {t.topic_id: t.question for t in bank},
+        {t.topic_id: split.split_of(t.topic_id) for t in bank},
+        {t.topic_id: t.area for t in bank}, TOP.load_semantic_review())
+    (out / "TOPIC_REVIEW.md").write_text(REP.splice_generated(
+        (DOCS / "TOPIC_REVIEW.md").read_text(), tables))
     _print({"written": str(out), "freeze1_hash": f1["manifest_hash"],
             "pilot_authorizable": f1["authorization"]["pilot_authorizable"]})
     return 0

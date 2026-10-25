@@ -284,3 +284,59 @@ def test_r1_rewrites_keep_ids_areas_split_and_question_form(bank):
     split = TOP.split_bank(bank, pilot_topics=96, stage1_topics=32)
     hygiene = TOP.hygiene_report(bank, split)
     assert hygiene["clean"] and TOP.overlap_report(bank)["clean"]
+
+
+def _d05_revisions(kind: str):
+    doc = json.loads(TOP.SOURCE_PATH.read_text())
+    return [r for r in doc["revisions"]
+            if r["reason"].startswith(f"D05 2026-10-25: {kind}")]
+
+
+def test_d05_containment_rewrites_keep_ids_form_and_balance(bank):
+    """The researcher's D05 decision (2026-10-25): every kept CLOSE pair was
+    re-judged under the containment rule; each rewrite keeps the id, the
+    opening word and the letters b and z, and stays within one word."""
+    revisions = _d05_revisions("containment rule")
+    assert len(revisions) == 24
+    by_id = {t.topic_id: t.question for t in bank}
+    for r in revisions:
+        old, new = r["previous_question"], by_id[r["topic_id"]]
+        assert new != old and new.split()[0] == old.split()[0]
+        assert abs(T.word_count(new) - T.word_count(old)) <= 1
+        for letter in "bz":
+            assert (letter in new.lower()) == (letter in old.lower())
+
+
+def test_d05_containment_failures_are_refused_if_restored():
+    old = [TOP.Topic(r["topic_id"], "x", r["previous_question"])
+           for r in _d05_revisions("containment rule")]
+    report = TOP.overlap_report(old)
+    assert sorted(report["semantic_review"]["restatements_still_in_bank"]) \
+        == sorted(t.topic_id for t in old)
+    assert not report["clean"]
+
+
+def test_d05_every_kept_close_pair_was_rejudged_and_every_rewrite_reviewed(bank):
+    semantic = TOP.load_semantic_review()["findings"]
+    rejudged = [f for f in semantic if f["pass"] == "containment 2026-10-25"]
+    assert len(rejudged) == 67
+    assert {f["verdict"] for f in rejudged} == {"RESTATEMENT", "DISTINCT"}
+    current = {t.topic_id: TOP._question_hash(t.question) for t in bank}
+    rewritten = {r["topic_id"] for r in _d05_revisions("")}
+    cleared = {f["topic_id"] for f in semantic
+               if f["pass"] in ("second 2026-10-25", "third 2026-10-25")
+               and f["verdict"] in ("OK", "CLOSE") and not f["form_problem"]
+               and f["question_sha256"] == current[f["topic_id"]]}
+    assert rewritten == cleared
+
+
+def test_d05_restores_long_words_in_stage1(bank, split):
+    for r in _d05_revisions("long word restored"):
+        new = {t.topic_id: t.question for t in bank}[r["topic_id"]]
+        assert split.split_of(r["topic_id"]) == "stage1"
+        assert T.max_word_letters(new) >= 11 > T.max_word_letters(
+            r["previous_question"])
+        assert new.split()[0] == r["previous_question"].split()[0]
+        assert abs(T.word_count(new) - T.word_count(r["previous_question"])) <= 1
+    profile = TOP.hygiene_report(bank, split)["profiles"]["stage1"]
+    assert profile["share_longest_ge_11"] == round(3 / 32, 4)

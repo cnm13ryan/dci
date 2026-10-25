@@ -1,12 +1,13 @@
 {
  "schema": "dci.batch1/topic-semantic-review/v1",
- "status": "agent review, 2026-10-19; a proposal awaiting the researcher's review (D05). Not a researcher decision.",
- "method": "Paraphrase check that word-overlap screens cannot do. First pass: four independent model reviewers each read all 1,472 distinct historical questions (topics.HISTORICAL_SOURCES) and one quarter of the 576-question bank, with each bank question's 8 most similar historical and 4 most similar bank questions (TF-IDF over stemmed content words) as hints, and classified every bank question as RESTATEMENT (same phenomenon or question; an answer to one would largely answer the other), CLOSE (same narrow subject, different question), INTERNAL_DUPLICATE, or none; only non-none verdicts are listed. The study author (agent) then rewrote every RESTATEMENT, one question of each INTERNAL_DUPLICATE pair and 23 CLOSE questions judged to share their core answer with a historical question. Second pass: an independent reviewer read both full lists and checked all 88 replacements (one line each). Third pass: the three questions rewritten after the second pass were checked by another independent reviewer; five later rewordings (b1-food-10, b1-health-and-the-body-39, b1-history-33, b1-everyday-science-19, b1-food-24) were checked by the author only.",
+ "status": "agent review, 2026-10-19; a proposal awaiting the researcher's review (D05). Not a researcher decision. Extended 2026-10-25 under the researcher's D05 decision (containment rule, long-word restoration, fresh second pass); still agent judgements, for the researcher to read.",
+ "method": "Paraphrase check that word-overlap screens cannot do. First pass: four independent model reviewers each read all 1,472 distinct historical questions (topics.HISTORICAL_SOURCES) and one quarter of the 576-question bank, with each bank question's 8 most similar historical and 4 most similar bank questions (TF-IDF over stemmed content words) as hints, and classified every bank question as RESTATEMENT (same phenomenon or question; an answer to one would largely answer the other), CLOSE (same narrow subject, different question), INTERNAL_DUPLICATE, or none; only non-none verdicts are listed. The study author (agent) then rewrote every RESTATEMENT, one question of each INTERNAL_DUPLICATE pair and 23 CLOSE questions judged to share their core answer with a historical question. Second pass: an independent reviewer read both full lists and checked all 88 replacements (one line each). Third pass: the three questions rewritten after the second pass were checked by another independent reviewer; five later rewordings (b1-food-10, b1-health-and-the-body-39, b1-history-33, b1-everyday-science-19, b1-food-24) were checked by the author only. 2026-10-25 (D05 decision): every kept CLOSE pair (67) was re-judged under the containment rule (a restatement when a good answer to either question would largely answer the other, in either direction) by the author and by an independent model reviewer, each blind to the other; a restatement by either was rewritten (24). Two Stage 1 replacements were reworded to carry an 11+-letter word (b1-history-28, b1-technology-20). Every new question (26) went to a fresh independent reviewer reading both full lists (second 2026-10-25); the two it did not clear were rewritten and checked again by another fresh reviewer (third 2026-10-25).",
  "verdict_meanings": {
   "RESTATEMENT": "keeps the overlap report unclean while the question is in the bank",
   "CLOSE": "recorded; kept unless rewritten",
   "INTERNAL_DUPLICATE": "one of the pair rewritten",
-  "OK": "no historical or bank question asks this"
+  "OK": "no historical or bank question asks this",
+  "DISTINCT": "containment pass: a good answer to neither question would largely answer the other; kept"
  },
  "findings": [
   {
@@ -18,7 +19,7 @@
    "matched": "How does a mosaic hold together as an image?",
    "matched_source": "dci1v4",
    "rationale": "Both are about how mosaic tesserae read as an image, but one asks about choosing tile size and the other about overall coherence; tile size answers would partly cover coherence.",
-   "action": "kept"
+   "action": "rewritten after the containment pass (2026-10-25)"
   },
   {
    "pass": "first",
@@ -238,7 +239,7 @@
    "matched": "How does a room change the sound of a live performance?",
    "matched_source": "dci1v4",
    "rationale": "Both are about room acoustics (reflection and absorption), but the new question asks specifically about empty versus furnished rooms and echo.",
-   "action": "kept"
+   "action": "rewritten after the containment pass (2026-10-25)"
   },
   {
    "pass": "first",
@@ -304,7 +305,7 @@
    "matched": "Why can you see your breath on a cold morning but not in summer?",
    "matched_source": "dci1/v2,dci1v3",
    "rationale": "Contrails are largely the same thing as visible breath (warm moist exhaust condensing in cold air), but they involve aircraft engines and high altitude.",
-   "action": "kept"
+   "action": "rewritten after the containment pass (2026-10-25)"
   },
   {
    "pass": "first",
@@ -315,7 +316,7 @@
    "matched": "Describe why potholes form after a cold winter.",
    "matched_source": "dci/v19/task_bank",
    "rationale": "Both rely on water expanding as it freezes, but potholes also involve road wear, so the question is different.",
-   "action": "kept"
+   "action": "rewritten after the containment pass (2026-10-25)"
   },
   {
    "pass": "first",
@@ -337,7 +338,7 @@
    "matched": "Describe why museums dim the lights near old textiles.",
    "matched_source": "dci/v19/task_bank",
    "rationale": "Both turn on light breaking down pigments and causing fading, but one asks why a museum practice exists and the other why painted wood fades.",
-   "action": "kept"
+   "action": "rewritten after the containment pass (2026-10-25)"
   },
   {
    "pass": "first",
@@ -524,7 +525,7 @@
    "matched": "How does salt do far more in cooking than simply making dishes salty?",
    "matched_source": "dci1/v2,dci1v3",
    "rationale": "Salt enhancing sweetness is one part of the broader historical question about salt's roles in cooking.",
-   "action": "kept"
+   "action": "rewritten after the containment pass (2026-10-25)"
   },
   {
    "pass": "first",
@@ -535,7 +536,7 @@
    "matched": "What gives fermented foods like yogurt and kimchi their distinctive tang?",
    "matched_source": "dci1/v2,dci1v3",
    "rationale": "Both turn on lactic acid bacteria in yoghurt, but one asks about the process from milk and the other about the tangy taste.",
-   "action": "kept"
+   "action": "rewritten after the containment pass (2026-10-25)"
   },
   {
    "pass": "first",
@@ -546,7 +547,7 @@
    "matched": "Why do cooks treat savory umami as a taste of its own, and which foods supply it richly?",
    "matched_source": "dci1/v2,dci1v3",
    "rationale": "Same narrow subject (umami-rich foods); mushrooms are a classic example, but the historical question is broader.",
-   "action": "kept"
+   "action": "rewritten after the containment pass (2026-10-25)"
   },
   {
    "pass": "first",
@@ -612,7 +613,7 @@
    "matched": "Why are some hams and cheeses aged for years, and what changes during the wait?",
    "matched_source": "dci1/v2",
    "rationale": "Same object (ham); curing and long ageing overlap a lot, but the historical question is about the ageing period.",
-   "action": "kept"
+   "action": "rewritten after the containment pass (2026-10-25)"
   },
   {
    "pass": "first",
@@ -645,7 +646,7 @@
    "matched": "How does salt change the texture of vegetables as they cook?",
    "matched_source": "dci1v4",
    "rationale": "Both involve salt drawing water out of vegetables by osmosis, but the new question is about the specific practice of salting aubergines before frying.",
-   "action": "kept"
+   "action": "rewritten after the containment pass (2026-10-25)"
   },
   {
    "pass": "first",
@@ -887,7 +888,7 @@
    "matched": "How does laughter affect the body beyond simply lifting the mood?",
    "matched_source": "dci1/v2,dci1v3",
    "rationale": "Same subject (effects of laughter), but the historical question explicitly asks about effects beyond mood, which the new one asks about.",
-   "action": "kept"
+   "action": "rewritten after the containment pass (2026-10-25)"
   },
   {
    "pass": "first",
@@ -1041,7 +1042,7 @@
    "matched": "How did the spread of printing change who could join public debate?",
    "matched_source": "dci1/v2,dci1v3",
    "rationale": "Close subject (spread of literacy and print), but the new question is about reading among ordinary people and its effect on society.",
-   "action": "kept"
+   "action": "rewritten after the containment pass (2026-10-25)"
   },
   {
    "pass": "first",
@@ -1195,7 +1196,7 @@
    "matched": "What happens to meaning when sarcasm moves from speech to text?",
    "matched_source": "dci1/v2,dci1v3",
    "rationale": "Same narrow subject (vocal cues to sarcasm); one asks how it works in speech, the other what is lost in text, so answers partly overlap.",
-   "action": "kept"
+   "action": "rewritten after the containment pass (2026-10-25)"
   },
   {
    "pass": "first",
@@ -1206,7 +1207,7 @@
    "matched": "What makes some openings of novels pull readers in immediately?",
    "matched_source": "dci1/v2",
    "rationale": "Both are about story openings; starting in the middle of the action is one way an opening hooks readers, but the new question is narrower.",
-   "action": "kept"
+   "action": "rewritten after the containment pass (2026-10-25)"
   },
   {
    "pass": "first",
@@ -1228,7 +1229,7 @@
    "matched": "What makes an ending feel earned rather than abrupt in a piece of fiction?",
    "matched_source": "dci1/v2,dci1v3",
    "rationale": "Same narrow subject (story endings); the author's decision process and what makes an ending feel earned are related but different questions.",
-   "action": "kept"
+   "action": "rewritten after the containment pass (2026-10-25)"
   },
   {
    "pass": "first",
@@ -1250,7 +1251,7 @@
    "matched": "How do regional dialects develop within a single shared language?",
    "matched_source": "dci1/v2,dci1v3",
    "rationale": "How dialects diverge explains a lot of why neighbours struggle to understand each other, but the questions focus on different things.",
-   "action": "kept"
+   "action": "rewritten after the containment pass (2026-10-25)"
   },
   {
    "pass": "first",
@@ -1283,7 +1284,7 @@
    "matched": "What happens to a choir's sound when singers listen closely to one another rather than to themselves?",
    "matched_source": "dci1/v2,dci1v3",
    "rationale": "Both are about choirs and mutual listening; staying in tune without accompaniment depends largely on singers listening to each other.",
-   "action": "kept"
+   "action": "rewritten after the containment pass (2026-10-25)"
   },
   {
    "pass": "first",
@@ -1316,7 +1317,7 @@
    "matched": "Why are choruses usually the part of a song that crowds sing loudest?",
    "matched_source": "dci1/v2,dci1v3",
    "rationale": "Same narrow subject (what makes choruses catchy and singable); the answers overlap on repetition and hooks, though the angle differs.",
-   "action": "kept"
+   "action": "rewritten after the containment pass (2026-10-25)"
   },
   {
    "pass": "first",
@@ -1580,7 +1581,7 @@
    "matched": "How do sensors in a modern car help drivers avoid collisions?",
    "matched_source": "dci1/v2,dci1v3",
    "rationale": "Parking sensors are one kind of car collision sensor; the historical question is broader but an answer could cover echo-based ranging.",
-   "action": "kept"
+   "action": "rewritten after the containment pass (2026-10-25)"
   },
   {
    "pass": "first",
@@ -1657,7 +1658,7 @@
    "matched": "In what ways do uniforms and dress codes shape behaviour at work?",
    "matched_source": "dci1/v2",
    "rationale": "Same practice (workplace uniforms); historical asks effects on behaviour, new asks why organisations require them, with partial overlap.",
-   "action": "kept"
+   "action": "rewritten after the containment pass (2026-10-25)"
   },
   {
    "pass": "first",
@@ -1690,7 +1691,7 @@
    "matched": "What makes some teams argue productively while others just argue?",
    "matched_source": "dci1/v2,dci1v3",
    "rationale": "Same subject (handling disagreement in teams), narrower framing in the new question.",
-   "action": "kept"
+   "action": "rewritten after the containment pass (2026-10-25)"
   },
   {
    "pass": "first",
@@ -1701,7 +1702,7 @@
    "matched": "What makes a job interview a poor predictor of how someone will actually perform?",
    "matched_source": "dci1/v2,dci1v3",
    "rationale": "Trial projects are justified largely by interviews' poor predictiveness; related but distinct question.",
-   "action": "kept"
+   "action": "rewritten after the containment pass (2026-10-25)"
   },
   {
    "pass": "first",
@@ -2212,7 +2213,7 @@
    "matched_source": "historical",
    "form_problem": "",
    "rationale": "Historical question is broader river-course change; an answer would likely mention meander cutoffs, but oxbow formation is a narrower specific question.",
-   "action": "kept"
+   "action": "rewritten after the containment pass (2026-10-25)"
   },
   {
    "pass": "second",
@@ -2428,7 +2429,7 @@
    "matched_source": "b1-health-and-the-body-26",
    "form_problem": "",
    "rationale": "Same organ and moisture-conditioning role, but asks specifically why the nose runs in cold air rather than how it conditions air.",
-   "action": "kept"
+   "action": "rewritten after the containment pass (2026-10-25)"
   },
   {
    "pass": "second",
@@ -2909,6 +2910,1174 @@
    "rationale": "reworded only to keep the original question's opening word (How); same subject as the second-pass-checked version",
    "checked_by": "the study author (agent), against both full lists; not independently re-checked",
    "action": "kept"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-art-and-design-00",
+   "question": "How does a mosaic artist choose the size of each tile?",
+   "question_sha256": "971277f609b4b4de4abd51af254ae59b81b636837826783c9cbc293147cdc424",
+   "verdict": "RESTATEMENT",
+   "matched": "How does a mosaic hold together as an image?",
+   "matched_source": "dci1v4",
+   "rationale": "author: RESTATEMENT — how a mosaic holds together as an image turns on tesserae size against viewing distance, the core of choosing tile size; independent reviewer: DISTINCT — A is about the practical choice of tile size (viewing distance, detail, surface), while B is about how the eye blends separate pieces and how the lines of tiles guide it into one image.",
+   "action": "rewritten (judged a restatement by the author)",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-art-and-design-03",
+   "question": "Why do so many cultures use symmetry in decorative patterns?",
+   "question_sha256": "4d9b7c3b05c7d1fb695b57d38538b9e4b6a885c2e9f53a67db991631db054963",
+   "verdict": "DISTINCT",
+   "matched": "How does symmetry create a sense of calm while asymmetry creates energy?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — A explains why symmetry spreads across cultures (ease of making, visual preference, meaning), while B contrasts the emotional effects of symmetry and asymmetry.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-art-and-design-21",
+   "question": "How does an animator make a drawn figure appear to move smoothly?",
+   "question_sha256": "53fb65feab0cff73f09d96755b82a7640824c1d34b2ca6a367e315885965ef9e",
+   "verdict": "DISTINCT",
+   "matched": "How do animators give weight and personality to drawn figures?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — A is about frame rate, in-between drawings and the illusion of motion, while B is about squash-and-stretch, anticipation and acting choices that give weight and personality.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-art-and-design-27",
+   "question": "Why do architects build small models before building at full size?",
+   "question_sha256": "be6eee9aeef3db0ee56adf49004ab7783feca31b8fea8c0d34fa33c3cb957ac5",
+   "verdict": "DISTINCT",
+   "matched": "How can simulation help engineers test designs before building anything physical?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — Physical scale models for spatial understanding and showing clients are a different practice from digital simulation used to test engineering designs.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-everyday-science-00",
+   "question": "Why does your reflection appear upside down in the bowl of a spoon?",
+   "question_sha256": "791bd52d2285d182c5cab39591558b4012d00e42ac3f1954c384eb49f1b13715",
+   "verdict": "DISTINCT",
+   "matched": "Why do mirrors reverse left and right but not up and down?",
+   "matched_source": "dci1v4",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — A concave mirror forming an inverted real image is different optics from the front-to-back reversal of a flat mirror.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-everyday-science-07",
+   "question": "Why do stars twinkle while planets usually shine steadily?",
+   "question_sha256": "c7750d6d8e298987a6ea7bcc2909de794bc46582b6be8455495c0c442aa8d91e",
+   "verdict": "DISTINCT",
+   "matched": "Describe why observatories use adaptive optics.",
+   "matched_source": "dci/v19/task_bank",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — Both involve atmospheric turbulence, but A turns on point sources versus discs, while B is about deformable mirrors correcting the turbulence.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-everyday-science-14",
+   "question": "Why does an empty room produce echoes that a furnished one does not?",
+   "question_sha256": "942afbf56d5ad2c981bf50f24cad06f66cea6a7c9d0367641f7c358baaedbb62",
+   "verdict": "RESTATEMENT",
+   "matched": "How does a room change the sound of a live performance?",
+   "matched_source": "dci1v4",
+   "rationale": "author: RESTATEMENT — room-acoustics answer (hard surfaces reflect, soft furnishings absorb) is the empty-versus-furnished echo answer; independent reviewer: RESTATEMENT — A good answer to B on room acoustics would centre on hard surfaces reflecting and soft furnishings absorbing sound, which is the whole of A's answer.",
+   "action": "rewritten (judged a restatement by both)",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-everyday-science-20",
+   "question": "Why does stainless steel resist rust when ordinary steel does not?",
+   "question_sha256": "50d83d28399d7f308c71a5461360c179ec6ba333144f5b0451d40e3604a8d3fc",
+   "verdict": "DISTINCT",
+   "matched": "Describe why steel is galvanised before outdoor use.",
+   "matched_source": "dci/v19/task_bank",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — Stainless steel's self-healing chromium oxide layer is a different mechanism from galvanising's sacrificial zinc coating.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-everyday-science-24",
+   "question": "Why do aeroplanes leave white trails across a clear sky?",
+   "question_sha256": "36140a126c0a858353f57b85627e2d033fde70d53f982e2adb7f1da26df01706",
+   "verdict": "RESTATEMENT",
+   "matched": "Why can you see your breath on a cold morning but not in summer?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: RESTATEMENT — contrails and visible breath are the same condensation of warm moist air in cold air; independent reviewer: DISTINCT — Both involve water vapour condensing, but contrails turn on engine exhaust, soot nuclei and ice at altitude, while visible breath turns on seasonal air temperature.",
+   "action": "rewritten (judged a restatement by the author)",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-everyday-science-30",
+   "question": "Why can water freezing in a pipe split the pipe open?",
+   "question_sha256": "268dfbc5dbda30384dd81e9df6348444cf395387f3912fa64de07d2394897efd",
+   "verdict": "RESTATEMENT",
+   "matched": "Describe why potholes form after a cold winter.",
+   "matched_source": "dci/v19/task_bank",
+   "rationale": "author: RESTATEMENT — the pothole answer rests on water expanding as it freezes and forcing cracks open, the core of the split-pipe answer; independent reviewer: DISTINCT — Both involve water expanding as it freezes, but A centres on pressure inside a closed pipe, while B centres on repeated freeze-thaw in road cracks plus traffic loads.",
+   "action": "rewritten (judged a restatement by the author)",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-everyday-science-37",
+   "question": "Why do washing powders tend to clean better in warm water?",
+   "question_sha256": "0b96ed8ace94c81190142056d53e3c8d980a0c7dbc5e85650a739036b1967737",
+   "verdict": "DISTINCT",
+   "matched": "How does soap help water lift grease from a dirty pan?",
+   "matched_source": "dci1v4",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — A is about temperature effects (melting fats, how well detergent dissolves, enzyme activity), while B is about how surfactant molecules trap grease.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-everyday-science-39",
+   "question": "Why does painted wood fade after years in strong sunshine?",
+   "question_sha256": "299d8fcef99a708f6d8306a6ec0f9ce91c5bc078bfb0463166782c1ff5dbebd0",
+   "verdict": "RESTATEMENT",
+   "matched": "Describe why museums dim the lights near old textiles.",
+   "matched_source": "dci/v19/task_bank",
+   "rationale": "author: RESTATEMENT — the museum answer is light, especially UV, breaking down pigments, the core of why painted wood fades; independent reviewer: RESTATEMENT — Both answers rest on the same core: light, especially UV, breaks down colourants in a lasting way, so B's explanation largely answers why painted wood fades.",
+   "action": "rewritten (judged a restatement by both)",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-food-01",
+   "question": "How does yeast raise a dough differently from baking powder?",
+   "question_sha256": "d7e407874ee3a1016ae50d2331ccff51e17f0025dea3c4216702479579152c3a",
+   "verdict": "DISTINCT",
+   "matched": "What sets sourdough apart from breads raised with commercial yeast?",
+   "matched_source": "dci1/v2",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — A contrasts living yeast with a chemical raising agent, while B contrasts wild yeast and lactic bacteria with commercial yeast.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-food-09",
+   "question": "How does tempering give chocolate its glossy finish and clean snap?",
+   "question_sha256": "f1ceeb442960d66a33de121df515db865f1344d4047dc846b6cdd633b2e7b1fd",
+   "verdict": "DISTINCT",
+   "matched": "Why does good chocolate melt so smoothly the moment it hits the tongue?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — A is about getting the right crystal form of cocoa butter by tempering, while B is about cocoa butter's melting point and a smooth particle texture on the tongue.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-food-14",
+   "question": "Why does a pinch of salt make sweet foods taste sweeter?",
+   "question_sha256": "7d954c2f5f0a3b0ffca9e61369be980ea91e3009f3a8d2aea45a374c61a31830",
+   "verdict": "RESTATEMENT",
+   "matched": "How does salt do far more in cooking than simply making dishes salty?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: RESTATEMENT — a good answer to salt's many roles names its suppression of bitterness and lift of sweetness, the narrow question's core; independent reviewer: DISTINCT — B's broad answer (preserving, texture, proteins, drawing out water) would mention salt's effect on sweetness in at most a line, and A's answer covers little of B.",
+   "action": "rewritten (judged a restatement by the author)",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-food-16",
+   "question": "How does milk turn into yoghurt?",
+   "question_sha256": "247958f796a14c17a91c13884a259b108fbc4556722af91dd50a593e4c7c9c1c",
+   "verdict": "RESTATEMENT",
+   "matched": "What gives fermented foods like yogurt and kimchi their distinctive tang?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: RESTATEMENT — lactic acid bacteria turning lactose into lactic acid is the core of both milk-to-yoghurt and yoghurt's tang; independent reviewer: DISTINCT — A centres on acid making milk proteins set into a gel, while B centres on the acids and flavour compounds behind the sour taste across many fermented foods.",
+   "action": "rewritten (judged a restatement by the author)",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-food-17",
+   "question": "Why are mushrooms so rich in savoury flavour?",
+   "question_sha256": "81bdeb5acdf9772c82defa1da194b49eb3a24ebfc5c15bae1fc4ad9792f30844",
+   "verdict": "RESTATEMENT",
+   "matched": "Why do cooks treat savory umami as a taste of its own, and which foods supply it richly?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: RESTATEMENT — umami answer (glutamates and nucleotides, mushrooms as a prime source) largely answers why mushrooms are savoury; independent reviewer: RESTATEMENT — A good answer to B explains glutamate and nucleotides and names mushrooms as a rich source, which largely answers why mushrooms taste so savoury.",
+   "action": "rewritten (judged a restatement by both)",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-food-33",
+   "question": "Why do sweet and sour flavours work so well together?",
+   "question_sha256": "80bfad8806b8db5b78678174407a36a743e8e5a6f370793bcc7192b75cdce0ae",
+   "verdict": "DISTINCT",
+   "matched": "Why do dishes pairing sweet with salty or crisp with soft feel so satisfying?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — Sweet and sour damping each other is a different pairing from salt boosting sweetness and from contrasting textures.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-food-36",
+   "question": "How does curing turn a leg of pork into ham?",
+   "question_sha256": "feae170113eb8aa4c29a6433b01a63d4771c30a4ad0097545af3de3316733d86",
+   "verdict": "RESTATEMENT",
+   "matched": "Why are some hams and cheeses aged for years, and what changes during the wait?",
+   "matched_source": "dci1/v2",
+   "rationale": "author: RESTATEMENT — curing and ageing a ham share the core: salt drawing moisture, enzymes building flavour over months; independent reviewer: DISTINCT — A is about salting, drawing out water and stopping microbes during curing, while B is about the slow breakdown of proteins and fats over years of ageing.",
+   "action": "rewritten (judged a restatement by the author)",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-food-41",
+   "question": "Why does street food so often reflect the history of a city?",
+   "question_sha256": "60698c3655b95101a929271a22bbad71826c36d04754c68d7ca0e899b61ed39b",
+   "verdict": "DISTINCT",
+   "matched": "What makes street food such a beloved centerpiece of eating in many cities?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — A traces migration and trade history in street food, while B explains its appeal: price, speed and social atmosphere.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-food-43",
+   "question": "Why do some cooks salt aubergines before frying them?",
+   "question_sha256": "2b995d4892dd93ffab197de11d9ebd3719313b11645a8583623cac064cf7a432",
+   "verdict": "RESTATEMENT",
+   "matched": "How does salt change the texture of vegetables as they cook?",
+   "matched_source": "dci1v4",
+   "rationale": "author: RESTATEMENT — salt drawing water from vegetables by osmosis is the reason aubergines are salted before frying; independent reviewer: DISTINCT — A turns on salt collapsing the aubergine's spongy flesh so it soaks up less oil, which B's general account of salt and vegetable texture would not address.",
+   "action": "rewritten (judged a restatement by the author)",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-geography-03",
+   "question": "Why do monsoon rains arrive at roughly the same time each year?",
+   "question_sha256": "4faf17ab96a8bbd1d968296ef878b9c82497c02a96cd2abd5de7ffc19af563d1",
+   "verdict": "DISTINCT",
+   "matched": "What makes monsoon rains both a lifeline and a hazard for the regions awaiting them?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — A explains the seasonal land-sea heating that times the monsoon, while B is about its benefits and dangers for people.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-geography-15",
+   "question": "How does permafrost affect building in the coldest regions?",
+   "question_sha256": "ee0b0f2b23bb07a4a83a7a68343159c916d009c8fa7f95f610d68c6023da367f",
+   "verdict": "DISTINCT",
+   "matched": "How do communities adapt to living above the tree line or on permafrost?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — A is about engineering on thawing ground, while B covers community adaptation broadly (food, transport, culture) at high altitude and on permafrost.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-geography-34",
+   "question": "How do coral atolls come to form rings around a lagoon?",
+   "question_sha256": "28a428147a1827fa5794206d00b2655d45b742b79a4d855182a78578be2972bd",
+   "verdict": "DISTINCT",
+   "matched": "Why are coral reefs confined to particular waters, and how do they build up?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — A is about the sinking-island theory of how atolls form, while B is about the temperature, light and clear-water limits on reefs and how they build up generally.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-geography-42",
+   "question": "Why do some mountain valleys have strong winds at the same hour each day?",
+   "question_sha256": "ed523484b476029006a50bf9f3d66090ee4220a3b952cd61dd6f89461cb43005",
+   "verdict": "DISTINCT",
+   "matched": "Why are certain valleys prone to trapping cold air?",
+   "matched_source": "dci1v4",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — A is about the daily cycle of up-valley and down-valley winds driven by heating, while B is about cold air pooling under an inversion.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-health-and-the-body-08",
+   "question": "Why does laughing make people feel good?",
+   "question_sha256": "3e3a2951e72db4055dbf2ef0b87ae7b21addf7bf50297c4e9cf195e97531d954",
+   "verdict": "RESTATEMENT",
+   "matched": "How does laughter affect the body beyond simply lifting the mood?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: RESTATEMENT — laughter's bodily effects (endorphins, lowered stress hormones, relaxation) are why laughing feels good; independent reviewer: DISTINCT — A explains the feel-good effect (endorphins, social bonding), while B deliberately looks beyond mood to the heart, breathing, muscles and immune effects.",
+   "action": "rewritten (judged a restatement by the author)",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-health-and-the-body-23",
+   "question": "Why does sleep help people remember what they learned during the day?",
+   "question_sha256": "ad7998bd2ff11c723421c6866a1c3e56cade902568f1a714aba94ba9a13cbb6a",
+   "verdict": "DISTINCT",
+   "matched": "Why does a good night's sleep improve mood, focus, and patience the next day?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — Memory consolidation during sleep is a different mechanism from sleep restoring emotional control and attention.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-health-and-the-body-30",
+   "question": "Why does the heart rate stay raised for a while after exercise?",
+   "question_sha256": "35715a29d38ef10c59b31c35c08fd63020319e5b5bf14d9790ac8eed7c4acd96",
+   "verdict": "DISTINCT",
+   "matched": "What happens to the heart and lungs during a sustained bout of aerobic exercise?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — A is about recovery after exercise (oxygen debt, heat, hormones), while B is about how the heart and lungs respond during exercise.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-history-01",
+   "question": "How did the plough change early farming communities?",
+   "question_sha256": "80feab7df65528da18d5bca66c5df8f17010ab2e45f3b2ecbcfead1530fbfd87",
+   "verdict": "DISTINCT",
+   "matched": "What made improved plows and harnesses so significant for medieval farming?",
+   "matched_source": "dci1/v2",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — The early plough's social effects (surplus, hierarchy) differ from medieval heavy ploughs and horse collars opening clay soils.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-history-02",
+   "question": "Why did lighthouses become so important to seaborne trade?",
+   "question_sha256": "370e3b4622e94ad807b4fa3df8a7ed07a0ce2234806c5f629b25f4deb70292dc",
+   "verdict": "DISTINCT",
+   "matched": "Explain how a lighthouse helps ships navigate at night.",
+   "matched_source": "dci/v19/task_bank",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — A is about the economic importance of lighthouses to trade, while B is about how lenses and flash patterns mark positions at night.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-history-05",
+   "question": "How did the spread of reading among ordinary people change society?",
+   "question_sha256": "bc847a14b81e7c23dd32a8fe6fa586eafd91bfab06dc38ed20bea6442876bb05",
+   "verdict": "RESTATEMENT",
+   "matched": "How did the spread of printing change who could join public debate?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: RESTATEMENT — printing widening public debate and reading changing society share the core of cheap print creating a reading public; independent reviewer: RESTATEMENT — Both centre on wider access to cheap texts letting ordinary people take part in religious and political debate, so a good answer to A would largely deliver B.",
+   "action": "rewritten (judged a restatement by both)",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-history-10",
+   "question": "How did windmills and watermills change daily labour?",
+   "question_sha256": "2b8e0c8be8ad1727dc5968c91817d1122a974ea1d860c09eb2c57954d5e7e78a",
+   "verdict": "DISTINCT",
+   "matched": "Explain how a windmill turns grain into flour.",
+   "matched_source": "dci/v19/task_bank",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — A is about the social and labour effects of mills, while B is about the mechanism of grinding grain.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-history-15",
+   "question": "How did free public libraries change access to learning?",
+   "question_sha256": "e3e6ee8b3babf6aa3ac5edc690446564600343a2794ef14cee85bf713e0e7466",
+   "verdict": "DISTINCT",
+   "matched": "Describe how public libraries support local communities.",
+   "matched_source": "dci/v19/task_bank",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — A is the history of opening learning to working people, while B is about today's community services (internet, programmes, meeting space).",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-history-16",
+   "question": "How did the potato change population growth in the lands it reached?",
+   "question_sha256": "42322094c3d1c8924bc57c744d181b9c7b6d2d4e0c9e6e4ab5bb6c0210d85e9e",
+   "verdict": "DISTINCT",
+   "matched": "How did the exchange of crops and animals between hemispheres reshape diets and economies?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — B's broad answer on the exchange of crops and animals between hemispheres would give the potato a line at most, and A's population-focused answer covers little of B.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-history-24",
+   "question": "How did the arrival of radio change family evenings at home?",
+   "question_sha256": "4defd52790ca714694aa86d4dc647afb64a3e2a47f70ecbf296640ad599041d0",
+   "verdict": "DISTINCT",
+   "matched": "In what ways did radio broadcasting change politics between the world wars?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — Radio in domestic family life and radio in interwar politics are separate effects.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-language-and-writing-13",
+   "question": "How does sarcasm work when the listener has only the voice to go on?",
+   "question_sha256": "7bc10c6c22ed9f8951acddc11796b37be1926e57ab8db1e97248807f9da850ae",
+   "verdict": "RESTATEMENT",
+   "matched": "What happens to meaning when sarcasm moves from speech to text?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: RESTATEMENT — what is lost when sarcasm moves to text is exactly the vocal cues that carry it in speech; independent reviewer: DISTINCT — A details the vocal and contextual cues of sarcasm, while B centres on what is lost in text and how writers compensate (emoji, tone markers).",
+   "action": "rewritten (judged a restatement by the author)",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-language-and-writing-14",
+   "question": "Why do some stories begin in the middle of the action?",
+   "question_sha256": "92b609452c1a7a5aba60422e03a66b664bd02232282fbdc26faa5a51b75a549c",
+   "verdict": "RESTATEMENT",
+   "matched": "What makes some openings of novels pull readers in immediately?",
+   "matched_source": "dci1/v2",
+   "rationale": "author: RESTATEMENT — starting in the action is the standard answer to why some openings pull readers in; both rest on immediate tension and curiosity; independent reviewer: DISTINCT — Opening in the middle of the action is only one of several hooks, alongside voice, mystery and character, that a good answer to B would cover.",
+   "action": "rewritten (judged a restatement by the author)",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-language-and-writing-40",
+   "question": "How does an author decide how a story should end?",
+   "question_sha256": "607b20fb841f72d3314b1ec2c7b6439f5dd700883ab955d634ba3c0d474407f0",
+   "verdict": "RESTATEMENT",
+   "matched": "What makes an ending feel earned rather than abrupt in a piece of fiction?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: distinct; independent reviewer: RESTATEMENT — A good answer on choosing an ending would centre on resolving the central question in a way that pays off setups and feels inevitable, which is B's core.",
+   "action": "rewritten (judged a restatement by the independent reviewer)",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-language-and-writing-42",
+   "question": "Why do people pause at particular points when speaking?",
+   "question_sha256": "2d400710f22804e800779acb126e422011a9ef04590b26cb113915c21af483b6",
+   "verdict": "DISTINCT",
+   "matched": "Why can silence or a pause communicate as much as speech?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — A is about pauses for breathing, planning and sentence boundaries, while B is about silence as a deliberate signal of meaning.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-language-and-writing-46",
+   "question": "Why do people from neighbouring regions often struggle to understand each other's speech?",
+   "question_sha256": "f3f9a79da0aee6798d1f342002dba1821f028f9c372e0b9ea3d4f01ea332b274",
+   "verdict": "RESTATEMENT",
+   "matched": "How do regional dialects develop within a single shared language?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: RESTATEMENT — how dialects diverge (sound change, vocabulary drift, isolation) is why neighbours struggle to understand each other; independent reviewer: RESTATEMENT — Explaining why neighbours struggle to understand each other requires explaining how dialects drift apart through separation and sound change, which is B's answer.",
+   "action": "rewritten (judged a restatement by both)",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-music-04",
+   "question": "How does an unaccompanied choir stay in tune?",
+   "question_sha256": "4d367a97f02048906c7c136aef418aa6769f3d8d1372d4ae7932d927ba044457",
+   "verdict": "RESTATEMENT",
+   "matched": "What happens to a choir's sound when singers listen closely to one another rather than to themselves?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: RESTATEMENT — an unaccompanied choir stays in tune largely by singers listening to one another; independent reviewer: RESTATEMENT — Both centre on singers listening to and adjusting to one another to lock the tuning and avoid drift, so either answer largely delivers the other.",
+   "action": "rewritten (judged a restatement by both)",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-music-12",
+   "question": "How does a songwriter build a chorus that people remember?",
+   "question_sha256": "4580d143333f1707861be563b87d4167339a6a8175ac735be7a26c1cfd25ccc2",
+   "verdict": "RESTATEMENT",
+   "matched": "Why are choruses usually the part of a song that crowds sing loudest?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: RESTATEMENT — what makes a chorus the part crowds sing loudest (repetition, simple hook, emotional peak) is how a memorable chorus is built; independent reviewer: RESTATEMENT — Repetition, simple hooks and a lift in energy are both what makes a chorus memorable and why crowds sing it loudest.",
+   "action": "rewritten (judged a restatement by both)",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-music-21",
+   "question": "Why do film scores often return to the same short theme?",
+   "question_sha256": "35a1a8754ce6d52e130bf587def775af97bae925d4b43f333f2a84543b098d33",
+   "verdict": "DISTINCT",
+   "matched": "How does a film score change what a viewer feels?",
+   "matched_source": "dci1v4",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — Recurring themes (leitmotifs) are only one technique in B's broad answer on how scores shape emotion.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-music-35",
+   "question": "How is a large bell tuned after it has been cast?",
+   "question_sha256": "f8e447b6d4f758a55cd993a46cd9d26637be7b245078297166004efc55455a45",
+   "verdict": "DISTINCT",
+   "matched": "Why does a struck bell keep ringing after the strike?",
+   "matched_source": "dci1v4",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — Tuning a bell by shaving metal on a lathe is unrelated to the physics of low damping that keeps a bell ringing.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-music-45",
+   "question": "How does a studio producer shape the sound of a record?",
+   "question_sha256": "dc75a79a399335a80da265ff014f90ca93a8247df2e6782e1978ebff4ba228a1",
+   "verdict": "DISTINCT",
+   "matched": "How do producers decide which take of a performance is the one worth keeping?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — Choosing a take is a narrow slice of a producer's wider role in arrangement, recording and mixing.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-sport-05",
+   "question": "Why do old tennis balls bounce differently from new ones?",
+   "question_sha256": "c1755dc36f05b7fda9f2b269ce2750a0f11029dcfce924967cfe172fde2e8cb0",
+   "verdict": "DISTINCT",
+   "matched": "Why do tennis players bounce the ball several times before serving?",
+   "matched_source": "dci1v3,dci1v3/candidates",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — Ball pressure loss and felt wear have nothing to do with players' pre-serve routines.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-sport-22",
+   "question": "How do sports teams use statistics when choosing players?",
+   "question_sha256": "c05d779f297032133f8aadb21d04a0308464b065efeca97843c5c812f37c5d99",
+   "verdict": "DISTINCT",
+   "matched": "In what ways has data analysis changed how professional teams pick their tactics?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — Using data to pick players is different from using data to set tactics.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-sport-29",
+   "question": "Why do some matches end in a draw while others must have a winner?",
+   "question_sha256": "a5fb4a9d12b09d82ab00d80887e161da559c34b33923c1d669d91495138553b2",
+   "verdict": "DISTINCT",
+   "matched": "Why are draws satisfying in some sports and deeply frustrating in others?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — A is about competition formats that need a winner, while B is about scoring rates and fan culture shaping how draws feel.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-sport-36",
+   "question": "How does a goalkeeper's job differ from an outfield player's?",
+   "question_sha256": "ed2fd6156e00dc036bfac326fac1c88195ffc10cdfb8895803e6ccf871b0e302",
+   "verdict": "DISTINCT",
+   "matched": "How do goalkeepers stay focused during long stretches when the ball never comes near them?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — A compares the role and skills of the two positions, while B is about keeping concentration during long idle spells.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-technology-00",
+   "question": "How does a touchscreen detect the touch of a finger?",
+   "question_sha256": "578cd5eea99cf97d444bb693d010d0b90bd0cc664860a0bededccf0c5de1160b",
+   "verdict": "DISTINCT",
+   "matched": "What makes touchscreen interfaces easy for beginners yet limiting for some expert users?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — How a touchscreen senses a finger electrically is unrelated to the strengths and limits of touch interfaces.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-technology-01",
+   "question": "How does a barcode scanner read the price of an item?",
+   "question_sha256": "d0f9e782e4432bb6b0a2744e687bcfb4ef0c0e9d6ef4ac99bdfb14c1318c46a2",
+   "verdict": "DISTINCT",
+   "matched": "Describe why warehouses use barcode labels.",
+   "matched_source": "dci/v19/task_bank",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — A is about scanning and decoding the bars, while B is about the inventory-tracking benefits of labels.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-technology-15",
+   "question": "How does encryption keep messages private as they travel?",
+   "question_sha256": "a3f0f78d22b626d33a9b295cd1bad67624210323c4d968b0719ab807b743f03c",
+   "verdict": "DISTINCT",
+   "matched": "Why is encrypting data important even for people with nothing to hide?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — A is about the mechanism of keys and ciphers, while B is the privacy case for encryption.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-technology-18",
+   "question": "Why must power stations match supply to demand from moment to moment?",
+   "question_sha256": "a9d635210cae8d764b21fd76710978ed77ac570158023894ac596c18953f9532",
+   "verdict": "DISTINCT",
+   "matched": "Explain how demand response can support an electricity system.",
+   "matched_source": "dci/v19/task_bank",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — A is about grid frequency and the lack of storage forcing constant balancing, while B is about shifting demand to provide flexibility.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-technology-40",
+   "question": "How does a parking sensor judge the distance to a wall?",
+   "question_sha256": "8ff5685806d5b88dbcbee0b0b7756b3f2d01168b6635a391779ef0cba2b90253",
+   "verdict": "RESTATEMENT",
+   "matched": "How do sensors in a modern car help drivers avoid collisions?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: RESTATEMENT — a good answer on car collision sensors explains ultrasonic echo ranging, the parking-sensor answer; independent reviewer: DISTINCT — Timing ultrasonic echoes is one narrow piece of B's broad survey of radar, cameras and automatic braking.",
+   "action": "rewritten (judged a restatement by the author)",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-the-natural-world-14",
+   "question": "How does an octopus blend into its surroundings so quickly?",
+   "question_sha256": "104717bd073982d8fc2c8a0b5fc9b5fe6dc5e6e21e52c08d7d11e82f6ca95f3a",
+   "verdict": "DISTINCT",
+   "matched": "How does camouflage evolve, and why do some animals advertise themselves instead?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — A is about the octopus's colour-changing skin cells and nerve control, while B is about the evolution of camouflage versus warning colours.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-work-and-organisations-00",
+   "question": "How does a restaurant kitchen organise its staff during a busy service?",
+   "question_sha256": "a9546dfd568d7fb8bc668d07d9e39a4e053c199dc6a7cf60f5fa7e7e3c5d7603",
+   "verdict": "DISTINCT",
+   "matched": "Why do restaurant kitchens prepare so much in advance?",
+   "matched_source": "dci1v4",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — The kitchen's station-based staff hierarchy during service is different from the reasons for preparing ingredients in advance.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-work-and-organisations-04",
+   "question": "Why do some organisations ask staff to wear uniforms?",
+   "question_sha256": "e9bc59ba064f1fb36fffd58ef1099458b92a951608c4238e1b85367bbbb4c59c",
+   "verdict": "RESTATEMENT",
+   "matched": "In what ways do uniforms and dress codes shape behaviour at work?",
+   "matched_source": "dci1/v2",
+   "rationale": "author: RESTATEMENT — why organisations require uniforms is largely answered by how uniforms shape identity and behaviour at work; independent reviewer: DISTINCT — A lists organisational reasons (identification, brand, safety), while B is about how clothing changes wearers' behaviour and self-perception.",
+   "action": "rewritten (judged a restatement by the author)",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-work-and-organisations-06",
+   "question": "Why do close teams build up running jokes that outsiders miss?",
+   "question_sha256": "e9c37da8e6cfe7ec8e3676b877ca93b501d80ee67ec43f942352bfd894aec69d",
+   "verdict": "DISTINCT",
+   "matched": "How does humour help teams cope with stressful periods at work?",
+   "matched_source": "dci1/v2",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — In-jokes as markers of shared history and group membership are different from humour as a way of coping with stress.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-work-and-organisations-10",
+   "question": "How does a small shop compete with much larger stores?",
+   "question_sha256": "df1ce2f1ab1fd9bc7fe21657527fd44df79e2344fef8d06b525b0d3623d474a8",
+   "verdict": "DISTINCT",
+   "matched": "How do small firms compete with large corporations for talented staff?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — Competing for customers is different from competing for staff.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-work-and-organisations-14",
+   "question": "How does a team handle disagreement between two capable members?",
+   "question_sha256": "d7e13ea3274ed1adb14dfac8f05562b6efef8688db61cbba039762eec08e2a1d",
+   "verdict": "RESTATEMENT",
+   "matched": "What makes some teams argue productively while others just argue?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: RESTATEMENT — productive versus unproductive argument in teams covers how a team handles disagreement between two members; independent reviewer: RESTATEMENT — Both centre on keeping conflict about ideas rather than people, with shared goals and a clear way to decide, so either answer largely covers the other.",
+   "action": "rewritten (judged a restatement by both)",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-work-and-organisations-20",
+   "question": "Why do some firms give candidates a trial project before hiring them?",
+   "question_sha256": "d28c42d0b20dc9f0105e05dacef9a56e5a39885cfb03e8015a9b6738e64448db",
+   "verdict": "RESTATEMENT",
+   "matched": "What makes a job interview a poor predictor of how someone will actually perform?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: RESTATEMENT — trial projects are justified by interviews being poor predictors; each answer delivers the other; independent reviewer: DISTINCT — A is about the benefits of work samples for both sides, while B is about the biases and impression management that undermine interviews.",
+   "action": "rewritten (judged a restatement by the author)",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-work-and-organisations-34",
+   "question": "How does a manager delegate without losing oversight?",
+   "question_sha256": "2d4797addeec92f8e21ba9437610e450efd85601b33e41e8f2f54eaf6b607f33",
+   "verdict": "DISTINCT",
+   "matched": "Why is delegating difficult for founders who built everything themselves?",
+   "matched_source": "dci1/v2,dci1v3",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — A is about techniques for delegating with oversight, while B is about the psychological barriers founders face.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-work-and-organisations-46",
+   "question": "How does a removals team plan the packing of a whole house?",
+   "question_sha256": "539451be5bfd3fc5eaf297f9231fcb6793d0675ce4226bb73a055b9c3babf38c",
+   "verdict": "DISTINCT",
+   "matched": "Describe why removal firms label every box.",
+   "matched_source": "dci/v19/task_bank",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — Labelling is one small part of whole-house packing logistics.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-geography-00",
+   "question": "How do meandering rivers gradually cut off loops of water?",
+   "question_sha256": "3d601e1396ace2fbbf7522fa3aba7fa140040273302a53b5a7eb6571df14b826",
+   "verdict": "RESTATEMENT",
+   "matched": "How does the course of a river change over time?",
+   "matched_source": "historical",
+   "rationale": "author: RESTATEMENT — a good answer on how a river's course changes over time explains meanders and oxbow cut-offs; independent reviewer: RESTATEMENT — A good answer to B would centre on outer-bank erosion and inner-bank deposition making meanders grow until their necks are cut off, which is A's whole answer.",
+   "action": "rewritten (judged a restatement by both)",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-health-and-the-body-40",
+   "question": "Why does your nose run when you breathe cold air?",
+   "question_sha256": "f37d4b41e348d9c4750d195e6e482a6e7c4353fe0b87c02da7b2d07dfb40b930",
+   "verdict": "RESTATEMENT",
+   "matched": "How does the nose warm and clean air before it reaches the lungs?",
+   "matched_source": "b1-health-and-the-body-26",
+   "rationale": "author: RESTATEMENT — the nose warming and humidifying cold air with mucus is why it runs in cold air; independent reviewer: DISTINCT — B explains how the nose warms and cleans air, while A centres on overproduction of fluid and condensation dripping, which B would not cover.",
+   "action": "rewritten (judged a restatement by the author)",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-history-17",
+   "question": "Why did early sailors carry live animals on long voyages?",
+   "question_sha256": "b49705afbf68c7dabec62e4eb414a571d8eb4cf64b8867ab9183ad6e2c4e18f6",
+   "verdict": "DISTINCT",
+   "matched": "How did the spread of canned food change long voyages and expeditions?",
+   "matched_source": "b1-history-47",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — Live animals for fresh food are a different provisioning answer from the canning technology and its effects.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "containment 2026-10-25",
+   "topic_id": "b1-food-45",
+   "question": "How do cooks get crisp skin on a roast chicken?",
+   "question_sha256": "78889fd1d2b2ca3862a9c9e9cac0688d11461f41c94cf163681ba44fd3067264",
+   "verdict": "DISTINCT",
+   "matched": "Why do cooks soak wooden skewers in water first?",
+   "matched_source": "b1-food-10",
+   "rationale": "author: distinct; independent reviewer: DISTINCT — Rendering fat and drying the skin for crispness is unrelated to soaking skewers so they don't burn.",
+   "action": "kept",
+   "checked_by": "the author (Claude) and an independent model reviewer, each blind to the other"
+  },
+  {
+   "pass": "second 2026-10-25",
+   "topic_id": "b1-art-and-design-00",
+   "question": "How does a maze maker keep walkers lost for so long?",
+   "question_sha256": "7d3624a1c2b693c33366f1ca7b056c7afe3268b9d54104905c1bb761eece74c8",
+   "verdict": "OK",
+   "matched": "",
+   "matched_source": "",
+   "rationale": "No historical or bank question deals with maze or labyrinth design.",
+   "form_problem": "",
+   "action": "kept",
+   "checked_by": "an independent model reviewer, fresh, reading both full lists"
+  },
+  {
+   "pass": "second 2026-10-25",
+   "topic_id": "b1-everyday-science-14",
+   "question": "Why does a shower curtain sometimes drift inwards while the hot water runs?",
+   "question_sha256": "af12e0f7c082f310fd07eaf032d3a49d29e9d05545b0e032f108bc7afa8104bb",
+   "verdict": "OK",
+   "matched": "",
+   "matched_source": "",
+   "rationale": "No question covers air pressure or the air flow set up by a water spray pulling a curtain inwards.",
+   "form_problem": "",
+   "action": "kept",
+   "checked_by": "an independent model reviewer, fresh, reading both full lists"
+  },
+  {
+   "pass": "second 2026-10-25",
+   "topic_id": "b1-everyday-science-24",
+   "question": "Why do old newspapers turn yellow as the years pass?",
+   "question_sha256": "35c7f83cd615894a20353aaa4fa80ebbb6841226d3c9fcfaa65abf0681a31980",
+   "verdict": "OK",
+   "matched": "",
+   "matched_source": "",
+   "rationale": "Lignin oxidation in cheap paper is not covered; archive and textile conservation questions concern humidity and light damage in general, not this chemistry.",
+   "form_problem": "",
+   "action": "kept",
+   "checked_by": "an independent model reviewer, fresh, reading both full lists"
+  },
+  {
+   "pass": "second 2026-10-25",
+   "topic_id": "b1-everyday-science-30",
+   "question": "Why does a frozen lake sometimes make strange singing noises?",
+   "question_sha256": "bc53bcef586c8277f146e2a3e431d3026633552c65954febbd83ff7f6c754523",
+   "verdict": "OK",
+   "matched": "",
+   "matched_source": "",
+   "rationale": "Acoustic dispersion in lake ice is not covered; the pond-surface ice question is about how ice forms, not about sound.",
+   "form_problem": "",
+   "action": "kept",
+   "checked_by": "an independent model reviewer, fresh, reading both full lists"
+  },
+  {
+   "pass": "second 2026-10-25",
+   "topic_id": "b1-everyday-science-39",
+   "question": "Why does a metal tape measure stay rigid when extended?",
+   "question_sha256": "a61daae12525b4d7bcb886a81d770a03fbb76fd43d8633bc75c609f1029b454c",
+   "verdict": "OK",
+   "matched": "",
+   "matched_source": "",
+   "rationale": "No question covers how a curved cross-section makes a thin strip stiff.",
+   "form_problem": "",
+   "action": "kept",
+   "checked_by": "an independent model reviewer, fresh, reading both full lists"
+  },
+  {
+   "pass": "second 2026-10-25",
+   "topic_id": "b1-food-14",
+   "question": "Why does cooked spinach shrink to almost nothing in the pan?",
+   "question_sha256": "f58bfb1e930ceb37659f4dd548982d42f5fd3852b84791b02690e018844f4ab0",
+   "verdict": "OK",
+   "matched": "",
+   "matched_source": "",
+   "rationale": "Cell walls collapsing and water escaping from leaves is not covered; questions on vegetables losing colour, salt and texture, and limp carrots have different cores.",
+   "form_problem": "",
+   "action": "kept",
+   "checked_by": "an independent model reviewer, fresh, reading both full lists"
+  },
+  {
+   "pass": "second 2026-10-25",
+   "topic_id": "b1-food-16",
+   "question": "How does coffee lose its caffeine?",
+   "question_sha256": "6e3e603031160d2f00f52ff7a42cfc11e062ebf59767b9ce7829dfbaf53efe4e",
+   "verdict": "OK",
+   "matched": "",
+   "matched_source": "",
+   "rationale": "Decaffeination processes are not covered; the caffeine question is about its effects on the body.",
+   "form_problem": "",
+   "action": "kept",
+   "checked_by": "an independent model reviewer, fresh, reading both full lists"
+  },
+  {
+   "pass": "second 2026-10-25",
+   "topic_id": "b1-food-17",
+   "question": "Why are pistachio shells often already split open?",
+   "question_sha256": "c708d3dcb155d06cc1d73e1f41148beeba760459911384a7e26b889e6db2f182",
+   "verdict": "OK",
+   "matched": "",
+   "matched_source": "",
+   "rationale": "No question deals with nut shell splitting during ripening.",
+   "form_problem": "",
+   "action": "kept",
+   "checked_by": "an independent model reviewer, fresh, reading both full lists"
+  },
+  {
+   "pass": "second 2026-10-25",
+   "topic_id": "b1-food-36",
+   "question": "How does a wok give food that smoky charred taste?",
+   "question_sha256": "7756a3008beaa761b385a15a9f0582ba222c8fae0e118d7c5d492f48458c1d14",
+   "verdict": "CLOSE",
+   "matched": "How does a wood fire change the taste of what is cooked on it?",
+   "matched_source": "historical",
+   "rationale": "Both ask about a smoky cooked flavour, but wok hei comes from very high heat, burning oil droplets and searing, while wood-fire flavour comes from compounds in wood smoke; the searing and frying-pan questions overlap only partly.",
+   "form_problem": "",
+   "action": "kept",
+   "checked_by": "an independent model reviewer, fresh, reading both full lists"
+  },
+  {
+   "pass": "second 2026-10-25",
+   "topic_id": "b1-food-43",
+   "question": "Why do some cooks bruise lemongrass before adding it?",
+   "question_sha256": "0c1c7b1f2a56e9ccfd42e0c9b3400cfbffde0f0d5ef33e4126787f2f4d44f005",
+   "verdict": "OK",
+   "matched": "",
+   "matched_source": "",
+   "rationale": "No question covers breaking plant tissue to release aromatic oils; the herb-timing question has a different core.",
+   "form_problem": "",
+   "action": "kept",
+   "checked_by": "an independent model reviewer, fresh, reading both full lists"
+  },
+  {
+   "pass": "second 2026-10-25",
+   "topic_id": "b1-health-and-the-body-08",
+   "question": "Why does menthol make skin feel cool?",
+   "question_sha256": "61cb8064affce78a5581f757abda30b11184bc1c2f776c1a8e994a3f37a60c78",
+   "verdict": "RESTATEMENT",
+   "matched": "Why do chili peppers feel burning hot even though they carry no real heat?",
+   "matched_source": "historical",
+   "rationale": "The mechanism is the same seen from the cold side: a chemical triggers the body's temperature-sensing receptors with no real change in temperature (capsaicin on heat receptors, menthol on cold receptors), so a good answer to the chili question largely explains menthol.",
+   "form_problem": "",
+   "action": "rewritten after this pass (see third 2026-10-25)",
+   "checked_by": "an independent model reviewer, fresh, reading both full lists"
+  },
+  {
+   "pass": "second 2026-10-25",
+   "topic_id": "b1-history-05",
+   "question": "How did the rise of seaside holidays change coastal towns?",
+   "question_sha256": "a7d793126f359984c3de390adc8a1cdf4235d8535acaf1170a571034515e5a9d",
+   "verdict": "OK",
+   "matched": "",
+   "matched_source": "",
+   "rationale": "Leisure tourism changing resorts is not covered; the questions on port growth and on coastal versus inland towns concern trade and governance.",
+   "form_problem": "",
+   "action": "kept",
+   "checked_by": "an independent model reviewer, fresh, reading both full lists"
+  },
+  {
+   "pass": "second 2026-10-25",
+   "topic_id": "b1-language-and-writing-13",
+   "question": "How does a person learn to lip read when they cannot hear the speaker?",
+   "question_sha256": "6f7b8b300ffe48ce99e02f15deeb33f9b390aa7606381aca7696d11e6c479dc5",
+   "verdict": "OK",
+   "matched": "",
+   "matched_source": "",
+   "rationale": "Learning to lip read is not covered; the hearing-loss and sign-language questions have different cores.",
+   "form_problem": "",
+   "action": "kept",
+   "checked_by": "an independent model reviewer, fresh, reading both full lists"
+  },
+  {
+   "pass": "second 2026-10-25",
+   "topic_id": "b1-language-and-writing-14",
+   "question": "Why do some books get a new title in another country?",
+   "question_sha256": "6c6176252769e453b783ea75443ea2e9f33e937c549137b0f11b47e4b080e461",
+   "verdict": "CLOSE",
+   "matched": "How does a good title change how a piece is read?",
+   "matched_source": "historical",
+   "rationale": "Both concern book titles and the translation questions are nearby, but retitling for a foreign market turns on marketing, cultural associations and wordplay that cannot be translated, not on how a title shapes reading.",
+   "form_problem": "",
+   "action": "kept",
+   "checked_by": "an independent model reviewer, fresh, reading both full lists"
+  },
+  {
+   "pass": "second 2026-10-25",
+   "topic_id": "b1-language-and-writing-40",
+   "question": "How does a writer of radio plays set a scene?",
+   "question_sha256": "7359bc948f30fe1fc59bd29b339b5d8d2cbe45534c524685fcc69ff17f8fd5e3",
+   "verdict": "CLOSE",
+   "matched": "What do stage set designers consider when creating a world the audience will believe?",
+   "matched_source": "historical",
+   "rationale": "Both ask how drama establishes a setting, but radio does it only through sound effects, dialogue and narration, so the core answer differs from visual set design.",
+   "form_problem": "",
+   "action": "kept",
+   "checked_by": "an independent model reviewer, fresh, reading both full lists"
+  },
+  {
+   "pass": "second 2026-10-25",
+   "topic_id": "b1-language-and-writing-46",
+   "question": "Why do readers trust a book more when it ends with a long bibliography?",
+   "question_sha256": "505d34149e51303687fa15d1ab539da72a1eb129a321c39336d2a507fd06f13b",
+   "verdict": "OK",
+   "matched": "",
+   "matched_source": "",
+   "rationale": "Reader perception of citations as a signal of credibility is not covered; the question on how historians judge sources concerns expert evaluation.",
+   "form_problem": "It states as fact that readers trust books with long bibliographies more, which is an unestablished generalisation rather than a known phenomenon.",
+   "action": "rewritten after this pass (see third 2026-10-25)",
+   "checked_by": "an independent model reviewer, fresh, reading both full lists"
+  },
+  {
+   "pass": "second 2026-10-25",
+   "topic_id": "b1-music-04",
+   "question": "How does piano accompaniment support a nervous soloist?",
+   "question_sha256": "0821158ec59f60408bf82f4362c1ae85052f665551eeafb78968969bb4d0bda9",
+   "verdict": "CLOSE",
+   "matched": "How does stage fright affect performers, and how do experienced musicians manage it?",
+   "matched_source": "historical",
+   "rationale": "Both cover performer nerves, but this one is about what the accompanist does (tempo flexibility, cueing, covering slips) rather than how performers manage their own fear; the question on a soloist balancing against an ensemble is also near.",
+   "form_problem": "",
+   "action": "kept",
+   "checked_by": "an independent model reviewer, fresh, reading both full lists"
+  },
+  {
+   "pass": "second 2026-10-25",
+   "topic_id": "b1-music-12",
+   "question": "How does a backing vocalist harmonise with the lead singer?",
+   "question_sha256": "0f649ac99c914e7faae4d860e86e88f8ae8914c12007f3c7aa4e206e65508123",
+   "verdict": "CLOSE",
+   "matched": "Why do two singers harmonising sound different from one singer recorded twice?",
+   "matched_source": "historical",
+   "rationale": "Both concern two voices harmonising, but this asks how a backing part is built and kept with the lead, not why combined voices sound richer.",
+   "form_problem": "",
+   "action": "kept",
+   "checked_by": "an independent model reviewer, fresh, reading both full lists"
+  },
+  {
+   "pass": "second 2026-10-25",
+   "topic_id": "b1-technology-40",
+   "question": "How does a digital kitchen scale measure the weight of flour?",
+   "question_sha256": "91f08d6dbeaae06d2fc6a87ee7b573af4d0d291e79947379a3c89a008485abfd",
+   "verdict": "OK",
+   "matched": "",
+   "matched_source": "",
+   "rationale": "How a load cell or strain gauge works is not covered; the question on bakers weighing ingredients asks why to weigh, not how a scale works.",
+   "form_problem": "",
+   "action": "kept",
+   "checked_by": "an independent model reviewer, fresh, reading both full lists"
+  },
+  {
+   "pass": "second 2026-10-25",
+   "topic_id": "b1-work-and-organisations-04",
+   "question": "Why do some organisations send mystery shoppers into their stores?",
+   "question_sha256": "424cb2cb0a21926f6882786e8bac73965d7556aad5df884b08a5b464761601b6",
+   "verdict": "OK",
+   "matched": "",
+   "matched_source": "",
+   "rationale": "Covert service auditing is not covered; the question on what a company measures is too general to answer this.",
+   "form_problem": "",
+   "action": "kept",
+   "checked_by": "an independent model reviewer, fresh, reading both full lists"
+  },
+  {
+   "pass": "second 2026-10-25",
+   "topic_id": "b1-work-and-organisations-14",
+   "question": "How does a gym keep members paying their monthly subscription?",
+   "question_sha256": "37d279cc31f0460c9b2a8fca3c4c8bbd5162a09b39fbb29b98542b38b2b61ab7",
+   "verdict": "CLOSE",
+   "matched": "How does a market trader build a loyal group of customers?",
+   "matched_source": "b1-work-and-organisations-32",
+   "rationale": "Both concern keeping customers, but a gym relies on subscription inertia, cancellation friction and contracts, while a market trader relies on personal relationships and repeat purchases.",
+   "form_problem": "",
+   "action": "kept",
+   "checked_by": "an independent model reviewer, fresh, reading both full lists"
+  },
+  {
+   "pass": "second 2026-10-25",
+   "topic_id": "b1-work-and-organisations-20",
+   "question": "Why do some firms allow employees to bring dogs into the workplace?",
+   "question_sha256": "48d888f10ddbe20d7b7fe265ffff7e85b4b65071a044f297b3a38b1fa59495e8",
+   "verdict": "OK",
+   "matched": "",
+   "matched_source": "",
+   "rationale": "No question covers pet-friendly workplace policies.",
+   "form_problem": "",
+   "action": "kept",
+   "checked_by": "an independent model reviewer, fresh, reading both full lists"
+  },
+  {
+   "pass": "second 2026-10-25",
+   "topic_id": "b1-geography-00",
+   "question": "How do scientists read past climates from layers of lake mud?",
+   "question_sha256": "86cbaa60f91e002b287e1e69017de8a9ab4a4a31e27bca0a4d29c9a307985186",
+   "verdict": "OK",
+   "matched": "",
+   "matched_source": "",
+   "rationale": "Reading past climates from lake sediment cores is not covered; the tree-ring and archaeological dating questions concern age, not past climate.",
+   "form_problem": "",
+   "action": "kept",
+   "checked_by": "an independent model reviewer, fresh, reading both full lists"
+  },
+  {
+   "pass": "second 2026-10-25",
+   "topic_id": "b1-health-and-the-body-40",
+   "question": "Why does your skin bruise more easily as you get older?",
+   "question_sha256": "71928f6eb0c87c3127ce66e304bb7409e225111f9e43c58c2d9b485206771c52",
+   "verdict": "CLOSE",
+   "matched": "Why do injuries heal more slowly with age?",
+   "matched_source": "historical",
+   "rationale": "Both concern ageing and injury, but bruising more easily turns on thinner skin, fragile capillaries and lost fat padding rather than slower healing; the question on bruise colours changing is also near but has a different core.",
+   "form_problem": "",
+   "action": "kept",
+   "checked_by": "an independent model reviewer, fresh, reading both full lists"
+  },
+  {
+   "pass": "second 2026-10-25",
+   "topic_id": "b1-history-28",
+   "question": "How did shorthand writing become a valued professional skill?",
+   "question_sha256": "9f6d9d8c60659060d8a09f085a45944a5c3cef6d2635c0fea753ef666f63695e",
+   "verdict": "OK",
+   "matched": "",
+   "matched_source": "",
+   "rationale": "The history of stenography in courts, parliament reporting and journalism is not covered; the typewriter question concerns a different office technology.",
+   "form_problem": "",
+   "action": "kept",
+   "checked_by": "an independent model reviewer, fresh, reading both full lists"
+  },
+  {
+   "pass": "second 2026-10-25",
+   "topic_id": "b1-technology-20",
+   "question": "How does a smartwatch approximate the steps someone takes?",
+   "question_sha256": "e865885f242d7be218054c638f8462c0144f24fab7694690749daf8bcadbb520",
+   "verdict": "OK",
+   "matched": "",
+   "matched_source": "",
+   "rationale": "Counting steps with an accelerometer is not covered; the phone-location and navigation-device questions concern positioning, not step detection.",
+   "form_problem": "",
+   "action": "kept",
+   "checked_by": "an independent model reviewer, fresh, reading both full lists"
+  },
+  {
+   "pass": "third 2026-10-25",
+   "topic_id": "b1-health-and-the-body-08",
+   "question": "Why does the voice crack during emotional moments?",
+   "question_sha256": "09686f79358088179a327b9eb1a7ef519e42675bf139de15d08ae143b7bddb11",
+   "verdict": "CLOSE",
+   "matched": "Why does the voice deepen during the teenage years?",
+   "matched_source": "b1-health-and-the-body-11",
+   "rationale": "Both concern changes in the voice and control of the larynx, but the puberty question is answered by the larynx and vocal folds growing, while this one is answered by emotion causing muscle tension in the throat and unsteady breathing; no historical question covers emotional voice breaks (the nearest are the broad 'How does grief affect the body as well as the mind?' and 'Why does stress show up as physical symptoms?')",
+   "form_problem": "",
+   "action": "kept",
+   "checked_by": "an independent model reviewer, fresh, reading both full lists"
+  },
+  {
+   "pass": "third 2026-10-25",
+   "topic_id": "b1-language-and-writing-46",
+   "question": "Why do historians place a full bibliography at the back of their books?",
+   "question_sha256": "f8115425cd5854b9f534f93b316fb102a5e3776e41def401db7493e0256abfed",
+   "verdict": "OK",
+   "matched": "How do historians decide which sources to trust?",
+   "matched_source": "historical",
+   "rationale": "The closest question is about judging whether a source is reliable, while this one is about why sources are cited and where they go in the book, so a good answer to one would not answer the other; nothing in the bank covers citation practice.",
+   "form_problem": "",
+   "action": "kept",
+   "checked_by": "an independent model reviewer, fresh, reading both full lists"
   }
  ]
 }

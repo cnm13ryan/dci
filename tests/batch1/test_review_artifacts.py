@@ -19,7 +19,7 @@ ARTIFACTS = ("library_manifest.json", "compatibility_matrix.json",
              "estimate.json", "approvals_template.json",
              "freeze1_proposed.json", "library_review.md",
              "compatibility_review.md", "estimate.md", "decisions.md",
-             "topic_screen_report.md")
+             "topic_screen_report.md", "TOPIC_REVIEW.md")
 
 
 def test_committed_review_artifacts_are_current(tmp_path, capsys):
