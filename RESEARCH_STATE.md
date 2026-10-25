@@ -46,16 +46,26 @@ is a different study, currently paused; v8.1 does not supersede it.
 A fourth line, **Batch 1** of a new reference-selection study, lives in
 `src/dci/batch1/` and imports nothing from `dci1/`. It reuses DCI-1's A, B,
 model panel and decoding, but has a new library, new topics and its own
-freezes. As of 2026-10-25 it is implemented, independently audited twice,
-remediated after both, and validated on synthetic data only. No pilot has run.
-The researcher's decisions of 2026-10-25 are applied in the code (topic
-containment rule, P3 minimum 3, Python 3.12, a CUDA vLLM backend for a 2x H100
-host, one worker per GPU) and written up for transcription in
-[`docs/batch1/DECISIONS_2026-10-25.md`](docs/batch1/DECISIONS_2026-10-25.md);
-none is recorded in `approvals.json` yet. The changes await an independent
-audit ([`docs/batch1/AUDIT_REQUEST.md`](docs/batch1/AUDIT_REQUEST.md)), and
-the generation host is not yet attested. Review package:
-[`docs/batch1/RESEARCHER_REVIEW.md`](docs/batch1/RESEARCHER_REVIEW.md).
+freezes.
+
+**The pilot ran on 2026-10-25** on a 2x H100 instance: 30,976 stand-alone
+responses, Freeze 1 `93ef9aac…`, Freeze 2 `4946c194…`. **Its verdict is
+INFEASIBLE (`REVISION_REQUIRED`):**
+
+| contrast | configurations supported (12 of 16 needed) |
+|---|---|
+| P1 | 7 |
+| P2 | 0 |
+| P3 | 1 |
+
+Difficulty matching to A (however × 6) leaves 1-5 matched references per
+configuration. B limits 8 and 10 and A × 6 were selected. Batch 2 cannot be
+designed on this Freeze 2; the next step is a design revision.
+
+Results, with the per-configuration table and limitations (including a
+Freeze 2 hash that validates on Linux but not macOS):
+[`docs/batch1/RESULTS_2026-10-25.md`](docs/batch1/RESULTS_2026-10-25.md).
+Decisions: [`docs/batch1/DECISIONS_2026-10-25.md`](docs/batch1/DECISIONS_2026-10-25.md).
 
 ## 3. Experiment families
 

@@ -1,5 +1,7 @@
 # Batch 1 researcher review: start here
 
+**Pilot result (2026-10-25): INFEASIBLE, `REVISION_REQUIRED`.** See [`RESULTS_2026-10-25.md`](RESULTS_2026-10-25.md).
+
 **Update 2026-10-25:** your decisions of that day are applied (Python 3.12 for the orchestrator, replacing 3.11; P3 minimum 3; the D05 topic edits; the CUDA backend and one worker per GPU) and are written up for transcription in [`DECISIONS_2026-10-25.md`](DECISIONS_2026-10-25.md). Where this document says otherwise, that file and the code are current.
 
 **Purpose:** everything you need to approve, revise or defer the Batch 1
