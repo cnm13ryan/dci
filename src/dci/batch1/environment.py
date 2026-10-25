@@ -230,8 +230,8 @@ def lock_from_probe(found: Mapping[str, Any]) -> dict[str, Any]:
     if python_minor(found.get("python")) != CFG.BACKEND_PYTHON:
         raise ValueError(
             f"the backend interpreter is Python {found.get('python')}; D12 "
-            f"records {CFG.BACKEND_PYTHON} for the vLLM backend (the pinned "
-            f"vllm wheel is cp312). Attest the pinned backend environment")
+            f"records {CFG.BACKEND_PYTHON} for the vLLM backend "
+            f"(environments/cuda-vllm). Attest the pinned backend environment")
     identity = identity_of(found)
     host = {k: found.get(k) for k in HOST_FIELDS}
     problems = requirement_problems(identity, host)

@@ -59,7 +59,10 @@ def test_a_smoke_run_reports_health_and_never_compliance(tmp_path):
                              models=("qwen3-4b",),
                              generate=SY.synthetic_generate(empty_rate=0.2))
     entry = report["models"]["qwen3-4b"]
-    assert entry["rows"] == len(plan["rows"])
+    assert entry["rows"] == entry["planned"] == len(plan["rows"])
+    # a stand-in backend can never meet D12's smoke condition (audit C3)
+    assert report["d12_pass"] is False and not entry["d12_pass"]
+    assert set(report["code"]) == {"rule_sources_hash", "backend_source_hash"}
     assert set(entry["outcome_classes"]) <= {"VALID", "EMPTY"}
     assert "compliance" not in str(report).lower().replace(
         "no compliance is computed", "")

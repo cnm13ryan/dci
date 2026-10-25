@@ -357,6 +357,13 @@ def assert_authorized(manifest: Mapping[str, Any],
                          if now.get(k) != locked.get(k))
         raise AuthorizationError("the live execution environment differs from "
                                  f"the attested lock in {changed}")
+    # The driver and the rest of D12's requirements are re-checked live, not
+    # only when the lock was made (third audit C6b).
+    problems = ENV.requirement_problems(now, live)
+    if problems:
+        raise AuthorizationError("the live execution environment does not "
+                                 "meet D12's execution requirements: "
+                                 + "; ".join(problems))
 
 
 # ------------------------------------------------------------------ freeze 2

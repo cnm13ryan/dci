@@ -392,3 +392,32 @@ def test_each_worker_sees_only_its_own_gpu():
     envs = [replace(spec, device=d).env() for d in (0, 1)]
     assert [e["CUDA_VISIBLE_DEVICES"] for e in envs] == ["0", "1"]
     assert all("HIP_VISIBLE_DEVICES" not in e for e in envs)
+
+
+# ------------------------------------------- third audit, C5 and C6 hardening
+
+def test_inherited_vllm_settings_never_reach_the_seam(monkeypatch):
+    monkeypatch.setenv("VLLM_BATCH_INVARIANT", "1")
+    monkeypatch.setenv("VLLM_ATTENTION_BACKEND", "XFORMERS")
+    env = RUN.BackendSpec(visibility_var="CUDA_VISIBLE_DEVICES").env()
+    assert not {"VLLM_BATCH_INVARIANT", "VLLM_ATTENTION_BACKEND"} & set(env)
+    assert env["VLLM_WORKER_MULTIPROC_METHOD"] == "spawn"
+
+
+def test_a_cuda_backend_with_rocm_visibility_is_refused():
+    from tests.batch1.helpers import fake_probe
+    with pytest.raises(RunError, match="--accelerator cuda"):
+        RUN.check_visibility(fake_probe(), RUN.BackendSpec())
+    RUN.check_visibility(fake_probe(), RUN.BackendSpec(
+        visibility_var="CUDA_VISIBLE_DEVICES"))
+
+
+def test_an_attempt_directory_without_its_event_is_not_reused(run):
+    group = rows_file(run).parent
+    (group / "attempts" / "001").mkdir(parents=True)
+    (group / "attempts" / "001" / "backend.log").write_text("killed\n")
+    execute(run, SY.synthetic_generate())
+    assert (group / "attempts" / "001" / "backend.log").read_text() == "killed\n"
+    events = [e for e in lines(rows_file(run, "provenance.jsonl"))
+              if e["event"] == "backend_run"]
+    assert [e["attempt"] for e in events] == [2]

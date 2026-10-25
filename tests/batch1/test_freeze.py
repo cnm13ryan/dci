@@ -162,20 +162,24 @@ def test_authorised_execution_reaches_the_backend_only_through_the_gate(
         return generate
     monkeypatch.setattr(RUN, "subprocess_backend", fake_backend)
     monkeypatch.setattr(RUN.ENV, "probe", lambda python: fake_probe())
+    cuda = RUN.BackendSpec(visibility_var="CUDA_VISIBLE_DEVICES")
     row = next(r for r in EV.expected_design(tmp_path, manifest, "stage1")
                if r["model"] == "qwen3-4b")
     summary = RUN.execute(tmp_path / "run", [row], freeze1=manifest,
-                          approvals=approvals, token=manifest["manifest_hash"])
+                          approvals=approvals, token=manifest["manifest_hash"],
+                    backend=cuda)
     assert calls == [("Qwen/Qwen3-4B", 1)]
     assert summary["open"] == 1 and not summary["complete"]   # not returned
     with pytest.raises(RUN.RunError, match="composed"):
         RUN.execute(tmp_path / "run", [dict(row, load=2)], freeze1=manifest,
-                    approvals=approvals, token=manifest["manifest_hash"])
+                    approvals=approvals, token=manifest["manifest_hash"],
+                    backend=cuda)
     monkeypatch.setattr(RUN.ENV, "probe",
                         lambda python: fake_probe(python="3.13.0"))
     with pytest.raises(F.AuthorizationError, match="differs from the attested"):
         RUN.execute(tmp_path / "run", [row], freeze1=manifest,
-                    approvals=approvals, token=manifest["manifest_hash"])
+                    approvals=approvals, token=manifest["manifest_hash"],
+                    backend=cuda)
     assert len(calls) == 1
 
 

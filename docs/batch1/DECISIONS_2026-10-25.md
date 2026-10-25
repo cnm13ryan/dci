@@ -35,7 +35,7 @@ code changed after this file; use the template's and ask why.
 | D09 | Eligibility operationalisation | `86db9770310b309f` |
 | D10 | Matching operationalisation | `540aaaf0cd3684f1` |
 | D11 | Coverage requirements | `32951ab309a6fb20` |
-| D12 | Model panel, decoding, cap, seeds and backend | `21669e8552cc3d41` |
+| D12 | Model panel, decoding, cap, seeds and backend | `c1b1be6d59efd54b` |
 | D13 | Object types and hierarchical weights | `7f24d04f57e7fdc8` |
 | D14 | Membership-stability diagnostics | `da0bb5bb7c0fcd0f` |
 
@@ -90,18 +90,55 @@ if models almost never manage it, it is ineligible and drops out.
 - **(d)** A fresh reviewer read both full lists and judged the 26 new
   questions. It found one restatement (menthol and the chili-heat question)
   and one false premise; both were rewritten and cleared by another fresh
-  reviewer. Before review, the author's own search caught 13 collisions with
-  historical questions (for example a metronome question that a v19 task
-  asks) and replaced them.
+  reviewer. Before review, the author's own checks replaced 19 drafts: 16
+  were near-paraphrases of historical questions (for example a metronome
+  question that a v19 task asks) and 3 were flagged only by the word-overlap
+  screen. 3 more candidates were rejected before being drafted. All are
+  listed in `TOPIC_REVIEW.md` §2a; an earlier count of 13 was wrong.
 - **(e)** The split is unchanged: the same 32, 64 and 480 ids (test).
 
 **D11.** COVERAGE_SIMULATION_REVIEW.md §8 recommends exactly this rule (P3k3)
-and keeps the 12-of-16 target with the P1, P2 and G1 minima. In the
-simulation, false FEASIBLE falls from 73% to 18% where coverage is thin, for
-about 1 point of extra false INFEASIBLE in typical scenarios. So the rule
-meets the coverage target as defined. One caveat: the earlier precision study
-(`calibration_precision.json`, CALIBRATION_PRECISION_REVIEW.md) was run under
-the design minimum of 2. Its D07 and D14 numbers do not use this rule.
+and keeps the 12-of-16 target with the P1, P2 and G1 minima, so the rule
+meets the coverage target as defined.
+
+The figures below are recomputed from `coverage_simulation.json` (1,000
+simulated pilots per scenario). Each rule is judged against its own
+noise-free truth. They correct the ones first written here, which the third
+audit found described only part of the picture (C2).
+
+| scenario | true verdict, minimum 2 → 3 | pilots reporting FEASIBLE, minimum 2 → 3 |
+|---|---|---|
+| moderate, model differences, edge crowded | FEASIBLE → FEASIBLE | 99-100% → 98-99% |
+| boundary cluster, frame differences | FEASIBLE → FEASIBLE | 98-100% → 96-98% |
+| strong paraphrase sensitivity | FEASIBLE → FEASIBLE | 90% → 88% |
+| single operation coverage | FEASIBLE → FEASIBLE | 98% → 85% |
+| strong model sensitivity | FEASIBLE → FEASIBLE | 86% → 53% |
+| graded coverage | FEASIBLE → **INFEASIBLE** | 89% → 40% (now false FEASIBLE) |
+| low followability | FEASIBLE → **INFEASIBLE** | 69% → 47% (now false FEASIBLE) |
+| graded coverage, sparse | INFEASIBLE → INFEASIBLE | 59% → 14% (false FEASIBLE) |
+| other operation harder | INFEASIBLE → INFEASIBLE | 87% → 23% (false FEASIBLE) |
+
+What this means:
+
+- **False FEASIBLE.** Where both rules call the study infeasible, the
+  minimum of 3 cuts false FEASIBLE from 59% to 14% and from 87% to 23%. That
+  is the "73% → 18%" quoted before, which is the mean of those two rows. In
+  the two scenarios that only the minimum of 3 calls infeasible, it still
+  reports FEASIBLE 40% and 47% of the time.
+- **False INFEASIBLE.** It rises by 0-3 points in the typical scenarios
+  (moderate, model, edge, boundary, frame, paraphrase), not "about 1 point"
+  everywhere. It rises by 13 points with coverage from a single operation and
+  by 33 points when models differ strongly.
+
+Whether the minimum of 3 is still your rule, given these figures, is your
+decision. The implementing agent still recommends it: it is the only rule
+that substantially cuts false FEASIBLE, and its cost falls where models or
+operations differ strongly, which the Stage-1-only and stability reports
+show.
+
+One caveat: the earlier precision study (`calibration_precision.json`,
+CALIBRATION_PRECISION_REVIEW.md) was run under the design minimum of 2, so
+its D07 and D14 numbers do not use this rule.
 
 ## D10: the disclosure text
 
@@ -126,7 +163,8 @@ and the vLLM backend. The CUDA vllm 0.15.1 wheel is cp38-abi3, so the wheel
 does not force a Python version; 3.12 is vLLM's Docker default and native on
 Lambda's GPU Base 24.04. Execution requirements: vllm 0.15.1 and torch
 2.9.1+cu129 on 2x H100 SXM with driver >= 575.51.03. One worker per GPU, with
-tensor parallelism as configured (1). Batch invariance off.
+tensor parallelism as configured (1). Batch invariance off, enforced: the
+runner passes no inherited `VLLM_*` setting to the backend.
 
 **Conditions, checked before you record APPROVED:**
 
@@ -135,11 +173,17 @@ tensor parallelism as configured (1). Batch invariance off.
 | Python 3.12, vllm 0.15.1, torch 2.9.1+cu129 (CUDA 12.9) | `bootstrap.sh` prints `2.9.1+cu129 12.9 True 0.15.1`; `attest-environment` refuses any other build |
 | 2x H100 SXM (`NVIDIA H100 80GB HBM3`, compute capability 9.0) | bound in the lock (model, count, capability, memory); a lock that differs is refused, and `execute` re-checks it live |
 | driver >= 575.51.03 | `preflight.sh`; `attest-environment` refuses a lower driver. The driver build is recorded, not bound |
-| smoke test passes: no crashes, blank answers handled as expected, at most 1 cap hit per model | `smoke_report.json`, per model: `returncode` 0 or 1 and `blocked` false (no crash or blocked engine); `outcome_classes` has no TECHNICAL, so any blank answer was classed EMPTY; `truncation_share` × behavioural rows ≤ 1 (at most one answer stopped by the 512-token cap) |
+| smoke test passes: no crashes, blank answers handled as expected, at most 1 cap hit per model | computed by the code (third audit C3). Run `smoke ... --environment-lock environment_lock.json`; `smoke_report.json` then has `d12_pass` per model and overall, and the command exits 0 only when it is true. Per model, a pass needs: every planned row returned; exit 0 or 1; not blocked; no TECHNICAL outcome, so any blank answer was classed EMPTY; and at most one answer stopped by the 512-token cap. Overall, the live backend must also equal the attested lock's identity and meet these requirements live |
 
 These requirements are in the D12 payload (`EXECUTION_REQUIREMENTS`), so
-approving D12 approves them. They are enforced when the lock is made and
-again when Freeze 1 is built.
+approving D12 approves them. They are enforced when the lock is made, when
+Freeze 1 is built, and live at every `execute`, which also refuses ROCm GPU
+selection on a CUDA backend.
+
+The provisional smoke runs on 2026-10-25 (`smoke-2026-10-25b` and the two
+per-GPU runs) met every condition by hand-check, but they predate the
+computed `d12_pass`. Record D12 against a re-run that reports
+`d12_pass: true`.
 
 **The lock decision (implemented).** The lock binds the software identity and
 the GPU class: model, count, compute capability and memory. It records the
@@ -166,8 +210,19 @@ after seeing data.
 | `truncation_review` cells (truncation > 2%) | some cells hit the 512-token cap often | **block until reviewed**: read the listed cells' truncated answers and record whether the cap changed what compliance means there |
 | any other flag | | **block** |
 
-The near-threshold exception is the one place this table relaxes the default.
-In the coverage simulation (§6.7) the flag fires on 30-76% of correct FEASIBLE
-verdicts. Requiring the two independent checks to agree keeps it from
-blocking most correct verdicts while still blocking unsupported ones. Strike
-the exception if you prefer the default everywhere.
+**The near-threshold exception is your decision, and the recommendation is
+now to strike it.**
+
+- **Corrected figures (third audit C2).** Under the minimum of 3 you chose,
+  the flag fires on 30-96% of correct FEASIBLE verdicts, and on 53-67% in
+  the typical scenarios (`coverage_simulation.json`). The 30-76% first
+  written here was for the design minimum of 2. So under your rule the flag
+  is the norm, not an exception.
+- **Unsimulated.** The exception's two-check condition (stable-member
+  feasibility and the Stage-1-only sensitivity both FEASIBLE) was never
+  simulated.
+- **Cost of striking it.** "Block" only means you record your decision in
+  writing before Batch 2. That is a short review step, even on most
+  outcomes.
+
+To strike it, change that row's action to **block**.

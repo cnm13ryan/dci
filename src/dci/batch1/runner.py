@@ -79,7 +79,8 @@ from dci.batch1.store import (
 )
 
 __all__ = ["BackendSpec", "seam_plan", "seam_design_rows", "subprocess_backend",
-           "init_root", "execute", "read_rows", "GenerateFn", "RunError",
+           "init_root", "execute", "check_visibility", "read_rows",
+           "GenerateFn", "RunError",
            "OK_EXITS", "BLOCKED_EXIT", "CRASH_EXIT", "SEAM_GENERATOR",
            "SYNTHETIC_GENERATOR"]
 
@@ -113,7 +114,11 @@ class BackendSpec:
         if self.visibility_var not in ("HIP_VISIBLE_DEVICES",
                                        "CUDA_VISIBLE_DEVICES"):
             raise RunError(f"visibility variable {self.visibility_var!r}")
-        env = {k: v for k, v in os.environ.items() if k not in _VISIBILITY}
+        # Inherited vLLM settings never reach the seam (third audit C5):
+        # the engine's behaviour is the plan's, so "batch invariance off" and
+        # the attention backend hold by construction, not by default.
+        env = {k: v for k, v in os.environ.items()
+               if k not in _VISIBILITY and not k.startswith("VLLM_")}
         env[self.visibility_var] = str(self.device)
         env["VLLM_WORKER_MULTIPROC_METHOD"] = "spawn"
         env["HF_HUB_OFFLINE"] = env.get("HF_HUB_OFFLINE", "1")
@@ -244,9 +249,15 @@ def init_root(root: Path, *, synthetic: bool, freeze1_hash: str,
 
 
 def _attempt_number(prov_path: Path) -> int:
-    """One more than the backend runs this group has recorded."""
-    return 1 + sum(e.get("event") == "backend_run"
+    """One more than the attempts this group has made: recorded backend runs
+    or attempt directories, whichever is more, so an attempt killed before
+    its ``backend_run`` event never has its log overwritten (third audit
+    C6c)."""
+    recorded = sum(e.get("event") == "backend_run"
                    for e in read_jsonl(prov_path))
+    made = [int(p.name) for p in (prov_path.parent / "attempts").glob("[0-9]*")
+            if p.is_dir() and p.name.isdigit()]
+    return 1 + max(recorded, max(made, default=0))
 
 
 def _technical_failures(rejected_path: Path) -> dict[str, int]:
@@ -376,6 +387,19 @@ def _run_group(root: Path, stage: str, model_key: str,
     return group
 
 
+def check_visibility(environment: Mapping[str, Any],
+                      spec: BackendSpec) -> None:
+    """A CUDA backend must be given CUDA_VISIBLE_DEVICES: with the ROCm
+    variable every worker would land on cuda:0 while recording another
+    device (third audit C6a)."""
+    if environment.get("torch_cuda") and \
+            spec.visibility_var != "CUDA_VISIBLE_DEVICES":
+        raise RunError("the backend is a CUDA build (CUDA "
+                       f"{environment.get('torch_cuda')}) but GPUs would be "
+                       f"selected with {spec.visibility_var}; pass "
+                       "--accelerator cuda")
+
+
 def execute(root: Path, design: Sequence[Mapping[str, Any]], *,
             freeze1: Mapping[str, Any], approvals: Mapping[str, Any] | None,
             token: str | None = None, generate: GenerateFn | None = None,
@@ -398,6 +422,7 @@ def execute(root: Path, design: Sequence[Mapping[str, Any]], *,
         F.assert_authorized(freeze1, approvals or {}, token,
                             live_environment=probe_live)
         identity_hash = record_hash(ENV.identity_of(live))
+        check_visibility(live, spec)
     devices = tuple(devices) if devices else \
         ((backend or BackendSpec()).device,)
     if len(set(devices)) != len(devices):

@@ -27,6 +27,10 @@ $P execute --root /lambda/nfs/dci/runs/R --stage stage1 --authorize <freeze1 has
   --accelerator cuda --devices 0,1 --backend-python $B 2>&1 | tee -a /lambda/nfs/dci/logs/stage1.log
 ```
 
-`sync_back.sh` writes `MANIFEST.sha256` (and the instance checkout's commit,
-`SYNC_SOURCE_SHA`) in each directory on the instance, copies it with rsync,
-and checks every file on the Mac with `shasum -a 256 -c`.
+`sync_back.sh` refuses any non-regular file, writes `MANIFEST.sha256` (and
+`SYNC_CHECKOUT_SHA`, the instance checkout at sync time) in each directory on
+the instance, and mirrors it with `rsync --delete`. On the Mac it checks every
+hash with `shasum -a 256 -c` and requires the local file list to equal the
+manifest's exactly. Run it while nothing is writing on the instance. The
+commit that produced a run is in each smoke report's `code` field and each
+pilot root's `RUN.json` (Freeze 1 hash), not in `SYNC_CHECKOUT_SHA`.

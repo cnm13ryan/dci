@@ -31,7 +31,6 @@ from dci.batch1 import environment as ENV
 from dci.batch1 import evidence as EV
 from dci.batch1 import freeze as F
 from dci.batch1 import library as L
-from dci.batch1 import outcomes as OUT
 from dci.batch1 import pipeline as P
 from dci.batch1 import report as REP
 from dci.batch1 import runner as RUN
@@ -116,10 +115,17 @@ def cmd_write_review_artifacts(args) -> int:
     # TOPIC_REVIEW.md is written by hand except its replacement tables,
     # which are generated into the marked block (D05 2026-10-25: they cite
     # each overlapped question as it stood when it was reviewed).
+    released, _, _ = TOP._historical()
+    history: dict[str, list[str]] = {}
+    for r in released:
+        names = history.setdefault(" ".join(r["question"].lower().split()), [])
+        if r["source"] not in names:
+            names.append(r["source"])
     tables = REP.topic_replacements(
         revisions, {t.topic_id: t.question for t in bank},
         {t.topic_id: split.split_of(t.topic_id) for t in bank},
-        {t.topic_id: t.area for t in bank}, TOP.load_semantic_review())
+        {t.topic_id: t.area for t in bank}, TOP.load_semantic_review(),
+        {q: ",".join(sorted(v)) for q, v in history.items()})
     (out / "TOPIC_REVIEW.md").write_text(REP.splice_generated(
         (DOCS / "TOPIC_REVIEW.md").read_text(), tables))
     _print({"written": str(out), "freeze1_hash": f1["manifest_hash"],
@@ -258,19 +264,21 @@ def cmd_smoke(args) -> int:
         visibility_var=("CUDA_VISIBLE_DEVICES" if args.accelerator == "cuda"
                         else "HIP_VISIBLE_DEVICES"),
         device=args.device)
+    lock = F.read_json(Path(args.environment_lock)) \
+        if args.environment_lock else None
     report = SMOKE.run_smoke(Path(args.root), token=args.authorize,
                              max_rows=args.max_rows,
                              models=args.models or tuple(CFG.MODEL_BY_KEY),
-                             backend=backend)
+                             backend=backend, environment_lock=lock)
     _print(report)
-    # Exit 0 only when every model ran cleanly: none blocked or crashed, and
-    # no TECHNICAL outcome (D12's smoke condition; the report has the rest).
-    failed = [k for k, m in report["models"].items()
-              if m.get("blocked") or m.get("returncode") not in RUN.OK_EXITS
-              or m.get("outcome_classes", {}).get(OUT.TECHNICAL)]
-    if failed:
-        print(f"smoke FAILED for {failed}: see smoke_report.json and each "
-              "model's backend.log", file=sys.stderr)
+    # Exit 0 only when D12's smoke condition is met (computed, smoke.py).
+    if not report.get("d12_pass"):
+        failed = {k: m.get("d12_problems") for k, m in report["models"].items()
+                  if not m.get("d12_pass")}
+        print(f"smoke FAILED D12: environment "
+              f"{report.get('d12', {}).get('environment_problems')}; models "
+              f"{failed}; see smoke_report.json and each model's backend.log",
+              file=sys.stderr)
         return 4
     return 0
 
@@ -394,6 +402,9 @@ def main(argv: list[str] | None = None) -> int:
     sm.add_argument("--backend-python")
     sm.add_argument("--accelerator", choices=("rocm", "cuda"), default="rocm")
     sm.add_argument("--device", type=int, default=0)
+    sm.add_argument("--environment-lock",
+                    help="environment_lock.json from attest-environment; D12's "
+                         "smoke condition needs it")
     add("validate-freeze", cmd_validate_freeze, root=True)
     add("plan", cmd_plan, root=True, stage=True)
     for name in ("execute", "resume"):

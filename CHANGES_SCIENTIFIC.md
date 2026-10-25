@@ -24,6 +24,10 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
   - **Requirements:** vllm 0.15.1, torch 2.9.1+cu129 (CUDA 12.9), 2x `NVIDIA H100 80GB HBM3` (compute capability 9.0), driver >= 575.51.03. They are in the payload and enforced when the lock is made and when Freeze 1 is built.
   - **Lock:** schema v2. It binds the GPU class (model, count, compute capability, memory) and records the hostname, kernel, GPU UUIDs and driver without binding them.
   - **Backend:** new `environments/cuda-vllm` (Python 3.12, torch from the explicit cu129 index, locked for Linux x86_64). It supersedes `dci1/environments/backend-cuda` (+cu128), which does not meet D12 and must not be attested.
+- **After the third audit (same day).** These change execution conditions:
+  - the runner passes no inherited `VLLM_*` setting to the backend, so batch invariance stays off by construction;
+  - `execute` refuses ROCm GPU selection on a CUDA backend, and re-checks D12's requirements (including the driver) live;
+  - D12's smoke condition is computed (`d12_pass`) against the attested lock.
 - **Execution.** `execute --devices 0,1` runs one worker per GPU. Each `(stage, model)` group is one seam subprocess that sees only its device. TP and engine arguments are unchanged, and each backend run records its device. Rows do not depend on which device or how many workers ran them (test).
 
 **Affected results.** None exist: Batch 1 has generated nothing. Every D-payload hash changed, because Python 3.12 is recorded in every payload; no approval carries over, and none had been given. The precision study (`calibration_precision.json`) was run under the P3 design minimum of 2. The coverage study scores every rule separately and is unaffected. Lambda scripts are in `scripts/lambda/`.

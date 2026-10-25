@@ -273,10 +273,14 @@ def topic_replacements(revisions: list[Mapping[str, Any]],
                        current: Mapping[str, str],
                        used_in: Mapping[str, str],
                        areas: Mapping[str, str],
-                       semantic: Mapping[str, Any] | None = None) -> str:
+                       semantic: Mapping[str, Any] | None = None,
+                       history: Mapping[str, str] | None = None) -> str:
     """``TOPIC_REVIEW.md`` §3: every replacement since the re-audit, with
     the original, the replacement and what it overlapped. A replacement
-    that was itself replaced later shows the text it had, and says so."""
+    that was itself replaced later shows the text it had, and says so.
+    ``history`` maps a normalised historical question to its source banks:
+    a cited question is labelled with them, and one it does not contain is
+    marked as not found."""
     findings = list((semantic or {}).get("findings", []))
     shown = []
     for i, r in enumerate(revisions):
@@ -297,13 +301,23 @@ def topic_replacements(revisions: list[Mapping[str, Any]],
         partner = _partner_at_review(r, findings)
         if not matched:
             cited = "—"
+        elif partner is None:
+            cited = (f"*(partner text at review not recorded; "
+                     f"{matched.get('source')} {matched.get('id', '')})*")
         elif matched.get("source") == "batch1":
             pid = matched.get("id")
             cited = f"new question `{pid}`: {partner} *(new bank)*"
             if partner != current.get(pid):
                 cited += (f" — since rewritten as: {current.get(pid)}")
         else:
-            cited = f"{partner} *({matched.get('source')})*"
+            source = matched.get("source")
+            found = None if history is None else \
+                history.get(" ".join(partner.lower().split()))
+            if found and source == "historical":
+                source = found
+            cited = f"{partner} *({source})*"
+            if history is not None and not found:
+                cited += " *(not found in the historical banks)*"
         return (f"| `{tid}` | {areas[tid]} | {_USED_IN[used_in[tid]]} | "
                 f"{r['previous_question']} | **{text}**{note} | {cited} | "
                 f"{kind[2]} |")
@@ -431,17 +445,19 @@ DECISION_NOTES: dict[str, tuple[str, str]] = {
             "the time under every affordable allocation (simulated). D14 "
             "reports which memberships are unstable.",
             "Approve with the disclosure."),
-    "D11": ("Unchanged rule (design minima of 2). Verified: admission "
-            "keeps every qualifying reference; a minimum is never a cap. "
-            "Simulated: the false FEASIBLE verdicts come from ±0.10 matching "
-            "noise, not from eligibility or A/B selection; on a surface with "
-            "no truly matched other-operation reference, 87% of pilots "
-            "report FEASIBLE under the design minimum.",
-            "Decide the rule. The coverage simulation "
-            "(`COVERAGE_SIMULATION_REVIEW.md`: 15 rules, 12 scenarios, 1,000 "
-            "paired pilots each) recommends a minimum of 3 for P3 only "
-            "(P1 and P2 stay at 2). The code still holds the design value 2; "
-            "approving D11 as it stands approves 2."),
+    "D11": ("REVISED by the researcher's decision of 2026-10-25: P3 needs "
+            "G5 to add at least 3 references of another operation (rule "
+            "P3k3; the design value was 2). P1, P2 and G1 minima and the "
+            "12-of-16 target are unchanged. Verified: admission keeps every "
+            "qualifying reference; a minimum is never a cap. Simulated: the "
+            "false FEASIBLE verdicts come from ±0.10 matching noise, not from "
+            "eligibility or A/B selection.",
+            "Approve the minimum of 3 knowing its simulated cost "
+            "(`DECISIONS_2026-10-25.md`, D11): false FEASIBLE falls from 87% "
+            "to 23% and 59% to 14% where both rules are infeasible, but is "
+            "40-47% in the two scenarios the minimum of 3 makes infeasible; "
+            "false INFEASIBLE rises by 0-3 points in typical scenarios and "
+            "by 13-33 where models or operations differ strongly."),
     "D12": ("REVISED binding. Payload binds the configured models, decoding, "
             "seeds, the vLLM seam source, a 2% truncation-review share, the "
             "orchestrator and backend Python versions and the source-hash "
@@ -451,12 +467,14 @@ DECISION_NOTES: dict[str, tuple[str, str]] = {
             "host and re-checked live. A bounded, authorised smoke test "
             "(`smoke`, at most 96 rows, never evidence) measures load time, "
             "throughput and truncation before Freeze 1.",
-            "Python 3.11 for the orchestrator was approved by the researcher "
-            "on 2026-10-19 (to be recorded in `approvals.json`); every "
+            "Python 3.12 for the orchestrator and the vLLM backend (the "
+            "researcher's decision of 2026-10-25, replacing 3.11); every "
             "payload and Freeze 1 record it and every command refuses another "
-            "version. Settle the rest: the cap, the 2% review share, and "
-            "Python 3.12 for the vLLM backend (its pinned wheel is cp312). "
-            "Run the smoke test on the intended host first."),
+            "version. The approval is conditional on the execution "
+            "requirements (vllm 0.15.1, torch 2.9.1+cu129, 2x H100 SXM, "
+            "driver >= 575.51.03), which the lock enforces, and on a smoke "
+            "test whose computed `d12_pass` is true against the attested "
+            "lock (`DECISIONS_2026-10-25.md`, D12)."),
     "D13": ("Unchanged rule. Clarified: parameter variants are weighted "
             "individually within an operation-object group, so a word with "
             "three count variants carries three variant shares (a G1 of "

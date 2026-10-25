@@ -186,3 +186,14 @@ def test_freeze1_binds_every_executing_module():
                  "dci/verifiers/rules.py", "dci/provenance/hashes.py"):
         assert name in sources
     assert "report.py" not in sources and "simulate.py" not in sources
+
+
+def test_the_d12_requirements_are_rechecked_live():
+    """Third audit C6b: a live probe with an old driver matched the identity
+    and was authorised, because the driver is recorded, not bound."""
+    approvals = approved()
+    manifest = F.freeze1_manifest(approvals=approvals,
+                                  environment_lock=fake_lock())
+    with pytest.raises(F.AuthorizationError, match="driver"):
+        F.assert_authorized(manifest, approvals, manifest["manifest_hash"],
+                            live_environment=fake_probe(driver=["450.80.02"]))

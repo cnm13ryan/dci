@@ -107,7 +107,7 @@
    "origin": "design",
    "payload_hash": "32951ab309a6fb20256816bf1bf3f95681fd6ce2c287f3010df2dde1292e5ead",
    "status": "PROPOSED",
-   "summary": "Design minima for G1, P1, P2, P3 and the 12-of-16 target; proposed: P3 also needs |G3| >= p3_min_g3.",
+   "summary": "Design minima for G1, P1 and P2 and the 12-of-16 target; P3 needs 3 additional other-operation references (researcher's decision 2026-10-25; the design value was 2) and |G3| >= p3_min_g3.",
    "title": "Coverage requirements"
   },
   "D12": {
@@ -115,7 +115,7 @@
    "approved_on": "",
    "note": "",
    "origin": "proposed",
-   "payload_hash": "21669e8552cc3d41efaa90d8197ebab758846067fae8df990bc89b7c21d638e2",
+   "payload_hash": "c1b1be6d59efd54b0091301c8c8929ca9363e22ec705e16eeb8457348b2b0858",
    "status": "PROPOSED",
    "summary": "Historical four-model panel and decoding; cap 512 tokens, with any cell truncating above truncation_review_share listed for review; the seed derivation; the vLLM seam source; Python 3.12 for the orchestrator and the vLLM backend (the CUDA vllm 0.15.1 wheel is cp38-abi3; 3.12 is vLLM's Docker default and native on GPU Base 24.04); the execution requirements (vllm 0.15.1, torch 2.9.1+cu129, 2x H100 SXM, driver >= 575.51.03), one worker per GPU, TP as configured. The execution environment is attested on the host, checked against the requirements and bound by Freeze 1; a bounded, authorised smoke test (never evidence) measures load time, throughput and truncation first.",
    "title": "Model panel, decoding, cap, seeds and backend"

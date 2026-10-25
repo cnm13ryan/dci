@@ -380,8 +380,10 @@ def decisions(cfg: PilotConfig = DEFAULT_CONFIG) -> tuple[Decision, ...]:
           "classification at pilot sample sizes (see D14).",
           _fields(cfg, "matching_tolerance")),
         d("D11", "Coverage requirements", "design",
-          "Design minima for G1, P1, P2, P3 and the 12-of-16 target; "
-          "proposed: P3 also needs |G3| >= p3_min_g3.",
+          "Design minima for G1, P1 and P2 and the 12-of-16 target; P3 "
+          "needs 3 additional other-operation references (researcher's "
+          "decision 2026-10-25; the design value was 2) and |G3| >= "
+          "p3_min_g3.",
           _fields(cfg, "g1_min_distinct_words", "p1_min_additional",
                   "p2_min_additional_other_object",
                   "p3_min_additional_other_operation", "p3_min_g3",

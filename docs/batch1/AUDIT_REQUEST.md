@@ -179,3 +179,34 @@ $P -m dci.batch1 write-review-artifacts --out "$(mktemp -d)"   # compare with do
 
 The results for this commit are in the commit message, and in the report
 that accompanied the push.
+
+## 5. Response to the third audit (`AUDIT_REPORT.md`, verdict APPROVABLE AFTER SPECIFIC FIXES)
+
+The commit after `9b77370`. Please re-check this delta only.
+
+| finding | change | files | payload hashes |
+|---|---|---|---|
+| **C1** stale decision text | The D11 and D12 notes in `decisions.md` now describe minimum 3 and Python 3.12. Also corrected: the D11 summary, `README.md` (P3 minimum) and the backend-Python error text | `report.py`, `config.py`, `README.md`, `environment.py` | D12 only (the `environment.py` string; `summary` is not hashed) |
+| **C2** figures for D11 and D14 | D11 rationale restated with the recomputed P3k3 figures (table). D14 exception paragraph restated (30-96%, 53-67% typical); its keep-or-strike is the researcher's, and the recommendation is now to strike | `DECISIONS_2026-10-25.md` | none |
+| **C3** smoke condition not computed | `smoke.d12_verdict`. Per model: returned == planned, exit 0 or 1, not blocked, no TECHNICAL, at most 1 cap hit. Overall, also: the live identity equals the attested lock's (`--environment-lock`) and meets the D12 requirements live. The report records `planned`, `truncated`, both identity hashes and a `code` fingerprint (rule sources and seam). `smoke` exits 4 unless `d12_pass`. Visibility is checked (C6a). Tests: 0 of 18 rows, 2 cap hits, blocked, exit 3, TECHNICAL, stand-in, no lock, a lock mismatch, an old driver | `smoke.py`, `cli.py`, tests | none (`smoke.py` and `cli.py` are in no decision's implementation) |
+| **C4** `sync_back.sh` one-way check | Refuses non-regular files on the instance and on the Mac; mirrors with `rsync --delete`; requires the local file list to equal the manifest's; renames the sidecar `SYNC_CHECKOUT_SHA`; documents that the producing commit is in the smoke report's `code` and each pilot root's `RUN.json`. The round-trip test covers a stale local file and a symlink | `scripts/lambda/sync_back.sh`, README, test | none |
+| **C5** inherited `VLLM_*` | `BackendSpec.env()` drops every inherited `VLLM_*` (the runner still sets its own `VLLM_WORKER_MULTIPROC_METHOD`) | `runner.py`, test | D12 |
+| **C6a** ROCm visibility on CUDA | `check_visibility` refuses `HIP_VISIBLE_DEVICES` when the live backend reports `torch_cuda` (`execute` and `smoke`) | `runner.py`, `smoke.py`, tests | D12 |
+| **C6b** driver not re-checked live | `assert_authorized` runs `requirement_problems` on the live probe | `freeze.py`, test | none |
+| **C6c** attempt log overwritten | attempts are numbered from the existing `attempts/NNN` directories as well as the recorded runs | `runner.py`, test | D12 |
+| **C7** D05 documentation | Author judgements on the 8 new CLOSE pairs (none a restatement). The full list of the 19 drafts replaced before review, which corrects "13". The generator labels a "historical" partner with its real bank and never prints "None" (all cited partners are found) | `TOPIC_REVIEW.md` §2a, `report.py`, `cli.py` | none |
+
+Not changed:
+
+- **C6d, C6f:** both fail closed; recorded only.
+- **C6e:** forged synthetic roots, the same threat model as before.
+
+**Consequence for the instance:**
+
+- **No rebuild or re-attestation is needed.** The backend lock, the seam and
+  the backend environment are unchanged, so `environment_lock_9b77370.json`
+  still matches.
+- **The smoke test must be re-run** with `--environment-lock` to obtain a
+  computed `d12_pass`.
+- **The evidence must be re-synced** with the fixed script into a new, empty
+  Mac directory.

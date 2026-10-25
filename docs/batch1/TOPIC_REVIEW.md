@@ -115,9 +115,56 @@ times before serving?"). Each is listed with its rationale in
    restatement (`b1-health-and-the-body-08`, menthol, against the chili-heat
    question) and one unestablished premise (`b1-language-and-writing-46`).
    Both were rewritten and cleared by another fresh reviewer. Before review,
-   the author's search of the historical banks had caught 13 draft
-   collisions and replaced them.
+   the author's own checks had replaced 19 drafts (table below; an earlier
+   count of 13 was wrong).
 5. **The split did not move:** the same 32, 64 and 480 ids.
+6. **The 8 new CLOSE pairs.** The fresh reviewers judged 8 pairs involving a
+   new question CLOSE and kept them, each on one reviewer's verdict, whereas
+   the old pairs had two blind judges. The author has since judged all 8
+   under the containment rule, and none is a restatement:
+
+   | topic | new question | close to | author's judgement |
+   |---|---|---|---|
+   | `b1-food-36` | How does a wok give food that smoky charred taste? | How does a wood fire change the taste of what is cooked on it? | distinct: wok flavour comes from very high heat, searing and burning oil droplets, wood-fire flavour from compounds in the smoke |
+   | `b1-language-and-writing-14` | Why do some books get a new title in another country? | How does a good title change how a piece is read? | distinct: retitling turns on markets, culture and untranslatable wordplay, not on how a title frames reading |
+   | `b1-language-and-writing-40` | How does a writer of radio plays set a scene? | What do stage set designers consider when creating a world the audience will believe? | distinct: radio sets a scene with sound, dialogue and narration only |
+   | `b1-music-04` | How does piano accompaniment support a nervous soloist? | How does stage fright affect performers, and how do experienced musicians manage it? | distinct: what the accompanist does (tempo, cues, covering slips) is not how a performer manages fear |
+   | `b1-music-12` | How does a backing vocalist harmonise with the lead singer? | Why do two singers harmonising sound different from one singer recorded twice? | distinct: building and holding a harmony part, not why two voices sound richer |
+   | `b1-work-and-organisations-14` | How does a gym keep members paying their monthly subscription? | How does a market trader build a loyal group of customers? (bank) | distinct: subscription inertia and contracts, not personal relationships |
+   | `b1-health-and-the-body-40` | Why does your skin bruise more easily as you get older? | Why do injuries heal more slowly with age? | distinct: fragile capillaries and thinner padding, not slower repair |
+   | `b1-health-and-the-body-08` | Why does the voice crack during emotional moments? | Why does the voice deepen during the teenage years? (bank) | distinct: throat tension and breathing under emotion, not growth of the larynx |
+
+**Drafts replaced before review (D05, 2026-10-25).** Found by the author's
+searches of the historical banks (word-overlap screen, keyword search and
+nearest-neighbour lists), before any reviewer saw them:
+
+| topic | draft | why it was replaced |
+|---|---|---|
+| `b1-food-14` | Why does the water turn cloudy when pasta cooks in it? | near "Why do many cooks save the cloudy water left over from boiling pasta?" |
+| `b1-food-14` | Why does cold rice fry well when fresh rice turns mushy? | near "Why does rice sometimes cook up fluffy and separate but other times sticky?" |
+| `b1-food-14` | Why does fresh pasta cook faster than the dried kind? | restates "What makes fresh pasta and dried pasta behave so differently in the pot?" |
+| `b1-music-04` | How does a metronome help an inexperienced player? | restates "Explain how a metronome helps a musician practise." |
+| `b1-music-12` | How does a busker choose a spot that suits performing? | near "How does a busker choose what to play?" |
+| `b1-music-12` | How does a bass guitarist lock in with the drummer? | near "What makes a bass line effective at making people want to dance?" |
+| `b1-everyday-science-30` | Why does a zip stay fastened when a coat is pulled tight? | restates "How does a zip stay closed under strain?" |
+| `b1-everyday-science-30` | Why does the inside of a freezer grow a coat of frost? | near "How does frost form on a window without any rain?" |
+| `b1-everyday-science-30` | Why does the distant horizon look hazy on humid days? | restates "Why is the sky brighter near the horizon on a hazy day?" |
+| `b1-language-and-writing-46` | Why do bilingual children often mix both of their languages in a single conversation? | restates "Why do bilingual speakers switch mid conversation?" |
+| `b1-language-and-writing-46` | Why do so many professions invent an abbreviation for almost every common phrase? | near "Why do professions develop their own vocabulary?" |
+| `b1-language-and-writing-40` | How does an editor decide what to cut from drafts? | near "How does an editor improve a piece without changing its voice?" |
+| `b1-language-and-writing-40` | How does a poet decide where each line should end? | restates "How does a poet decide where a line should break?" |
+| `b1-health-and-the-body-40` | Why does your body ache all over during a fever? | near "How does fever help the body fight infection even though it feels awful?" |
+| `b1-geography-00` | How do avalanches start on a calm and sunny afternoon? | near "Why do avalanches and landslides strike some slopes far more than others?" |
+| `b1-work-and-organisations-04` | Why do some organisations share salaries openly with staff? | near "What happens when pay levels inside a team become common knowledge?" |
+| `b1-history-05` | How did the arrival of cheap mirrors change personal grooming? | word-overlap screen only ("How did the arrival of the bicycle change personal freedom?") |
+| `b1-history-05` | How did cheap glass mirrors change the way people dressed? | word-overlap screen only (bank and historical neighbours on "glass", "change") |
+| `b1-history-05` | How did the safety match change life in ordinary homes? | word-overlap screen only (bank and historical neighbours on "change", "homes") |
+
+Three candidates were rejected before being drafted: "Why does a cut chilli
+make the fingers sting for hours?" and "Why does skin wrinkle after a long
+soak?" restate historical questions (chili heat; fingertips wrinkling in the
+bath), and "Why does fresh ginger stop milk puddings from setting?" has a
+false premise (fresh ginger sets hot milk).
 
 ## 3. The replacements
 
@@ -244,7 +291,7 @@ topic id belongs to; it did not change.
 | `b1-food-17` | food | reserved confirmatory | Why are mushrooms so rich in savoury flavour? | **Why are pistachio shells often already split open?** | Why do cooks treat savory umami as a taste of its own, and which foods supply it richly? *(dci1/v2,dci1v3)* | restatement under the containment rule |
 | `b1-food-36` | food | reserved confirmatory | How does curing turn a leg of pork into ham? | **How does a wok give food that smoky charred taste?** | Why are some hams and cheeses aged for years, and what changes during the wait? *(dci1/v2)* | restatement under the containment rule |
 | `b1-food-43` | food | reserved confirmatory | Why do some cooks salt aubergines before frying them? | **Why do some cooks bruise lemongrass before adding it?** | How does salt change the texture of vegetables as they cook? *(dci1v4)* | restatement under the containment rule |
-| `b1-geography-00` | geography | reserved confirmatory | How do meandering rivers gradually cut off loops of water? | **How do scientists read past climates from layers of lake mud?** | How does the course of a river change over time? *(historical)* | restatement under the containment rule |
+| `b1-geography-00` | geography | reserved confirmatory | How do meandering rivers gradually cut off loops of water? | **How do scientists read past climates from layers of lake mud?** | How does the course of a river change over time? *(dci1v4)* | restatement under the containment rule |
 | `b1-health-and-the-body-08` | health and the body | reserved confirmatory | Why does laughing make people feel good? | **Why does the voice crack during emotional moments?** | How does laughter affect the body beyond simply lifting the mood? *(dci1/v2,dci1v3)* | restatement under the containment rule |
 | `b1-history-05` | history | reserved confirmatory | How did the spread of reading among ordinary people change society? | **How did the rise of seaside holidays change coastal towns?** | How did the spread of printing change who could join public debate? *(dci1/v2,dci1v3)* | restatement under the containment rule |
 | `b1-language-and-writing-13` | language and writing | reserved confirmatory | How does sarcasm work when the listener has only the voice to go on? | **How does a person learn to lip read when they cannot hear the speaker?** | What happens to meaning when sarcasm moves from speech to text? *(dci1/v2,dci1v3)* | restatement under the containment rule |

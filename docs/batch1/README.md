@@ -316,8 +316,9 @@ These are the design values; operational details are listed as D07–D11.
   - G1 needs at least 3 distinct target words.
   - P1 needs G2 to add at least 2.
   - P2 needs G3 to add at least 2 of another object type.
-  - P3 needs G5 to add at least 2 of another operation, and (proposed) G3 to
-    hold at least 3.
+  - P3 needs G5 to add at least 3 of another operation (the researcher's
+    decision of 2026-10-25; the design value was 2), and G3 to hold at
+    least 3.
 - **Reasons for unsupported comparisons.** Each one names the filter that bit:
   library, eligible, compatible, or matched. A relaxation that adds nothing is
   reported as `NO_EFFECTIVE_POPULATION_EXPANSION`.

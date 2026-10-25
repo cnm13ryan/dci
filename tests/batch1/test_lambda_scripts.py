@@ -107,3 +107,15 @@ def test_sync_back_copies_and_verifies_and_catches_a_corrupt_copy(tmp_path):
                             "MANIFEST.sha256"], cwd=local / "runs",
                            capture_output=True, text=True)
     assert check.returncode != 0
+    # third audit C4: a stale local file is removed by the mirror, and a
+    # file the manifest does not list, or a symlink, fails the run
+    stale = local / "runs" / "S" / "generation" / "stage1" / "m" / "rows.jsonl"
+    stale.parent.mkdir(parents=True)
+    stale.write_text("stale\n")
+    again = subprocess.run(cmd, env=env, capture_output=True, text=True)
+    assert again.returncode == 0, again.stderr
+    assert not stale.exists()
+    assert (local / "runs" / "S" / "rows.jsonl").read_text() == '{"a": 1}\n'
+    (remote / "runs" / "link").symlink_to(remote / "runs" / "S" / "rows.jsonl")
+    bad = subprocess.run(cmd, env=env, capture_output=True, text=True)
+    assert bad.returncode != 0 and "non-regular" in bad.stderr

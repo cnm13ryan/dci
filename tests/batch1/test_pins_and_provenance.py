@@ -315,21 +315,65 @@ def test_a_lock_edited_to_another_class_blocks_freeze1():
                for b in manifest["authorization"]["blocking"])
 
 
-@pytest.mark.parametrize("model,code", [
-    ({"returncode": 0, "blocked": False, "outcome_classes": {"VALID": 18}}, 0),
-    ({"returncode": 1, "blocked": False, "outcome_classes": {"VALID": 18}}, 0),
-    ({"returncode": 2, "blocked": True, "outcome_classes": {"TECHNICAL": 18}}, 4),
-    ({"returncode": 3, "blocked": False, "outcome_classes": {"VALID": 5}}, 4),
-    ({"returncode": 0, "blocked": False,
-      "outcome_classes": {"VALID": 17, "TECHNICAL": 1}}, 4),
+def _smoke_model(**changes):
+    entry = {"planned": 18, "rows": 18, "returncode": 0, "blocked": False,
+             "outcome_classes": {"VALID": 18}, "truncated": 0}
+    entry.update(changes)
+    return entry
+
+
+def test_d12_smoke_condition_passes_a_clean_run_against_its_lock():
+    lock = ENV.lock_from_probe(fake_probe())
+    verdict = SMOKE.d12_verdict({"qwen3-4b": _smoke_model(),
+                                 "gemma-3n-e2b-it": _smoke_model(truncated=1)},
+                                fake_probe(), lock)
+    assert verdict["d12_pass"] and verdict["environment_problems"] == []
+    assert verdict["environment_identity_hash"] == lock["identity_hash"]
+
+
+@pytest.mark.parametrize("changes,reason", [
+    ({"rows": 0, "outcome_classes": {}}, "returned 0 of 18"),
+    ({"truncated": 2}, "stopped by the cap"),
+    ({"returncode": 2, "blocked": True}, "blocked"),
+    ({"returncode": 3}, "exited 3"),
+    ({"outcome_classes": {"VALID": 17, "TECHNICAL": 1}}, "TECHNICAL"),
 ])
-def test_the_smoke_command_fails_when_any_model_fails(monkeypatch, capsys,
-                                                      tmp_path, model, code):
-    """The provisional smoke test of 2026-10-25 exited 0 although both Gemma
-    models were blocked; the exit status is now a pass signal."""
-    ok = {"returncode": 0, "blocked": False, "outcome_classes": {"VALID": 18}}
+def test_d12_smoke_condition_fails_a_model_that_misbehaves(changes, reason):
+    """Third audit C3: a backend that returned no rows, exit 0 and not
+    blocked, used to meet every criterion as written."""
+    lock = ENV.lock_from_probe(fake_probe())
+    models = {"qwen3-4b": _smoke_model(**changes)}
+    verdict = SMOKE.d12_verdict(models, fake_probe(), lock)
+    assert not verdict["d12_pass"]
+    assert any(reason in p for p in models["qwen3-4b"]["d12_problems"])
+
+
+@pytest.mark.parametrize("environment,lock,reason", [
+    ({"status": "STAND_IN"}, "lock", "not probed"),
+    ("probe", None, "no environment lock"),
+    ("other", "lock", "differs from the lock"),
+    ("old_driver", "lock", "driver"),
+])
+def test_d12_smoke_condition_needs_the_attested_environment(environment, lock,
+                                                            reason):
+    probes = {"probe": fake_probe(),
+              "other": fake_probe(distributions_hash="e" * 64),
+              "old_driver": fake_probe(driver=["560.35.03"])}
+    env = probes[environment] if isinstance(environment, str) else environment
+    verdict = SMOKE.d12_verdict({"qwen3-4b": _smoke_model()}, env,
+                                ENV.lock_from_probe(fake_probe())
+                                if lock else None)
+    assert not verdict["d12_pass"]
+    assert any(reason in p for p in verdict["environment_problems"])
+
+
+@pytest.mark.parametrize("passed,code", [(True, 0), (False, 4)])
+def test_the_smoke_command_exits_on_the_computed_d12_verdict(
+        monkeypatch, capsys, tmp_path, passed, code):
     monkeypatch.setattr(SMOKE, "run_smoke", lambda *a, **k: {
-        "models": {"qwen3-4b": ok, "gemma-3n-e2b-it": model}})
+        "d12_pass": passed, "d12": {"environment_problems": []},
+        "models": {"qwen3-4b": {"d12_pass": passed,
+                                "d12_problems": [] if passed else ["x"]}}})
     assert cli.main(["smoke", "--root", str(tmp_path), "--authorize", "x",
                      "--max-rows", "72"]) == code
-    assert ("smoke FAILED" in capsys.readouterr().err) == bool(code)
+    assert ("smoke FAILED D12" in capsys.readouterr().err) == (not passed)
