@@ -113,6 +113,7 @@ def read_json(path: Path) -> Any:
 def approvals_template(cfg: CFG.PilotConfig = CFG.DEFAULT_CONFIG
                        ) -> dict[str, Any]:
     """Every decision PROPOSED, with the payload hash an approval must name."""
+    cfg.activate()                  # payloads render the config's library
     return {"schema": "dci.batch1/approvals/v2",
             "orchestrator_python": CFG.ORCHESTRATOR_PYTHON,
             "source_hash_scheme": SOURCE_HASH_SCHEME,
@@ -447,7 +448,11 @@ def freeze2_manifest(freeze1: Mapping[str, Any], bundle: Mapping[str, Any], *,
                                      synthetic=synthetic,
                                      replicates=replicates)
     if cfg.protocol == "v2":
+        from dci.batch1 import revision as REV
         stability["forecast"] = selection["forecast"]
+        reporting = REV.reporting(
+            tables, EV.tables_for([stages[D.STAGE1]], synthetic=synthetic),
+            cfg, matrix, result, selection["forecast"])
     else:
         stability["stage1_only"] = STAB.stage1_only(
             stages[D.STAGE1], result, cfg, matrix, synthetic=synthetic)
@@ -506,6 +511,7 @@ def freeze2_manifest(freeze1: Mapping[str, Any], bundle: Mapping[str, Any], *,
     }
     if cfg.protocol != "v1":       # v1 manifests keep their historical body
         body["protocol"] = cfg.protocol
+        body["reporting"] = reporting
         # Bank v2 reserves nothing; the confirmatory study keeps bank v1's
         # reserved topics, which neither pilot has used (revision brief).
         reserved = TOP.split_for(CFG.DEFAULT_CONFIG)

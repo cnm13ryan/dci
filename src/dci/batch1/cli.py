@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 from typing import Any
@@ -87,8 +88,8 @@ def _approvals(path: str | None) -> dict[str, Any]:
 
 def cmd_write_review_artifacts(args) -> int:
     cfg = args.cfg
-    out = Path(args.out or (DOCS if cfg.protocol == "v1"
-                            else DOCS / cfg.protocol))
+    out = Path(args.out or (DOCS if args.protocol == "v1"
+                            else DOCS / args.protocol))
     manifest = L.library_manifest()
     matrix = COMPAT.compatibility_matrix()
     v2 = cfg.topic_bank == "v2"
@@ -306,6 +307,16 @@ def cmd_select_refinement(args) -> int:
     root = Path(args.root)
     rows = P.write_stage2_plan(root, _freeze1(root))
     sel = F.read_json(root / "plan" / "stage2_selection.json")
+    if "forecast" in sel:                     # protocol v2: T1 -> T2
+        fc = sel["forecast"]
+        _print({"status": sel["status"], "carry_mode": sel.get("carry_mode"),
+                "candidates": sel["n_candidates"],
+                "carried": len(sel["carried"]), "cap": sel["cap"],
+                "cells": len(sel["cells"]), "rows": len(rows),
+                "p_all_feasible": fc["p_all_feasible"],
+                "p_feasible": {p: c["p_feasible"]
+                               for p, c in fc["contrasts"].items()}})
+        return 0
     _print({"cells": sel["n_selected"], "candidates": sel["n_candidates"],
             "by_class": sel["by_class"], "rows": len(rows)})
     return 0
@@ -353,8 +364,8 @@ def cmd_demo(args) -> int:
         print(f"{root} already holds a run; choose an empty directory",
               file=sys.stderr)
         return 2
-    approvals = F.approvals_template()
-    f1 = F.freeze1_manifest(approvals=approvals)
+    approvals = F.approvals_template(args.cfg)
+    f1 = F.freeze1_manifest(args.cfg, approvals=approvals)
     F.write_json(root / "freeze1.json", f1)
     F.write_json(root / "approvals.json", approvals)
     gen = SY.synthetic_generate(empty_rate=0.005)
@@ -401,7 +412,7 @@ def main(argv: list[str] | None = None) -> int:
     add("estimate", cmd_estimate)
     add("write-review-artifacts", cmd_write_review_artifacts).add_argument(
         "--out", default=None, help="default docs/batch1 (v1), "
-                                    "docs/batch1/v2 (v2)")
+                                    "docs/batch1/<protocol> otherwise")
     ae = add("attest-environment", cmd_attest_environment)
     ae.add_argument("--backend-python")
     ae.add_argument("--out", required=True)
@@ -445,6 +456,10 @@ def main(argv: list[str] | None = None) -> int:
         help="stability resamples (default: the configured number)")
     args = p.parse_args(argv)
     args.cfg = CFG.CONFIGS[args.protocol].activate()
+    # Scoring uses a process pool only from the CLI, whose entry point is
+    # import-safe; scripts and notebooks score serially (audit, minor).
+    S.SCORING_WORKERS = int(os.environ.get("DCI_SCORING_WORKERS",
+                                           min(32, os.cpu_count() or 1)))
     root = getattr(args, "root", None)
     if root and (Path(root) / "freeze1.json").exists():
         # A run root's own Freeze 1 decides its protocol and library.

@@ -48,6 +48,7 @@ from dci.batch1.intervals import wilson
 from dci.batch1.scoring import PilotTables
 
 __all__ = ["forecast", "select_carry", "finalize_fixed", "check_fixed_b",
+           "reporting",
            "truncation_review"]
 
 CONTRASTS = ("P1", "P2", "P3")
@@ -161,31 +162,46 @@ def forecast(tables: PilotTables, cfg: CFG.PilotConfig,
     rng = np.random.default_rng(cfg.forecast_seed)
     counts = {p: [] for p in CONTRASTS}
     feasible = {p: 0 for p in CONTRASTS}
-    every = 0
+    coverage_only = {p: 0 for p in CONTRASTS}
+    every = gates_passed = 0
     for _ in range(cfg.forecast_draws):
         theta = rng.beta(k + 1, n - k + 1)
         theta_a = rng.beta(ka + 1, na - ka + 1)[0]
         gates = rules.gates(theta_a, rng.beta(kb + 1, nb - kb + 1))
+        gates_passed += gates
         sup = rules.supported(theta, theta_a)
-        flags = {p: gates and rules.feasible(sup[p]) for p in CONTRASTS}
+        covered = {p: rules.feasible(sup[p]) for p in CONTRASTS}
+        flags = {p: gates and covered[p] for p in CONTRASTS}
         for p in CONTRASTS:
             counts[p].append(len(sup[p]))
             feasible[p] += flags[p]
+            coverage_only[p] += covered[p]
         every += all(flags.values())
     draws = cfg.forecast_draws
     contrasts = {p: {"point_supported": len(point[p]),
                      "mean_supported": round(float(np.mean(counts[p])), 3),
                      "interval_90": [int(np.percentile(counts[p], 5)),
                                      int(np.percentile(counts[p], 95))],
-                     "p_feasible": round(feasible[p] / draws, 4)}
+                     "p_feasible": round(feasible[p] / draws, 4),
+                     "p_coverage_ignoring_gates":
+                         round(coverage_only[p] / draws, 4)}
                  for p in CONTRASTS}
     stop = [p for p in CONTRASTS
             if contrasts[p]["p_feasible"] < cfg.forecast_min_feasible]
-    return {"schema": "dci.batch1/forecast/v1", "draws": draws,
+    p_gates = round(gates_passed / draws, 4)
+    # Whom an early stop blames (audit, minor): the library, or the fixed
+    # A and B, which no library can rescue.
+    library = [p for p in stop if contrasts[p]["p_coverage_ignoring_gates"]
+               < cfg.forecast_min_feasible]
+    return {"schema": "dci.batch1/forecast/v2", "draws": draws,
             "seed": cfg.forecast_seed, "threshold": cfg.forecast_min_feasible,
+            "numpy": np.__version__,
             "contrasts": contrasts, "point_gates_pass": point_gates,
+            "p_fixed_gates_pass": p_gates,
             "p_all_feasible": round(every / draws, 4),
-            "early_stop": bool(stop), "library_limited": stop}
+            "early_stop": bool(stop), "stopped_contrasts": stop,
+            "library_limited": library,
+            "fixed_gates_limited": p_gates < cfg.forecast_min_feasible}
 
 
 def select_carry(tables: PilotTables, cfg: CFG.PilotConfig) -> dict[str, Any]:
@@ -212,17 +228,28 @@ def select_carry(tables: PilotTables, cfg: CFG.PilotConfig) -> dict[str, Any]:
             wilson(int(k[i, j]), int(n[i, j]), cfg.z)[1]
             >= cfg.eligibility_threshold for j in range(len(mfs)))
         best = float(p_match[i].max())
-        if c.cid in compatible and plausibly_eligible and \
-                best >= cfg.carry_min_posterior:
+        if cfg.carry_mode == "all" or (
+                c.cid in compatible and plausibly_eligible
+                and best >= cfg.carry_min_posterior):
             ranked.append((-best, c.cid, best))
     ranked.sort()
+    # A task-only row is scored against every constraint, so tables hold one
+    # task-only count per (model, constraint): count a model's rows once.
+    task_rows = {}
+    for key, c in tables.task_only.items():
+        model = key.split("|")[0]
+        task_rows[model] = max(task_rows.get(model, 0), c.n)
     stage1_rows = sum(c.n for c in tables.explicit.values()) + \
-        sum(c.n for c in tables.task_only.values())
+        sum(task_rows.values())
     per_ref = len(mfs) * cfg.stage2_topics * cfg.stage2_draws
     fixed = (1 + len(cfg.b_limits)) * len(mfs) * cfg.stage2_topics * \
         cfg.stage2_draws + len(cfg.models) * cfg.stage2_topics
     room = max(0, (cfg.max_total_rows - stage1_rows - fixed) // per_ref)
     cap = min(cfg.carry_max_references, room)
+    if cfg.carry_mode == "all" and cap < len(ranked):
+        raise ValueError(f"carry mode 'all' needs {len(ranked)} references "
+                         f"on T2 but the budget max_total_rows="
+                         f"{cfg.max_total_rows} leaves room for {cap}")
     carried = ranked[:cap]
     cells = []
     if not fc["early_stop"]:
@@ -237,7 +264,10 @@ def select_carry(tables: PilotTables, cfg: CFG.PilotConfig) -> dict[str, Any]:
                    "class": "TASK_ONLY", "distance": 0.0} for m in cfg.models]
     return {
         "schema": "dci.batch1/carry-selection/v1",
-        "rule": "R7 carry rule; R8 early stop",
+        "rule": ("v2.1: every reference on T2 (audit B1); R8 early stop"
+                 if cfg.carry_mode == "all" else
+                 "R7 carry rule; R8 early stop"),
+        "carry_mode": cfg.carry_mode, "stage1_rows": stage1_rows,
         "status": "EARLY_STOP" if fc["early_stop"] else "CARRIED",
         "forecast": fc,
         "n_candidates": len(ranked), "cap": cap,
@@ -331,4 +361,124 @@ def finalize_fixed(tables: PilotTables, cfg: CFG.PilotConfig,
                extension_10_only=sorted(
                    cid for cid, e in elig.items()
                    if e["status"] == R.EXTENSION_ONLY))
+    return out
+
+
+# ---------------------------------------------------------------- reporting
+
+def _support(feas: Mapping[str, Any]) -> dict[str, Any]:
+    return {**{p: {"supported": feas[p]["supported_configurations"],
+                   "feasible": feas[p]["feasible"]} for p in CONTRASTS},
+            "all_feasible": feas["all_feasible"]}
+
+
+def _matched_coverage(result: Mapping[str, Any], cfg: CFG.PilotConfig,
+                      compat: Mapping[str, Any], elig: Mapping[str, Any],
+                      matched_of) -> dict[str, Any]:
+    """D11 on the primary pools with another matched set per configuration."""
+    focal = L.constraint_by_id()[cfg.fixed_a]
+    refs = L.reference_library()
+    eligible = R.eligible_ids(elig)
+    reports = []
+    for rep in result["configurations"]:
+        ok = COMPAT.compatible_ids(dict(compat), rep["b_limit"])
+        pool = [c for c in refs if c.cid in eligible and c.cid in ok]
+        pops = R.populations(focal, pool, matched_of(rep))
+        reports.append({"model": rep["model"], "frame": rep["frame"],
+                        "b_limit": rep["b_limit"],
+                        "a_informative": rep["a_informative"],
+                        "coverage": R.coverage(focal, pops, rep["funnel"],
+                                               cfg)})
+    return _support(R.feasibility(reports, cfg, result["b"]["selected"]))
+
+
+def _two_by_two(pairs) -> dict[str, int]:
+    out = {"both": 0, "t1_only": 0, "t2_only": 0, "neither": 0}
+    for a, b in pairs:
+        out["both" if a and b else "t1_only" if a else
+            "t2_only" if b else "neither"] += 1
+    return out
+
+
+def reporting(t2: PilotTables, t1: PilotTables, cfg: CFG.PilotConfig,
+              compat: Mapping[str, Any], result: Mapping[str, Any],
+              forecast_record: Mapping[str, Any]) -> dict[str, Any]:
+    """What protocol v2 reports beside its verdict, never deciding it:
+
+    * R5(a): coverage on T2 under matching at +/-0.15 and +/-0.20, under
+      confident matching (Newcombe interval inside +/-0.10) and under iota
+      matching; posterior P(match) per reference and model-frame on T2;
+    * section 5.2 D: T1-versus-T2 agreement on eligibility, on raw matching
+      to A, and of the forecast's point coverage with the verdict's (a
+      winner's-curse diagnostic);
+    * R3: A x 4, x 5 and x 6 on T1 (D08 headroom and G1 support), as
+      diagnostics only."""
+    from dci.batch1 import calibration as CAL
+    out: dict[str, Any] = {"schema": "dci.batch1/v2-reporting/v1",
+                           "deciding": False}
+    mfs = R.model_frames(cfg)
+    elig1 = R.eligibility(t1, cfg)
+    a_diag = CAL.select_a(t1, cfg, compat, elig1, list(cfg.b_limits))
+    out["a_diagnostics_t1"] = [
+        {k: v for k, v in row.items() if k != "cells"}
+        for row in a_diag["ranking"]]
+    if not result.get("configurations"):
+        out.update(sensitivities=None, posterior_match_t2=None,
+                   agreement=None)
+        return out
+    elig2 = result["eligibility"]
+    focal = L.constraint_by_id()[cfg.fixed_a]
+    sens = {}
+    for tol in CFG.V2_MATCHING_REPORTS["tolerances"]:
+        c2 = replace(cfg, matching_tolerance=tol)
+        reps = [R.configuration_report(t2, c2, compat, elig2, focal,
+                                       model, frame, m)
+                for model, frame in mfs for m in result["b"]["selected"]]
+        sens[f"tolerance_{tol}"] = _support(
+            R.feasibility(reps, c2, result["b"]["selected"]))
+    sens["confident"] = _matched_coverage(
+        result, cfg, compat, elig2, lambda rep: {
+            cid for cid, mt in rep["matching"].items()
+            if mt.get("within_tolerance_with_confidence")})
+    sens["iota"] = _matched_coverage(
+        result, cfg, compat, elig2, lambda rep: {
+            cid for cid, mt in rep["matching"].items() if mt.get("iota")})
+    sens["primary"] = _support(result["feasibility"])
+    out["sensitivities"] = sens
+    measured = sorted({key.split("|")[-1] for key in t2.explicit}
+                      & {c.cid for c in L.reference_library()})
+    k, n = _cells(t2, cfg, measured)
+    ka, na = _cells(t2, cfg, [cfg.fixed_a])
+    rng = np.random.default_rng(cfg.forecast_seed + 2)
+    hits = np.zeros(k.shape)
+    for _ in range(cfg.forecast_draws):
+        hits += np.abs(rng.beta(k + 1, n - k + 1)
+                       - rng.beta(ka + 1, na - ka + 1)) <= cfg_tol(cfg)
+    p = hits / cfg.forecast_draws
+    out["posterior_match_t2"] = {
+        "draws": cfg.forecast_draws, "seed": cfg.forecast_seed + 2,
+        "numpy": np.__version__,
+        "by_model_frame": {f"{mo}|{fr}": {cid: round(float(p[i, j]), 4)
+                                          for i, cid in enumerate(measured)
+                                          if p[i, j] > 0}
+                           for j, (mo, fr) in enumerate(mfs)}}
+    eligible1, eligible2 = R.eligible_ids(elig1), R.eligible_ids(elig2)
+    match_pairs = []
+    for model, frame in mfs:
+        for cid in measured:
+            m1 = R.match(t1, cfg, model, frame, cfg.fixed_a, cid)["raw"]
+            m2 = R.match(t2, cfg, model, frame, cfg.fixed_a, cid)["raw"]
+            match_pairs.append((bool(m1), bool(m2)))
+    out["agreement"] = {
+        "references": len(measured),
+        "eligibility": _two_by_two((cid in eligible1, cid in eligible2)
+                                   for cid in measured),
+        "raw_match_to_a": _two_by_two(match_pairs),
+        "coverage": {p_: {"forecast_point": forecast_record["contrasts"][p_]
+                          ["point_supported"],
+                          "forecast_mean": forecast_record["contrasts"][p_]
+                          ["mean_supported"],
+                          "verdict": result["feasibility"][p_]
+                          ["supported_configurations"]}
+                     for p_ in CONTRASTS}}
     return out

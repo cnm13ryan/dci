@@ -31,6 +31,7 @@ from dci.batch1 import compatibility as COMPAT
 from dci.batch1 import design as D
 from dci.batch1 import evidence as EV
 from dci.batch1 import freeze as F
+from dci.batch1 import revision as REV
 from dci.batch1 import scoring as S
 from dci.batch1 import stability as STAB
 from dci.batch1.store import (
@@ -138,6 +139,10 @@ def finalize(root: Path, freeze1: Mapping[str, Any]) -> dict[str, Any]:
                        for stage, ev in bundle["stages"].items()}
     if cfg.protocol == "v2":
         out["forecast"] = bundle["selection"]["forecast"]
+        out["reporting"] = REV.reporting(
+            tables, EV.tables_for([bundle["stages"][D.STAGE1]],
+                                  synthetic=bundle["synthetic"]),
+            cfg, matrix, result, bundle["selection"]["forecast"])
     else:
         out["sensitivity_stage1_only"] = STAB.stage1_only(
             bundle["stages"][D.STAGE1], result, cfg, matrix,

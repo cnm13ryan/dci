@@ -358,7 +358,8 @@ def estimate_review(est: Mapping[str, Any]) -> str:
            f"- Stage 1 generations: **{est['stage1_rows']:,}** "
            f"({', '.join(f'{k} {v:,}' for k, v in est['stage1_by_kind'].items())})",
            f"- Stage 2 ceiling: **{est['stage2_max_rows']:,}** "
-           f"({est['stage2_max_cells']} cells × 64)",
+           f"({est['stage2_max_cells']} cells × "
+           f"{est['stage2_max_rows'] // max(1, est['stage2_max_cells'])})",
            f"- Total ceiling: **{est['total_max_rows']:,}**",
            f"- Storage ceiling: ~{est['storage_bytes_max'] / 1e6:,.0f} MB "
            "(generated rows plus scored records)",

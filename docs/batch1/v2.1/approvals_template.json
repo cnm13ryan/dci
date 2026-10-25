@@ -1,0 +1,148 @@
+{
+ "decisions": {
+  "D01": {
+   "approved_by": "",
+   "approved_on": "",
+   "note": "",
+   "origin": "proposed",
+   "payload_hash": "8be7ebefa3c301f099774c8939944af4885e6c3aaf783f2f99eda3bfbfe0cb6a",
+   "status": "PROPOSED",
+   "summary": "Concrete targets, counts and minima for the 139 slots the design left open (library v2: the v1 slots plus the R1 additions).",
+   "title": "Parameters of the 139 proposed variants"
+  },
+  "D02": {
+   "approved_by": "",
+   "approved_on": "",
+   "note": "",
+   "origin": "proposed",
+   "payload_hash": "6e647ef48ddd0cdc761aacd4898a0bcf6df0a31f37a9163a226a122ce9b43243",
+   "status": "PROPOSED",
+   "summary": "F0 imperative, F1 requirement; A's strings are v8.1 A frames 0/1, B's are historical B wordings 1/0; the carried DCI-1 prompt template with one numbered instruction.",
+   "title": "The two wording frames and the prompt"
+  },
+  "D03": {
+   "approved_by": "",
+   "approved_on": "",
+   "note": "",
+   "origin": "proposed",
+   "payload_hash": "f013531202272bc8576a7f1414912438e453f942dea41fdbaf816a5f9577c2e7",
+   "status": "PROPOSED",
+   "summary": "Historical alpha-run words for every family; certified sentence segmentation; A folded per word (differs from historical S0 only on U+0130).",
+   "title": "Text semantics"
+  },
+  "D04": {
+   "approved_by": "",
+   "approved_on": "",
+   "note": "",
+   "origin": "proposed",
+   "payload_hash": "77391ef848920b9e345d32946743f69578684daf6b8c126fa0ec33cf39aafb32",
+   "status": "PROPOSED",
+   "summary": "Compliant = PASS on a non-empty, untruncated, non-vacuous answer. A completed blank generation (the seam's CHANNEL_INVALID under NO_THINKING) is an EMPTY answer: in n, never compliant, not regenerated. A technical failure is never evidence and stays open for resume, up to max_technical_attempts per row. Literal passes and the reason a pass is excluded are recorded.",
+   "title": "Outcomes, compliance and vacuity"
+  },
+  "D05": {
+   "approved_by": "",
+   "approved_on": "",
+   "note": "",
+   "origin": "proposed",
+   "payload_hash": "f7c83feda84ac7c447465c85101d67b5b9eebf998e5c2f07527b6114e09c9271",
+   "status": "PROPOSED",
+   "summary": "144 fresh topics in 12 areas, split by a fixed seed into T1 (48 topics, Stage A screening; one response per stand-alone and task-only cell) and T2 (96 topics, Stage C membership); none reserved. Screened against the historical banks and bank v1; bank v1's 480 reserved topics stay unused, for the confirmatory study.",
+   "title": "Topic bank v2 and its split"
+  },
+  "D06": {
+   "approved_by": "",
+   "approved_on": "",
+   "note": "",
+   "origin": "proposed",
+   "payload_hash": "cf0c6c96beafe2ad65c66304674b4cdd2bdfdee1feaf47df2cb609ec9861b26d",
+   "status": "PROPOSED",
+   "summary": "Stage A measures every reference, A x 4/5/6, B 8 and 10 and the task alone on T1. Stage B draws each T1 cell from its Beta posterior and applies D08-D11 with the fixed-A and fixed-B gates; it stops before T2 if P(feasible) < forecast_min_feasible for any contrast. Stage C measures every reference in the library, plus A x 6, B 8 and 10 and the task alone, one response per T2 topic. T2 alone decides eligibility, matching and membership; T1 never enters them. No C' top-up. Both stages must be complete (no partial-completion rule); at most max_total_rows responses.",
+   "title": "Stages A-D, forecast, early stop and what T2 measures"
+  },
+  "D07": {
+   "approved_by": "",
+   "approved_on": "",
+   "note": "",
+   "origin": "proposed",
+   "payload_hash": "aab11eb22e6165198f4ff13c3c7f82e1615e7255497b61a17c270cce7454b7ed",
+   "status": "PROPOSED",
+   "summary": "B is fixed (R4), not selected. On T2 each limit must be informative (B-only compliance inside b_informative_band) in >= b_min_informative_model_frames model-frames, or the verdict is B_NOT_INFORMATIVE.",
+   "title": "B fixed at 8 and 10, checked on T2"
+  },
+  "D08": {
+   "approved_by": "",
+   "approved_on": "",
+   "note": "",
+   "origin": "proposed",
+   "payload_hash": "7b2dc3a8d51c55d116652f25a707e5cf7ebbafc06ced407f3a09b4d855b9e987",
+   "status": "PROPOSED",
+   "summary": "A is fixed (R3), not selected; A x 4 and x 5 are measured on T1 as diagnostics only. On T2, A must be informative (p_A inside a_headroom_band) in >= a_min_informative_model_frames model-frames across >= a_min_informative_models models, or the verdict is A_NOT_ADMISSIBLE. Uninformative-A configurations never count toward feasibility; a G1 count below the target is flagged A_COVERAGE_INADEQUATE.",
+   "title": "A fixed at however x 6, checked on T2"
+  },
+  "D09": {
+   "approved_by": "",
+   "approved_on": "",
+   "note": "",
+   "origin": "design",
+   "payload_hash": "693a541514b53b19578989a4f18b3c22e760d437db34ca5c39a8c83d5a8681c7",
+   "status": "PROPOSED",
+   "summary": "Point estimate >= 20% in at least one model-frame, on the T2 responses of that cell only; 10% extension reported separately. The OR over eight cells admits candidates whose true rate is below 20% (disclosed).",
+   "title": "Eligibility operationalisation"
+  },
+  "D10": {
+   "approved_by": "",
+   "approved_on": "",
+   "note": "",
+   "origin": "design",
+   "payload_hash": "0c3fe100d51b8e9b53b0a5775875afbbe0f29ee386b9217456a06577e71d2b6e",
+   "status": "PROPOSED",
+   "summary": "|p_X - p_A| <= 0.10 per model-frame on raw T2 compliance, in exact arithmetic (primary, deciding). Reported beside it, never deciding (R5): posterior P(match) per reference and model-frame, and coverage under +/-0.15, +/-0.20, confident matching (Newcombe interval inside +/-0.10) and iota matching.",
+   "title": "Matching operationalisation"
+  },
+  "D11": {
+   "approved_by": "",
+   "approved_on": "",
+   "note": "",
+   "origin": "design",
+   "payload_hash": "b4f7d95a4ad24ef40ce93a9699b889945fce9957987410c85cb4715c3c5944b1",
+   "status": "PROPOSED",
+   "summary": "Design minima for G1, P1 and P2; P3 needs 3 additional other-operation references and |G3| >= p3_min_g3; feasibility needs 12 of 16 configurations, 3 models and both B limits (unchanged). Pools are eligible references logically compatible with the configuration's B limit. Stage B's forecast uses exactly these rules.",
+   "title": "Coverage requirements"
+  },
+  "D12": {
+   "approved_by": "",
+   "approved_on": "",
+   "note": "",
+   "origin": "proposed",
+   "payload_hash": "d8efa6f0b569b89b60355078b587a189ab83564b066173d740749702318ff37b",
+   "status": "PROPOSED",
+   "summary": "Historical four-model panel and decoding; cap 512 tokens, with any cell truncating above truncation_review_share listed for review; the seed derivation; the vLLM seam source; Python 3.12 for the orchestrator and the vLLM backend (the CUDA vllm 0.15.1 wheel is cp38-abi3; 3.12 is vLLM's Docker default and native on GPU Base 24.04); the execution requirements (vllm 0.15.1, torch 2.9.1+cu129, 2x H100 SXM, driver >= 575.51.03), one worker per GPU, TP as configured. The execution environment is attested on the host, checked against the requirements and bound by Freeze 1; a bounded, authorised smoke test (never evidence) measures load time, throughput and truncation first.",
+   "title": "Model panel, decoding, cap, seeds and backend"
+  },
+  "D13": {
+   "approved_by": "",
+   "approved_on": "",
+   "note": "",
+   "origin": "proposed",
+   "payload_hash": "a8f14ab1c98e1ac7e742db1c7e3f521285df9220a3e8bce0513e548326bb9394",
+   "status": "PROPOSED",
+   "summary": "Object types as in v1 plus library v2's (numerals, sentence and paragraph ladders, positional); weights equal over operations, then object types, then, inside an exact-word-count group, equal over target words and then over a word's count variants (R10).",
+   "title": "Object types and hierarchical weights"
+  },
+  "D14": {
+   "approved_by": "",
+   "approved_on": "",
+   "note": "",
+   "origin": "proposed",
+   "payload_hash": "f55f14e471d649032a0d334c1ec4c1fbd84082c79cd99cc1d43e488f7c6869c1",
+   "status": "PROPOSED",
+   "summary": "Topic-cluster bootstrap on T2: inclusion frequency, FEASIBLE share, borderline matches, feasibility on majority-stable members; a near-threshold record; a truncation review of cells above truncation_review_share with >= truncation_review_min_rows truncated rows (R11). Also reported: T1-versus-T2 agreement (eligibility, matching, forecast against verdict), a winner's-curse diagnostic. Diagnostics, never automatic corrections.",
+   "title": "Membership-stability diagnostics and T1-T2 agreement"
+  }
+ },
+ "instructions": "Set status to APPROVED, and fill approved_by and approved_on (YYYY-MM-DD), only for a decision whose payload you have reviewed. Editing a decision, or the code that implements it, changes its payload hash and voids its approval.",
+ "orchestrator_python": "3.12",
+ "schema": "dci.batch1/approvals/v2",
+ "source_hash_scheme": "dci.batch1/source-tokens/v1"
+}

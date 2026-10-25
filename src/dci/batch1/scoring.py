@@ -118,10 +118,11 @@ def score_rows(raws: Iterable[Mapping[str, Any]],
     return [_score_item(item) for item in items]
 
 
-#: Worker processes for ``score_rows`` (``DCI_SCORING_WORKERS``; 1 = serial),
-#: and the rows each worker must have before a pool is worth starting.
-SCORING_WORKERS = int(os.environ.get("DCI_SCORING_WORKERS",
-                                     min(32, os.cpu_count() or 1)))
+#: Worker processes for ``score_rows`` (``DCI_SCORING_WORKERS``; 1 = serial,
+#: the default outside the CLI, which sets its own), and the rows each worker
+#: must have before a pool is worth starting. A pool re-imports ``__main__``
+#: under spawn (macOS), which an unguarded script cannot survive.
+SCORING_WORKERS = int(os.environ.get("DCI_SCORING_WORKERS", 1))
 PARALLEL_MIN_ROWS = 1000
 _WORKER: dict[str, Any] = {}
 

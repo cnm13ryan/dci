@@ -86,6 +86,7 @@
   "b_min_separated_models": 3,
   "carry_max_references": 110,
   "carry_min_posterior": 0.05,
+  "carry_mode": "carry",
   "eligibility_threshold": 0.2,
   "extension_threshold": 0.1,
   "feasibility_min_configs": 12,
@@ -140,7 +141,7 @@
   "weights_mode": "variant",
   "z": 1.959963984540054
  },
- "config_hash": "3a72dc9258fb1c8547be65b8134f15f8b3b99e4cede349e924663951c4b7449b",
+ "config_hash": "c40dff96bb16f00dc79307965d7c7bb4fabf38ef41a831f8e54372711a88990e",
  "decisions": {
   "D01": {
    "approved_by": "",
@@ -183,11 +184,11 @@
    "approved_on": "",
    "implementation": {
     "outcomes.py": "ed51afa4838c6043d3ca0c2aab24169ad3076a405da20be8bfa915e75d928a7c",
-    "scoring.py": "94cc60a20881aeaaddb97b0d3ea74ab6a4641b9c9af4c45a6318e295e20ed73f",
+    "scoring.py": "d964c53dfc7c864bdc96ead215534f8c38cdde7c3f2b588865b3acbd3587c4f0",
     "verifiers.py": "b89baa57803a0ca613b4974473796cd77925db3ee793364ddccf178015626494"
    },
    "origin": "proposed",
-   "payload_hash": "714edec047815a70f0604efbe02d8666e0b6cc2b6aceaea8f827dc1342412225",
+   "payload_hash": "77391ef848920b9e345d32946743f69578684daf6b8c126fa0ec33cf39aafb32",
    "status": "PROPOSED",
    "title": "Outcomes, compliance and vacuity"
   },
@@ -210,10 +211,10 @@
     "calibration.py": "ed9d4c082492d4401ee7b86ee2c01882d9196d4a055141194a02c01e3b0b026e",
     "evidence.py": "91e8bc3b8404925a128fa4976c0873b96b2302ddd4ae61726265e5420057e0f8",
     "intervals.py": "bd55bfe9a32d81c9612fae61dbc162fef751a4f95c180117ef5aa167b0ab5125",
-    "pipeline.py": "93c28b2c2bba59c673256da5b4ae0b208b58c485ada33b99b7d0f2c2d7a480b1"
+    "pipeline.py": "4437b8af3a0e9b6e51674221d37ec5264307e2d5cdc3d9a6d92143dceb429174"
    },
    "origin": "proposed",
-   "payload_hash": "132599f6d36a5a830db68e53c88bb6e26a662c787115103faba372daf9f41b1a",
+   "payload_hash": "76d92c4f44cd22ffc4ae1f2c7efe72e99fe3d9e8d9ea979945240a59ff171ec9",
    "status": "PROPOSED",
    "title": "Stage 2 refinement rule and stage completeness"
   },
@@ -393,7 +394,7 @@
    "unq.word5": "e36e87a21d70b986fe99dbdd0621825bb18038713195f298774cd8285d0b9ca6"
   }
  },
- "manifest_hash": "a153a387b41bbb80b5da1030e6f2b3fa34f0ee280e69c20f12df60cc42b6257a",
+ "manifest_hash": "fcdab7cc569166774199a86b93bad799f4b22163ff98e93883e92cd316e51fb8",
  "models": [
   {
    "chat_template_kwargs": {},
@@ -467,23 +468,23 @@
   "__init__.py": "19f2032706d031581d981e6bb9a0b135d0261914ec4cbd3b7477e548cd104117",
   "__main__.py": "bc713658e3413fada43e1613c2255feaa12add8ffba22ec22a6ddc4e00435fb6",
   "calibration.py": "ed9d4c082492d4401ee7b86ee2c01882d9196d4a055141194a02c01e3b0b026e",
-  "cli.py": "df016d6f43bd8c6381310cd44120965736321df18f40f142f1394da1847062eb",
+  "cli.py": "c03f013c1e6fdfa254e452e9575a482910a6827ba7d509520ee0bbd3e651528f",
   "compatibility.py": "ca542f3250eb8ea3b30dde03e2ee3bb07c27ca6fa36c394b0a8d6a01ea85bd22",
-  "config.py": "c687c98da5dbc811008ec2d9d0d27af2b276f7d76c8d6bc18abdbb9586f119be",
+  "config.py": "436e287bb26f5dd29601113dbb388ff76d74cedaaf1619099cba855cb58e54ac",
   "dci/provenance/hashes.py": "b0db13e53e9e62d18ed2e94a225318b08d44aedd2beddffb044a46e2fc18bdc3",
   "dci/verifiers/rules.py": "00bed1e904013bcde6cac2c6243bc0c6655b7a1f73f47042b12946e258a63647",
   "design.py": "3ce9e8620d7423b95933af2e83fa287f8a0f6e73b115cd42f28758aaa12c772f",
   "environment.py": "d4946066a56c09e352f288b2854314a337e1574b1e9ce47004ecc1dd50312934",
   "evidence.py": "91e8bc3b8404925a128fa4976c0873b96b2302ddd4ae61726265e5420057e0f8",
-  "freeze.py": "cddb0f6ecc81e457e8fe18c927b26786a18817a7e04439f9f70720804fea82fb",
+  "freeze.py": "067c7852613e342a6fcd05663773edae435d65c5dd3924e1b73fb1e016cf3c85",
   "intervals.py": "bd55bfe9a32d81c9612fae61dbc162fef751a4f95c180117ef5aa167b0ab5125",
   "library.py": "bb797cca1253594070694e054ddb94a3397b2a118e00eba8e6e73eebafd8d361",
   "outcomes.py": "ed51afa4838c6043d3ca0c2aab24169ad3076a405da20be8bfa915e75d928a7c",
-  "pipeline.py": "93c28b2c2bba59c673256da5b4ae0b208b58c485ada33b99b7d0f2c2d7a480b1",
+  "pipeline.py": "4437b8af3a0e9b6e51674221d37ec5264307e2d5cdc3d9a6d92143dceb429174",
   "references.py": "1b74d28b56c7d53fe6121e31f1bf0f62e647a517f6fa58e2877dc7d873c668b8",
-  "revision.py": "c2ba84e259e6b505734e8194fc7631233a9dd14c47200594c459b8895cb02517",
+  "revision.py": "66f698b0d8fe886f6513045f3d81a0d6618eecd095489faf4017ac87dfe3ffbe",
   "runner.py": "33325b0a141656221109289ba010866f8b0534a8402bd05c3af94c7197091d89",
-  "scoring.py": "94cc60a20881aeaaddb97b0d3ea74ab6a4641b9c9af4c45a6318e295e20ed73f",
+  "scoring.py": "d964c53dfc7c864bdc96ead215534f8c38cdde7c3f2b588865b3acbd3587c4f0",
   "smoke.py": "eb11c47458598b8b536e3c01cf829a063e208dc04d1439b783477f7b715c5bf0",
   "stability.py": "cc34cc3bd42e19fab8c61495df16fceda00517257449b11036bedb6fa2c4c8a5",
   "store.py": "d0e6cd674378423230ab135280ad7801cfee67b4e708829aff10ac1fa9db9958",

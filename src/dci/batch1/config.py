@@ -22,7 +22,7 @@ screen. 512 is proposed (D12) because the v8 pilot's screen ran at 512
 """
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass, field, replace
 from pathlib import Path
 from typing import Any
 
@@ -219,6 +219,11 @@ class PilotConfig:
     max_total_rows: int = 30976       # R7: the run's response budget
     weights_mode: str = "variant"     # R10: "variant" (v1) or "word_then_count"
     truncation_review_min_rows: int = 1   # R11: v2 needs at least 2 rows
+    # v2.1 (after the R12(d) audit, finding B1): "carry" sends the R7
+    # carried set to T2; "all" measures every reference on T2, so G2, G4 and
+    # G6 are drawn from the whole library and not from a matched-leaning
+    # subset. The forecast and early stop are the same in both.
+    carry_mode: str = "carry"
 
     def __post_init__(self):
         if self.pilot_topics != self.stage1_topics + self.stage2_topics:
@@ -239,6 +244,8 @@ class PilotConfig:
                 self.weights_mode not in ("variant", "word_then_count"):
             raise ValueError("unknown protocol, library, topic bank or "
                              "weights mode")
+        if self.carry_mode not in ("carry", "all"):
+            raise ValueError(f"carry mode {self.carry_mode!r}")
         if self.protocol == "v2" and not self.fixed_a:
             raise ValueError("protocol v2 fixes A (R3)")
 
@@ -269,7 +276,16 @@ REVISION_CONFIG = PilotConfig(
     max_total_rows=185000, weights_mode="word_then_count",
     truncation_review_min_rows=2, seed_domain="dci.batch1:gen:v2")
 
-CONFIGS = {"v1": DEFAULT_CONFIG, "v2": REVISION_CONFIG}
+#: v2.1: protocol v2 with every reference measured on T2 (audit B1), no C'
+#: top-up (R7 option b), a budget for (161 + 3) x 8 x 96 + 384 Stage C rows
+#: after Stage A's 63,936, and its own seed domain.
+REVISION_CONFIG_2_1 = replace(
+    REVISION_CONFIG, carry_mode="all", carry_max_references=161,
+    stage2_max_cells=1320, max_total_rows=192000,
+    seed_domain="dci.batch1:gen:v2.1")
+
+CONFIGS = {"v1": DEFAULT_CONFIG, "v2": REVISION_CONFIG,
+           "v2.1": REVISION_CONFIG_2_1}
 
 
 # ---------------------------------------------------------------- decisions
@@ -308,11 +324,14 @@ IMPLEMENTATION = {
 }
 
 
-def implementation(decision_id: str) -> dict[str, str]:
+def implementation(decision_id: str, extra: tuple[str, ...] = ()
+                   ) -> dict[str, str]:
     """Package modules resolve under the package; ``dci/...`` under src."""
+    names = IMPLEMENTATION[decision_id] + tuple(
+        n for n in extra if n not in IMPLEMENTATION[decision_id])
     return {name: code_hash(_SRC.parent / name if name.startswith("dci/")
                             else _PKG / name)
-            for name in IMPLEMENTATION[decision_id]}
+            for name in names}
 
 
 def _fields(cfg: PilotConfig, *names: str) -> dict[str, Any]:
@@ -359,10 +378,15 @@ def decisions(cfg: PilotConfig = DEFAULT_CONFIG) -> tuple[Decision, ...]:
         """Protocol-v2 fields; v1 payloads are unchanged by the revision."""
         return {**_fields(cfg, *names), **values} if v2 else {}
 
+    texts = _v2_texts(cfg) if v2 else {}
+
     def d(decision_id, title, origin, summary, payload):
+        title, summary = texts.get(decision_id, (title, summary))
         return Decision(decision_id, title, origin, summary,
                         {**payload,
-                         "implementation": implementation(decision_id),
+                         "implementation": implementation(
+                             decision_id, extra=V2_IMPLEMENTATION.get(
+                                 decision_id, ()) if v2 else ()),
                          "orchestrator_python": ORCHESTRATOR_PYTHON})
 
     return (
@@ -418,8 +442,8 @@ def decisions(cfg: PilotConfig = DEFAULT_CONFIG) -> tuple[Decision, ...]:
                   "z", "a_headroom_band", "b_informative_band",
                   "eligibility_threshold", "extension_threshold",
                   "matching_tolerance", "min_cell_fraction"),
-           **extra("protocol", "carry_min_posterior", "carry_max_references",
-                   "max_total_rows")}),
+           **extra("protocol", "carry_mode", "carry_min_posterior",
+                   "carry_max_references", "max_total_rows")}),
         d("D07", "Selecting the two B limits", "proposed",
           "Admissible pairs: gap >= b_min_gap; median B-only separation "
           ">= b_min_median_separation; that separation in >= "
@@ -454,7 +478,8 @@ def decisions(cfg: PilotConfig = DEFAULT_CONFIG) -> tuple[Decision, ...]:
           "uses task-only kappa per model (frame-invariant prompt); "
           "undefined iota is unmatched and flagged. Matching is a noisy "
           "classification at pilot sample sizes (see D14).",
-          _fields(cfg, "matching_tolerance")),
+          {**_fields(cfg, "matching_tolerance"),
+           **extra(reporting=V2_MATCHING_REPORTS)}),
         d("D11", "Coverage requirements", "design",
           "Design minima for G1, P1 and P2 and the 12-of-16 target; P3 "
           "needs 3 additional other-operation references (researcher's "
@@ -507,6 +532,99 @@ def decisions(cfg: PilotConfig = DEFAULT_CONFIG) -> tuple[Decision, ...]:
                   "stability_min_feasible_share", "near_threshold_margin"),
            **extra("truncation_review_min_rows")}),
     )
+
+
+#: R5(a): matching reported beside the primary +/-0.10 rule; never deciding.
+V2_MATCHING_REPORTS = {"tolerances": [0.15, 0.20],
+                       "confident": "Newcombe interval inside +/-0.10",
+                       "iota": "task-only kappa corrected, +/-0.10",
+                       "posterior_match": "Beta(k+1, n-k+1) draws on T2"}
+
+#: Protocol v2's rule code, bound to the decisions it implements (audit M2):
+#: an edit to it voids those approvals, not only Freeze 1.
+V2_IMPLEMENTATION = {
+    "D06": ("revision.py",), "D07": ("revision.py",),
+    "D08": ("revision.py",), "D10": ("revision.py",),
+    "D11": ("revision.py", "compatibility.py"), "D14": ("revision.py",),
+}
+
+
+def _v2_texts(cfg: PilotConfig) -> dict[str, tuple[str, str]]:
+    """Titles and summaries that describe protocol v2 (audit M2: the v2
+    approvals were given against v1's texts)."""
+    measured = ("every reference in the library" if cfg.carry_mode == "all"
+                else "the carried set (compatible, plausibly eligible "
+                     "references with posterior P(match) >= "
+                     "carry_min_posterior in some model-frame, at most "
+                     "carry_max_references)")
+    return {
+        "D05": ("Topic bank v2 and its split",
+                "144 fresh topics in 12 areas, split by a fixed seed into T1 "
+                "(48 topics, Stage A screening; one response per stand-alone "
+                "and task-only cell) and T2 (96 topics, Stage C membership); "
+                "none reserved. Screened against the historical banks and "
+                "bank v1; bank v1's 480 reserved topics stay unused, for the "
+                "confirmatory study."),
+        "D06": ("Stages A-D, forecast, early stop and what T2 measures",
+                "Stage A measures every reference, A x 4/5/6, B 8 and 10 and "
+                "the task alone on T1. Stage B draws each T1 cell from its "
+                "Beta posterior and applies D08-D11 with the fixed-A and "
+                "fixed-B gates; it stops before T2 if P(feasible) < "
+                "forecast_min_feasible for any contrast. Stage C measures "
+                f"{measured}, plus A x 6, B 8 and 10 and the task alone, one "
+                "response per T2 topic. T2 alone decides eligibility, "
+                "matching and membership; T1 never enters them. No C' "
+                "top-up. Both stages must be complete (no partial-completion "
+                "rule); at most max_total_rows responses."),
+        "D07": ("B fixed at 8 and 10, checked on T2",
+                "B is fixed (R4), not selected. On T2 each limit must be "
+                "informative (B-only compliance inside b_informative_band) "
+                "in >= b_min_informative_model_frames model-frames, or the "
+                "verdict is B_NOT_INFORMATIVE."),
+        "D08": ("A fixed at however x 6, checked on T2",
+                "A is fixed (R3), not selected; A x 4 and x 5 are measured "
+                "on T1 as diagnostics only. On T2, A must be informative "
+                "(p_A inside a_headroom_band) in >= "
+                "a_min_informative_model_frames model-frames across >= "
+                "a_min_informative_models models, or the verdict is "
+                "A_NOT_ADMISSIBLE. Uninformative-A configurations never "
+                "count toward feasibility; a G1 count below the target is "
+                "flagged A_COVERAGE_INADEQUATE."),
+        "D09": ("Eligibility operationalisation",
+                "Point estimate >= 20% in at least one model-frame, on the "
+                "T2 responses of that cell only; 10% extension reported "
+                "separately. The OR over eight cells admits candidates whose "
+                "true rate is below 20% (disclosed)."),
+        "D10": ("Matching operationalisation",
+                "|p_X - p_A| <= 0.10 per model-frame on raw T2 compliance, in "
+                "exact arithmetic (primary, deciding). Reported beside it, "
+                "never deciding (R5): posterior P(match) per reference and "
+                "model-frame, and coverage under +/-0.15, +/-0.20, confident "
+                "matching (Newcombe interval inside +/-0.10) and iota "
+                "matching."),
+        "D11": ("Coverage requirements",
+                "Design minima for G1, P1 and P2; P3 needs 3 additional "
+                "other-operation references and |G3| >= p3_min_g3; "
+                "feasibility needs 12 of 16 configurations, 3 models and "
+                "both B limits (unchanged). Pools are eligible references "
+                "logically compatible with the configuration's B limit. "
+                "Stage B's forecast uses exactly these rules."),
+        "D13": ("Object types and hierarchical weights",
+                "Object types as in v1 plus library v2's (numerals, "
+                "sentence and paragraph ladders, positional); weights equal "
+                "over operations, then object types, then, inside an "
+                "exact-word-count group, equal over target words and then "
+                "over a word's count variants (R10)."),
+        "D14": ("Membership-stability diagnostics and T1-T2 agreement",
+                "Topic-cluster bootstrap on T2: inclusion frequency, "
+                "FEASIBLE share, borderline matches, feasibility on "
+                "majority-stable members; a near-threshold record; a "
+                "truncation review of cells above truncation_review_share "
+                "with >= truncation_review_min_rows truncated rows (R11). "
+                "Also reported: T1-versus-T2 agreement (eligibility, "
+                "matching, forecast against verdict), a winner's-curse "
+                "diagnostic. Diagnostics, never automatic corrections."),
+    }
 
 
 def decision_payloads(cfg: PilotConfig = DEFAULT_CONFIG) -> dict[str, str]:

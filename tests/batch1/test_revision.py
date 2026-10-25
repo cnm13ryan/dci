@@ -32,8 +32,9 @@ from tests.batch1.helpers import make_root
 pytestmark = pytest.mark.cpu
 V2 = CFG.REVISION_CONFIG
 FIXTURE = Path(__file__).resolve().parent / "fixtures" / "pilot_2026_10_25b"
-#: The v2 pilot at reduced size: one topic per area in T1 and in T2.
-SMALL_V2 = replace(V2, stage1_topics=12, stage2_topics=12, pilot_topics=24,
+V21 = CFG.CONFIGS["v2.1"]
+#: The v2.1 pilot at reduced size: one topic per area in T1 and in T2.
+SMALL_V2 = replace(V21, stage1_topics=12, stage2_topics=12, pilot_topics=24,
                    stability_replicates=4, forecast_draws=200)
 
 
@@ -167,7 +168,9 @@ def test_forecast_stops_early_when_a_is_never_admissible(matrix):
                       replace(V2, forecast_draws=50), matrix)
     assert not fc["point_gates_pass"]
     assert all(fc["contrasts"][p]["p_feasible"] == 0 for p in REV.CONTRASTS)
-    assert fc["early_stop"] and fc["library_limited"] == ["P1", "P2", "P3"]
+    assert fc["early_stop"] and fc["stopped_contrasts"] == ["P1", "P2", "P3"]
+    # The fixed A, not the library, is what failed.
+    assert fc["fixed_gates_limited"] and fc["p_fixed_gates_pass"] == 0
 
 
 def test_carry_selection_is_bounded_and_empty_on_early_stop(matrix):
@@ -248,6 +251,8 @@ def _informative_b(model, frame, condition):
 
 @pytest.fixture(scope="module")
 def run_v2(tmp_path_factory):
+    from dci.batch1 import scoring as S
+    S.SCORING_WORKERS = 8                    # the CLI's pool, in a test
     L.set_library_version("v2")
     base = make_root(tmp_path_factory.mktemp("batch1v2"), cfg=SMALL_V2)
     root, f1, approvals = base["root"], base["freeze1"], base["approvals"]
@@ -286,6 +291,16 @@ def test_v2_stage1_screens_every_reference_on_t1(run_v2):
 
 
 @pytest.mark.slow
+def test_v2_1_measures_every_reference_on_t2(run_v2):
+    sel = json.loads((run_v2["root"] / "plan" /
+                      "stage2_selection.json").read_text())
+    if sel["status"] == "EARLY_STOP":
+        pytest.skip("the synthetic run stopped early")
+    assert sel["carry_mode"] == "all" and len(sel["carried"]) == 161
+    assert len(run_v2["d2"]) == (161 + 3) * 8 * 12 + 4 * 12
+
+
+@pytest.mark.slow
 def test_v2_stage2_measures_on_t2_only_and_decides_from_t2(run_v2):
     cfg = EV.config_of(run_v2["freeze1"])
     split = TOP.split_for(cfg)
@@ -310,20 +325,83 @@ def test_v2_freeze2_is_complete_and_validates(run_v2):
     assert f2["selected"]["a"] in (V2.fixed_a, None)
     confirmatory = f2["confirmatory_interface"]["confirmatory_topics"]
     assert confirmatory["bank"] == "v1" and confirmatory["reserved"] == 480
+    rep = f2["reporting"]
+    assert not rep["deciding"]
+    assert len(rep["a_diagnostics_t1"]) == 3
+    if f2["calibration_status"] != "EARLY_STOP_LIBRARY_LIMITED":
+        assert set(rep["sensitivities"]) == {"tolerance_0.15", "tolerance_0.2",
+                                             "confident", "iota", "primary"}
+        assert rep["agreement"]["references"] == 161
     assert P.validate_membership(run_v2["root"], run_v2["freeze1"],
                                  run_v2["approvals"]) == []
 
 
 @pytest.mark.slow
 def test_v2_cli_summaries_and_report_work(run_v2, capsys):
-    """The readable report must not assume v1's shapes (the first v2 pilot's
-    finalize-calibration exited 1 after writing calibration.json).
-    ``select-refinement``'s summary print still assumes v1 (KeyError
-    'n_selected' after its outputs are written): cli.py is a frozen module
-    and stays as frozen at 8a9422f until that root is analysed."""
+    """The CLI summaries and the readable report must not assume v1's
+    shapes (the first v2 pilot's select-refinement and finalize-calibration
+    exited 1 after writing their outputs)."""
     from dci.batch1 import cli
     root = str(run_v2["root"])
+    assert cli.main(["select-refinement", "--root", root]) == 0
+    assert '"carried"' in capsys.readouterr().out
     assert cli.main(["finalize-calibration", "--root", root]) == 0
     report = (run_v2["root"] / "reference_selection.md").read_text()
     assert "Stage B forecast on T1" in report
     assert "R4: fixed" in report
+
+
+# ---------------------------------------------------------------- v2.1
+
+def test_v2_1_carries_everything_within_its_budget(matrix):
+    tables = SY.tables_from_rates(_rates(2, 0.1), n=48)
+    sel = REV.select_carry(tables, replace(V21, forecast_draws=50))
+    if sel["status"] == "CARRIED":
+        assert len(sel["carried"]) == 161 and not sel["truncated_by_cap"]
+        assert sel["max_stage2_rows"] == (161 + 3) * 8 * 96 + 4 * 96
+    assert sel["stage1_rows"] == sum(c.n for c in tables.explicit.values())
+    with pytest.raises(ValueError, match="budget"):
+        REV.select_carry(tables, replace(V21, forecast_draws=50,
+                                         max_total_rows=150000))
+
+
+def test_v2_decision_texts_describe_v2_and_bind_its_code():
+    V21.activate()
+    ds = {d.decision_id: d for d in CFG.decisions(V21)}
+    text = " ".join(d.title + " " + d.summary for d in ds.values())
+    for stale in ("Stage 1 + 2", "32 new topics", "Selecting the two B",
+                  "Selecting the global A", "boundary cells ranked"):
+        assert stale not in text
+    assert "every reference in the library" in ds["D06"].summary
+    for did in ("D06", "D07", "D08", "D10", "D11", "D14"):
+        assert "revision.py" in ds[did].payload["implementation"]
+    assert "compatibility.py" in ds["D11"].payload["implementation"]
+    with L.using_library_version("v1"):
+        v1 = {d.decision_id: d for d in CFG.decisions(CFG.DEFAULT_CONFIG)}
+    assert all("revision.py" not in d.payload["implementation"]
+               for d in v1.values())
+    assert v1["D09"].summary.endswith("(disclosed).") and \
+        "Stage 1 + 2" in v1["D09"].summary
+
+
+def test_reporting_never_decides_and_covers_r5(matrix):
+    rates = {k: (0.5 if k[2].startswith("B.") else v)
+             for k, v in _rates(1, 0.2).items()}
+    t1 = SY.tables_from_rates(rates, n=48)
+    t2 = SY.tables_from_rates(rates, n=96)
+    cfg = replace(V2, forecast_draws=50)
+    result = CAL.finalize(t2, cfg, matrix)
+    fc = REV.forecast(t1, cfg, matrix)
+    rep = REV.reporting(t2, t1, cfg, matrix, result, fc)
+    assert [r["a"] for r in rep["a_diagnostics_t1"]] and \
+        {r["n"] for r in rep["a_diagnostics_t1"]} == {4, 5, 6}
+    if result.get("configurations"):
+        sens = rep["sensitivities"]
+        assert sens["primary"]["all_feasible"] == \
+            result["feasibility"]["all_feasible"]
+        for name in ("tolerance_0.15", "tolerance_0.2", "confident", "iota"):
+            assert set(sens[name]) == {"P1", "P2", "P3", "all_feasible"}
+        assert sum(rep["agreement"]["eligibility"].values()) == 161
+        assert len(rep["posterior_match_t2"]["by_model_frame"]) == 8
+    again = CAL.finalize(t2, cfg, matrix)
+    assert again["status"] == result["status"]       # reporting changed nothing

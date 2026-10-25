@@ -35,7 +35,7 @@
    "approved_on": "",
    "note": "",
    "origin": "proposed",
-   "payload_hash": "714edec047815a70f0604efbe02d8666e0b6cc2b6aceaea8f827dc1342412225",
+   "payload_hash": "77391ef848920b9e345d32946743f69578684daf6b8c126fa0ec33cf39aafb32",
    "status": "PROPOSED",
    "summary": "Compliant = PASS on a non-empty, untruncated, non-vacuous answer. A completed blank generation (the seam's CHANNEL_INVALID under NO_THINKING) is an EMPTY answer: in n, never compliant, not regenerated. A technical failure is never evidence and stays open for resume, up to max_technical_attempts per row. Literal passes and the reason a pass is excluded are recorded.",
    "title": "Outcomes, compliance and vacuity"
@@ -55,7 +55,7 @@
    "approved_on": "",
    "note": "",
    "origin": "proposed",
-   "payload_hash": "132599f6d36a5a830db68e53c88bb6e26a662c787115103faba372daf9f41b1a",
+   "payload_hash": "76d92c4f44cd22ffc4ae1f2c7efe72e99fe3d9e8d9ea979945240a59ff171ec9",
    "status": "PROPOSED",
    "summary": "One bounded round, selected only from complete, authenticated Stage 1 evidence: boundary cells ranked by class, then by standardised distance to the boundary; 64 new-topic responses each; at most stage2_max_cells cells. Finalisation needs both stages complete; there is no partial-completion rule.",
    "title": "Stage 2 refinement rule and stage completeness"

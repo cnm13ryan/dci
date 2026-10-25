@@ -13,6 +13,39 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-10-26 — (Batch 1) protocol v2.1 after the R12(d) audit: every reference measured on T2, C′ dropped, R5/§5.2 D reporting, v2 decision texts corrected
+
+**Why.** The independent audit of v2 (`../audit-batch1-v2-2026-10-26/AUDIT_REPORT.md`, outside the repo) found the following.
+
+- **B1.** The approved carry rule restricts D11's relaxed populations. T2 alone decides membership, so references that were not carried cannot be in G2, G4 or G6. The carried set was selected on plausible *matching* to A, which pulls P1's relaxed group toward A's difficulty. Neither the proposal nor the v2 entry below said so.
+- **M1.** Approved items were not implemented, and the v2 entry did not say so:
+  - the C′ top-up;
+  - the R5(a) reports;
+  - §5.2 D's T1-versus-T2 agreement check;
+  - the A × 4 / A × 5 diagnostics.
+- **M2.** The v2 decision texts described v1, and `revision.py` was bound to no decision.
+
+**What changed (`config.CONFIGS["v2.1"]`).**
+
+- **Carry mode `all`.** Stage C measures every reference on T2: (161 + 3) × 8 × 96 + 384 = 126,336 rows. With Stage A's 63,936, that is 190,272, against a budget of 192,000. The forecast and the R8 early stop are unchanged. If the budget cannot hold every reference, the run refuses rather than truncating. Seed domain: `dci.batch1:gen:v2.1`.
+- **No C′ top-up** (R7 option b).
+- **Reporting, never deciding** (`revision.reporting`, bound in Freeze 2):
+  - coverage under ±0.15, ±0.20, confident matching (Newcombe interval inside ±0.10) and iota matching;
+  - posterior P(match) on T2;
+  - T1-versus-T2 agreement on eligibility, on raw matching, and between forecast and verdict coverage;
+  - A × 4/5/6 headroom and G1 support on T1.
+- **Corrected v2 texts.** The v2 decision titles and summaries now describe v2. `revision.py` is bound to D06, D07, D08, D10, D11 and D14, and `compatibility.py` to D11.
+- **Forecast.** An early stop now separates library limits from a failing fixed A or B, and the forecast records numpy's version.
+- **Budget.** The carry budget counts task-only rows once per model, not once per constraint.
+- **Scoring.** Workers default to 1 outside the CLI (a pool crashes unguarded scripts on macOS); the CLI uses min(32, cpus).
+
+**Effect on the v2 run (`pilot-2026-10-26-v2`, Freeze 2 `85900f0c…`).**
+
+- **Verdict.** It was FEASIBLE (14 / 12 / 12) under the v2 carry rule, with blocking D14 flags: FEASIBLE in 15% of topic resamples, and one truncation cell to review. B1 applies to it.
+- **Validation.** It validates at its producing commit 8a9422f, not at later commits, because the frozen modules changed.
+- **Status.** It is kept as a record and is not a basis for Batch 2.
+- **Topics.** v2.1 reuses bank v2's T1 and T2 topics (calibration topics, not the confirmatory 480), with fresh seeds. Its T2 measurement is therefore not independent of the v2 run's topics. This is disclosed.
+
 ## 2026-10-26 — (Batch 1) protocol v2 implemented (revision R1–R13): library v2, fresh topic bank v2, screen on T1 and decide on T2, fixed A and B
 
 **What changed.** The researcher approved R1–R13 (`docs/batch1/revision/APPROVALS_2026-10-26.md`), and protocol v2 implements them as a second configuration (`config.REVISION_CONFIG`, `--protocol v2`). v1 remains the default and is unchanged.

@@ -1,0 +1,59 @@
+{
+ "caveats": [
+  "rates are v8.1 confirmatory rows/s on one AMD RX 7900 XTX at chunk size 64 and ~130 response tokens; they exclude model load (~2-5 min per backend run) and are not a property of any NVIDIA or Lambda instance",
+  "Stage 2 is bounded by stage2_max_cells; its split across models is decided by Stage 1 data, so 'if_even' is illustrative and 'max' is the per-model ceiling",
+  "a cloud estimate needs an authorised throughput smoke test on the chosen instance type (rows/s per model at this cap and chunk size, model load time, and truncation share)"
+ ],
+ "per_model": {
+  "gemma-3n-e2b-it": {
+   "historical_rows_per_second": 9.7,
+   "stage1_hours_at_historical_rate": 0.458,
+   "stage1_rows": 15984,
+   "stage2_hours_if_even": 0.907,
+   "stage2_hours_max": 0.913,
+   "stage2_rows_if_even": 31680,
+   "stage2_rows_max": 31872
+  },
+  "gemma-3n-e4b-it": {
+   "historical_rows_per_second": 4.94,
+   "stage1_hours_at_historical_rate": 0.899,
+   "stage1_rows": 15984,
+   "stage2_hours_if_even": 1.781,
+   "stage2_hours_max": 1.792,
+   "stage2_rows_if_even": 31680,
+   "stage2_rows_max": 31872
+  },
+  "qwen3-4b": {
+   "historical_rows_per_second": 17.4,
+   "stage1_hours_at_historical_rate": 0.255,
+   "stage1_rows": 15984,
+   "stage2_hours_if_even": 0.506,
+   "stage2_hours_max": 0.509,
+   "stage2_rows_if_even": 31680,
+   "stage2_rows_max": 31872
+  },
+  "qwen3-4b-instruct-2507": {
+   "historical_rows_per_second": 10.1,
+   "stage1_hours_at_historical_rate": 0.44,
+   "stage1_rows": 15984,
+   "stage2_hours_if_even": 0.871,
+   "stage2_hours_max": 0.877,
+   "stage2_rows_if_even": 31680,
+   "stage2_rows_max": 31872
+  }
+ },
+ "stage1_by_kind": {
+  "A": 1152,
+  "B": 768,
+  "reference": 61824,
+  "task_only": 192
+ },
+ "stage1_hours_at_historical_rates": 2.052,
+ "stage1_rows": 63936,
+ "stage2_hours_if_even": 4.065,
+ "stage2_hours_worst_case": 4.078,
+ "stage2_max_cells": 1320,
+ "stage2_max_rows": 126720,
+ "storage_bytes_max": 1525248000,
+ "total_max_rows": 190656
+}
