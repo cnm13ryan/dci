@@ -389,20 +389,22 @@ def _pilot_record(stages: Mapping[str, EV.StageEvidence]) -> dict[str, Any]:
             "conditions": labels}
 
 
-def near_threshold(result: Mapping[str, Any], cfg: CFG.PilotConfig) -> str:
-    """D14's near-threshold flag: a FEASIBLE verdict whose weakest contrast
-    is within ``near_threshold_margin`` configurations of the target. For
-    review, never a gate (the D11 study measures how often such verdicts are
-    false)."""
+def near_threshold(result: Mapping[str, Any], cfg: CFG.PilotConfig
+                   ) -> dict[str, Any] | None:
+    """D14's near-threshold record: for a FEASIBLE verdict, how many
+    configurations support the weakest contrast and whether that is within
+    ``near_threshold_margin`` of the target. Recorded in Freeze 2, never a
+    flag or a gate (the researcher's decision of 2026-10-25)."""
     feas = result.get("feasibility")
     if result.get("status") != "FEASIBLE" or not feas:
-        return ""
-    weakest = min(feas[p]["supported_configurations"] for p in ("P1", "P2", "P3"))
-    if weakest <= cfg.feasibility_min_configs + cfg.near_threshold_margin:
-        return (f"FEASIBILITY_NEAR_THRESHOLD: the weakest contrast is supported "
-                f"in {weakest} configurations (target "
-                f"{cfg.feasibility_min_configs}; for review, not a gate)")
-    return ""
+        return None
+    support = {p: feas[p]["supported_configurations"] for p in ("P1", "P2", "P3")}
+    weakest = min(support.values())
+    return {"supported_configurations": support, "weakest": weakest,
+            "target": cfg.feasibility_min_configs,
+            "margin": cfg.near_threshold_margin,
+            "within_margin": weakest <= cfg.feasibility_min_configs
+            + cfg.near_threshold_margin}
 
 
 def freeze2_manifest(freeze1: Mapping[str, Any], bundle: Mapping[str, Any], *,
@@ -453,11 +455,8 @@ def freeze2_manifest(freeze1: Mapping[str, Any], bundle: Mapping[str, Any], *,
         raise FreezeError(f"the evidence's provenance is {sorted(map(str, namespaces))}"
                           f", but the bundle is {'synthetic' if synthetic else 'real'}")
     flags = a.get("flags", []) + stability["flags"]
-    near = near_threshold(result, cfg)
-    if near:
-        flags.append(near)
     body = {
-        "schema": "dci.batch1/freeze2/v3",
+        "schema": "dci.batch1/freeze2/v4",
         "freeze1_hash": freeze1["manifest_hash"],
         "synthetic": synthetic,
         "namespace": "synthetic" if synthetic else "real",
@@ -475,6 +474,7 @@ def freeze2_manifest(freeze1: Mapping[str, Any], bundle: Mapping[str, Any], *,
         "configurations": configs,
         "feasibility": result["feasibility"],
         "flags": flags,
+        "near_threshold": near_threshold(result, cfg),
         "calibration_hash": sha(["batch1/calibration", result]),
         "stability": stability,
         "confirmatory_interface": {

@@ -380,7 +380,7 @@
    "unq.word5": "e36e87a21d70b986fe99dbdd0621825bb18038713195f298774cd8285d0b9ca6"
   }
  },
- "manifest_hash": "4d54deb5d8d7a034c17f9d3dd5cbff5ba2b16afa843d935fd3b98bac8057ae14",
+ "manifest_hash": "761e3fa061b9be7259b9999551f12c4a1ffb05e73cf9b923803bfb7f3fecf535",
  "models": [
   {
    "chat_template_kwargs": {},
@@ -456,13 +456,13 @@
   "calibration.py": "fb4f2a1d60f0fd0f7807847a0d02382bd2628580a3609b416d6ce546fa795fa1",
   "cli.py": "7997e191950ba27531ab367e8d962351a2d3eaaeb3c48bbe6c23f7d36d8a64ed",
   "compatibility.py": "6b7dc43c6d220f63ca7bdd934eed9e6041ff5f494d1e2cf385b5fa52ab95292e",
-  "config.py": "99dea9b90f75c6db0a59d48b7c599b5ca7e04146232babf5b61c632c49f5e4fb",
+  "config.py": "451a93607e86a9436f4217326aa5c8d2ac3730a0dd3c2c8c4f2dd1284bf95f9a",
   "dci/provenance/hashes.py": "b0db13e53e9e62d18ed2e94a225318b08d44aedd2beddffb044a46e2fc18bdc3",
   "dci/verifiers/rules.py": "00bed1e904013bcde6cac2c6243bc0c6655b7a1f73f47042b12946e258a63647",
   "design.py": "3ce9e8620d7423b95933af2e83fa287f8a0f6e73b115cd42f28758aaa12c772f",
   "environment.py": "d4946066a56c09e352f288b2854314a337e1574b1e9ce47004ecc1dd50312934",
   "evidence.py": "b74694313b023fde5de8e030992655478b7eee7354cf043fce5eacbabc491727",
-  "freeze.py": "4c2d62db37300f951235a275ca1a9f1a2967f93061b6488d3fcfbe3f89e931d3",
+  "freeze.py": "da75241421546694d1336afaf857739bb77e64e273736123a7d26ae6feb9ec28",
   "intervals.py": "cb10ee61da6be5cf128899e798444ed24d1713223401bed44a68c58ee7866e3a",
   "library.py": "2cc8eba7fee4fbfadd969c8bd9d621f75f6d7567461965d7d223a2da2050e597",
   "outcomes.py": "ed51afa4838c6043d3ca0c2aab24169ad3076a405da20be8bfa915e75d928a7c",

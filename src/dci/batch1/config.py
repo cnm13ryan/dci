@@ -419,9 +419,9 @@ def decisions(cfg: PilotConfig = DEFAULT_CONFIG) -> tuple[Decision, ...]:
         d("D14", "Membership-stability diagnostics", "proposed",
           "Topic-cluster bootstrap of the pilot: inclusion frequency per "
           "reference, A/B selection and FEASIBLE shares, borderline "
-          "matches, and feasibility on majority-stable members; a flag "
-          "when a FEASIBLE verdict's weakest contrast is within "
-          "near_threshold_margin of the target. Diagnostic "
+          "matches, and feasibility on majority-stable members; a record "
+          "(not a flag) of how close a FEASIBLE verdict's weakest contrast "
+          "is to the target, within near_threshold_margin. Diagnostic "
           "only, never a gate: membership stays the point-estimate rule; "
           "instability is flagged for review, never auto-corrected.",
           _fields(cfg, "stability_replicates", "stability_seed",

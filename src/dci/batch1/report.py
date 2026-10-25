@@ -488,9 +488,11 @@ DECISION_NOTES: dict[str, tuple[str, str]] = {
             "(simulation: it does not reliably separate true from false "
             "FEASIBLE).",
             "Approve as a reported diagnostic; decide how its flags are "
-            "reviewed before Freeze 2 is accepted. New (R4.5): "
-            "FEASIBILITY_NEAR_THRESHOLD when the weakest contrast is supported "
-            "in at most 14 configurations."),
+            "reviewed before Freeze 2 is accepted (`DECISIONS_2026-10-25.md`, "
+            "D14). Freeze 2 records how many configurations support the "
+            "weakest contrast and whether that is within 2 of the target; "
+            "by the researcher's decision of 2026-10-25 this is a record, "
+            "not a flag."),
 }
 
 

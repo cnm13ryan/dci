@@ -34,3 +34,7 @@ hash with `shasum -a 256 -c` and requires the local file list to equal the
 manifest's exactly. Run it while nothing is writing on the instance. The
 commit that produced a run is in each smoke report's `code` field and each
 pilot root's `RUN.json` (Freeze 1 hash), not in `SYNC_CHECKOUT_SHA`.
+
+Directories synced before `8d4528c` also hold a `SYNC_SOURCE_SHA` written by
+the earlier script (checkout at that sync). It is covered by the manifest and
+left in place; it is not the producing commit either.

@@ -36,7 +36,7 @@ payload hash, with your name and the date. Explanations:
 | D11 | coverage minimums and target | **YOUR DECISION: choose the rule** | choose: P3 minimum 3 (recommended), 3 from ≥ 2 operations, or the design's 2 (see [`COVERAGE_SIMULATION_REVIEW.md`](COVERAGE_SIMULATION_REVIEW.md) §8); then approve |
 | D12 | models, decoding, cap 512, seeds, backend, Python | **Python 3.12 for the orchestrator and backend: YOUR DECISION of 2026-10-25** (replacing 3.11), with the conditions in `DECISIONS_2026-10-25.md` | approve after B3 and B4, including Python 3.12 for the backend |
 | D13 | object types and weights | YOUR DECISION | approve with the disclosure |
-| D14 | stability diagnostics, near-threshold flag | YOUR DECISION | approve; decide how you will read the flags |
+| D14 | stability diagnostics, near-threshold record | YOUR DECISION | approve; flag rule and the near-threshold record in `DECISIONS_2026-10-25.md` |
 
 If you choose a P3 minimum of 3, one value changes in
 `src/dci/batch1/config.py` (`p3_min_additional_other_operation`) and the

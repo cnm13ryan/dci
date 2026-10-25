@@ -25,6 +25,7 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
   - **Lock:** schema v2. It binds the GPU class (model, count, compute capability, memory) and records the hostname, kernel, GPU UUIDs and driver without binding them.
   - **Backend:** new `environments/cuda-vllm` (Python 3.12, torch from the explicit cu129 index, locked for Linux x86_64). It supersedes `dci1/environments/backend-cuda` (+cu128), which does not meet D12 and must not be attested.
 - **After the third audit (same day).** These change execution conditions:
+  - D14: the near threshold is recorded in Freeze 2 (`near_threshold`), no longer raised as the flag `FEASIBILITY_NEAR_THRESHOLD` (researcher's decision); Freeze 2 schema v4;
   - the runner passes no inherited `VLLM_*` setting to the backend, so batch invariance stays off by construction;
   - `execute` refuses ROCm GPU selection on a CUDA backend, and re-checks D12's requirements (including the driver) live;
   - D12's smoke condition is computed (`d12_pass`) against the attested lock.

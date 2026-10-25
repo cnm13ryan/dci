@@ -204,25 +204,18 @@ after seeing data.
 | `A cells incomplete` | A cells missing data | **block**; resume the stage (finalisation refuses incomplete stages) |
 | `FEASIBILITY_RESTS_ON_UNSTABLE_MEMBERS` | not feasible on majority-stable members | **block** |
 | `FEASIBILITY_UNSTABLE` | FEASIBLE in too few resamples | **block** |
-| `FEASIBILITY_NEAR_THRESHOLD` | the weakest contrast is within 2 configurations of 12 | **block, unless** stable-member feasibility and the Stage-1-only sensitivity are both FEASIBLE; then **proceed with disclosure** |
+| near threshold (`near_threshold` in Freeze 2) | how many configurations support the weakest contrast, and whether that is within 2 of 12 | **record only**: written into Freeze 2 and reported with Batch 2; not a flag and never blocks (your decision of 2026-10-25) |
 | Stage-1-only sensitivity disagrees with the verdict | the verdict depends on Stage 2 topics | **block** |
 | `MEMBERSHIP_UNSTABLE` | some configuration has references in the unstable inclusion band | **proceed with disclosure**: Batch 2 reports each population's effective number of references and a leave-one-reference-out check (D13). It fires on almost any real pilot, so blocking on it would block every outcome |
 | `truncation_review` cells (truncation > 2%) | some cells hit the 512-token cap often | **block until reviewed**: read the listed cells' truncated answers and record whether the cap changed what compliance means there |
 | any other flag | | **block** |
 
-**The near-threshold exception is your decision, and the recommendation is
-now to strike it.**
+**Near threshold: recorded, not flagged (your decision of 2026-10-25).**
+Freeze 2 no longer raises `FEASIBILITY_NEAR_THRESHOLD`. Instead it records,
+under `near_threshold`, the support for P1-P3, the weakest, the target (12),
+the margin (2) and whether the weakest is within it. Nothing waits on it.
 
-- **Corrected figures (third audit C2).** Under the minimum of 3 you chose,
-  the flag fires on 30-96% of correct FEASIBLE verdicts, and on 53-67% in
-  the typical scenarios (`coverage_simulation.json`). The 30-76% first
-  written here was for the design minimum of 2. So under your rule the flag
-  is the norm, not an exception.
-- **Unsimulated.** The exception's two-check condition (stable-member
-  feasibility and the Stage-1-only sensitivity both FEASIBLE) was never
-  simulated.
-- **Cost of striking it.** "Block" only means you record your decision in
-  writing before Batch 2. That is a short review step, even on most
-  outcomes.
-
-To strike it, change that row's action to **block**.
+For reading it later: under the P3 minimum of 3, a weakest contrast within 2
+of the target occurs on 30-96% of correct FEASIBLE verdicts in the simulation
+(53-67% in typical scenarios; third audit C2). So being near the threshold is
+common and is not by itself evidence of a false FEASIBLE.

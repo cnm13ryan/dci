@@ -254,15 +254,20 @@ def test_the_smoke_test_never_prompts_a_focal_instruction():
     assert len(plan["rows"]) <= SMOKE.SMOKE_MAX_ROWS
 
 
-def test_near_threshold_flag():
+def test_near_threshold_is_recorded_not_flagged():
+    """D14 (researcher's decision of 2026-10-25): Freeze 2 records how close
+    the weakest contrast is to the target; it never raises a flag for it."""
     def result(counts):
         return {"status": "FEASIBLE", "feasibility": {
             p: {"supported_configurations": n} for p, n in zip(("P1", "P2", "P3"),
                                                               counts)}}
-    assert F.near_threshold(result((16, 16, 14)), CFG.DEFAULT_CONFIG)
-    assert not F.near_threshold(result((16, 16, 15)), CFG.DEFAULT_CONFIG)
-    assert not F.near_threshold({"status": "INFEASIBLE_REVISION_REQUIRED",
-                                 "feasibility": None}, CFG.DEFAULT_CONFIG)
+    near = F.near_threshold(result((16, 16, 14)), CFG.DEFAULT_CONFIG)
+    assert near["weakest"] == 14 and near["within_margin"]
+    assert near["target"] == 12 and near["margin"] == 2
+    assert not F.near_threshold(result((16, 16, 15)),
+                                CFG.DEFAULT_CONFIG)["within_margin"]
+    assert F.near_threshold({"status": "INFEASIBLE_REVISION_REQUIRED",
+                             "feasibility": None}, CFG.DEFAULT_CONFIG) is None
 
 
 # ------------------------------------- the lock decision (D12, 2026-10-25)
