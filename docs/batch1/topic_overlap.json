@@ -1,0 +1,876 @@
+{
+ "clean": true,
+ "exact_matches": [],
+ "flagged_historical": [
+  {
+   "content_jaccard": 0.3,
+   "decision": "shares only 'keep ... while'; glassblowing technique vs maintaining a large system",
+   "neighbour": "How does a large system keep working while parts of it are being replaced?",
+   "neighbour_id": "technology-b02",
+   "neighbour_source": "dci1v5/calibration_b",
+   "question": "Why do glassblowers keep a piece turning while they work it?",
+   "rare_shared": [],
+   "reviewed": true,
+   "topic_id": "b1-art-and-design-09",
+   "wordset_jaccard": 0.1905
+  },
+  {
+   "content_jaccard": 0.3,
+   "decision": "shares only 'keep ... while'; glassblowing technique vs maintaining a large system",
+   "neighbour": "How does a large system keep working while parts of it are being replaced?",
+   "neighbour_id": "technology-b02",
+   "neighbour_source": "dci1v7/calibration_b_v6",
+   "question": "Why do glassblowers keep a piece turning while they work it?",
+   "rare_shared": [],
+   "reviewed": true,
+   "topic_id": "b1-art-and-design-09",
+   "wordset_jaccard": 0.1905
+  },
+  {
+   "content_jaccard": 0.1818,
+   "decision": "in-betweening for smooth motion vs giving weight and personality: different animation questions (CLOSE in the semantic review; kept)",
+   "neighbour": "How do animators give weight and personality to drawn figures?",
+   "neighbour_id": "art-and-design-46",
+   "neighbour_source": "dci1/v2",
+   "question": "How does an animator make a drawn figure appear to move smoothly?",
+   "rare_shared": [
+    "animator",
+    "drawn"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-art-and-design-21",
+   "wordset_jaccard": 0.1579
+  },
+  {
+   "content_jaccard": 0.1818,
+   "decision": "in-betweening for smooth motion vs giving weight and personality: different animation questions (CLOSE in the semantic review; kept)",
+   "neighbour": "How do animators give weight and personality to drawn figures?",
+   "neighbour_id": "art-and-design-46",
+   "neighbour_source": "dci1v3",
+   "question": "How does an animator make a drawn figure appear to move smoothly?",
+   "rare_shared": [
+    "animator",
+    "drawn"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-art-and-design-21",
+   "wordset_jaccard": 0.1579
+  },
+  {
+   "content_jaccard": 0.25,
+   "decision": "centring clay on the wheel vs why clay is fired twice: different stages and questions",
+   "neighbour": "Describe why potters fire clay twice.",
+   "neighbour_id": "CONFIRMATORY_TOPICS#9",
+   "neighbour_source": "dci/v19/task_bank",
+   "question": "How does a potter centre a lump of clay on a spinning wheel?",
+   "rare_shared": [
+    "clay",
+    "pott"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-art-and-design-46",
+   "wordset_jaccard": 0.0625
+  },
+  {
+   "content_jaccard": 0.1667,
+   "decision": "ice's density anomaly vs buoyancy of materials in general: a specific question the general one does not answer",
+   "neighbour": "Why do some materials float while others of the same size sink?",
+   "neighbour_id": "everyday-science-26",
+   "neighbour_source": "dci1v4",
+   "question": "Why does ice float on water when most solids sink in their own liquid?",
+   "rare_shared": [
+    "float",
+    "sink"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-everyday-science-05",
+   "wordset_jaccard": 0.1304
+  },
+  {
+   "content_jaccard": 0.2727,
+   "decision": "gas solubility falling with temperature vs where bubbles rise in a glass: different phenomena",
+   "neighbour": "Why do bubbles in a fizzy drink rise faster near the glass sides?",
+   "neighbour_id": "everyday-science-18",
+   "neighbour_source": "dci1v4",
+   "question": "Why does fizzy water lose its bubbles faster when it is warm?",
+   "rare_shared": [
+    "bubbl",
+    "fizzy"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-everyday-science-31",
+   "wordset_jaccard": 0.1905
+  },
+  {
+   "content_jaccard": 0.2,
+   "decision": "a tea bag trapping then releasing air vs buoyancy in general: different question",
+   "neighbour": "Why do some materials float while others of the same size sink?",
+   "neighbour_id": "everyday-science-26",
+   "neighbour_source": "dci1v4",
+   "question": "Why does a tea bag sink at first and then float?",
+   "rare_shared": [
+    "float",
+    "sink"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-everyday-science-32",
+   "wordset_jaccard": 0.15
+  },
+  {
+   "content_jaccard": 0.1538,
+   "decision": "rivers flowing poleward vs species richness toward the equator: share only the word 'equator'",
+   "neighbour": "Why does the variety of living species tend to increase toward the equator?",
+   "neighbour_id": "the-natural-world-43",
+   "neighbour_source": "dci1/v2",
+   "question": "Why do some large rivers flow away from the equator towards colder lands?",
+   "rare_shared": [
+    "equator",
+    "toward"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-geography-01",
+   "wordset_jaccard": 0.1364
+  },
+  {
+   "content_jaccard": 0.1538,
+   "decision": "rivers flowing poleward vs species richness toward the equator: share only the word 'equator'",
+   "neighbour": "Why does the variety of living species tend to increase toward the equator?",
+   "neighbour_id": "the-natural-world-43",
+   "neighbour_source": "dci1v3",
+   "question": "Why do some large rivers flow away from the equator towards colder lands?",
+   "rare_shared": [
+    "equator",
+    "toward"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-geography-01",
+   "wordset_jaccard": 0.1364
+  },
+  {
+   "content_jaccard": 0.3,
+   "decision": "shares only the 'some ... while others stay' frame; salt lakes vs harbour silting",
+   "neighbour": "Why do some harbours silt up while others stay clear?",
+   "neighbour_id": "geography-43",
+   "neighbour_source": "dci1v4",
+   "question": "Why are some lakes salty while others nearby stay fresh?",
+   "rare_shared": [],
+   "reviewed": true,
+   "topic_id": "b1-geography-06",
+   "wordset_jaccard": 0.3333
+  },
+  {
+   "content_jaccard": 0.3333,
+   "decision": "permafrost thaw under structures vs building insulation; shares only 'affect building'",
+   "neighbour": "Describe how insulation affects a building.",
+   "neighbour_id": "BURNED_TOPICS#6",
+   "neighbour_source": "dci/v19/task_bank",
+   "question": "How does permafrost affect building in the coldest regions?",
+   "rare_shared": [],
+   "reviewed": true,
+   "topic_id": "b1-geography-15",
+   "wordset_jaccard": 0.1538
+  },
+  {
+   "content_jaccard": 0.4,
+   "decision": "oasis formation (groundwater reaching the surface) vs why deserts form; related setting, different question",
+   "neighbour": "Why do deserts form where they do?",
+   "neighbour_id": "geography-37",
+   "neighbour_source": "dci1v4",
+   "question": "How do oases form in the middle of dry desert?",
+   "rare_shared": [],
+   "reviewed": true,
+   "topic_id": "b1-geography-17",
+   "wordset_jaccard": 0.1429
+  },
+  {
+   "content_jaccard": 0.3333,
+   "decision": "the shivering reflex vs long-term acclimatisation to a cold climate; related theme, different mechanism",
+   "neighbour": "How does the body adapt to a colder climate?",
+   "neighbour_id": "health-and-the-body-13",
+   "neighbour_source": "dci1v4",
+   "question": "Why does the body shiver when it gets cold?",
+   "rare_shared": [],
+   "reviewed": true,
+   "topic_id": "b1-health-and-the-body-06",
+   "wordset_jaccard": 0.2
+  },
+  {
+   "content_jaccard": 0.3333,
+   "decision": "blushing vs individual differences in feeling the cold; shares only 'people feel'",
+   "neighbour": "Why do some people feel the cold more than others?",
+   "neighbour_id": "health-and-the-body-34",
+   "neighbour_source": "dci1v4",
+   "question": "Why do people blush when they feel embarrassed?",
+   "rare_shared": [],
+   "reviewed": true,
+   "topic_id": "b1-health-and-the-body-10",
+   "wordset_jaccard": 0.2857
+  },
+  {
+   "content_jaccard": 0.2,
+   "decision": "the photic sneeze reflex vs how sunscreen works: share only 'bright sunlight'",
+   "neighbour": "How does sunscreen protect skin during a long day in bright sunlight?",
+   "neighbour_id": "everyday-science-13",
+   "neighbour_source": "dci1/v2",
+   "question": "Why do some people sneeze when they step into bright sunlight?",
+   "rare_shared": [
+    "bright",
+    "sunlight"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-health-and-the-body-41",
+   "wordset_jaccard": 0.0952
+  },
+  {
+   "content_jaccard": 0.2,
+   "decision": "the photic sneeze reflex vs how sunscreen works: share only 'bright sunlight'",
+   "neighbour": "How does sunscreen protect skin during a long day in bright sunlight?",
+   "neighbour_id": "everyday-science-13",
+   "neighbour_source": "dci1v3",
+   "question": "Why do some people sneeze when they step into bright sunlight?",
+   "rare_shared": [
+    "bright",
+    "sunlight"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-health-and-the-body-41",
+   "wordset_jaccard": 0.0952
+  },
+  {
+   "content_jaccard": 0.25,
+   "decision": "herding animals vs plagues reshaping societies: share only the verb",
+   "neighbour": "How did plagues reshape the societies that survived them?",
+   "neighbour_id": "history-03",
+   "neighbour_source": "dci1v4",
+   "question": "How did herding animals reshape early human societies?",
+   "rare_shared": [
+    "reshape",
+    "societi"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-history-09",
+   "wordset_jaccard": 0.3077
+  },
+  {
+   "content_jaccard": 0.3333,
+   "decision": "photography and collective memory vs murals and neighbourhood feeling; shares only 'change the way people'",
+   "neighbour": "How do murals change the way people feel about a neighborhood?",
+   "neighbour_id": "art-and-design-29",
+   "neighbour_source": "dci1/v2",
+   "question": "How did photography change the way people remembered the past?",
+   "rare_shared": [],
+   "reviewed": true,
+   "topic_id": "b1-history-13",
+   "wordset_jaccard": 0.3333
+  },
+  {
+   "content_jaccard": 0.3333,
+   "decision": "photography and collective memory vs murals and neighbourhood feeling; shares only 'change the way people'",
+   "neighbour": "How do murals change the way people feel about a neighborhood?",
+   "neighbour_id": "art-and-design-29",
+   "neighbour_source": "dci1v3",
+   "question": "How did photography change the way people remembered the past?",
+   "rare_shared": [],
+   "reviewed": true,
+   "topic_id": "b1-history-13",
+   "wordset_jaccard": 0.3333
+  },
+  {
+   "content_jaccard": 0.375,
+   "decision": "the telephone and business practice vs seasonal demand in running a business; shares only 'change the way business'",
+   "neighbour": "How does seasonal demand change the way a business is run?",
+   "neighbour_id": "work-and-organisations-22",
+   "neighbour_source": "dci1v4",
+   "question": "How did the telephone change the way business was done?",
+   "rare_shared": [
+    "busines"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-history-18",
+   "wordset_jaccard": 0.3333
+  },
+  {
+   "content_jaccard": 0.1667,
+   "decision": "history of shorthand vs employee values clashing with business: share only 'business' and 'value'",
+   "neighbour": "What happens when an employee's values clash with a profitable line of business?",
+   "neighbour_id": "work-and-organisations-40",
+   "neighbour_source": "dci1/v2",
+   "question": "How did shorthand writing become a valued business skill?",
+   "rare_shared": [
+    "busines",
+    "valu"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-history-28",
+   "wordset_jaccard": 0.0952
+  },
+  {
+   "content_jaccard": 0.1667,
+   "decision": "history of shorthand vs employee values clashing with business: share only 'business' and 'value'",
+   "neighbour": "What happens when an employee's values clash with a profitable line of business?",
+   "neighbour_id": "work-and-organisations-40",
+   "neighbour_source": "dci1v3",
+   "question": "How did shorthand writing become a valued business skill?",
+   "rare_shared": [
+    "busines",
+    "valu"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-history-28",
+   "wordset_jaccard": 0.0952
+  },
+  {
+   "content_jaccard": 0.3,
+   "decision": "shared structure of folk tales vs similarity of lullabies; different form (narrative vs song)",
+   "neighbour": "Why do lullabies sound similar across very different cultures?",
+   "neighbour_id": "music-34",
+   "neighbour_source": "dci1v4",
+   "question": "Why do fairy tales follow similar patterns across many cultures?",
+   "rare_shared": [
+    "similar"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-language-and-writing-08",
+   "wordset_jaccard": 0.3571
+  },
+  {
+   "content_jaccard": 0.3333,
+   "decision": "why nicknames stick vs feeling the cold; shares only 'some people ... others'",
+   "neighbour": "Why do some people feel the cold more than others?",
+   "neighbour_id": "health-and-the-body-34",
+   "neighbour_source": "dci1v4",
+   "question": "Why do nicknames stick to some people but not others?",
+   "rare_shared": [],
+   "reviewed": true,
+   "topic_id": "b1-language-and-writing-11",
+   "wordset_jaccard": 0.3333
+  },
+  {
+   "content_jaccard": 0.3333,
+   "decision": "memorability of narrative vs of rhythm over meaning; different property of language",
+   "neighbour": "Why do people remember the rhythm of a phrase better than its meaning?",
+   "neighbour_id": "language-and-writing-b06",
+   "neighbour_source": "dci1v5/calibration_b",
+   "question": "Why do people remember stories better than plain facts?",
+   "rare_shared": [
+    "rememb"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-language-and-writing-18",
+   "wordset_jaccard": 0.375
+  },
+  {
+   "content_jaccard": 0.3333,
+   "decision": "memorability of narrative vs of rhythm over meaning; different property of language",
+   "neighbour": "Why do people remember the rhythm of a phrase better than its meaning?",
+   "neighbour_id": "language-and-writing-b06",
+   "neighbour_source": "dci1v7/calibration_b_v6",
+   "question": "Why do people remember stories better than plain facts?",
+   "rare_shared": [
+    "rememb"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-language-and-writing-18",
+   "wordset_jaccard": 0.375
+  },
+  {
+   "content_jaccard": 0.3,
+   "decision": "the reader's mood vs the narrator's reliability; shares only 'reader ... story'",
+   "neighbour": "How does a narrator's reliability shape a reader's trust in a story?",
+   "neighbour_id": "language-and-writing-30",
+   "neighbour_source": "dci1/v2",
+   "question": "How does a reader's mood change their reaction to a story?",
+   "rare_shared": [],
+   "reviewed": true,
+   "topic_id": "b1-language-and-writing-19",
+   "wordset_jaccard": 0.375
+  },
+  {
+   "content_jaccard": 0.3,
+   "decision": "the reader's mood vs the narrator's reliability; shares only 'reader ... story'",
+   "neighbour": "How does a narrator's reliability shape a reader's trust in a story?",
+   "neighbour_id": "language-and-writing-30",
+   "neighbour_source": "dci1v3",
+   "question": "How does a reader's mood change their reaction to a story?",
+   "rare_shared": [],
+   "reviewed": true,
+   "topic_id": "b1-language-and-writing-19",
+   "wordset_jaccard": 0.375
+  },
+  {
+   "content_jaccard": 0.1667,
+   "decision": "how fables teach implicitly vs what youth sport teaches: share only 'teach' and 'lesson'",
+   "neighbour": "In what ways does youth sport teach lessons that classrooms struggle to deliver?",
+   "neighbour_id": "sport-03",
+   "neighbour_source": "dci1/v2",
+   "question": "How does a fable teach a lesson without stating it outright?",
+   "rare_shared": [
+    "lesson",
+    "teach"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-language-and-writing-28",
+   "wordset_jaccard": 0.0952
+  },
+  {
+   "content_jaccard": 0.1667,
+   "decision": "how fables teach implicitly vs what youth sport teaches: share only 'teach' and 'lesson'",
+   "neighbour": "In what ways does youth sport teach lessons that classrooms struggle to deliver?",
+   "neighbour_id": "sport-03",
+   "neighbour_source": "dci1v3",
+   "question": "How does a fable teach a lesson without stating it outright?",
+   "rare_shared": [
+    "lesson",
+    "teach"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-language-and-writing-28",
+   "wordset_jaccard": 0.0952
+  },
+  {
+   "content_jaccard": 0.3333,
+   "decision": "writing direction of scripts vs mirror reversal: share only 'left' and 'right'",
+   "neighbour": "Why do mirrors reverse left and right but not up and down?",
+   "neighbour_id": "everyday-science-23",
+   "neighbour_source": "dci1v4",
+   "question": "Why do some languages write from right to left?",
+   "rare_shared": [
+    "right"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-language-and-writing-39",
+   "wordset_jaccard": 0.25
+  },
+  {
+   "content_jaccard": 0.3333,
+   "decision": "ambiguous, kept: cross-cultural theme shared with dci1v4 music-34, but timbre differences of drums vs similarity of lullabies are different questions; the other two neighbours share only 'sound different'",
+   "neighbour": "Why do speeches read differently from how they sounded?",
+   "neighbour_id": "language-and-writing-50",
+   "neighbour_source": "dci1v4",
+   "question": "Why do drums from different cultures sound so different?",
+   "rare_shared": [],
+   "reviewed": true,
+   "topic_id": "b1-music-09",
+   "wordset_jaccard": 0.2143
+  },
+  {
+   "content_jaccard": 0.4286,
+   "decision": "ambiguous, kept: cross-cultural theme shared with dci1v4 music-34, but timbre differences of drums vs similarity of lullabies are different questions; the other two neighbours share only 'sound different'",
+   "neighbour": "Why do lullabies sound similar across very different cultures?",
+   "neighbour_id": "music-34",
+   "neighbour_source": "dci1v4",
+   "question": "Why do drums from different cultures sound so different?",
+   "rare_shared": [],
+   "reviewed": true,
+   "topic_id": "b1-music-09",
+   "wordset_jaccard": 0.4167
+  },
+  {
+   "content_jaccard": 0.3333,
+   "decision": "ambiguous, kept: cross-cultural theme shared with dci1v4 music-34, but timbre differences of drums vs similarity of lullabies are different questions; the other two neighbours share only 'sound different'",
+   "neighbour": "Why do woodlands sound different through the year?",
+   "neighbour_id": "the-natural-world-51",
+   "neighbour_source": "dci1v4",
+   "question": "Why do drums from different cultures sound so different?",
+   "rare_shared": [],
+   "reviewed": true,
+   "topic_id": "b1-music-09",
+   "wordset_jaccard": 0.3333
+  },
+  {
+   "content_jaccard": 0.1818,
+   "decision": "leg shaving by cyclists vs sharing the workload in a team: different practices",
+   "neighbour": "How do endurance cyclists share the workload within a team during a long race?",
+   "neighbour_id": "sport-25",
+   "neighbour_source": "dci1/v2",
+   "question": "Why do cyclists shave their legs before a big race?",
+   "rare_shared": [
+    "cyclist",
+    "race"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-sport-02",
+   "wordset_jaccard": 0.2105
+  },
+  {
+   "content_jaccard": 0.1818,
+   "decision": "leg shaving by cyclists vs sharing the workload in a team: different practices",
+   "neighbour": "How do endurance cyclists share the workload within a team during a long race?",
+   "neighbour_id": "sport-25",
+   "neighbour_source": "dci1v3",
+   "question": "Why do cyclists shave their legs before a big race?",
+   "rare_shared": [
+    "cyclist",
+    "race"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-sport-02",
+   "wordset_jaccard": 0.2105
+  },
+  {
+   "content_jaccard": 0.2727,
+   "decision": "why balls lose bounce with age vs players' pre-serve ritual: different questions (CLOSE in the semantic review; kept)",
+   "neighbour": "Why do tennis players bounce the ball several times before serving?",
+   "neighbour_id": "sport-50",
+   "neighbour_source": "dci1v3",
+   "question": "Why do old tennis balls bounce differently from new ones?",
+   "rare_shared": [
+    "bounce",
+    "tenni"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-sport-05",
+   "wordset_jaccard": 0.2353
+  },
+  {
+   "content_jaccard": 0.2727,
+   "decision": "why balls lose bounce with age vs players' pre-serve ritual: different questions (CLOSE in the semantic review; kept)",
+   "neighbour": "Why do tennis players bounce the ball several times before serving?",
+   "neighbour_id": "sport#2",
+   "neighbour_source": "dci1v3/candidates",
+   "question": "Why do old tennis balls bounce differently from new ones?",
+   "rare_shared": [
+    "bounce",
+    "tenni"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-sport-05",
+   "wordset_jaccard": 0.2353
+  },
+  {
+   "content_jaccard": 0.3,
+   "decision": "ball wear and bounce vs durability of old machines; shares only 'old/new'",
+   "neighbour": "Why do older machines sometimes outlast newer ones?",
+   "neighbour_id": "technology-35",
+   "neighbour_source": "dci1v4",
+   "question": "Why do old tennis balls bounce differently from new ones?",
+   "rare_shared": [],
+   "reviewed": true,
+   "topic_id": "b1-sport-05",
+   "wordset_jaccard": 0.2
+  },
+  {
+   "content_jaccard": 0.25,
+   "decision": "glycogen depletion late in a race vs why marathons appeal: different questions (borderline NONE in the semantic review)",
+   "neighbour": "What makes marathon running appealing to people who will never win a race?",
+   "neighbour_id": "sport-02",
+   "neighbour_source": "dci1/v2",
+   "question": "Why do marathon runners often hit a wall late in a race?",
+   "rare_shared": [
+    "marathon",
+    "race"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-sport-09",
+   "wordset_jaccard": 0.1429
+  },
+  {
+   "content_jaccard": 0.25,
+   "decision": "glycogen depletion late in a race vs why marathons appeal: different questions (borderline NONE in the semantic review)",
+   "neighbour": "What makes marathon running appealing to people who will never win a race?",
+   "neighbour_id": "sport-02",
+   "neighbour_source": "dci1v3",
+   "question": "Why do marathon runners often hit a wall late in a race?",
+   "rare_shared": [
+    "marathon",
+    "race"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-sport-09",
+   "wordset_jaccard": 0.1429
+  },
+  {
+   "content_jaccard": 0.3333,
+   "decision": "home and away kit colours vs home advantage in performance; shares only 'teams ... away'",
+   "neighbour": "Why do some teams perform better away from home?",
+   "neighbour_id": "sport-46",
+   "neighbour_source": "dci1v4",
+   "question": "Why do teams wear different colours for home and away games?",
+   "rare_shared": [],
+   "reviewed": true,
+   "topic_id": "b1-sport-35",
+   "wordset_jaccard": 0.3333
+  },
+  {
+   "content_jaccard": 0.2,
+   "decision": "rehearsing set pieces as a team vs the physics of bending a kick: different questions",
+   "neighbour": "Why does a curved run-up help a footballer bend a free kick?",
+   "neighbour_id": "sport-51",
+   "neighbour_source": "dci1v3",
+   "question": "How does a team practise for free kicks and corners?",
+   "rare_shared": [
+    "free",
+    "kick"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-sport-46",
+   "wordset_jaccard": 0.1667
+  },
+  {
+   "content_jaccard": 0.2,
+   "decision": "rehearsing set pieces as a team vs the physics of bending a kick: different questions",
+   "neighbour": "Why does a curved run-up help a footballer bend a free kick?",
+   "neighbour_id": "sport#3",
+   "neighbour_source": "dci1v3/candidates",
+   "question": "How does a team practise for free kicks and corners?",
+   "rare_shared": [
+    "free",
+    "kick"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-sport-46",
+   "wordset_jaccard": 0.1667
+  },
+  {
+   "content_jaccard": 0.2,
+   "decision": "screen glare in sunlight vs how sunscreen works: share only 'bright sunlight'",
+   "neighbour": "How does sunscreen protect skin during a long day in bright sunlight?",
+   "neighbour_id": "everyday-science-13",
+   "neighbour_source": "dci1/v2",
+   "question": "Why are screens so hard to read in bright sunlight?",
+   "rare_shared": [
+    "bright",
+    "sunlight"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-technology-12",
+   "wordset_jaccard": 0.1579
+  },
+  {
+   "content_jaccard": 0.2,
+   "decision": "screen glare in sunlight vs how sunscreen works: share only 'bright sunlight'",
+   "neighbour": "How does sunscreen protect skin during a long day in bright sunlight?",
+   "neighbour_id": "everyday-science-13",
+   "neighbour_source": "dci1v3",
+   "question": "Why are screens so hard to read in bright sunlight?",
+   "rare_shared": [
+    "bright",
+    "sunlight"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-technology-12",
+   "wordset_jaccard": 0.1579
+  },
+  {
+   "content_jaccard": 0.3333,
+   "decision": "national plug standards vs stadium atmospheres; shares only 'differ from one ... to another'",
+   "neighbour": "Why do stadium atmospheres differ so much from one club to another?",
+   "neighbour_id": "sport-41",
+   "neighbour_source": "dci1/v2",
+   "question": "Why do electrical plugs differ from one country to another?",
+   "rare_shared": [],
+   "reviewed": true,
+   "topic_id": "b1-technology-43",
+   "wordset_jaccard": 0.4667
+  },
+  {
+   "content_jaccard": 0.2,
+   "decision": "small favours building trust vs remote working changing trust: related theme, different question",
+   "neighbour": "In what ways does remote working change how trust is built between colleagues?",
+   "neighbour_id": "work-and-organisations-03",
+   "neighbour_source": "dci1/v2",
+   "question": "Why do small favours between colleagues build trust?",
+   "rare_shared": [
+    "colleagu",
+    "trust"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-work-and-organisations-41",
+   "wordset_jaccard": 0.1667
+  },
+  {
+   "content_jaccard": 0.2,
+   "decision": "small favours building trust vs remote working changing trust: related theme, different question",
+   "neighbour": "In what ways does remote working change how trust is built between colleagues?",
+   "neighbour_id": "work-and-organisations-03",
+   "neighbour_source": "dci1v3",
+   "question": "Why do small favours between colleagues build trust?",
+   "rare_shared": [
+    "colleagu",
+    "trust"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-work-and-organisations-41",
+   "wordset_jaccard": 0.1667
+  }
+ ],
+ "flagged_internal": [
+  {
+   "content_jaccard": 0.2,
+   "decision": "loom structure from warp and weft vs building a tapestry image: different weaving questions",
+   "neighbour": "How does a tapestry weaver build a picture thread by thread?",
+   "neighbour_id": "b1-art-and-design-31",
+   "neighbour_source": "batch1",
+   "question": "How does a weaver create patterns from only two sets of threads?",
+   "rare_shared": [
+    "thread",
+    "weav"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-art-and-design-13",
+   "wordset_jaccard": 0.2353
+  },
+  {
+   "content_jaccard": 0.2222,
+   "decision": "potter's wheel vs the spinning wheel for thread: share only 'spinning wheel'",
+   "neighbour": "How did the spinning wheel change work in the household?",
+   "neighbour_id": "b1-history-45",
+   "neighbour_source": "batch1",
+   "question": "How does a potter centre a lump of clay on a spinning wheel?",
+   "rare_shared": [
+    "spinn",
+    "wheel"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-art-and-design-46",
+   "wordset_jaccard": 0.1765
+  },
+  {
+   "content_jaccard": 0.2,
+   "decision": "ice's density anomaly vs a tea bag trapping air: different questions",
+   "neighbour": "Why does a tea bag sink at first and then float?",
+   "neighbour_id": "b1-everyday-science-32",
+   "neighbour_source": "batch1",
+   "question": "Why does ice float on water when most solids sink in their own liquid?",
+   "rare_shared": [
+    "float",
+    "sink"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-everyday-science-05",
+   "wordset_jaccard": 0.1905
+  },
+  {
+   "content_jaccard": 0.25,
+   "decision": "photic sneeze vs screen glare: share only 'bright sunlight'",
+   "neighbour": "Why are screens so hard to read in bright sunlight?",
+   "neighbour_id": "b1-technology-12",
+   "neighbour_source": "batch1",
+   "question": "Why do some people sneeze when they step into bright sunlight?",
+   "rare_shared": [
+    "bright",
+    "sunlight"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-health-and-the-body-41",
+   "wordset_jaccard": 0.1667
+  },
+  {
+   "content_jaccard": 0.2222,
+   "decision": "binocular depth perception vs an ultrasonic parking sensor: share only 'judge distance'",
+   "neighbour": "How does a parking sensor judge the distance to a wall?",
+   "neighbour_id": "b1-technology-40",
+   "neighbour_source": "batch1",
+   "question": "How do two eyes working together judge distance?",
+   "rare_shared": [
+    "distance",
+    "judge"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-health-and-the-body-45",
+   "wordset_jaccard": 0.2
+  },
+  {
+   "content_jaccard": 0.2,
+   "decision": "the sewing machine's history vs how a spin cycle works: share only 'machine' and 'clothes'",
+   "neighbour": "How does a washing machine spin clothes nearly dry?",
+   "neighbour_id": "b1-technology-45",
+   "neighbour_source": "batch1",
+   "question": "How did the sewing machine change the making of clothes at home?",
+   "rare_shared": [
+    "cloth",
+    "machine"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-history-00",
+   "wordset_jaccard": 0.1765
+  },
+  {
+   "content_jaccard": 0.2222,
+   "decision": "wireless charging vs why charging warms a phone: different questions about charging",
+   "neighbour": "Why does a phone get warm while it is charging?",
+   "neighbour_id": "b1-technology-24",
+   "neighbour_source": "batch1",
+   "question": "How does a wireless charger power a phone without a cable?",
+   "rare_shared": [
+    "charg",
+    "phone"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-technology-05",
+   "wordset_jaccard": 0.1875
+  },
+  {
+   "content_jaccard": 0.2222,
+   "decision": "spider webs vs carnivorous plants: different organisms and mechanisms",
+   "neighbour": "How do carnivorous plants catch insects?",
+   "neighbour_id": "b1-the-natural-world-29",
+   "neighbour_source": "batch1",
+   "question": "How do spiders spin webs strong enough to catch insects?",
+   "rare_shared": [
+    "catch",
+    "insect"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-the-natural-world-02",
+   "wordset_jaccard": 0.3333
+  },
+  {
+   "content_jaccard": 0.2222,
+   "decision": "hermit crabs choosing shells vs how crabs moult to grow: different questions",
+   "neighbour": "How do crabs grow when they are covered in a hard shell?",
+   "neighbour_id": "b1-the-natural-world-40",
+   "neighbour_source": "batch1",
+   "question": "How do hermit crabs choose a new shell to move into?",
+   "rare_shared": [
+    "crab",
+    "shell"
+   ],
+   "reviewed": true,
+   "topic_id": "b1-the-natural-world-18",
+   "wordset_jaccard": 0.2778
+  }
+ ],
+ "historical_released": 2096,
+ "historical_sequestered_hashes": 192,
+ "historical_sources": [
+  "dci/v19/task_bank",
+  "dci1/v2",
+  "dci1v3",
+  "dci1v3/candidates",
+  "dci1v4",
+  "dci1v5/calibration_b",
+  "dci1v7/calibration_b_v6"
+ ],
+ "historical_sources_missing": [],
+ "max_jaccard_historical": {
+  "historical": "dci1v4:sport-19",
+  "topic": "b1-art-and-design-45",
+  "value": 0.4706
+ },
+ "max_jaccard_internal": {
+  "a": "b1-history-00",
+  "b": "b1-history-24",
+  "value": 0.4667
+ },
+ "n_topics": 576,
+ "review_file_hash": "f0db4bc763f9f06f1b315fd1df64f19f2d95954df1611f334466b633cbeed419",
+ "schema": "dci.batch1/topic-overlap/v3",
+ "screen": {
+  "content_jaccard": 0.3,
+  "rare_stems": {
+   "max_document_frequency": 6,
+   "min_letters": 4,
+   "min_shared": 2
+  },
+  "wordset_jaccard": 0.5
+ },
+ "semantic_review": {
+  "file_hash": "3b697389e6247d9367118e89ac02f9dd43cb53f961d36bf366ab086b0c493ea5",
+  "findings": 255,
+  "restatements_still_in_bank": []
+ },
+ "sequestered_matches": [],
+ "source_file_hash": "05322ea4aab2747c69831646b592e55ae689cfb577057bdc297dc6d04a6927c2",
+ "unreviewed": []
+}

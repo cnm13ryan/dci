@@ -1,0 +1,2780 @@
+{
+ "allocations": {
+  "current_32_plus_240x64": {
+   "focal_stage1_topics": 32,
+   "max_rows": 30976,
+   "stage2_cap": 240,
+   "stage2_draws": 1,
+   "uniform": 0
+  },
+  "current_32_plus_240x64x2draws": {
+   "focal_stage1_topics": 32,
+   "max_rows": 46336,
+   "stage2_cap": 240,
+   "stage2_draws": 2,
+   "uniform": 0
+  },
+  "current_32_plus_360x64": {
+   "focal_stage1_topics": 32,
+   "max_rows": 38656,
+   "stage2_cap": 360,
+   "stage2_draws": 1,
+   "uniform": 0
+  },
+  "current_32_plus_480x64": {
+   "focal_stage1_topics": 32,
+   "max_rows": 46336,
+   "stage2_cap": 480,
+   "stage2_draws": 1,
+   "uniform": 0
+  },
+  "focal96_plus_240x64": {
+   "focal_stage1_topics": 96,
+   "max_rows": 35584,
+   "stage2_cap": 240,
+   "stage2_draws": 1,
+   "uniform": 0
+  },
+  "focal96_plus_360x64": {
+   "focal_stage1_topics": 96,
+   "max_rows": 43264,
+   "stage2_cap": 360,
+   "stage2_draws": 1,
+   "uniform": 0
+  },
+  "uniform_96_no_stage2": {
+   "focal_stage1_topics": 96,
+   "max_rows": 46336,
+   "stage2_cap": 0,
+   "stage2_draws": 1,
+   "uniform": 96
+  }
+ },
+ "cell_topic_sd": 0.3,
+ "d07_sensitivity": {
+  "n32": {
+   "default": {
+    "n_per_cell": 32,
+    "pilots": 200,
+    "thresholds": {
+     "0.1": {
+      "mean_true_separation": 0.3178,
+      "min_true_separation": 0.281,
+      "pairs": {
+       "10-12": 108,
+       "9-11": 40,
+       "9-12": 52
+      },
+      "selected_share": 1.0
+     },
+     "0.15": {
+      "mean_true_separation": 0.3186,
+      "min_true_separation": 0.281,
+      "pairs": {
+       "10-12": 107,
+       "9-11": 40,
+       "9-12": 53
+      },
+      "selected_share": 1.0
+     },
+     "0.2": {
+      "mean_true_separation": 0.3257,
+      "min_true_separation": 0.281,
+      "pairs": {
+       "10-12": 99,
+       "10-13": 1,
+       "9-11": 38,
+       "9-12": 62
+      },
+      "selected_share": 1.0
+     }
+    },
+    "true_median": {
+     "8": 0.133,
+     "9": 0.284,
+     "10": 0.426,
+     "11": 0.565,
+     "12": 0.707,
+     "13": 0.856
+    }
+   },
+   "plateau": {
+    "n_per_cell": 32,
+    "pilots": 200,
+    "thresholds": {
+     "0.1": {
+      "mean_true_separation": 0.693,
+      "min_true_separation": 0.69,
+      "pairs": {
+       "8-11": 12,
+       "9-11": 6,
+       "none": 182
+      },
+      "selected_share": 0.09
+     },
+     "0.15": {
+      "mean_true_separation": 0.693,
+      "min_true_separation": 0.69,
+      "pairs": {
+       "8-11": 12,
+       "9-11": 6,
+       "none": 182
+      },
+      "selected_share": 0.09
+     },
+     "0.2": {
+      "mean_true_separation": 0.693,
+      "min_true_separation": 0.69,
+      "pairs": {
+       "8-11": 12,
+       "9-11": 6,
+       "none": 182
+      },
+      "selected_share": 0.09
+     }
+    },
+    "true_median": {
+     "8": 0.215,
+     "9": 0.22,
+     "10": 0.225,
+     "11": 0.91,
+     "12": 0.96,
+     "13": 0.977
+    }
+   },
+   "shallow": {
+    "n_per_cell": 32,
+    "pilots": 200,
+    "thresholds": {
+     "0.1": {
+      "mean_true_separation": 0.1522,
+      "min_true_separation": 0.074,
+      "pairs": {
+       "10-12": 9,
+       "10-13": 13,
+       "11-13": 3,
+       "8-10": 2,
+       "8-11": 6,
+       "8-12": 38,
+       "8-13": 82,
+       "9-11": 4,
+       "9-12": 11,
+       "9-13": 26,
+       "none": 6
+      },
+      "selected_share": 0.97
+     },
+     "0.15": {
+      "mean_true_separation": 0.1617,
+      "min_true_separation": 0.074,
+      "pairs": {
+       "10-12": 4,
+       "10-13": 5,
+       "8-11": 5,
+       "8-12": 29,
+       "8-13": 69,
+       "9-12": 6,
+       "9-13": 15,
+       "none": 67
+      },
+      "selected_share": 0.665
+     },
+     "0.2": {
+      "mean_true_separation": 0.1707,
+      "min_true_separation": 0.111,
+      "pairs": {
+       "10-13": 1,
+       "8-11": 2,
+       "8-12": 12,
+       "8-13": 37,
+       "9-12": 1,
+       "9-13": 4,
+       "none": 143
+      },
+      "selected_share": 0.285
+     }
+    },
+    "true_median": {
+     "8": 0.351,
+     "9": 0.388,
+     "10": 0.426,
+     "11": 0.463,
+     "12": 0.5,
+     "13": 0.537
+    }
+   },
+   "steep": {
+    "n_per_cell": 32,
+    "pilots": 200,
+    "thresholds": {
+     "0.1": {
+      "mean_true_separation": 0.3452,
+      "min_true_separation": 0.337,
+      "pairs": {
+       "10-12": 44,
+       "9-11": 148,
+       "9-12": 8
+      },
+      "selected_share": 1.0
+     },
+     "0.15": {
+      "mean_true_separation": 0.3452,
+      "min_true_separation": 0.337,
+      "pairs": {
+       "10-12": 44,
+       "9-11": 148,
+       "9-12": 8
+      },
+      "selected_share": 1.0
+     },
+     "0.2": {
+      "mean_true_separation": 0.3469,
+      "min_true_separation": 0.337,
+      "pairs": {
+       "10-12": 44,
+       "9-11": 146,
+       "9-12": 10
+      },
+      "selected_share": 1.0
+     }
+    },
+    "true_median": {
+     "8": 0.101,
+     "9": 0.284,
+     "10": 0.454,
+     "11": 0.621,
+     "12": 0.795,
+     "13": 0.971
+    }
+   }
+  },
+  "n96": {
+   "default": {
+    "n_per_cell": 96,
+    "pilots": 200,
+    "thresholds": {
+     "0.1": {
+      "mean_true_separation": 0.3284,
+      "min_true_separation": 0.281,
+      "pairs": {
+       "10-12": 126,
+       "9-11": 7,
+       "9-12": 67
+      },
+      "selected_share": 1.0
+     },
+     "0.15": {
+      "mean_true_separation": 0.3284,
+      "min_true_separation": 0.281,
+      "pairs": {
+       "10-12": 126,
+       "9-11": 7,
+       "9-12": 67
+      },
+      "selected_share": 1.0
+     },
+     "0.2": {
+      "mean_true_separation": 0.3306,
+      "min_true_separation": 0.281,
+      "pairs": {
+       "10-12": 123,
+       "9-11": 7,
+       "9-12": 70
+      },
+      "selected_share": 1.0
+     }
+    },
+    "true_median": {
+     "8": 0.133,
+     "9": 0.284,
+     "10": 0.426,
+     "11": 0.565,
+     "12": 0.707,
+     "13": 0.856
+    }
+   },
+   "plateau": {
+    "n_per_cell": 96,
+    "pilots": 200,
+    "thresholds": {
+     "0.1": {
+      "mean_true_separation": 0.6922,
+      "min_true_separation": 0.69,
+      "pairs": {
+       "8-11": 1,
+       "9-11": 1,
+       "none": 198
+      },
+      "selected_share": 0.01
+     },
+     "0.15": {
+      "mean_true_separation": 0.6922,
+      "min_true_separation": 0.69,
+      "pairs": {
+       "8-11": 1,
+       "9-11": 1,
+       "none": 198
+      },
+      "selected_share": 0.01
+     },
+     "0.2": {
+      "mean_true_separation": 0.6922,
+      "min_true_separation": 0.69,
+      "pairs": {
+       "8-11": 1,
+       "9-11": 1,
+       "none": 198
+      },
+      "selected_share": 0.01
+     }
+    },
+    "true_median": {
+     "8": 0.215,
+     "9": 0.22,
+     "10": 0.225,
+     "11": 0.91,
+     "12": 0.96,
+     "13": 0.977
+    }
+   },
+   "shallow": {
+    "n_per_cell": 96,
+    "pilots": 200,
+    "thresholds": {
+     "0.1": {
+      "mean_true_separation": 0.1766,
+      "min_true_separation": 0.111,
+      "pairs": {
+       "10-13": 3,
+       "8-12": 23,
+       "8-13": 149,
+       "9-13": 23,
+       "none": 2
+      },
+      "selected_share": 0.99
+     },
+     "0.15": {
+      "mean_true_separation": 0.1785,
+      "min_true_separation": 0.111,
+      "pairs": {
+       "10-13": 1,
+       "8-12": 13,
+       "8-13": 134,
+       "9-12": 2,
+       "9-13": 16,
+       "none": 34
+      },
+      "selected_share": 0.83
+     },
+     "0.2": {
+      "mean_true_separation": 0.1811,
+      "min_true_separation": 0.149,
+      "pairs": {
+       "8-12": 2,
+       "8-13": 18,
+       "9-13": 1,
+       "none": 179
+      },
+      "selected_share": 0.105
+     }
+    },
+    "true_median": {
+     "8": 0.351,
+     "9": 0.388,
+     "10": 0.426,
+     "11": 0.463,
+     "12": 0.5,
+     "13": 0.537
+    }
+   },
+   "steep": {
+    "n_per_cell": 96,
+    "pilots": 200,
+    "thresholds": {
+     "0.1": {
+      "mean_true_separation": 0.3444,
+      "min_true_separation": 0.337,
+      "pairs": {
+       "10-12": 52,
+       "9-11": 141,
+       "9-12": 7
+      },
+      "selected_share": 1.0
+     },
+     "0.15": {
+      "mean_true_separation": 0.3444,
+      "min_true_separation": 0.337,
+      "pairs": {
+       "10-12": 52,
+       "9-11": 141,
+       "9-12": 7
+      },
+      "selected_share": 1.0
+     },
+     "0.2": {
+      "mean_true_separation": 0.3444,
+      "min_true_separation": 0.337,
+      "pairs": {
+       "10-12": 52,
+       "9-11": 141,
+       "9-12": 7
+      },
+      "selected_share": 1.0
+     }
+    },
+    "true_median": {
+     "8": 0.101,
+     "9": 0.284,
+     "10": 0.454,
+     "11": 0.621,
+     "12": 0.795,
+     "13": 0.971
+    }
+   }
+  }
+ },
+ "d14_validation": {
+  "boundary_cluster": {
+   "allocation": "current_32_plus_240x64",
+   "bootstrap_replicates": 60,
+   "feasible_and_bootstrap_share_at_least": {
+    "0.5": 1.0,
+    "0.65": 1.0,
+    "0.8": 1.0
+   },
+   "feasible_and_stable_by_threshold": {
+    "0.5": 1.0,
+    "0.6": 0.85,
+    "0.7": 0.025,
+    "0.8": 0.0
+   },
+   "feasible_and_stable_share": 1.0,
+   "mean_bootstrap_feasible_share": 0.9783,
+   "mean_unstable_memberships": 952.975,
+   "pilots": 40,
+   "point_feasible_share": 1.0,
+   "true_status": "FEASIBLE"
+  },
+  "frame_differences": {
+   "allocation": "current_32_plus_240x64",
+   "bootstrap_replicates": 60,
+   "feasible_and_bootstrap_share_at_least": {
+    "0.5": 1.0,
+    "0.65": 1.0,
+    "0.8": 0.975
+   },
+   "feasible_and_stable_by_threshold": {
+    "0.5": 1.0,
+    "0.6": 0.75,
+    "0.7": 0.025,
+    "0.8": 0.0
+   },
+   "feasible_and_stable_share": 1.0,
+   "mean_bootstrap_feasible_share": 0.9512,
+   "mean_unstable_memberships": 862.325,
+   "pilots": 40,
+   "point_feasible_share": 1.0,
+   "true_status": "FEASIBLE"
+  },
+  "low_followability": {
+   "allocation": "current_32_plus_240x64",
+   "bootstrap_replicates": 60,
+   "feasible_and_bootstrap_share_at_least": {
+    "0.5": 0.825,
+    "0.65": 0.725,
+    "0.8": 0.425
+   },
+   "feasible_and_stable_by_threshold": {
+    "0.5": 0.75,
+    "0.6": 0.5,
+    "0.7": 0.075,
+    "0.8": 0.0
+   },
+   "feasible_and_stable_share": 0.75,
+   "mean_bootstrap_feasible_share": 0.7454,
+   "mean_unstable_memberships": 726.8,
+   "pilots": 40,
+   "point_feasible_share": 0.825,
+   "true_status": "FEASIBLE"
+  },
+  "model_differences": {
+   "allocation": "current_32_plus_240x64",
+   "bootstrap_replicates": 60,
+   "feasible_and_bootstrap_share_at_least": {
+    "0.5": 1.0,
+    "0.65": 1.0,
+    "0.8": 1.0
+   },
+   "feasible_and_stable_by_threshold": {
+    "0.5": 1.0,
+    "0.6": 0.875,
+    "0.7": 0.15,
+    "0.8": 0.0
+   },
+   "feasible_and_stable_share": 1.0,
+   "mean_bootstrap_feasible_share": 0.9717,
+   "mean_unstable_memberships": 793.2,
+   "pilots": 40,
+   "point_feasible_share": 1.0,
+   "true_status": "FEASIBLE"
+  },
+  "moderate": {
+   "allocation": "current_32_plus_240x64",
+   "bootstrap_replicates": 60,
+   "feasible_and_bootstrap_share_at_least": {
+    "0.5": 1.0,
+    "0.65": 1.0,
+    "0.8": 1.0
+   },
+   "feasible_and_stable_by_threshold": {
+    "0.5": 1.0,
+    "0.6": 0.775,
+    "0.7": 0.0,
+    "0.8": 0.0
+   },
+   "feasible_and_stable_share": 1.0,
+   "mean_bootstrap_feasible_share": 0.9604,
+   "mean_unstable_memberships": 906.7,
+   "pilots": 40,
+   "point_feasible_share": 1.0,
+   "true_status": "FEASIBLE"
+  },
+  "other_operation_harder": {
+   "allocation": "current_32_plus_240x64",
+   "bootstrap_replicates": 60,
+   "feasible_and_bootstrap_share_at_least": {
+    "0.5": 0.75,
+    "0.65": 0.75,
+    "0.8": 0.7
+   },
+   "feasible_and_stable_by_threshold": {
+    "0.5": 0.725,
+    "0.6": 0.275,
+    "0.7": 0.0,
+    "0.8": 0.0
+   },
+   "feasible_and_stable_share": 0.725,
+   "mean_bootstrap_feasible_share": 0.8975,
+   "mean_unstable_memberships": 871,
+   "pilots": 40,
+   "point_feasible_share": 0.75,
+   "true_status": "INFEASIBLE_REVISION_REQUIRED"
+  }
+ },
+ "note": "SIMULATED: invented compliance surfaces passed through the real selection code; not an empirical finding",
+ "reps": 100,
+ "schema": "dci.batch1/calibration-precision/v1",
+ "seconds": 283.3,
+ "seed": 20261019,
+ "surfaces": {
+  "boundary_cluster": {
+   "current_32_plus_240x64": {
+    "a_agrees": 0.98,
+    "a_counts": {
+     "A.however.2": 1,
+     "A.however.4": 98,
+     "A.however.6": 1
+    },
+    "b_agrees": 0.93,
+    "b_counts": {
+     "10-12": 93,
+     "9-12": 7
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.01,
+    "feasible_share": 0.99,
+    "max_rows": 30976,
+    "mean_refined_cells": 240,
+    "membership": {
+     "eligibility_errors_per_pilot": 1.35,
+     "far_from_boundary_error_rate": 0.0561,
+     "g1_false_exclusions_per_config": 5.1875,
+     "g1_false_inclusions_per_config": 3.4119,
+     "g1_jaccard": 0.4255,
+     "g3_jaccard": 0.4339,
+     "g5_jaccard": 0.4656,
+     "near_boundary_error_rate": 0.4357,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 3.99,
+      "gemma-3n-e4b-it": 3.99,
+      "qwen3-4b": 4,
+      "qwen3-4b-instruct-2507": 4
+     },
+     "supported_mean": {
+      "P1": 15.98,
+      "P2": 15.48,
+      "P3": 15.76
+     },
+     "supported_sd": {
+      "P1": 0.14,
+      "P2": 0.974,
+      "P3": 0.814
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "FEASIBLE"
+    }
+   },
+   "current_32_plus_240x64x2draws": {
+    "a_agrees": 0.99,
+    "a_counts": {
+     "A.however.2": 1,
+     "A.however.4": 99
+    },
+    "b_agrees": 0.83,
+    "b_counts": {
+     "10-12": 83,
+     "9-12": 17
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.0,
+    "feasible_share": 1.0,
+    "max_rows": 46336,
+    "mean_refined_cells": 240,
+    "membership": {
+     "eligibility_errors_per_pilot": 1.25,
+     "far_from_boundary_error_rate": 0.046,
+     "g1_false_exclusions_per_config": 4.6487,
+     "g1_false_inclusions_per_config": 3.5463,
+     "g1_jaccard": 0.4572,
+     "g3_jaccard": 0.4689,
+     "g5_jaccard": 0.5047,
+     "near_boundary_error_rate": 0.4091,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 4,
+      "gemma-3n-e4b-it": 4,
+      "qwen3-4b": 3.99,
+      "qwen3-4b-instruct-2507": 4
+     },
+     "supported_mean": {
+      "P1": 15.99,
+      "P2": 15.69,
+      "P3": 15.94
+     },
+     "supported_sd": {
+      "P1": 0.099,
+      "P2": 0.717,
+      "P3": 0.341
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "FEASIBLE"
+    }
+   },
+   "current_32_plus_360x64": {
+    "a_agrees": 0.99,
+    "a_counts": {
+     "A.however.2": 1,
+     "A.however.4": 99
+    },
+    "b_agrees": 0.87,
+    "b_counts": {
+     "10-12": 87,
+     "10-13": 3,
+     "9-12": 10
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.01,
+    "feasible_share": 0.99,
+    "max_rows": 38656,
+    "mean_refined_cells": 360,
+    "membership": {
+     "eligibility_errors_per_pilot": 1.44,
+     "far_from_boundary_error_rate": 0.0478,
+     "g1_false_exclusions_per_config": 4.8419,
+     "g1_false_inclusions_per_config": 3.4394,
+     "g1_jaccard": 0.4477,
+     "g3_jaccard": 0.4613,
+     "g5_jaccard": 0.496,
+     "near_boundary_error_rate": 0.4129,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 3.99,
+      "gemma-3n-e4b-it": 3.99,
+      "qwen3-4b": 4,
+      "qwen3-4b-instruct-2507": 4
+     },
+     "supported_mean": {
+      "P1": 15.98,
+      "P2": 15.68,
+      "P3": 15.8
+     },
+     "supported_sd": {
+      "P1": 0.14,
+      "P2": 0.773,
+      "P3": 0.6
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "FEASIBLE"
+    }
+   },
+   "current_32_plus_480x64": {
+    "a_agrees": 0.99,
+    "a_counts": {
+     "A.however.2": 1,
+     "A.however.4": 99
+    },
+    "b_agrees": 0.86,
+    "b_counts": {
+     "10-12": 86,
+     "10-13": 1,
+     "9-12": 13
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.0,
+    "feasible_share": 1.0,
+    "max_rows": 46336,
+    "mean_refined_cells": 446.09,
+    "membership": {
+     "eligibility_errors_per_pilot": 1.38,
+     "far_from_boundary_error_rate": 0.0398,
+     "g1_false_exclusions_per_config": 4.645,
+     "g1_false_inclusions_per_config": 3.4725,
+     "g1_jaccard": 0.4601,
+     "g3_jaccard": 0.4738,
+     "g5_jaccard": 0.5115,
+     "near_boundary_error_rate": 0.4042,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 4,
+      "gemma-3n-e4b-it": 4,
+      "qwen3-4b": 4,
+      "qwen3-4b-instruct-2507": 3.99
+     },
+     "supported_mean": {
+      "P1": 15.99,
+      "P2": 15.77,
+      "P3": 15.94
+     },
+     "supported_sd": {
+      "P1": 0.099,
+      "P2": 0.63,
+      "P3": 0.341
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "FEASIBLE"
+    }
+   },
+   "focal96_plus_240x64": {
+    "a_agrees": 0.98,
+    "a_counts": {
+     "A.however.4": 98,
+     "A.however.6": 2
+    },
+    "b_agrees": 0.94,
+    "b_counts": {
+     "10-12": 94,
+     "9-11": 2,
+     "9-12": 4
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.0,
+    "feasible_share": 1.0,
+    "max_rows": 35584,
+    "mean_refined_cells": 240,
+    "membership": {
+     "eligibility_errors_per_pilot": 1.32,
+     "far_from_boundary_error_rate": 0.0526,
+     "g1_false_exclusions_per_config": 5.0494,
+     "g1_false_inclusions_per_config": 3.4244,
+     "g1_jaccard": 0.4343,
+     "g3_jaccard": 0.4477,
+     "g5_jaccard": 0.4829,
+     "near_boundary_error_rate": 0.4227,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 4,
+      "gemma-3n-e4b-it": 3.98,
+      "qwen3-4b": 3.99,
+      "qwen3-4b-instruct-2507": 4
+     },
+     "supported_mean": {
+      "P1": 15.97,
+      "P2": 15.75,
+      "P3": 15.86
+     },
+     "supported_sd": {
+      "P1": 0.222,
+      "P2": 0.654,
+      "P3": 0.51
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "FEASIBLE"
+    }
+   },
+   "focal96_plus_360x64": {
+    "a_agrees": 1.0,
+    "a_counts": {
+     "A.however.4": 100
+    },
+    "b_agrees": 0.91,
+    "b_counts": {
+     "10-12": 91,
+     "9-11": 1,
+     "9-12": 8
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.0,
+    "feasible_share": 1.0,
+    "max_rows": 43264,
+    "mean_refined_cells": 360,
+    "membership": {
+     "eligibility_errors_per_pilot": 1.22,
+     "far_from_boundary_error_rate": 0.042,
+     "g1_false_exclusions_per_config": 4.7619,
+     "g1_false_inclusions_per_config": 3.4581,
+     "g1_jaccard": 0.4534,
+     "g3_jaccard": 0.4647,
+     "g5_jaccard": 0.5039,
+     "near_boundary_error_rate": 0.4097,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 4,
+      "gemma-3n-e4b-it": 4,
+      "qwen3-4b": 4,
+      "qwen3-4b-instruct-2507": 4
+     },
+     "supported_mean": {
+      "P1": 16,
+      "P2": 15.84,
+      "P3": 15.88
+     },
+     "supported_sd": {
+      "P1": 0.0,
+      "P2": 0.543,
+      "P3": 0.475
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "FEASIBLE"
+    }
+   },
+   "uniform_96_no_stage2": {
+    "a_agrees": 1.0,
+    "a_counts": {
+     "A.however.4": 100
+    },
+    "b_agrees": 0.91,
+    "b_counts": {
+     "10-12": 91,
+     "10-13": 1,
+     "9-11": 1,
+     "9-12": 7
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.0,
+    "feasible_share": 1.0,
+    "max_rows": 46336,
+    "mean_refined_cells": 0,
+    "membership": {
+     "eligibility_errors_per_pilot": 1.48,
+     "far_from_boundary_error_rate": 0.0386,
+     "g1_false_exclusions_per_config": 4.5994,
+     "g1_false_inclusions_per_config": 3.46,
+     "g1_jaccard": 0.4643,
+     "g3_jaccard": 0.4744,
+     "g5_jaccard": 0.5134,
+     "near_boundary_error_rate": 0.4026,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 4,
+      "gemma-3n-e4b-it": 4,
+      "qwen3-4b": 4,
+      "qwen3-4b-instruct-2507": 4
+     },
+     "supported_mean": {
+      "P1": 16,
+      "P2": 15.78,
+      "P3": 15.94
+     },
+     "supported_sd": {
+      "P1": 0.0,
+      "P2": 0.626,
+      "P3": 0.341
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "FEASIBLE"
+    }
+   }
+  },
+  "frame_differences": {
+   "current_32_plus_240x64": {
+    "a_agrees": 1.0,
+    "a_counts": {
+     "A.however.4": 100
+    },
+    "b_agrees": 0.88,
+    "b_counts": {
+     "10-12": 88,
+     "9-11": 1,
+     "9-12": 11
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.02,
+    "feasible_share": 0.98,
+    "max_rows": 30976,
+    "mean_refined_cells": 240,
+    "membership": {
+     "eligibility_errors_per_pilot": 1.64,
+     "far_from_boundary_error_rate": 0.1297,
+     "g1_false_exclusions_per_config": 3.1713,
+     "g1_false_inclusions_per_config": 2.7331,
+     "g1_jaccard": 0.5551,
+     "g3_jaccard": 0.5487,
+     "g5_jaccard": 0.5587,
+     "near_boundary_error_rate": 0.3793,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 4,
+      "gemma-3n-e4b-it": 4,
+      "qwen3-4b": 4,
+      "qwen3-4b-instruct-2507": 4
+     },
+     "supported_mean": {
+      "P1": 16,
+      "P2": 14.68,
+      "P3": 15.8
+     },
+     "supported_sd": {
+      "P1": 0.0,
+      "P2": 1.605,
+      "P3": 0.6
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "FEASIBLE"
+    }
+   },
+   "current_32_plus_240x64x2draws": {
+    "a_agrees": 0.99,
+    "a_counts": {
+     "A.however.2": 1,
+     "A.however.4": 99
+    },
+    "b_agrees": 0.89,
+    "b_counts": {
+     "10-12": 89,
+     "9-12": 11
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.01,
+    "feasible_share": 0.99,
+    "max_rows": 46336,
+    "mean_refined_cells": 240,
+    "membership": {
+     "eligibility_errors_per_pilot": 1.39,
+     "far_from_boundary_error_rate": 0.098,
+     "g1_false_exclusions_per_config": 2.5537,
+     "g1_false_inclusions_per_config": 2.4769,
+     "g1_jaccard": 0.6143,
+     "g3_jaccard": 0.605,
+     "g5_jaccard": 0.6104,
+     "near_boundary_error_rate": 0.3598,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 3.99,
+      "gemma-3n-e4b-it": 4,
+      "qwen3-4b": 4,
+      "qwen3-4b-instruct-2507": 4
+     },
+     "supported_mean": {
+      "P1": 15.99,
+      "P2": 15.29,
+      "P3": 15.82
+     },
+     "supported_sd": {
+      "P1": 0.099,
+      "P2": 1.143,
+      "P3": 0.572
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "FEASIBLE"
+    }
+   },
+   "current_32_plus_360x64": {
+    "a_agrees": 0.98,
+    "a_counts": {
+     "A.however.2": 1,
+     "A.however.4": 98,
+     "A.however.6": 1
+    },
+    "b_agrees": 0.85,
+    "b_counts": {
+     "10-12": 85,
+     "9-11": 1,
+     "9-12": 14
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.01,
+    "feasible_share": 0.99,
+    "max_rows": 38656,
+    "mean_refined_cells": 360,
+    "membership": {
+     "eligibility_errors_per_pilot": 1.63,
+     "far_from_boundary_error_rate": 0.1013,
+     "g1_false_exclusions_per_config": 2.6756,
+     "g1_false_inclusions_per_config": 2.4831,
+     "g1_jaccard": 0.6059,
+     "g3_jaccard": 0.6,
+     "g5_jaccard": 0.6076,
+     "near_boundary_error_rate": 0.3574,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 4,
+      "gemma-3n-e4b-it": 3.99,
+      "qwen3-4b": 4,
+      "qwen3-4b-instruct-2507": 3.99
+     },
+     "supported_mean": {
+      "P1": 15.98,
+      "P2": 15.28,
+      "P3": 15.82
+     },
+     "supported_sd": {
+      "P1": 0.14,
+      "P2": 1.175,
+      "P3": 0.572
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "FEASIBLE"
+    }
+   },
+   "current_32_plus_480x64": {
+    "a_agrees": 1.0,
+    "a_counts": {
+     "A.however.4": 100
+    },
+    "b_agrees": 0.89,
+    "b_counts": {
+     "10-12": 89,
+     "10-13": 1,
+     "9-11": 1,
+     "9-12": 9
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.0,
+    "feasible_share": 1.0,
+    "max_rows": 46336,
+    "mean_refined_cells": 441.43,
+    "membership": {
+     "eligibility_errors_per_pilot": 1.3,
+     "far_from_boundary_error_rate": 0.0965,
+     "g1_false_exclusions_per_config": 2.5444,
+     "g1_false_inclusions_per_config": 2.62,
+     "g1_jaccard": 0.6145,
+     "g3_jaccard": 0.6033,
+     "g5_jaccard": 0.6125,
+     "near_boundary_error_rate": 0.3704,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 4,
+      "gemma-3n-e4b-it": 4,
+      "qwen3-4b": 4,
+      "qwen3-4b-instruct-2507": 4
+     },
+     "supported_mean": {
+      "P1": 16,
+      "P2": 15.42,
+      "P3": 15.86
+     },
+     "supported_sd": {
+      "P1": 0.0,
+      "P2": 1.031,
+      "P3": 0.51
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "FEASIBLE"
+    }
+   },
+   "focal96_plus_240x64": {
+    "a_agrees": 0.99,
+    "a_counts": {
+     "A.however.2": 1,
+     "A.however.4": 99
+    },
+    "b_agrees": 0.89,
+    "b_counts": {
+     "10-12": 89,
+     "9-11": 2,
+     "9-12": 9
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.0,
+    "feasible_share": 1.0,
+    "max_rows": 35584,
+    "mean_refined_cells": 240,
+    "membership": {
+     "eligibility_errors_per_pilot": 1.69,
+     "far_from_boundary_error_rate": 0.113,
+     "g1_false_exclusions_per_config": 2.8494,
+     "g1_false_inclusions_per_config": 2.6069,
+     "g1_jaccard": 0.5885,
+     "g3_jaccard": 0.5803,
+     "g5_jaccard": 0.5859,
+     "near_boundary_error_rate": 0.3739,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 4,
+      "gemma-3n-e4b-it": 4,
+      "qwen3-4b": 3.99,
+      "qwen3-4b-instruct-2507": 4
+     },
+     "supported_mean": {
+      "P1": 15.99,
+      "P2": 15.35,
+      "P3": 15.86
+     },
+     "supported_sd": {
+      "P1": 0.099,
+      "P2": 1.052,
+      "P3": 0.51
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "FEASIBLE"
+    }
+   },
+   "focal96_plus_360x64": {
+    "a_agrees": 1.0,
+    "a_counts": {
+     "A.however.4": 100
+    },
+    "b_agrees": 0.92,
+    "b_counts": {
+     "10-12": 92,
+     "9-12": 8
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.0,
+    "feasible_share": 1.0,
+    "max_rows": 43264,
+    "mean_refined_cells": 360,
+    "membership": {
+     "eligibility_errors_per_pilot": 1.55,
+     "far_from_boundary_error_rate": 0.0961,
+     "g1_false_exclusions_per_config": 2.4537,
+     "g1_false_inclusions_per_config": 2.4925,
+     "g1_jaccard": 0.6241,
+     "g3_jaccard": 0.6148,
+     "g5_jaccard": 0.6211,
+     "near_boundary_error_rate": 0.3494,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 4,
+      "gemma-3n-e4b-it": 4,
+      "qwen3-4b": 4,
+      "qwen3-4b-instruct-2507": 4
+     },
+     "supported_mean": {
+      "P1": 16,
+      "P2": 15.56,
+      "P3": 15.86
+     },
+     "supported_sd": {
+      "P1": 0.0,
+      "P2": 0.92,
+      "P3": 0.51
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "FEASIBLE"
+    }
+   },
+   "uniform_96_no_stage2": {
+    "a_agrees": 1.0,
+    "a_counts": {
+     "A.however.4": 100
+    },
+    "b_agrees": 0.9,
+    "b_counts": {
+     "10-12": 90,
+     "9-11": 2,
+     "9-12": 8
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.0,
+    "feasible_share": 1.0,
+    "max_rows": 46336,
+    "mean_refined_cells": 0,
+    "membership": {
+     "eligibility_errors_per_pilot": 1.49,
+     "far_from_boundary_error_rate": 0.0965,
+     "g1_false_exclusions_per_config": 2.5156,
+     "g1_false_inclusions_per_config": 2.5288,
+     "g1_jaccard": 0.6183,
+     "g3_jaccard": 0.6089,
+     "g5_jaccard": 0.6175,
+     "near_boundary_error_rate": 0.3566,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 4,
+      "gemma-3n-e4b-it": 4,
+      "qwen3-4b": 4,
+      "qwen3-4b-instruct-2507": 4
+     },
+     "supported_mean": {
+      "P1": 16,
+      "P2": 15.48,
+      "P3": 15.86
+     },
+     "supported_sd": {
+      "P1": 0.0,
+      "P2": 1.081,
+      "P3": 0.51
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "FEASIBLE"
+    }
+   }
+  },
+  "low_followability": {
+   "current_32_plus_240x64": {
+    "a_agrees": 0.52,
+    "a_counts": {
+     "A.however.4": 52,
+     "A.however.6": 48
+    },
+    "b_agrees": 0.83,
+    "b_counts": {
+     "10-12": 83,
+     "9-12": 17
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.26,
+    "feasible_share": 0.74,
+    "max_rows": 30976,
+    "mean_refined_cells": 240,
+    "membership": {
+     "eligibility_errors_per_pilot": 0.53,
+     "far_from_boundary_error_rate": 0.091,
+     "g1_false_exclusions_per_config": 2.0706,
+     "g1_false_inclusions_per_config": 1.7481,
+     "g1_jaccard": 0.575,
+     "g3_jaccard": 0.5599,
+     "g5_jaccard": 0.5068,
+     "near_boundary_error_rate": 0.3905,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 3.88,
+      "gemma-3n-e4b-it": 3.56,
+      "qwen3-4b": 3.74,
+      "qwen3-4b-instruct-2507": 3.83
+     },
+     "supported_mean": {
+      "P1": 15.01,
+      "P2": 10.01,
+      "P3": 13.23
+     },
+     "supported_sd": {
+      "P1": 1.162,
+      "P2": 2.632,
+      "P3": 2.029
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "FEASIBLE"
+    }
+   },
+   "current_32_plus_240x64x2draws": {
+    "a_agrees": 0.82,
+    "a_counts": {
+     "A.however.4": 82,
+     "A.however.6": 18
+    },
+    "b_agrees": 0.94,
+    "b_counts": {
+     "10-12": 94,
+     "9-12": 6
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.3,
+    "feasible_share": 0.7,
+    "max_rows": 46336,
+    "mean_refined_cells": 240,
+    "membership": {
+     "eligibility_errors_per_pilot": 0.4,
+     "far_from_boundary_error_rate": 0.0703,
+     "g1_false_exclusions_per_config": 1.6075,
+     "g1_false_inclusions_per_config": 1.7331,
+     "g1_jaccard": 0.6311,
+     "g3_jaccard": 0.6208,
+     "g5_jaccard": 0.5687,
+     "near_boundary_error_rate": 0.3681,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 3.95,
+      "gemma-3n-e4b-it": 3.9,
+      "qwen3-4b": 3.91,
+      "qwen3-4b-instruct-2507": 3.92
+     },
+     "supported_mean": {
+      "P1": 15.68,
+      "P2": 11.9,
+      "P3": 13.75
+     },
+     "supported_sd": {
+      "P1": 0.705,
+      "P2": 2.369,
+      "P3": 1.851
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "FEASIBLE"
+    }
+   },
+   "current_32_plus_360x64": {
+    "a_agrees": 0.69,
+    "a_counts": {
+     "A.however.4": 69,
+     "A.however.6": 31
+    },
+    "b_agrees": 0.91,
+    "b_counts": {
+     "10-12": 91,
+     "9-11": 1,
+     "9-12": 8
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.39,
+    "feasible_share": 0.61,
+    "max_rows": 38656,
+    "mean_refined_cells": 360,
+    "membership": {
+     "eligibility_errors_per_pilot": 0.44,
+     "far_from_boundary_error_rate": 0.0647,
+     "g1_false_exclusions_per_config": 1.6006,
+     "g1_false_inclusions_per_config": 1.5506,
+     "g1_jaccard": 0.6468,
+     "g3_jaccard": 0.6283,
+     "g5_jaccard": 0.5751,
+     "near_boundary_error_rate": 0.3709,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 3.88,
+      "gemma-3n-e4b-it": 3.79,
+      "qwen3-4b": 3.77,
+      "qwen3-4b-instruct-2507": 3.91
+     },
+     "supported_mean": {
+      "P1": 15.35,
+      "P2": 10.93,
+      "P3": 12.73
+     },
+     "supported_sd": {
+      "P1": 1.135,
+      "P2": 2.616,
+      "P3": 2.258
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "FEASIBLE"
+    }
+   },
+   "current_32_plus_480x64": {
+    "a_agrees": 0.68,
+    "a_counts": {
+     "A.however.4": 68,
+     "A.however.6": 32
+    },
+    "b_agrees": 0.88,
+    "b_counts": {
+     "10-12": 88,
+     "9-12": 12
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.35,
+    "feasible_share": 0.65,
+    "max_rows": 46336,
+    "mean_refined_cells": 449.19,
+    "membership": {
+     "eligibility_errors_per_pilot": 0.42,
+     "far_from_boundary_error_rate": 0.0631,
+     "g1_false_exclusions_per_config": 1.5537,
+     "g1_false_inclusions_per_config": 1.53,
+     "g1_jaccard": 0.6541,
+     "g3_jaccard": 0.6354,
+     "g5_jaccard": 0.5812,
+     "near_boundary_error_rate": 0.3665,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 3.88,
+      "gemma-3n-e4b-it": 3.79,
+      "qwen3-4b": 3.76,
+      "qwen3-4b-instruct-2507": 3.92
+     },
+     "supported_mean": {
+      "P1": 15.35,
+      "P2": 10.96,
+      "P3": 12.83
+     },
+     "supported_sd": {
+      "P1": 1.043,
+      "P2": 2.565,
+      "P3": 2.126
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "FEASIBLE"
+    }
+   },
+   "focal96_plus_240x64": {
+    "a_agrees": 0.66,
+    "a_counts": {
+     "A.however.4": 66,
+     "A.however.6": 34
+    },
+    "b_agrees": 0.89,
+    "b_counts": {
+     "10-12": 89,
+     "9-11": 1,
+     "9-12": 10
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.34,
+    "feasible_share": 0.66,
+    "max_rows": 35584,
+    "mean_refined_cells": 240,
+    "membership": {
+     "eligibility_errors_per_pilot": 0.41,
+     "far_from_boundary_error_rate": 0.0763,
+     "g1_false_exclusions_per_config": 1.7806,
+     "g1_false_inclusions_per_config": 1.6481,
+     "g1_jaccard": 0.62,
+     "g3_jaccard": 0.6056,
+     "g5_jaccard": 0.5468,
+     "near_boundary_error_rate": 0.3768,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 3.91,
+      "gemma-3n-e4b-it": 3.72,
+      "qwen3-4b": 3.81,
+      "qwen3-4b-instruct-2507": 3.85
+     },
+     "supported_mean": {
+      "P1": 15.29,
+      "P2": 10.36,
+      "P3": 12.93
+     },
+     "supported_sd": {
+      "P1": 1.107,
+      "P2": 2.504,
+      "P3": 2.295
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "FEASIBLE"
+    }
+   },
+   "focal96_plus_360x64": {
+    "a_agrees": 0.62,
+    "a_counts": {
+     "A.however.4": 62,
+     "A.however.6": 38
+    },
+    "b_agrees": 0.94,
+    "b_counts": {
+     "10-12": 94,
+     "10-13": 1,
+     "9-12": 5
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.32,
+    "feasible_share": 0.68,
+    "max_rows": 43264,
+    "mean_refined_cells": 360,
+    "membership": {
+     "eligibility_errors_per_pilot": 0.44,
+     "far_from_boundary_error_rate": 0.064,
+     "g1_false_exclusions_per_config": 1.5256,
+     "g1_false_inclusions_per_config": 1.5775,
+     "g1_jaccard": 0.6538,
+     "g3_jaccard": 0.6395,
+     "g5_jaccard": 0.5827,
+     "near_boundary_error_rate": 0.3653,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 3.85,
+      "gemma-3n-e4b-it": 3.8,
+      "qwen3-4b": 3.74,
+      "qwen3-4b-instruct-2507": 3.83
+     },
+     "supported_mean": {
+      "P1": 15.22,
+      "P2": 11.19,
+      "P3": 13.15
+     },
+     "supported_sd": {
+      "P1": 1.101,
+      "P2": 2.652,
+      "P3": 2.051
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "FEASIBLE"
+    }
+   },
+   "uniform_96_no_stage2": {
+    "a_agrees": 0.63,
+    "a_counts": {
+     "A.however.4": 63,
+     "A.however.6": 37
+    },
+    "b_agrees": 0.88,
+    "b_counts": {
+     "10-12": 88,
+     "9-11": 1,
+     "9-12": 11
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.27,
+    "feasible_share": 0.73,
+    "max_rows": 46336,
+    "mean_refined_cells": 0,
+    "membership": {
+     "eligibility_errors_per_pilot": 0.51,
+     "far_from_boundary_error_rate": 0.0638,
+     "g1_false_exclusions_per_config": 1.6013,
+     "g1_false_inclusions_per_config": 1.4631,
+     "g1_jaccard": 0.6523,
+     "g3_jaccard": 0.637,
+     "g5_jaccard": 0.5781,
+     "near_boundary_error_rate": 0.3622,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 3.78,
+      "gemma-3n-e4b-it": 3.73,
+      "qwen3-4b": 3.81,
+      "qwen3-4b-instruct-2507": 3.85
+     },
+     "supported_mean": {
+      "P1": 15.17,
+      "P2": 10.87,
+      "P3": 13.08
+     },
+     "supported_sd": {
+      "P1": 1.123,
+      "P2": 2.419,
+      "P3": 2.176
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "FEASIBLE"
+    }
+   }
+  },
+  "model_differences": {
+   "current_32_plus_240x64": {
+    "a_agrees": 0.99,
+    "a_counts": {
+     "A.however.2": 1,
+     "A.however.4": 99
+    },
+    "b_agrees": 0.8,
+    "b_counts": {
+     "10-12": 1,
+     "8-10": 2,
+     "8-11": 17,
+     "9-11": 80
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.01,
+    "feasible_share": 0.99,
+    "max_rows": 30976,
+    "mean_refined_cells": 240,
+    "membership": {
+     "eligibility_errors_per_pilot": 0,
+     "far_from_boundary_error_rate": 0.1232,
+     "g1_false_exclusions_per_config": 2.3331,
+     "g1_false_inclusions_per_config": 3.0425,
+     "g1_jaccard": 0.5432,
+     "g3_jaccard": 0.5279,
+     "g5_jaccard": 0.5455,
+     "near_boundary_error_rate": 0.3806,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 3.96,
+      "gemma-3n-e4b-it": 4,
+      "qwen3-4b": 4,
+      "qwen3-4b-instruct-2507": 4
+     },
+     "supported_mean": {
+      "P1": 15.96,
+      "P2": 15.2,
+      "P3": 15.74
+     },
+     "supported_sd": {
+      "P1": 0.28,
+      "P2": 1.265,
+      "P3": 0.73
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      9,
+      11
+     ],
+     "status": "FEASIBLE"
+    }
+   },
+   "current_32_plus_240x64x2draws": {
+    "a_agrees": 1.0,
+    "a_counts": {
+     "A.however.4": 100
+    },
+    "b_agrees": 0.8,
+    "b_counts": {
+     "10-12": 3,
+     "8-10": 1,
+     "8-11": 16,
+     "9-11": 80
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.0,
+    "feasible_share": 1.0,
+    "max_rows": 46336,
+    "mean_refined_cells": 240,
+    "membership": {
+     "eligibility_errors_per_pilot": 0,
+     "far_from_boundary_error_rate": 0.0898,
+     "g1_false_exclusions_per_config": 1.9062,
+     "g1_false_inclusions_per_config": 2.9331,
+     "g1_jaccard": 0.5857,
+     "g3_jaccard": 0.5756,
+     "g5_jaccard": 0.5953,
+     "near_boundary_error_rate": 0.3632,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 4,
+      "gemma-3n-e4b-it": 4,
+      "qwen3-4b": 4,
+      "qwen3-4b-instruct-2507": 3.99
+     },
+     "supported_mean": {
+      "P1": 15.99,
+      "P2": 15.49,
+      "P3": 15.96
+     },
+     "supported_sd": {
+      "P1": 0.099,
+      "P2": 0.954,
+      "P3": 0.28
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      9,
+      11
+     ],
+     "status": "FEASIBLE"
+    }
+   },
+   "current_32_plus_360x64": {
+    "a_agrees": 1.0,
+    "a_counts": {
+     "A.however.4": 100
+    },
+    "b_agrees": 0.82,
+    "b_counts": {
+     "10-12": 3,
+     "8-10": 1,
+     "8-11": 14,
+     "9-11": 82
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.0,
+    "feasible_share": 1.0,
+    "max_rows": 38656,
+    "mean_refined_cells": 360,
+    "membership": {
+     "eligibility_errors_per_pilot": 0,
+     "far_from_boundary_error_rate": 0.1019,
+     "g1_false_exclusions_per_config": 2.1344,
+     "g1_false_inclusions_per_config": 2.8462,
+     "g1_jaccard": 0.5736,
+     "g3_jaccard": 0.5585,
+     "g5_jaccard": 0.575,
+     "near_boundary_error_rate": 0.3697,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 3.98,
+      "gemma-3n-e4b-it": 4,
+      "qwen3-4b": 4,
+      "qwen3-4b-instruct-2507": 4
+     },
+     "supported_mean": {
+      "P1": 15.98,
+      "P2": 15.68,
+      "P3": 15.82
+     },
+     "supported_sd": {
+      "P1": 0.199,
+      "P2": 0.733,
+      "P3": 0.572
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      9,
+      11
+     ],
+     "status": "FEASIBLE"
+    }
+   },
+   "current_32_plus_480x64": {
+    "a_agrees": 0.98,
+    "a_counts": {
+     "A.however.2": 2,
+     "A.however.4": 98
+    },
+    "b_agrees": 0.76,
+    "b_counts": {
+     "10-12": 3,
+     "8-11": 21,
+     "9-11": 76
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.02,
+    "feasible_share": 0.98,
+    "max_rows": 46336,
+    "mean_refined_cells": 443.15,
+    "membership": {
+     "eligibility_errors_per_pilot": 0,
+     "far_from_boundary_error_rate": 0.0882,
+     "g1_false_exclusions_per_config": 1.8531,
+     "g1_false_inclusions_per_config": 2.945,
+     "g1_jaccard": 0.5932,
+     "g3_jaccard": 0.5822,
+     "g5_jaccard": 0.6022,
+     "near_boundary_error_rate": 0.363,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 3.96,
+      "gemma-3n-e4b-it": 4,
+      "qwen3-4b": 4,
+      "qwen3-4b-instruct-2507": 4
+     },
+     "supported_mean": {
+      "P1": 15.96,
+      "P2": 15.76,
+      "P3": 15.88
+     },
+     "supported_sd": {
+      "P1": 0.28,
+      "P2": 0.709,
+      "P3": 0.475
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      9,
+      11
+     ],
+     "status": "FEASIBLE"
+    }
+   },
+   "focal96_plus_240x64": {
+    "a_agrees": 0.99,
+    "a_counts": {
+     "A.however.2": 1,
+     "A.however.4": 99
+    },
+    "b_agrees": 0.81,
+    "b_counts": {
+     "10-12": 3,
+     "8-11": 16,
+     "9-11": 81
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.0,
+    "feasible_share": 1.0,
+    "max_rows": 35584,
+    "mean_refined_cells": 240,
+    "membership": {
+     "eligibility_errors_per_pilot": 0,
+     "far_from_boundary_error_rate": 0.1055,
+     "g1_false_exclusions_per_config": 2.1612,
+     "g1_false_inclusions_per_config": 2.9162,
+     "g1_jaccard": 0.568,
+     "g3_jaccard": 0.5548,
+     "g5_jaccard": 0.5727,
+     "near_boundary_error_rate": 0.3715,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 3.96,
+      "gemma-3n-e4b-it": 3.99,
+      "qwen3-4b": 4,
+      "qwen3-4b-instruct-2507": 4
+     },
+     "supported_mean": {
+      "P1": 15.95,
+      "P2": 15.39,
+      "P3": 15.92
+     },
+     "supported_sd": {
+      "P1": 0.296,
+      "P2": 0.999,
+      "P3": 0.392
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      9,
+      11
+     ],
+     "status": "FEASIBLE"
+    }
+   },
+   "focal96_plus_360x64": {
+    "a_agrees": 0.99,
+    "a_counts": {
+     "A.however.2": 1,
+     "A.however.4": 99
+    },
+    "b_agrees": 0.81,
+    "b_counts": {
+     "10-12": 1,
+     "8-11": 18,
+     "9-11": 81
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.01,
+    "feasible_share": 0.99,
+    "max_rows": 43264,
+    "mean_refined_cells": 360,
+    "membership": {
+     "eligibility_errors_per_pilot": 0,
+     "far_from_boundary_error_rate": 0.0889,
+     "g1_false_exclusions_per_config": 1.9563,
+     "g1_false_inclusions_per_config": 2.9075,
+     "g1_jaccard": 0.5864,
+     "g3_jaccard": 0.5759,
+     "g5_jaccard": 0.5975,
+     "near_boundary_error_rate": 0.3643,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 3.98,
+      "gemma-3n-e4b-it": 4,
+      "qwen3-4b": 4,
+      "qwen3-4b-instruct-2507": 4
+     },
+     "supported_mean": {
+      "P1": 15.98,
+      "P2": 15.7,
+      "P3": 15.94
+     },
+     "supported_sd": {
+      "P1": 0.199,
+      "P2": 0.714,
+      "P3": 0.341
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      9,
+      11
+     ],
+     "status": "FEASIBLE"
+    }
+   },
+   "uniform_96_no_stage2": {
+    "a_agrees": 1.0,
+    "a_counts": {
+     "A.however.4": 100
+    },
+    "b_agrees": 0.83,
+    "b_counts": {
+     "10-12": 2,
+     "8-11": 15,
+     "9-11": 83
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.0,
+    "feasible_share": 1.0,
+    "max_rows": 46336,
+    "mean_refined_cells": 0,
+    "membership": {
+     "eligibility_errors_per_pilot": 0,
+     "far_from_boundary_error_rate": 0.0956,
+     "g1_false_exclusions_per_config": 1.9163,
+     "g1_false_inclusions_per_config": 3.0337,
+     "g1_jaccard": 0.5827,
+     "g3_jaccard": 0.5677,
+     "g5_jaccard": 0.5877,
+     "near_boundary_error_rate": 0.3722,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 4,
+      "gemma-3n-e4b-it": 4,
+      "qwen3-4b": 4,
+      "qwen3-4b-instruct-2507": 4
+     },
+     "supported_mean": {
+      "P1": 16,
+      "P2": 15.64,
+      "P3": 15.94
+     },
+     "supported_sd": {
+      "P1": 0.0,
+      "P2": 0.768,
+      "P3": 0.341
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      9,
+      11
+     ],
+     "status": "FEASIBLE"
+    }
+   }
+  },
+  "moderate": {
+   "current_32_plus_240x64": {
+    "a_agrees": 0.99,
+    "a_counts": {
+     "A.however.2": 1,
+     "A.however.4": 99
+    },
+    "b_agrees": 0.88,
+    "b_counts": {
+     "10-12": 88,
+     "9-11": 2,
+     "9-12": 10
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.0,
+    "feasible_share": 1.0,
+    "max_rows": 30976,
+    "mean_refined_cells": 240,
+    "membership": {
+     "eligibility_errors_per_pilot": 1.51,
+     "far_from_boundary_error_rate": 0.1393,
+     "g1_false_exclusions_per_config": 2.9969,
+     "g1_false_inclusions_per_config": 3.4625,
+     "g1_jaccard": 0.5058,
+     "g3_jaccard": 0.4944,
+     "g5_jaccard": 0.5152,
+     "near_boundary_error_rate": 0.3934,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 3.99,
+      "gemma-3n-e4b-it": 4,
+      "qwen3-4b": 4,
+      "qwen3-4b-instruct-2507": 4
+     },
+     "supported_mean": {
+      "P1": 15.99,
+      "P2": 15.41,
+      "P3": 15.82
+     },
+     "supported_sd": {
+      "P1": 0.099,
+      "P2": 1.069,
+      "P3": 0.572
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "FEASIBLE"
+    }
+   },
+   "current_32_plus_240x64x2draws": {
+    "a_agrees": 1.0,
+    "a_counts": {
+     "A.however.4": 100
+    },
+    "b_agrees": 0.87,
+    "b_counts": {
+     "10-12": 87,
+     "9-12": 13
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.01,
+    "feasible_share": 0.99,
+    "max_rows": 46336,
+    "mean_refined_cells": 240,
+    "membership": {
+     "eligibility_errors_per_pilot": 1.1,
+     "far_from_boundary_error_rate": 0.1124,
+     "g1_false_exclusions_per_config": 2.5394,
+     "g1_false_inclusions_per_config": 3.3856,
+     "g1_jaccard": 0.543,
+     "g3_jaccard": 0.5308,
+     "g5_jaccard": 0.5539,
+     "near_boundary_error_rate": 0.382,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 4,
+      "gemma-3n-e4b-it": 4,
+      "qwen3-4b": 4,
+      "qwen3-4b-instruct-2507": 4
+     },
+     "supported_mean": {
+      "P1": 16,
+      "P2": 15.62,
+      "P3": 15.88
+     },
+     "supported_sd": {
+      "P1": 0.0,
+      "P2": 0.967,
+      "P3": 0.475
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "FEASIBLE"
+    }
+   },
+   "current_32_plus_360x64": {
+    "a_agrees": 1.0,
+    "a_counts": {
+     "A.however.4": 100
+    },
+    "b_agrees": 0.86,
+    "b_counts": {
+     "10-12": 86,
+     "9-11": 1,
+     "9-12": 13
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.0,
+    "feasible_share": 1.0,
+    "max_rows": 38656,
+    "mean_refined_cells": 360,
+    "membership": {
+     "eligibility_errors_per_pilot": 1.47,
+     "far_from_boundary_error_rate": 0.1134,
+     "g1_false_exclusions_per_config": 2.6275,
+     "g1_false_inclusions_per_config": 3.2656,
+     "g1_jaccard": 0.5438,
+     "g3_jaccard": 0.5338,
+     "g5_jaccard": 0.5564,
+     "near_boundary_error_rate": 0.372,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 4,
+      "gemma-3n-e4b-it": 4,
+      "qwen3-4b": 4,
+      "qwen3-4b-instruct-2507": 4
+     },
+     "supported_mean": {
+      "P1": 16,
+      "P2": 15.7,
+      "P3": 15.74
+     },
+     "supported_sd": {
+      "P1": 0.0,
+      "P2": 0.768,
+      "P3": 0.73
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "FEASIBLE"
+    }
+   },
+   "current_32_plus_480x64": {
+    "a_agrees": 1.0,
+    "a_counts": {
+     "A.however.4": 100
+    },
+    "b_agrees": 0.88,
+    "b_counts": {
+     "10-12": 88,
+     "9-12": 12
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.0,
+    "feasible_share": 1.0,
+    "max_rows": 46336,
+    "mean_refined_cells": 446.07,
+    "membership": {
+     "eligibility_errors_per_pilot": 1.42,
+     "far_from_boundary_error_rate": 0.099,
+     "g1_false_exclusions_per_config": 2.4125,
+     "g1_false_inclusions_per_config": 3.2231,
+     "g1_jaccard": 0.5659,
+     "g3_jaccard": 0.5566,
+     "g5_jaccard": 0.5768,
+     "near_boundary_error_rate": 0.37,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 4,
+      "gemma-3n-e4b-it": 4,
+      "qwen3-4b": 4,
+      "qwen3-4b-instruct-2507": 4
+     },
+     "supported_mean": {
+      "P1": 16,
+      "P2": 15.78,
+      "P3": 15.96
+     },
+     "supported_sd": {
+      "P1": 0.0,
+      "P2": 0.626,
+      "P3": 0.28
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "FEASIBLE"
+    }
+   },
+   "focal96_plus_240x64": {
+    "a_agrees": 1.0,
+    "a_counts": {
+     "A.however.4": 100
+    },
+    "b_agrees": 0.89,
+    "b_counts": {
+     "10-12": 89,
+     "9-11": 1,
+     "9-12": 10
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.0,
+    "feasible_share": 1.0,
+    "max_rows": 35584,
+    "mean_refined_cells": 240,
+    "membership": {
+     "eligibility_errors_per_pilot": 1.4,
+     "far_from_boundary_error_rate": 0.1259,
+     "g1_false_exclusions_per_config": 2.7325,
+     "g1_false_inclusions_per_config": 3.34,
+     "g1_jaccard": 0.5323,
+     "g3_jaccard": 0.5199,
+     "g5_jaccard": 0.5397,
+     "near_boundary_error_rate": 0.3805,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 4,
+      "gemma-3n-e4b-it": 4,
+      "qwen3-4b": 4,
+      "qwen3-4b-instruct-2507": 4
+     },
+     "supported_mean": {
+      "P1": 16,
+      "P2": 15.66,
+      "P3": 15.84
+     },
+     "supported_sd": {
+      "P1": 0.0,
+      "P2": 0.751,
+      "P3": 0.612
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "FEASIBLE"
+    }
+   },
+   "focal96_plus_360x64": {
+    "a_agrees": 1.0,
+    "a_counts": {
+     "A.however.4": 100
+    },
+    "b_agrees": 0.84,
+    "b_counts": {
+     "10-12": 84,
+     "9-12": 16
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.0,
+    "feasible_share": 1.0,
+    "max_rows": 43264,
+    "mean_refined_cells": 360,
+    "membership": {
+     "eligibility_errors_per_pilot": 1.3,
+     "far_from_boundary_error_rate": 0.0988,
+     "g1_false_exclusions_per_config": 2.3381,
+     "g1_false_inclusions_per_config": 3.2788,
+     "g1_jaccard": 0.567,
+     "g3_jaccard": 0.5522,
+     "g5_jaccard": 0.5732,
+     "near_boundary_error_rate": 0.3751,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 4,
+      "gemma-3n-e4b-it": 4,
+      "qwen3-4b": 4,
+      "qwen3-4b-instruct-2507": 4
+     },
+     "supported_mean": {
+      "P1": 16,
+      "P2": 15.78,
+      "P3": 15.9
+     },
+     "supported_sd": {
+      "P1": 0.0,
+      "P2": 0.626,
+      "P3": 0.52
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "FEASIBLE"
+    }
+   },
+   "uniform_96_no_stage2": {
+    "a_agrees": 1.0,
+    "a_counts": {
+     "A.however.4": 100
+    },
+    "b_agrees": 0.94,
+    "b_counts": {
+     "10-12": 94,
+     "9-11": 1,
+     "9-12": 5
+    },
+    "false_feasible": 0.0,
+    "false_infeasible": 0.0,
+    "feasible_share": 1.0,
+    "max_rows": 46336,
+    "mean_refined_cells": 0,
+    "membership": {
+     "eligibility_errors_per_pilot": 1.49,
+     "far_from_boundary_error_rate": 0.1036,
+     "g1_false_exclusions_per_config": 2.3756,
+     "g1_false_inclusions_per_config": 3.3712,
+     "g1_jaccard": 0.56,
+     "g3_jaccard": 0.5484,
+     "g5_jaccard": 0.5719,
+     "near_boundary_error_rate": 0.3727,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 4,
+      "gemma-3n-e4b-it": 4,
+      "qwen3-4b": 4,
+      "qwen3-4b-instruct-2507": 4
+     },
+     "supported_mean": {
+      "P1": 16,
+      "P2": 15.8,
+      "P3": 15.9
+     },
+     "supported_sd": {
+      "P1": 0.0,
+      "P2": 0.721,
+      "P3": 0.436
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "FEASIBLE"
+    }
+   }
+  },
+  "other_operation_harder": {
+   "current_32_plus_240x64": {
+    "a_agrees": 0.99,
+    "a_counts": {
+     "A.however.2": 1,
+     "A.however.4": 99
+    },
+    "b_agrees": 0.93,
+    "b_counts": {
+     "10-12": 93,
+     "9-12": 7
+    },
+    "false_feasible": 0.89,
+    "false_infeasible": 0.0,
+    "feasible_share": 0.89,
+    "max_rows": 30976,
+    "mean_refined_cells": 240,
+    "membership": {
+     "eligibility_errors_per_pilot": 0.24,
+     "far_from_boundary_error_rate": 0.1267,
+     "g1_false_exclusions_per_config": 2.9781,
+     "g1_false_inclusions_per_config": 3.345,
+     "g1_jaccard": 0.5133,
+     "g3_jaccard": 0.5027,
+     "g5_jaccard": 0.4636,
+     "near_boundary_error_rate": 0.3753,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 4,
+      "gemma-3n-e4b-it": 4,
+      "qwen3-4b": 4,
+      "qwen3-4b-instruct-2507": 3.99
+     },
+     "supported_mean": {
+      "P1": 15.99,
+      "P2": 15.49,
+      "P3": 13.38
+     },
+     "supported_sd": {
+      "P1": 0.099,
+      "P2": 1.034,
+      "P3": 2.185
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "INFEASIBLE_REVISION_REQUIRED"
+    }
+   },
+   "current_32_plus_240x64x2draws": {
+    "a_agrees": 1.0,
+    "a_counts": {
+     "A.however.4": 100
+    },
+    "b_agrees": 0.89,
+    "b_counts": {
+     "10-12": 89,
+     "9-12": 11
+    },
+    "false_feasible": 0.86,
+    "false_infeasible": 0.0,
+    "feasible_share": 0.86,
+    "max_rows": 46336,
+    "mean_refined_cells": 240,
+    "membership": {
+     "eligibility_errors_per_pilot": 0.25,
+     "far_from_boundary_error_rate": 0.1027,
+     "g1_false_exclusions_per_config": 2.34,
+     "g1_false_inclusions_per_config": 3.2619,
+     "g1_jaccard": 0.5664,
+     "g3_jaccard": 0.5542,
+     "g5_jaccard": 0.5119,
+     "near_boundary_error_rate": 0.3528,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 4,
+      "gemma-3n-e4b-it": 4,
+      "qwen3-4b": 4,
+      "qwen3-4b-instruct-2507": 4
+     },
+     "supported_mean": {
+      "P1": 16,
+      "P2": 15.64,
+      "P3": 13.54
+     },
+     "supported_sd": {
+      "P1": 0.0,
+      "P2": 0.819,
+      "P3": 1.957
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "INFEASIBLE_REVISION_REQUIRED"
+    }
+   },
+   "current_32_plus_360x64": {
+    "a_agrees": 1.0,
+    "a_counts": {
+     "A.however.4": 100
+    },
+    "b_agrees": 0.89,
+    "b_counts": {
+     "10-12": 89,
+     "9-12": 11
+    },
+    "false_feasible": 0.88,
+    "false_infeasible": 0.0,
+    "feasible_share": 0.88,
+    "max_rows": 38656,
+    "mean_refined_cells": 360,
+    "membership": {
+     "eligibility_errors_per_pilot": 0.21,
+     "far_from_boundary_error_rate": 0.1054,
+     "g1_false_exclusions_per_config": 2.4813,
+     "g1_false_inclusions_per_config": 3.2425,
+     "g1_jaccard": 0.5589,
+     "g3_jaccard": 0.5416,
+     "g5_jaccard": 0.5047,
+     "near_boundary_error_rate": 0.3582,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 4,
+      "gemma-3n-e4b-it": 4,
+      "qwen3-4b": 4,
+      "qwen3-4b-instruct-2507": 4
+     },
+     "supported_mean": {
+      "P1": 16,
+      "P2": 15.48,
+      "P3": 13.26
+     },
+     "supported_sd": {
+      "P1": 0.0,
+      "P2": 0.964,
+      "P3": 1.89
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "INFEASIBLE_REVISION_REQUIRED"
+    }
+   },
+   "current_32_plus_480x64": {
+    "a_agrees": 1.0,
+    "a_counts": {
+     "A.however.4": 100
+    },
+    "b_agrees": 0.89,
+    "b_counts": {
+     "10-12": 89,
+     "9-12": 11
+    },
+    "false_feasible": 0.87,
+    "false_infeasible": 0.0,
+    "feasible_share": 0.87,
+    "max_rows": 46336,
+    "mean_refined_cells": 451.22,
+    "membership": {
+     "eligibility_errors_per_pilot": 0.27,
+     "far_from_boundary_error_rate": 0.0963,
+     "g1_false_exclusions_per_config": 2.2713,
+     "g1_false_inclusions_per_config": 3.2538,
+     "g1_jaccard": 0.5746,
+     "g3_jaccard": 0.5631,
+     "g5_jaccard": 0.5221,
+     "near_boundary_error_rate": 0.3561,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 4,
+      "gemma-3n-e4b-it": 4,
+      "qwen3-4b": 4,
+      "qwen3-4b-instruct-2507": 4
+     },
+     "supported_mean": {
+      "P1": 16,
+      "P2": 15.64,
+      "P3": 13.34
+     },
+     "supported_sd": {
+      "P1": 0.0,
+      "P2": 0.819,
+      "P3": 2.08
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "INFEASIBLE_REVISION_REQUIRED"
+    }
+   },
+   "focal96_plus_240x64": {
+    "a_agrees": 1.0,
+    "a_counts": {
+     "A.however.4": 100
+    },
+    "b_agrees": 0.9,
+    "b_counts": {
+     "10-12": 90,
+     "9-12": 10
+    },
+    "false_feasible": 0.85,
+    "false_infeasible": 0.0,
+    "feasible_share": 0.85,
+    "max_rows": 35584,
+    "mean_refined_cells": 240,
+    "membership": {
+     "eligibility_errors_per_pilot": 0.25,
+     "far_from_boundary_error_rate": 0.1106,
+     "g1_false_exclusions_per_config": 2.725,
+     "g1_false_inclusions_per_config": 3.2912,
+     "g1_jaccard": 0.5368,
+     "g3_jaccard": 0.5264,
+     "g5_jaccard": 0.4887,
+     "near_boundary_error_rate": 0.3677,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 4,
+      "gemma-3n-e4b-it": 4,
+      "qwen3-4b": 4,
+      "qwen3-4b-instruct-2507": 4
+     },
+     "supported_mean": {
+      "P1": 16,
+      "P2": 15.64,
+      "P3": 13.04
+     },
+     "supported_sd": {
+      "P1": 0.0,
+      "P2": 0.768,
+      "P3": 2.181
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "INFEASIBLE_REVISION_REQUIRED"
+    }
+   },
+   "focal96_plus_360x64": {
+    "a_agrees": 1.0,
+    "a_counts": {
+     "A.however.4": 100
+    },
+    "b_agrees": 0.89,
+    "b_counts": {
+     "10-12": 89,
+     "9-11": 2,
+     "9-12": 9
+    },
+    "false_feasible": 0.85,
+    "false_infeasible": 0.0,
+    "feasible_share": 0.85,
+    "max_rows": 43264,
+    "mean_refined_cells": 360,
+    "membership": {
+     "eligibility_errors_per_pilot": 0.2,
+     "far_from_boundary_error_rate": 0.0966,
+     "g1_false_exclusions_per_config": 2.2862,
+     "g1_false_inclusions_per_config": 3.2075,
+     "g1_jaccard": 0.575,
+     "g3_jaccard": 0.5634,
+     "g5_jaccard": 0.5247,
+     "near_boundary_error_rate": 0.3498,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 4,
+      "gemma-3n-e4b-it": 4,
+      "qwen3-4b": 4,
+      "qwen3-4b-instruct-2507": 4
+     },
+     "supported_mean": {
+      "P1": 16,
+      "P2": 15.74,
+      "P3": 13.5
+     },
+     "supported_sd": {
+      "P1": 0.0,
+      "P2": 0.673,
+      "P3": 2.124
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "INFEASIBLE_REVISION_REQUIRED"
+    }
+   },
+   "uniform_96_no_stage2": {
+    "a_agrees": 1.0,
+    "a_counts": {
+     "A.however.4": 100
+    },
+    "b_agrees": 0.9,
+    "b_counts": {
+     "10-12": 90,
+     "9-12": 10
+    },
+    "false_feasible": 0.87,
+    "false_infeasible": 0.0,
+    "feasible_share": 0.87,
+    "max_rows": 46336,
+    "mean_refined_cells": 0,
+    "membership": {
+     "eligibility_errors_per_pilot": 0.27,
+     "far_from_boundary_error_rate": 0.097,
+     "g1_false_exclusions_per_config": 2.3287,
+     "g1_false_inclusions_per_config": 3.2575,
+     "g1_jaccard": 0.5688,
+     "g3_jaccard": 0.5571,
+     "g5_jaccard": 0.5174,
+     "near_boundary_error_rate": 0.358,
+     "p1_support_by_model": {
+      "gemma-3n-e2b-it": 4,
+      "gemma-3n-e4b-it": 4,
+      "qwen3-4b": 4,
+      "qwen3-4b-instruct-2507": 4
+     },
+     "supported_mean": {
+      "P1": 16,
+      "P2": 15.72,
+      "P3": 13.48
+     },
+     "supported_sd": {
+      "P1": 0.0,
+      "P2": 0.694,
+      "P3": 1.992
+     }
+    },
+    "reps": 100,
+    "true": {
+     "a": "A.however.4",
+     "b": [
+      10,
+      12
+     ],
+     "status": "INFEASIBLE_REVISION_REQUIRED"
+    }
+   }
+  }
+ },
+ "topic_sd": 0.5
+}

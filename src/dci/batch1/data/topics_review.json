@@ -1,0 +1,803 @@
+{
+ "schema": "dci.batch1/topic-review/v2",
+ "reviewer": "agent (Claude), 2026-10-19; a proposal awaiting the researcher's review (D05)",
+ "procedure": "every pair the overlap screen flags (word-set Jaccard >= 0.5, stemmed content-word Jaccard >= 0.3, or >= 2 shared rare content stems, against every historical bank and within the bank) was read. Pairs asking about the same phenomenon were removed by rewriting the Batch 1 question under its topic id (listed in topics_source.json 'revisions'); the pairs below were judged distinct and kept. A decision binds both questions' text: editing either voids it. Decisions whose Batch 1 question was later rewritten were removed (2026-10-19, re-audit R1). Paraphrases that share no rare words are covered by topics_semantic_review.json.",
+ "kept_distinct": [
+  {
+   "topic_id": "b1-art-and-design-09",
+   "neighbour_source": "dci1v5/calibration_b",
+   "neighbour_id": "technology-b02",
+   "question_sha256": "a62edf3479e60808041159d7720ddcccaaf58410c589b7ba2296f634647b1340",
+   "neighbour_sha256": "97f55f4ed835f8f7ae4417fbc06b8b330b0994ca69814a7c081d5d73b1327af7",
+   "wordset_jaccard": 0.1905,
+   "content_jaccard": 0.3,
+   "decision": "kept_distinct",
+   "rationale": "shares only 'keep ... while'; glassblowing technique vs maintaining a large system"
+  },
+  {
+   "topic_id": "b1-art-and-design-09",
+   "neighbour_source": "dci1v7/calibration_b_v6",
+   "neighbour_id": "technology-b02",
+   "question_sha256": "a62edf3479e60808041159d7720ddcccaaf58410c589b7ba2296f634647b1340",
+   "neighbour_sha256": "97f55f4ed835f8f7ae4417fbc06b8b330b0994ca69814a7c081d5d73b1327af7",
+   "wordset_jaccard": 0.1905,
+   "content_jaccard": 0.3,
+   "decision": "kept_distinct",
+   "rationale": "shares only 'keep ... while'; glassblowing technique vs maintaining a large system"
+  },
+  {
+   "topic_id": "b1-geography-06",
+   "neighbour_source": "dci1v4",
+   "neighbour_id": "geography-43",
+   "question_sha256": "3d51feb37329d66e8f9e70d6321e1824b0f16c5e75ba973afd4a697bb809d5c1",
+   "neighbour_sha256": "e62795bab0ae4cfb5017b80475b8ca8bdccc684d645ad7cb14b167aefa8df376",
+   "wordset_jaccard": 0.3333,
+   "content_jaccard": 0.3,
+   "decision": "kept_distinct",
+   "rationale": "shares only the 'some ... while others stay' frame; salt lakes vs harbour silting"
+  },
+  {
+   "topic_id": "b1-geography-15",
+   "neighbour_source": "dci/v19/task_bank",
+   "neighbour_id": "BURNED_TOPICS#6",
+   "question_sha256": "ee0b0f2b23bb07a4a83a7a68343159c916d009c8fa7f95f610d68c6023da367f",
+   "neighbour_sha256": "dbc980b36d386d74ca88c462374ef0fe4ec21d7d79ea01c622432ece2503cc6f",
+   "wordset_jaccard": 0.1538,
+   "content_jaccard": 0.3333,
+   "decision": "kept_distinct",
+   "rationale": "permafrost thaw under structures vs building insulation; shares only 'affect building'"
+  },
+  {
+   "topic_id": "b1-geography-17",
+   "neighbour_source": "dci1v4",
+   "neighbour_id": "geography-37",
+   "question_sha256": "6fc2239a4f406b0d6adb3a64aa5b4f139e591b8577c7f511ed2d73ee7789a809",
+   "neighbour_sha256": "56e81df3c1750579a5012bcf46ffaf7a9e36d2d9793acff92a1a4bfb46aa6fab",
+   "wordset_jaccard": 0.1429,
+   "content_jaccard": 0.4,
+   "decision": "kept_distinct",
+   "rationale": "oasis formation (groundwater reaching the surface) vs why deserts form; related setting, different question"
+  },
+  {
+   "topic_id": "b1-health-and-the-body-06",
+   "neighbour_source": "dci1v4",
+   "neighbour_id": "health-and-the-body-13",
+   "question_sha256": "c348e050d735a0496ac1da1195dac73eb2d355fd7cbbc7544141435994ca09a4",
+   "neighbour_sha256": "5aacb5974666554898433de0a9c1a1a33f8c76529c2e2488c0ace42b4070eb91",
+   "wordset_jaccard": 0.2,
+   "content_jaccard": 0.3333,
+   "decision": "kept_distinct",
+   "rationale": "the shivering reflex vs long-term acclimatisation to a cold climate; related theme, different mechanism"
+  },
+  {
+   "topic_id": "b1-health-and-the-body-10",
+   "neighbour_source": "dci1v4",
+   "neighbour_id": "health-and-the-body-34",
+   "question_sha256": "2d0aefb4a33449e8c1d052ba8b74f8e47e20a4eb9f46429f39adfbed3297b8a9",
+   "neighbour_sha256": "511c89547cc1fb26caa9dc756231703599037dc5e957d63defff8844af64d049",
+   "wordset_jaccard": 0.2857,
+   "content_jaccard": 0.3333,
+   "decision": "kept_distinct",
+   "rationale": "blushing vs individual differences in feeling the cold; shares only 'people feel'"
+  },
+  {
+   "topic_id": "b1-history-13",
+   "neighbour_source": "dci1/v2",
+   "neighbour_id": "art-and-design-29",
+   "question_sha256": "7ca64464eade369a143a3089d23220fe25214056237cfd85b2280d97ebeab134",
+   "neighbour_sha256": "c10e29974966b98ffdfb2c9fa1f4df973d212e11be9d2c3cb0372bcc35df3d20",
+   "wordset_jaccard": 0.3333,
+   "content_jaccard": 0.3333,
+   "decision": "kept_distinct",
+   "rationale": "photography and collective memory vs murals and neighbourhood feeling; shares only 'change the way people'"
+  },
+  {
+   "topic_id": "b1-history-13",
+   "neighbour_source": "dci1v3",
+   "neighbour_id": "art-and-design-29",
+   "question_sha256": "7ca64464eade369a143a3089d23220fe25214056237cfd85b2280d97ebeab134",
+   "neighbour_sha256": "c10e29974966b98ffdfb2c9fa1f4df973d212e11be9d2c3cb0372bcc35df3d20",
+   "wordset_jaccard": 0.3333,
+   "content_jaccard": 0.3333,
+   "decision": "kept_distinct",
+   "rationale": "photography and collective memory vs murals and neighbourhood feeling; shares only 'change the way people'"
+  },
+  {
+   "topic_id": "b1-history-18",
+   "neighbour_source": "dci1v4",
+   "neighbour_id": "work-and-organisations-22",
+   "question_sha256": "226aa24df730ded93307f56cb6574046df4f7871289da65a53a4c2677e13dd76",
+   "neighbour_sha256": "bba1eeb6948c2acec60831ca5503b9e12efad83336baaea1762737832cf3f6db",
+   "wordset_jaccard": 0.3333,
+   "content_jaccard": 0.375,
+   "decision": "kept_distinct",
+   "rationale": "the telephone and business practice vs seasonal demand in running a business; shares only 'change the way business'"
+  },
+  {
+   "topic_id": "b1-language-and-writing-08",
+   "neighbour_source": "dci1v4",
+   "neighbour_id": "music-34",
+   "question_sha256": "1e5e2e09a3c4ff7a13e0833ae715da430205312f83f1e4b232bba13923b9d909",
+   "neighbour_sha256": "71f28adcbb17fad6973d183e0ba26d3bfdcf1f429450629cb47be61a5f653b86",
+   "wordset_jaccard": 0.3571,
+   "content_jaccard": 0.3,
+   "decision": "kept_distinct",
+   "rationale": "shared structure of folk tales vs similarity of lullabies; different form (narrative vs song)"
+  },
+  {
+   "topic_id": "b1-language-and-writing-11",
+   "neighbour_source": "dci1v4",
+   "neighbour_id": "health-and-the-body-34",
+   "question_sha256": "c46ae26b05fa79d6a50aa815a7c954c3f593c38636fef02d9e1b426f8a3c0746",
+   "neighbour_sha256": "511c89547cc1fb26caa9dc756231703599037dc5e957d63defff8844af64d049",
+   "wordset_jaccard": 0.3333,
+   "content_jaccard": 0.3333,
+   "decision": "kept_distinct",
+   "rationale": "why nicknames stick vs feeling the cold; shares only 'some people ... others'"
+  },
+  {
+   "topic_id": "b1-language-and-writing-18",
+   "neighbour_source": "dci1v5/calibration_b",
+   "neighbour_id": "language-and-writing-b06",
+   "question_sha256": "13ad7d0a258762df0900b30a1fbab56af5341ac001aa4645d70e80e918e66896",
+   "neighbour_sha256": "a7725b77ef2701fd73590553f17f9bfa742131c07bbb8a8da3fbbccaa7b2aad6",
+   "wordset_jaccard": 0.375,
+   "content_jaccard": 0.3333,
+   "decision": "kept_distinct",
+   "rationale": "memorability of narrative vs of rhythm over meaning; different property of language"
+  },
+  {
+   "topic_id": "b1-language-and-writing-18",
+   "neighbour_source": "dci1v7/calibration_b_v6",
+   "neighbour_id": "language-and-writing-b06",
+   "question_sha256": "13ad7d0a258762df0900b30a1fbab56af5341ac001aa4645d70e80e918e66896",
+   "neighbour_sha256": "a7725b77ef2701fd73590553f17f9bfa742131c07bbb8a8da3fbbccaa7b2aad6",
+   "wordset_jaccard": 0.375,
+   "content_jaccard": 0.3333,
+   "decision": "kept_distinct",
+   "rationale": "memorability of narrative vs of rhythm over meaning; different property of language"
+  },
+  {
+   "topic_id": "b1-language-and-writing-19",
+   "neighbour_source": "dci1/v2",
+   "neighbour_id": "language-and-writing-30",
+   "question_sha256": "ca486660bca66bb713f179918dbf1e260c7d7246f7dd084d1510d8704698b751",
+   "neighbour_sha256": "6ea0f25db40b1fcfced098307c02a8fcb68d555aaaab8fc9904857ad07f38e66",
+   "wordset_jaccard": 0.375,
+   "content_jaccard": 0.3,
+   "decision": "kept_distinct",
+   "rationale": "the reader's mood vs the narrator's reliability; shares only 'reader ... story'"
+  },
+  {
+   "topic_id": "b1-language-and-writing-19",
+   "neighbour_source": "dci1v3",
+   "neighbour_id": "language-and-writing-30",
+   "question_sha256": "ca486660bca66bb713f179918dbf1e260c7d7246f7dd084d1510d8704698b751",
+   "neighbour_sha256": "6ea0f25db40b1fcfced098307c02a8fcb68d555aaaab8fc9904857ad07f38e66",
+   "wordset_jaccard": 0.375,
+   "content_jaccard": 0.3,
+   "decision": "kept_distinct",
+   "rationale": "the reader's mood vs the narrator's reliability; shares only 'reader ... story'"
+  },
+  {
+   "topic_id": "b1-music-09",
+   "neighbour_source": "dci1v4",
+   "neighbour_id": "language-and-writing-50",
+   "question_sha256": "2004853269107f07ffd2302bd6b7f3b1c0c349b262e410bc2a304cb1c28694c0",
+   "neighbour_sha256": "8519da07abc8ba22892f7e776e0643531d7ec661bef7e7ac5400479b06611ee3",
+   "wordset_jaccard": 0.2143,
+   "content_jaccard": 0.3333,
+   "decision": "kept_distinct",
+   "rationale": "ambiguous, kept: cross-cultural theme shared with dci1v4 music-34, but timbre differences of drums vs similarity of lullabies are different questions; the other two neighbours share only 'sound different'"
+  },
+  {
+   "topic_id": "b1-music-09",
+   "neighbour_source": "dci1v4",
+   "neighbour_id": "music-34",
+   "question_sha256": "2004853269107f07ffd2302bd6b7f3b1c0c349b262e410bc2a304cb1c28694c0",
+   "neighbour_sha256": "71f28adcbb17fad6973d183e0ba26d3bfdcf1f429450629cb47be61a5f653b86",
+   "wordset_jaccard": 0.4167,
+   "content_jaccard": 0.4286,
+   "decision": "kept_distinct",
+   "rationale": "ambiguous, kept: cross-cultural theme shared with dci1v4 music-34, but timbre differences of drums vs similarity of lullabies are different questions; the other two neighbours share only 'sound different'"
+  },
+  {
+   "topic_id": "b1-music-09",
+   "neighbour_source": "dci1v4",
+   "neighbour_id": "the-natural-world-51",
+   "question_sha256": "2004853269107f07ffd2302bd6b7f3b1c0c349b262e410bc2a304cb1c28694c0",
+   "neighbour_sha256": "58576d04bbb586fde6c02715bd22765112a0a8d204e259a0b2510707db34c8d6",
+   "wordset_jaccard": 0.3333,
+   "content_jaccard": 0.3333,
+   "decision": "kept_distinct",
+   "rationale": "ambiguous, kept: cross-cultural theme shared with dci1v4 music-34, but timbre differences of drums vs similarity of lullabies are different questions; the other two neighbours share only 'sound different'"
+  },
+  {
+   "topic_id": "b1-sport-05",
+   "neighbour_source": "dci1v4",
+   "neighbour_id": "technology-35",
+   "question_sha256": "c1755dc36f05b7fda9f2b269ce2750a0f11029dcfce924967cfe172fde2e8cb0",
+   "neighbour_sha256": "c6a82178e23e77479e59e3ce4d37989d39da8fa33f93359385e7fbcf98c15d4b",
+   "wordset_jaccard": 0.2,
+   "content_jaccard": 0.3,
+   "decision": "kept_distinct",
+   "rationale": "ball wear and bounce vs durability of old machines; shares only 'old/new'"
+  },
+  {
+   "topic_id": "b1-sport-35",
+   "neighbour_source": "dci1v4",
+   "neighbour_id": "sport-46",
+   "question_sha256": "68ba637c3c44e764d5689e2e1c4ca34d4d98b626a092c3da9d65155757260bd9",
+   "neighbour_sha256": "87704e4fa40af4febe4be4a508282bc1196cb59999f7ce83d8fa0447dd04dd4e",
+   "wordset_jaccard": 0.3333,
+   "content_jaccard": 0.3333,
+   "decision": "kept_distinct",
+   "rationale": "home and away kit colours vs home advantage in performance; shares only 'teams ... away'"
+  },
+  {
+   "topic_id": "b1-technology-43",
+   "neighbour_source": "dci1/v2",
+   "neighbour_id": "sport-41",
+   "question_sha256": "a54ff7e05762b597e8f36a0f3d5e17847637138ae64f990a33487864f9d335ec",
+   "neighbour_sha256": "9c008ae87dac72f0ab12cbeffb87565d4dbb15ab2b53a2cb6c60ba1cf46fa46c",
+   "wordset_jaccard": 0.4667,
+   "content_jaccard": 0.3333,
+   "decision": "kept_distinct",
+   "rationale": "national plug standards vs stadium atmospheres; shares only 'differ from one ... to another'"
+  },
+  {
+   "topic_id": "b1-art-and-design-21",
+   "neighbour_source": "dci1/v2",
+   "neighbour_id": "art-and-design-46",
+   "question_sha256": "53fb65feab0cff73f09d96755b82a7640824c1d34b2ca6a367e315885965ef9e",
+   "neighbour_sha256": "573efcefa78e8284447442173dc79fb8cc3f40d35f8046f5244c95f7583a02f8",
+   "wordset_jaccard": 0.1579,
+   "content_jaccard": 0.1818,
+   "rare_shared": [
+    "animator",
+    "drawn"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "in-betweening for smooth motion vs giving weight and personality: different animation questions (CLOSE in the semantic review; kept)"
+  },
+  {
+   "topic_id": "b1-art-and-design-21",
+   "neighbour_source": "dci1v3",
+   "neighbour_id": "art-and-design-46",
+   "question_sha256": "53fb65feab0cff73f09d96755b82a7640824c1d34b2ca6a367e315885965ef9e",
+   "neighbour_sha256": "573efcefa78e8284447442173dc79fb8cc3f40d35f8046f5244c95f7583a02f8",
+   "wordset_jaccard": 0.1579,
+   "content_jaccard": 0.1818,
+   "rare_shared": [
+    "animator",
+    "drawn"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "in-betweening for smooth motion vs giving weight and personality: different animation questions (CLOSE in the semantic review; kept)"
+  },
+  {
+   "topic_id": "b1-art-and-design-46",
+   "neighbour_source": "dci/v19/task_bank",
+   "neighbour_id": "CONFIRMATORY_TOPICS#9",
+   "question_sha256": "ad9866812a2e3f09f50a8443a6eeca2eaef76f79fbebfd1279669d5b41df2f11",
+   "neighbour_sha256": "afd1629ac2ddf4db0c09c20845c25ee3e0a0d3450b13b00fa7af5d97a617539d",
+   "wordset_jaccard": 0.0625,
+   "content_jaccard": 0.25,
+   "rare_shared": [
+    "clay",
+    "pott"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "centring clay on the wheel vs why clay is fired twice: different stages and questions"
+  },
+  {
+   "topic_id": "b1-everyday-science-05",
+   "neighbour_source": "dci1v4",
+   "neighbour_id": "everyday-science-26",
+   "question_sha256": "0fa98e225c9e46dff0eda0e2f05b2932067d90d1fef25fa80f7afb55a37b2cdd",
+   "neighbour_sha256": "a6bd41b4b597be603d87081c0b9872bbfff16646189f56c9479d88acab90f363",
+   "wordset_jaccard": 0.1304,
+   "content_jaccard": 0.1667,
+   "rare_shared": [
+    "float",
+    "sink"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "ice's density anomaly vs buoyancy of materials in general: a specific question the general one does not answer"
+  },
+  {
+   "topic_id": "b1-everyday-science-31",
+   "neighbour_source": "dci1v4",
+   "neighbour_id": "everyday-science-18",
+   "question_sha256": "bb267c1e174c1850d30df2d48e67a33ba83484386f37b63324b50cc63a86e4ee",
+   "neighbour_sha256": "213e4475dd89e913aceed43f6fb14719ccbb9e6955044dfa039cc873133c6caa",
+   "wordset_jaccard": 0.1905,
+   "content_jaccard": 0.2727,
+   "rare_shared": [
+    "bubbl",
+    "fizzy"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "gas solubility falling with temperature vs where bubbles rise in a glass: different phenomena"
+  },
+  {
+   "topic_id": "b1-everyday-science-32",
+   "neighbour_source": "dci1v4",
+   "neighbour_id": "everyday-science-26",
+   "question_sha256": "5589e657cd156d56c73e0e24b5b0339138e7494adfb5be01864f723a148d8556",
+   "neighbour_sha256": "a6bd41b4b597be603d87081c0b9872bbfff16646189f56c9479d88acab90f363",
+   "wordset_jaccard": 0.15,
+   "content_jaccard": 0.2,
+   "rare_shared": [
+    "float",
+    "sink"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "a tea bag trapping then releasing air vs buoyancy in general: different question"
+  },
+  {
+   "topic_id": "b1-geography-01",
+   "neighbour_source": "dci1/v2",
+   "neighbour_id": "the-natural-world-43",
+   "question_sha256": "214606a15fb8aac5507b2a00f70664f892a0df660d779be58cff5b1fb20fa85f",
+   "neighbour_sha256": "1e18596d1f71f84c15b06e51b1f5de74f0e9f695913cf57222a21d4973e8f1d8",
+   "wordset_jaccard": 0.1364,
+   "content_jaccard": 0.1538,
+   "rare_shared": [
+    "equator",
+    "toward"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "rivers flowing poleward vs species richness toward the equator: share only the word 'equator'"
+  },
+  {
+   "topic_id": "b1-geography-01",
+   "neighbour_source": "dci1v3",
+   "neighbour_id": "the-natural-world-43",
+   "question_sha256": "214606a15fb8aac5507b2a00f70664f892a0df660d779be58cff5b1fb20fa85f",
+   "neighbour_sha256": "1e18596d1f71f84c15b06e51b1f5de74f0e9f695913cf57222a21d4973e8f1d8",
+   "wordset_jaccard": 0.1364,
+   "content_jaccard": 0.1538,
+   "rare_shared": [
+    "equator",
+    "toward"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "rivers flowing poleward vs species richness toward the equator: share only the word 'equator'"
+  },
+  {
+   "topic_id": "b1-health-and-the-body-41",
+   "neighbour_source": "dci1/v2",
+   "neighbour_id": "everyday-science-13",
+   "question_sha256": "e711a381b69c020c1d2a7d208941f2ffb3ff5f4618e9009254b07a7e25ac280e",
+   "neighbour_sha256": "c518e5814a215a3be8d26d4fc231e013e25a63a692ab3b7824e1dbf5255b11d6",
+   "wordset_jaccard": 0.0952,
+   "content_jaccard": 0.2,
+   "rare_shared": [
+    "bright",
+    "sunlight"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "the photic sneeze reflex vs how sunscreen works: share only 'bright sunlight'"
+  },
+  {
+   "topic_id": "b1-health-and-the-body-41",
+   "neighbour_source": "dci1v3",
+   "neighbour_id": "everyday-science-13",
+   "question_sha256": "e711a381b69c020c1d2a7d208941f2ffb3ff5f4618e9009254b07a7e25ac280e",
+   "neighbour_sha256": "c518e5814a215a3be8d26d4fc231e013e25a63a692ab3b7824e1dbf5255b11d6",
+   "wordset_jaccard": 0.0952,
+   "content_jaccard": 0.2,
+   "rare_shared": [
+    "bright",
+    "sunlight"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "the photic sneeze reflex vs how sunscreen works: share only 'bright sunlight'"
+  },
+  {
+   "topic_id": "b1-history-09",
+   "neighbour_source": "dci1v4",
+   "neighbour_id": "history-03",
+   "question_sha256": "5145d1025b8e7bd62851921a9db02a36ed5414ced7c69940c1027aaa39e93bf1",
+   "neighbour_sha256": "3f992afa6916f47b96c29829ef7d79f0bc9305e851a696d64e56cf9c43c6506f",
+   "wordset_jaccard": 0.3077,
+   "content_jaccard": 0.25,
+   "rare_shared": [
+    "reshape",
+    "societi"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "herding animals vs plagues reshaping societies: share only the verb"
+  },
+  {
+   "topic_id": "b1-history-28",
+   "neighbour_source": "dci1/v2",
+   "neighbour_id": "work-and-organisations-40",
+   "question_sha256": "e4591b0dde57ac32c92bc5637c983c76b8e01f2f59d3fee267d5d58e2803b191",
+   "neighbour_sha256": "bf8a5231f240f12d297a6eccdb9f68fbd519ff58cc98983ff30a38c7994c6383",
+   "wordset_jaccard": 0.0952,
+   "content_jaccard": 0.1667,
+   "rare_shared": [
+    "busines",
+    "valu"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "history of shorthand vs employee values clashing with business: share only 'business' and 'value'"
+  },
+  {
+   "topic_id": "b1-history-28",
+   "neighbour_source": "dci1v3",
+   "neighbour_id": "work-and-organisations-40",
+   "question_sha256": "e4591b0dde57ac32c92bc5637c983c76b8e01f2f59d3fee267d5d58e2803b191",
+   "neighbour_sha256": "bf8a5231f240f12d297a6eccdb9f68fbd519ff58cc98983ff30a38c7994c6383",
+   "wordset_jaccard": 0.0952,
+   "content_jaccard": 0.1667,
+   "rare_shared": [
+    "busines",
+    "valu"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "history of shorthand vs employee values clashing with business: share only 'business' and 'value'"
+  },
+  {
+   "topic_id": "b1-language-and-writing-28",
+   "neighbour_source": "dci1/v2",
+   "neighbour_id": "sport-03",
+   "question_sha256": "e193dd7abe13d6af9490c844af91cdd0489ed68b6fffe99b2cb35fbb1f0853b4",
+   "neighbour_sha256": "10a1f5e347952357511c4ed6ef3259071e8251995694a101992e3d68005217be",
+   "wordset_jaccard": 0.0952,
+   "content_jaccard": 0.1667,
+   "rare_shared": [
+    "lesson",
+    "teach"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "how fables teach implicitly vs what youth sport teaches: share only 'teach' and 'lesson'"
+  },
+  {
+   "topic_id": "b1-language-and-writing-28",
+   "neighbour_source": "dci1v3",
+   "neighbour_id": "sport-03",
+   "question_sha256": "e193dd7abe13d6af9490c844af91cdd0489ed68b6fffe99b2cb35fbb1f0853b4",
+   "neighbour_sha256": "10a1f5e347952357511c4ed6ef3259071e8251995694a101992e3d68005217be",
+   "wordset_jaccard": 0.0952,
+   "content_jaccard": 0.1667,
+   "rare_shared": [
+    "lesson",
+    "teach"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "how fables teach implicitly vs what youth sport teaches: share only 'teach' and 'lesson'"
+  },
+  {
+   "topic_id": "b1-language-and-writing-39",
+   "neighbour_source": "dci1v4",
+   "neighbour_id": "everyday-science-23",
+   "question_sha256": "daebd3fbd0c3f5250bf3d3f507c10da385f8ba4344b974d2fa0c2ac78426db2a",
+   "neighbour_sha256": "2434a5d79de4b25a4b6378611dc682409fd6e9ebfda88c2aeace021c01033eed",
+   "wordset_jaccard": 0.25,
+   "content_jaccard": 0.3333,
+   "rare_shared": [
+    "right"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "writing direction of scripts vs mirror reversal: share only 'left' and 'right'"
+  },
+  {
+   "topic_id": "b1-sport-02",
+   "neighbour_source": "dci1/v2",
+   "neighbour_id": "sport-25",
+   "question_sha256": "27a9ea25307bb53a0ae9d60fde6fbb72ad7884ff67ded82c8d642d4c86ff2fcc",
+   "neighbour_sha256": "00202c1cac4c729cb45b367dfc35f5f5d96ee28d9422c41f8adb2cc716e8cc4f",
+   "wordset_jaccard": 0.2105,
+   "content_jaccard": 0.1818,
+   "rare_shared": [
+    "cyclist",
+    "race"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "leg shaving by cyclists vs sharing the workload in a team: different practices"
+  },
+  {
+   "topic_id": "b1-sport-02",
+   "neighbour_source": "dci1v3",
+   "neighbour_id": "sport-25",
+   "question_sha256": "27a9ea25307bb53a0ae9d60fde6fbb72ad7884ff67ded82c8d642d4c86ff2fcc",
+   "neighbour_sha256": "00202c1cac4c729cb45b367dfc35f5f5d96ee28d9422c41f8adb2cc716e8cc4f",
+   "wordset_jaccard": 0.2105,
+   "content_jaccard": 0.1818,
+   "rare_shared": [
+    "cyclist",
+    "race"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "leg shaving by cyclists vs sharing the workload in a team: different practices"
+  },
+  {
+   "topic_id": "b1-sport-05",
+   "neighbour_source": "dci1v3",
+   "neighbour_id": "sport-50",
+   "question_sha256": "c1755dc36f05b7fda9f2b269ce2750a0f11029dcfce924967cfe172fde2e8cb0",
+   "neighbour_sha256": "7d904bdfb1811ba267884efa370d0e12e3dc63a00fc561d4f5b481f6a7e2530c",
+   "wordset_jaccard": 0.2353,
+   "content_jaccard": 0.2727,
+   "rare_shared": [
+    "bounce",
+    "tenni"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "why balls lose bounce with age vs players' pre-serve ritual: different questions (CLOSE in the semantic review; kept)"
+  },
+  {
+   "topic_id": "b1-sport-05",
+   "neighbour_source": "dci1v3/candidates",
+   "neighbour_id": "sport#2",
+   "question_sha256": "c1755dc36f05b7fda9f2b269ce2750a0f11029dcfce924967cfe172fde2e8cb0",
+   "neighbour_sha256": "7d904bdfb1811ba267884efa370d0e12e3dc63a00fc561d4f5b481f6a7e2530c",
+   "wordset_jaccard": 0.2353,
+   "content_jaccard": 0.2727,
+   "rare_shared": [
+    "bounce",
+    "tenni"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "why balls lose bounce with age vs players' pre-serve ritual: different questions (CLOSE in the semantic review; kept)"
+  },
+  {
+   "topic_id": "b1-sport-09",
+   "neighbour_source": "dci1/v2",
+   "neighbour_id": "sport-02",
+   "question_sha256": "9e858095b8c2f36856b143c6479dbbabe762491ca925cecc2f40f611ba5c92d2",
+   "neighbour_sha256": "0012732a1aa18ed199777c3cf91e079bfba8cc74d83cf4a1464a0ac6ee31c867",
+   "wordset_jaccard": 0.1429,
+   "content_jaccard": 0.25,
+   "rare_shared": [
+    "marathon",
+    "race"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "glycogen depletion late in a race vs why marathons appeal: different questions (borderline NONE in the semantic review)"
+  },
+  {
+   "topic_id": "b1-sport-09",
+   "neighbour_source": "dci1v3",
+   "neighbour_id": "sport-02",
+   "question_sha256": "9e858095b8c2f36856b143c6479dbbabe762491ca925cecc2f40f611ba5c92d2",
+   "neighbour_sha256": "0012732a1aa18ed199777c3cf91e079bfba8cc74d83cf4a1464a0ac6ee31c867",
+   "wordset_jaccard": 0.1429,
+   "content_jaccard": 0.25,
+   "rare_shared": [
+    "marathon",
+    "race"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "glycogen depletion late in a race vs why marathons appeal: different questions (borderline NONE in the semantic review)"
+  },
+  {
+   "topic_id": "b1-sport-46",
+   "neighbour_source": "dci1v3",
+   "neighbour_id": "sport-51",
+   "question_sha256": "b84c8dd2b99a934b81e3e5b8ff5cebfaa579ee3a379b5e92bd946f7a665b9fcd",
+   "neighbour_sha256": "4620b980528327a12b735cfb1e62de3fee1b234f60293805764623f245191d3a",
+   "wordset_jaccard": 0.1667,
+   "content_jaccard": 0.2,
+   "rare_shared": [
+    "free",
+    "kick"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "rehearsing set pieces as a team vs the physics of bending a kick: different questions"
+  },
+  {
+   "topic_id": "b1-sport-46",
+   "neighbour_source": "dci1v3/candidates",
+   "neighbour_id": "sport#3",
+   "question_sha256": "b84c8dd2b99a934b81e3e5b8ff5cebfaa579ee3a379b5e92bd946f7a665b9fcd",
+   "neighbour_sha256": "4620b980528327a12b735cfb1e62de3fee1b234f60293805764623f245191d3a",
+   "wordset_jaccard": 0.1667,
+   "content_jaccard": 0.2,
+   "rare_shared": [
+    "free",
+    "kick"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "rehearsing set pieces as a team vs the physics of bending a kick: different questions"
+  },
+  {
+   "topic_id": "b1-technology-12",
+   "neighbour_source": "dci1/v2",
+   "neighbour_id": "everyday-science-13",
+   "question_sha256": "17d9acf670dee45d8330614cc5cbf76d3652db76b02c1b36ab28f9f2d0da1e20",
+   "neighbour_sha256": "c518e5814a215a3be8d26d4fc231e013e25a63a692ab3b7824e1dbf5255b11d6",
+   "wordset_jaccard": 0.1579,
+   "content_jaccard": 0.2,
+   "rare_shared": [
+    "bright",
+    "sunlight"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "screen glare in sunlight vs how sunscreen works: share only 'bright sunlight'"
+  },
+  {
+   "topic_id": "b1-technology-12",
+   "neighbour_source": "dci1v3",
+   "neighbour_id": "everyday-science-13",
+   "question_sha256": "17d9acf670dee45d8330614cc5cbf76d3652db76b02c1b36ab28f9f2d0da1e20",
+   "neighbour_sha256": "c518e5814a215a3be8d26d4fc231e013e25a63a692ab3b7824e1dbf5255b11d6",
+   "wordset_jaccard": 0.1579,
+   "content_jaccard": 0.2,
+   "rare_shared": [
+    "bright",
+    "sunlight"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "screen glare in sunlight vs how sunscreen works: share only 'bright sunlight'"
+  },
+  {
+   "topic_id": "b1-work-and-organisations-41",
+   "neighbour_source": "dci1/v2",
+   "neighbour_id": "work-and-organisations-03",
+   "question_sha256": "7863f831a295a180c4cb7a81cf8909403885c43b654151601bedf07a6f38d06c",
+   "neighbour_sha256": "11d576f58ae019e4d230b40515b2cc4a89162a273c3b2a44809272fcb2d6b48d",
+   "wordset_jaccard": 0.1667,
+   "content_jaccard": 0.2,
+   "rare_shared": [
+    "colleagu",
+    "trust"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "small favours building trust vs remote working changing trust: related theme, different question"
+  },
+  {
+   "topic_id": "b1-work-and-organisations-41",
+   "neighbour_source": "dci1v3",
+   "neighbour_id": "work-and-organisations-03",
+   "question_sha256": "7863f831a295a180c4cb7a81cf8909403885c43b654151601bedf07a6f38d06c",
+   "neighbour_sha256": "11d576f58ae019e4d230b40515b2cc4a89162a273c3b2a44809272fcb2d6b48d",
+   "wordset_jaccard": 0.1667,
+   "content_jaccard": 0.2,
+   "rare_shared": [
+    "colleagu",
+    "trust"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "small favours building trust vs remote working changing trust: related theme, different question"
+  },
+  {
+   "topic_id": "b1-art-and-design-13",
+   "neighbour_source": "batch1",
+   "neighbour_id": "b1-art-and-design-31",
+   "question_sha256": "6016453597796b3f9d22efb617ed1d943f351f9188aadbb158f2546e38d763a1",
+   "neighbour_sha256": "5a51f62bc42aa40ec2d5f6922203ba0dfbd8d4f0fb88fde79b5a0e9f26a195e8",
+   "wordset_jaccard": 0.2353,
+   "content_jaccard": 0.2,
+   "rare_shared": [
+    "thread",
+    "weav"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "loom structure from warp and weft vs building a tapestry image: different weaving questions"
+  },
+  {
+   "topic_id": "b1-art-and-design-46",
+   "neighbour_source": "batch1",
+   "neighbour_id": "b1-history-45",
+   "question_sha256": "ad9866812a2e3f09f50a8443a6eeca2eaef76f79fbebfd1279669d5b41df2f11",
+   "neighbour_sha256": "f1f00cdb271f3b4f6bb53d7658d5089a119b7ad71d7bf62ff094fe650c5cbc21",
+   "wordset_jaccard": 0.1765,
+   "content_jaccard": 0.2222,
+   "rare_shared": [
+    "spinn",
+    "wheel"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "potter's wheel vs the spinning wheel for thread: share only 'spinning wheel'"
+  },
+  {
+   "topic_id": "b1-everyday-science-05",
+   "neighbour_source": "batch1",
+   "neighbour_id": "b1-everyday-science-32",
+   "question_sha256": "0fa98e225c9e46dff0eda0e2f05b2932067d90d1fef25fa80f7afb55a37b2cdd",
+   "neighbour_sha256": "5589e657cd156d56c73e0e24b5b0339138e7494adfb5be01864f723a148d8556",
+   "wordset_jaccard": 0.1905,
+   "content_jaccard": 0.2,
+   "rare_shared": [
+    "float",
+    "sink"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "ice's density anomaly vs a tea bag trapping air: different questions"
+  },
+  {
+   "topic_id": "b1-health-and-the-body-41",
+   "neighbour_source": "batch1",
+   "neighbour_id": "b1-technology-12",
+   "question_sha256": "e711a381b69c020c1d2a7d208941f2ffb3ff5f4618e9009254b07a7e25ac280e",
+   "neighbour_sha256": "17d9acf670dee45d8330614cc5cbf76d3652db76b02c1b36ab28f9f2d0da1e20",
+   "wordset_jaccard": 0.1667,
+   "content_jaccard": 0.25,
+   "rare_shared": [
+    "bright",
+    "sunlight"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "photic sneeze vs screen glare: share only 'bright sunlight'"
+  },
+  {
+   "topic_id": "b1-health-and-the-body-45",
+   "neighbour_source": "batch1",
+   "neighbour_id": "b1-technology-40",
+   "question_sha256": "75316cbff0a5e813880a3417ef586b7e9707bdffe9fce258808a90866b50a323",
+   "neighbour_sha256": "8ff5685806d5b88dbcbee0b0b7756b3f2d01168b6635a391779ef0cba2b90253",
+   "wordset_jaccard": 0.2,
+   "content_jaccard": 0.2222,
+   "rare_shared": [
+    "distance",
+    "judge"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "binocular depth perception vs an ultrasonic parking sensor: share only 'judge distance'"
+  },
+  {
+   "topic_id": "b1-history-00",
+   "neighbour_source": "batch1",
+   "neighbour_id": "b1-technology-45",
+   "question_sha256": "663b21631202d38f75cddc580d7bf8faa84915890b8109184be991f26b827cc6",
+   "neighbour_sha256": "f6d4e9ecb282d43ed33005811c157811d64ab4bb12cd0bd8eef99f5b6f27c5d8",
+   "wordset_jaccard": 0.1765,
+   "content_jaccard": 0.2,
+   "rare_shared": [
+    "cloth",
+    "machine"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "the sewing machine's history vs how a spin cycle works: share only 'machine' and 'clothes'"
+  },
+  {
+   "topic_id": "b1-technology-05",
+   "neighbour_source": "batch1",
+   "neighbour_id": "b1-technology-24",
+   "question_sha256": "417b53f4c732e448740e853155b2bc96f811fb57ddecd3a01e33ae94cd12c17a",
+   "neighbour_sha256": "874342de77d411c85abfaf5765e87125714eaee8ba98bbbc9cb78d815650c505",
+   "wordset_jaccard": 0.1875,
+   "content_jaccard": 0.2222,
+   "rare_shared": [
+    "charg",
+    "phone"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "wireless charging vs why charging warms a phone: different questions about charging"
+  },
+  {
+   "topic_id": "b1-the-natural-world-02",
+   "neighbour_source": "batch1",
+   "neighbour_id": "b1-the-natural-world-29",
+   "question_sha256": "3fe621c5a8bc1b40f24c767ee5d6b89e7ecaa24b18200bbe1f901038de61fa17",
+   "neighbour_sha256": "0feb7415082b37e442a1106f14bc2aacb95a7fd1b579b223c8c9dfb496367715",
+   "wordset_jaccard": 0.3333,
+   "content_jaccard": 0.2222,
+   "rare_shared": [
+    "catch",
+    "insect"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "spider webs vs carnivorous plants: different organisms and mechanisms"
+  },
+  {
+   "topic_id": "b1-the-natural-world-18",
+   "neighbour_source": "batch1",
+   "neighbour_id": "b1-the-natural-world-40",
+   "question_sha256": "60fee3b23a030672385c75e98e6800dbcb2074be59bd34231afb6b7a11ef6f64",
+   "neighbour_sha256": "69d343657b85da3b09d54121924798f1951b6180af3efa4e36071d4ed5414a74",
+   "wordset_jaccard": 0.2778,
+   "content_jaccard": 0.2222,
+   "rare_shared": [
+    "crab",
+    "shell"
+   ],
+   "decision": "kept_distinct",
+   "rationale": "hermit crabs choosing shells vs how crabs moult to grow: different questions"
+  }
+ ]
+}

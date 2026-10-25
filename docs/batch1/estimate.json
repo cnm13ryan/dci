@@ -1,0 +1,59 @@
+{
+ "caveats": [
+  "rates are v8.1 confirmatory rows/s on one AMD RX 7900 XTX at chunk size 64 and ~130 response tokens; they exclude model load (~2-5 min per backend run) and are not a property of any NVIDIA or Lambda instance",
+  "Stage 2 is bounded by stage2_max_cells; its split across models is decided by Stage 1 data, so 'if_even' is illustrative and 'max' is the per-model ceiling",
+  "a cloud estimate needs an authorised throughput smoke test on the chosen instance type (rows/s per model at this cap and chunk size, model load time, and truncation share)"
+ ],
+ "per_model": {
+  "gemma-3n-e2b-it": {
+   "historical_rows_per_second": 9.7,
+   "stage1_hours_at_historical_rate": 0.112,
+   "stage1_rows": 3904,
+   "stage2_hours_if_even": 0.11,
+   "stage2_hours_max": 0.22,
+   "stage2_rows_if_even": 3840,
+   "stage2_rows_max": 7680
+  },
+  "gemma-3n-e4b-it": {
+   "historical_rows_per_second": 4.94,
+   "stage1_hours_at_historical_rate": 0.22,
+   "stage1_rows": 3904,
+   "stage2_hours_if_even": 0.216,
+   "stage2_hours_max": 0.432,
+   "stage2_rows_if_even": 3840,
+   "stage2_rows_max": 7680
+  },
+  "qwen3-4b": {
+   "historical_rows_per_second": 17.4,
+   "stage1_hours_at_historical_rate": 0.062,
+   "stage1_rows": 3904,
+   "stage2_hours_if_even": 0.061,
+   "stage2_hours_max": 0.123,
+   "stage2_rows_if_even": 3840,
+   "stage2_rows_max": 7680
+  },
+  "qwen3-4b-instruct-2507": {
+   "historical_rows_per_second": 10.1,
+   "stage1_hours_at_historical_rate": 0.107,
+   "stage1_rows": 3904,
+   "stage2_hours_if_even": 0.106,
+   "stage2_hours_max": 0.211,
+   "stage2_rows_if_even": 3840,
+   "stage2_rows_max": 7680
+  }
+ },
+ "stage1_by_kind": {
+  "A": 768,
+  "B": 1536,
+  "reference": 13056,
+  "task_only": 256
+ },
+ "stage1_hours_at_historical_rates": 0.501,
+ "stage1_rows": 15616,
+ "stage2_hours_if_even": 0.493,
+ "stage2_hours_worst_case": 0.652,
+ "stage2_max_cells": 240,
+ "stage2_max_rows": 15360,
+ "storage_bytes_max": 247808000,
+ "total_max_rows": 30976
+}

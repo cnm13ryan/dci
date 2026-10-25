@@ -1,0 +1,2115 @@
+{
+ "families": {
+  "adjacent_shared_word": {
+   "applicability": "any natural-language answer",
+   "design_row": "adjacent-sentence boundary relation",
+   "family_id": "adjacent_shared_word",
+   "object_type": "sentence_pair",
+   "operation": "relational_dependency",
+   "semantic": "at least {min_sentences} sentences; each adjacent pair shares a folded word of at least {min_letters} letters",
+   "templates": {
+    "one": {
+     "F0": "Write at least {min_sentences} sentences and make each sentence after the first repeat a word of {min_letters} or more letters from the sentence before it.",
+     "F1": "Your answer must contain at least {min_sentences} sentences, and each sentence after the first must share a word of {min_letters} or more letters with the previous sentence."
+    }
+   },
+   "vacuity": "forced_production",
+   "verifier_id": "b1.adjacent_shared_word"
+  },
+  "alphabetical_openers": {
+   "applicability": "any natural-language answer",
+   "design_row": "sentence length or first-word order",
+   "family_id": "alphabetical_openers",
+   "object_type": "sentence",
+   "operation": "ordering",
+   "semantic": "at least {min_sentences} sentences whose folded first words are strictly increasing in code-point order",
+   "templates": {
+    "one": {
+     "F0": "Write at least {min_sentences} sentences and begin them with words in strict alphabetical order.",
+     "F1": "Your answer must contain at least {min_sentences} sentences whose first words are in strict alphabetical order."
+    }
+   },
+   "vacuity": "forced_production",
+   "verifier_id": "b1.alphabetical_openers"
+  },
+  "chain_letter": {
+   "applicability": "any natural-language answer",
+   "design_row": "adjacent-sentence boundary relation",
+   "family_id": "chain_letter",
+   "object_type": "sentence_pair",
+   "operation": "relational_dependency",
+   "semantic": "at least {min_sentences} sentences; each later sentence's first letter equals the last letter of the previous sentence's last word",
+   "templates": {
+    "one": {
+     "F0": "Write at least {min_sentences} sentences and begin each sentence after the first with the letter that ends the sentence before it.",
+     "F1": "Your answer must contain at least {min_sentences} sentences, and each sentence after the first must begin with the letter that ends the previous sentence."
+    }
+   },
+   "vacuity": "forced_production",
+   "verifier_id": "b1.chain_letter"
+  },
+  "chain_word": {
+   "applicability": "any natural-language answer",
+   "design_row": "adjacent-sentence boundary relation",
+   "family_id": "chain_word",
+   "object_type": "sentence_pair",
+   "operation": "relational_dependency",
+   "semantic": "at least {min_sentences} sentences; each later sentence's first word equals the previous sentence's last word",
+   "templates": {
+    "one": {
+     "F0": "Write at least {min_sentences} sentences and begin each sentence after the first with the last word of the sentence before it.",
+     "F1": "Your answer must contain at least {min_sentences} sentences, and each sentence after the first must begin with the last word of the previous sentence."
+    }
+   },
+   "vacuity": "forced_production",
+   "verifier_id": "b1.chain_word"
+  },
+  "distinct_openers": {
+   "applicability": "any natural-language answer",
+   "design_row": "avoid repeated words or word sequences",
+   "family_id": "distinct_openers",
+   "object_type": "sentence",
+   "operation": "uniqueness",
+   "semantic": "at least {min_sentences} sentences, all first words distinct",
+   "templates": {
+    "one": {
+     "F0": "Write at least {min_sentences} sentences and begin each one with a different word.",
+     "F1": "Your answer must contain at least {min_sentences} sentences, each beginning with a different word."
+    }
+   },
+   "vacuity": "forced_production",
+   "verifier_id": "b1.distinct_openers"
+  },
+  "exact_char_count": {
+   "applicability": "any natural-language answer",
+   "design_row": "exact punctuation, sentence or paragraph count",
+   "family_id": "exact_char_count",
+   "object_type": "punctuation",
+   "operation": "exact_count",
+   "semantic": "the raw character {char!r} occurs exactly {n} times",
+   "templates": {
+    "one": {
+     "F0": "Use exactly {n} {mark}{s}.",
+     "F1": "Your answer must contain exactly {n} {mark}{s}."
+    }
+   },
+   "vacuity": "forced_production",
+   "verifier_id": "b1.exact_char_count"
+  },
+  "exact_paragraph_count": {
+   "applicability": "any natural-language answer",
+   "design_row": "exact punctuation, sentence or paragraph count",
+   "family_id": "exact_paragraph_count",
+   "object_type": "paragraph",
+   "operation": "exact_count",
+   "semantic": "the answer has exactly {n} blank-line-separated paragraphs",
+   "templates": {
+    "one": {
+     "F0": "Write exactly {n} paragraph{s}, separated by blank lines.",
+     "F1": "Your answer must contain exactly {n} paragraph{s}, separated by blank lines."
+    }
+   },
+   "vacuity": "forced_production",
+   "verifier_id": "b1.exact_paragraph_count"
+  },
+  "exact_sentence_count": {
+   "applicability": "any natural-language answer",
+   "design_row": "exact punctuation, sentence or paragraph count",
+   "family_id": "exact_sentence_count",
+   "object_type": "sentence",
+   "operation": "exact_count",
+   "semantic": "the answer has exactly {n} sentences",
+   "templates": {
+    "one": {
+     "F0": "Write exactly {n} sentence{s}.",
+     "F1": "Your answer must contain exactly {n} sentence{s}."
+    }
+   },
+   "vacuity": "forced_production",
+   "verifier_id": "b1.exact_sentence_count"
+  },
+  "exact_word_count": {
+   "applicability": "any natural-language answer",
+   "design_row": "exact word count",
+   "family_id": "exact_word_count",
+   "object_type": "word",
+   "operation": "exact_count",
+   "semantic": "the number of words equal to '{word}' (folded) is exactly {n}",
+   "templates": {
+    "one": {
+     "F0": "Use the word {word} exactly {n} time{s}.",
+     "F1": "Your answer must contain the word {word} exactly {n} time{s}."
+    }
+   },
+   "vacuity": "forced_production",
+   "verifier_id": "b1.exact_word_count"
+  },
+  "forbid_letter": {
+   "applicability": "any natural-language answer",
+   "design_row": "avoid specified words or letters",
+   "family_id": "forbid_letter",
+   "object_type": "letter",
+   "operation": "prohibition",
+   "semantic": "no word contains the letter '{letter}' in either case",
+   "templates": {
+    "one": {
+     "F0": "Do not use the letter {letter}.",
+     "F1": "Your answer must not contain the letter {letter}."
+    }
+   },
+   "vacuity": "min_words",
+   "verifier_id": "b1.forbid_letter"
+  },
+  "forbid_words": {
+   "applicability": "any natural-language answer",
+   "design_row": "avoid specified words or letters",
+   "family_id": "forbid_words",
+   "object_type": "word",
+   "operation": "prohibition",
+   "semantic": "none of {words} occurs as a whole word",
+   "templates": {
+    "many": {
+     "F0": "Do not use any of the words {words}.",
+     "F1": "Your answer must not contain any of the words {words}."
+    },
+    "one": {
+     "F0": "Do not use the word {words}.",
+     "F1": "Your answer must not contain the word {words}."
+    }
+   },
+   "vacuity": "min_words",
+   "verifier_id": "b1.forbid_words"
+  },
+  "include_words": {
+   "applicability": "any natural-language answer",
+   "design_row": "include specified words",
+   "family_id": "include_words",
+   "object_type": "word",
+   "operation": "required_inclusion",
+   "semantic": "every one of {words} occurs at least once as a whole word",
+   "templates": {
+    "many": {
+     "F0": "Use each of the words {words} at least once.",
+     "F1": "Your answer must contain each of the words {words} at least once."
+    },
+    "one": {
+     "F0": "Use the word {words} at least once.",
+     "F1": "Your answer must contain the word {words} at least once."
+    }
+   },
+   "vacuity": "forced_production",
+   "verifier_id": "b1.include_words"
+  },
+  "length_order": {
+   "applicability": "any natural-language answer",
+   "design_row": "sentence length or first-word order",
+   "family_id": "length_order",
+   "object_type": "sentence",
+   "operation": "ordering",
+   "semantic": "at least {min_sentences} sentences whose word counts are strictly {direction}",
+   "templates": {
+    "decreasing": {
+     "F0": "Write at least {min_sentences} sentences, each containing fewer words than the one before it.",
+     "F1": "Your answer must contain at least {min_sentences} sentences, each with fewer words than the sentence before it."
+    },
+    "increasing": {
+     "F0": "Write at least {min_sentences} sentences, each containing more words than the one before it.",
+     "F1": "Your answer must contain at least {min_sentences} sentences, each with more words than the sentence before it."
+    }
+   },
+   "vacuity": "forced_production",
+   "verifier_id": "b1.length_order"
+  },
+  "max_word_length": {
+   "applicability": "any natural-language answer",
+   "design_row": "focal B",
+   "family_id": "max_word_length",
+   "object_type": "word",
+   "operation": "numerical_bound",
+   "semantic": "every word has at most {m} letters",
+   "templates": {
+    "one": {
+     "F0": "Use only words of {m} letters or fewer.",
+     "F1": "Every word in the answer must have at most {m} letters."
+    }
+   },
+   "vacuity": "min_words",
+   "verifier_id": "b1.max_word_length"
+  },
+  "no_repeated_bigrams": {
+   "applicability": "any natural-language answer",
+   "design_row": "avoid repeated words or word sequences",
+   "family_id": "no_repeated_bigrams",
+   "object_type": "word_sequence",
+   "operation": "uniqueness",
+   "semantic": "no pair of consecutive folded words (over the whole answer) occurs twice",
+   "templates": {
+    "one": {
+     "F0": "Do not use any sequence of two consecutive words more than once.",
+     "F1": "No sequence of two consecutive words may appear more than once in your answer."
+    }
+   },
+   "vacuity": "min_words",
+   "verifier_id": "b1.no_repeated_bigrams"
+  },
+  "no_repeated_words": {
+   "applicability": "any natural-language answer",
+   "design_row": "avoid repeated words or word sequences",
+   "family_id": "no_repeated_words",
+   "object_type": "word",
+   "operation": "uniqueness",
+   "semantic": "no folded word of at least {min_letters} letters occurs twice",
+   "templates": {
+    "one": {
+     "F0": "Do not use any word of {min_letters} or more letters more than once.",
+     "F1": "No word of {min_letters} or more letters may appear more than once in your answer."
+    }
+   },
+   "vacuity": "min_words",
+   "verifier_id": "b1.no_repeated_words"
+  },
+  "sentence_word_bound": {
+   "applicability": "any natural-language answer",
+   "design_row": "words per sentence",
+   "family_id": "sentence_word_bound",
+   "object_type": "sentence",
+   "operation": "numerical_bound",
+   "semantic": "every sentence has {bound} {k} words",
+   "templates": {
+    "max": {
+     "F0": "Keep every sentence to at most {k} words.",
+     "F1": "Every sentence in your answer must have at most {k} words."
+    },
+    "min": {
+     "F0": "Make every sentence at least {k} words long.",
+     "F1": "Every sentence in your answer must have at least {k} words."
+    }
+   },
+   "vacuity": "min_words",
+   "verifier_id": "b1.sentence_word_bound"
+  }
+ },
+ "focal_a": [
+  {
+   "applicability": "any natural-language answer",
+   "cid": "A.however.2",
+   "design_row": "exact word count",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "exact_word_count",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "word",
+   "operation": "exact_count",
+   "params": {
+    "n": 2,
+    "word": "however"
+   },
+   "provenance": "research design: focal A, N in {2,4,6}",
+   "role": "A",
+   "semantic_spec": "the number of words equal to 'however' (folded) is exactly 2",
+   "spec_hash": "d5573e63a1e674369373c914f2982ef7c25aa9bfe809138b341507e3a5414292",
+   "status": "prescribed_by_design",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_implementation_hash": "1f05a015063a7db4916b24e5ef7870198b4684ed903f37e6659b272d6634973f",
+   "wording": {
+    "F0": "Use the word however exactly 2 times.",
+    "F1": "Your answer must contain the word however exactly 2 times."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "A.however.4",
+   "design_row": "exact word count",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "exact_word_count",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "word",
+   "operation": "exact_count",
+   "params": {
+    "n": 4,
+    "word": "however"
+   },
+   "provenance": "research design: focal A, N in {2,4,6}",
+   "role": "A",
+   "semantic_spec": "the number of words equal to 'however' (folded) is exactly 4",
+   "spec_hash": "38d5c9c89836b319604b9524e3574fd063a8680a0841f61a3757df4e4ea54743",
+   "status": "prescribed_by_design",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_implementation_hash": "1f05a015063a7db4916b24e5ef7870198b4684ed903f37e6659b272d6634973f",
+   "wording": {
+    "F0": "Use the word however exactly 4 times.",
+    "F1": "Your answer must contain the word however exactly 4 times."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "A.however.6",
+   "design_row": "exact word count",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "exact_word_count",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "word",
+   "operation": "exact_count",
+   "params": {
+    "n": 6,
+    "word": "however"
+   },
+   "provenance": "research design: focal A, N in {2,4,6}",
+   "role": "A",
+   "semantic_spec": "the number of words equal to 'however' (folded) is exactly 6",
+   "spec_hash": "d7d940e11b5bafbdb4937b34a764b4b2e7de285f2999fbf0ae4c2732cd67f926",
+   "status": "prescribed_by_design",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_implementation_hash": "1f05a015063a7db4916b24e5ef7870198b4684ed903f37e6659b272d6634973f",
+   "wording": {
+    "F0": "Use the word however exactly 6 times.",
+    "F1": "Your answer must contain the word however exactly 6 times."
+   }
+  }
+ ],
+ "focal_b": [
+  {
+   "applicability": "any natural-language answer",
+   "cid": "B.max8",
+   "design_row": "focal B",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "max_word_length",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": 20,
+    "rule": "min_words"
+   },
+   "object_type": "word",
+   "operation": "numerical_bound",
+   "params": {
+    "m": 8
+   },
+   "provenance": "research design: focal B, m in {8..13}; historical B statistic (dci1v7/verifiers/statistics.py focal_statistic)",
+   "role": "B",
+   "semantic_spec": "every word has at most 8 letters",
+   "spec_hash": "d6486e5a2596833cea42d3c256ad251c872d00c3b3a56bd5023451f4e1f16cf4",
+   "status": "prescribed_by_design",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.max_word_length",
+   "verifier_implementation_hash": "0173a5bd9b281475f8ff779017a2be1e1afb1abae8917baeea503ead53ad0ec1",
+   "wording": {
+    "F0": "Use only words of 8 letters or fewer.",
+    "F1": "Every word in the answer must have at most 8 letters."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "B.max9",
+   "design_row": "focal B",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "max_word_length",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": 20,
+    "rule": "min_words"
+   },
+   "object_type": "word",
+   "operation": "numerical_bound",
+   "params": {
+    "m": 9
+   },
+   "provenance": "research design: focal B, m in {8..13}; historical B statistic (dci1v7/verifiers/statistics.py focal_statistic)",
+   "role": "B",
+   "semantic_spec": "every word has at most 9 letters",
+   "spec_hash": "8aeee06a9d3b769246ced3f80ba8cef6e7a8e92e0a9e811ef5d8ef3e47a84977",
+   "status": "prescribed_by_design",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.max_word_length",
+   "verifier_implementation_hash": "0173a5bd9b281475f8ff779017a2be1e1afb1abae8917baeea503ead53ad0ec1",
+   "wording": {
+    "F0": "Use only words of 9 letters or fewer.",
+    "F1": "Every word in the answer must have at most 9 letters."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "B.max10",
+   "design_row": "focal B",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "max_word_length",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": 20,
+    "rule": "min_words"
+   },
+   "object_type": "word",
+   "operation": "numerical_bound",
+   "params": {
+    "m": 10
+   },
+   "provenance": "research design: focal B, m in {8..13}; historical B statistic (dci1v7/verifiers/statistics.py focal_statistic)",
+   "role": "B",
+   "semantic_spec": "every word has at most 10 letters",
+   "spec_hash": "a37f4fd79720a113efa94da0ee6e79275c96ca28dc350fcaac4227c350597b04",
+   "status": "prescribed_by_design",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.max_word_length",
+   "verifier_implementation_hash": "0173a5bd9b281475f8ff779017a2be1e1afb1abae8917baeea503ead53ad0ec1",
+   "wording": {
+    "F0": "Use only words of 10 letters or fewer.",
+    "F1": "Every word in the answer must have at most 10 letters."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "B.max11",
+   "design_row": "focal B",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "max_word_length",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": 20,
+    "rule": "min_words"
+   },
+   "object_type": "word",
+   "operation": "numerical_bound",
+   "params": {
+    "m": 11
+   },
+   "provenance": "research design: focal B, m in {8..13}; historical B statistic (dci1v7/verifiers/statistics.py focal_statistic)",
+   "role": "B",
+   "semantic_spec": "every word has at most 11 letters",
+   "spec_hash": "4b7fd653999348ad99857c98a45d958cdb4c3c43efee7a32c29d4c319dc11d4f",
+   "status": "prescribed_by_design",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.max_word_length",
+   "verifier_implementation_hash": "0173a5bd9b281475f8ff779017a2be1e1afb1abae8917baeea503ead53ad0ec1",
+   "wording": {
+    "F0": "Use only words of 11 letters or fewer.",
+    "F1": "Every word in the answer must have at most 11 letters."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "B.max12",
+   "design_row": "focal B",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "max_word_length",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": 20,
+    "rule": "min_words"
+   },
+   "object_type": "word",
+   "operation": "numerical_bound",
+   "params": {
+    "m": 12
+   },
+   "provenance": "research design: focal B, m in {8..13}; historical B statistic (dci1v7/verifiers/statistics.py focal_statistic)",
+   "role": "B",
+   "semantic_spec": "every word has at most 12 letters",
+   "spec_hash": "a268bb8bc7be0554e8a53aea6c51479be573fb50f49018e279614263f341d5d6",
+   "status": "prescribed_by_design",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.max_word_length",
+   "verifier_implementation_hash": "0173a5bd9b281475f8ff779017a2be1e1afb1abae8917baeea503ead53ad0ec1",
+   "wording": {
+    "F0": "Use only words of 12 letters or fewer.",
+    "F1": "Every word in the answer must have at most 12 letters."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "B.max13",
+   "design_row": "focal B",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "max_word_length",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": 20,
+    "rule": "min_words"
+   },
+   "object_type": "word",
+   "operation": "numerical_bound",
+   "params": {
+    "m": 13
+   },
+   "provenance": "research design: focal B, m in {8..13}; historical B statistic (dci1v7/verifiers/statistics.py focal_statistic)",
+   "role": "B",
+   "semantic_spec": "every word has at most 13 letters",
+   "spec_hash": "662877e87ca3feedec468c1342ad5602dca65cb41abf6e59659d213f3076adc9",
+   "status": "prescribed_by_design",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.max_word_length",
+   "verifier_implementation_hash": "0173a5bd9b281475f8ff779017a2be1e1afb1abae8917baeea503ead53ad0ec1",
+   "wording": {
+    "F0": "Use only words of 13 letters or fewer.",
+    "F1": "Every word in the answer must have at most 13 letters."
+   }
+  }
+ ],
+ "frames": {
+  "F0": "imperative",
+  "F1": "requirement"
+ },
+ "references": [
+  {
+   "applicability": "any natural-language answer",
+   "cid": "ew.indeed.2",
+   "design_row": "exact word count",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "exact_word_count",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "word",
+   "operation": "exact_count",
+   "params": {
+    "n": 2,
+    "word": "indeed"
+   },
+   "provenance": "research design: fixed exact-word-count grid; predicate form of DCI-1 v8 marker families (dci1v8dev/wording_v8.py)",
+   "role": "reference",
+   "semantic_spec": "the number of words equal to 'indeed' (folded) is exactly 2",
+   "spec_hash": "47f9168f360b99bda9cfa7f92559c8db5041338786ff0207b0e2a8132d6d1638",
+   "status": "prescribed_by_design",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_implementation_hash": "1f05a015063a7db4916b24e5ef7870198b4684ed903f37e6659b272d6634973f",
+   "wording": {
+    "F0": "Use the word indeed exactly 2 times.",
+    "F1": "Your answer must contain the word indeed exactly 2 times."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "ew.indeed.4",
+   "design_row": "exact word count",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "exact_word_count",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "word",
+   "operation": "exact_count",
+   "params": {
+    "n": 4,
+    "word": "indeed"
+   },
+   "provenance": "research design: fixed exact-word-count grid; predicate form of DCI-1 v8 marker families (dci1v8dev/wording_v8.py)",
+   "role": "reference",
+   "semantic_spec": "the number of words equal to 'indeed' (folded) is exactly 4",
+   "spec_hash": "7bf4e773392bf0c5ed7fa4a26feb15f6ba41cda815094dda305d4897600d0f52",
+   "status": "prescribed_by_design",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_implementation_hash": "1f05a015063a7db4916b24e5ef7870198b4684ed903f37e6659b272d6634973f",
+   "wording": {
+    "F0": "Use the word indeed exactly 4 times.",
+    "F1": "Your answer must contain the word indeed exactly 4 times."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "ew.indeed.6",
+   "design_row": "exact word count",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "exact_word_count",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "word",
+   "operation": "exact_count",
+   "params": {
+    "n": 6,
+    "word": "indeed"
+   },
+   "provenance": "research design: fixed exact-word-count grid; predicate form of DCI-1 v8 marker families (dci1v8dev/wording_v8.py)",
+   "role": "reference",
+   "semantic_spec": "the number of words equal to 'indeed' (folded) is exactly 6",
+   "spec_hash": "0c5525f9fd4e7821cfdb8dbafed6cc3d57e19f91d20393dbe285e83cbad72522",
+   "status": "prescribed_by_design",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_implementation_hash": "1f05a015063a7db4916b24e5ef7870198b4684ed903f37e6659b272d6634973f",
+   "wording": {
+    "F0": "Use the word indeed exactly 6 times.",
+    "F1": "Your answer must contain the word indeed exactly 6 times."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "ew.instead.2",
+   "design_row": "exact word count",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "exact_word_count",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "word",
+   "operation": "exact_count",
+   "params": {
+    "n": 2,
+    "word": "instead"
+   },
+   "provenance": "research design: fixed exact-word-count grid; predicate form of DCI-1 v8 marker families (dci1v8dev/wording_v8.py)",
+   "role": "reference",
+   "semantic_spec": "the number of words equal to 'instead' (folded) is exactly 2",
+   "spec_hash": "bf2413abd1aecc66a49a4dd66f6a9dbfc6035be6e0c356577d884cad927b8675",
+   "status": "prescribed_by_design",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_implementation_hash": "1f05a015063a7db4916b24e5ef7870198b4684ed903f37e6659b272d6634973f",
+   "wording": {
+    "F0": "Use the word instead exactly 2 times.",
+    "F1": "Your answer must contain the word instead exactly 2 times."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "ew.instead.4",
+   "design_row": "exact word count",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "exact_word_count",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "word",
+   "operation": "exact_count",
+   "params": {
+    "n": 4,
+    "word": "instead"
+   },
+   "provenance": "research design: fixed exact-word-count grid; predicate form of DCI-1 v8 marker families (dci1v8dev/wording_v8.py)",
+   "role": "reference",
+   "semantic_spec": "the number of words equal to 'instead' (folded) is exactly 4",
+   "spec_hash": "4fe8f135e9c9edf5150ef057778326585782d965299dc9ba8be51d5d955013f9",
+   "status": "prescribed_by_design",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_implementation_hash": "1f05a015063a7db4916b24e5ef7870198b4684ed903f37e6659b272d6634973f",
+   "wording": {
+    "F0": "Use the word instead exactly 4 times.",
+    "F1": "Your answer must contain the word instead exactly 4 times."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "ew.instead.6",
+   "design_row": "exact word count",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "exact_word_count",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "word",
+   "operation": "exact_count",
+   "params": {
+    "n": 6,
+    "word": "instead"
+   },
+   "provenance": "research design: fixed exact-word-count grid; predicate form of DCI-1 v8 marker families (dci1v8dev/wording_v8.py)",
+   "role": "reference",
+   "semantic_spec": "the number of words equal to 'instead' (folded) is exactly 6",
+   "spec_hash": "0be6fc918e042b90efd1188feefb991c2e6f472672b11b55451bc59d18fe13a1",
+   "status": "prescribed_by_design",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_implementation_hash": "1f05a015063a7db4916b24e5ef7870198b4684ed903f37e6659b272d6634973f",
+   "wording": {
+    "F0": "Use the word instead exactly 6 times.",
+    "F1": "Your answer must contain the word instead exactly 6 times."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "ew.perhaps.2",
+   "design_row": "exact word count",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "exact_word_count",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "word",
+   "operation": "exact_count",
+   "params": {
+    "n": 2,
+    "word": "perhaps"
+   },
+   "provenance": "research design: fixed exact-word-count grid; predicate form of DCI-1 v8 marker families (dci1v8dev/wording_v8.py)",
+   "role": "reference",
+   "semantic_spec": "the number of words equal to 'perhaps' (folded) is exactly 2",
+   "spec_hash": "fdf6328467b1d3ab41c0d59720233a608afc298a78dd9174906e7d930c179883",
+   "status": "prescribed_by_design",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_implementation_hash": "1f05a015063a7db4916b24e5ef7870198b4684ed903f37e6659b272d6634973f",
+   "wording": {
+    "F0": "Use the word perhaps exactly 2 times.",
+    "F1": "Your answer must contain the word perhaps exactly 2 times."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "ew.perhaps.4",
+   "design_row": "exact word count",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "exact_word_count",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "word",
+   "operation": "exact_count",
+   "params": {
+    "n": 4,
+    "word": "perhaps"
+   },
+   "provenance": "research design: fixed exact-word-count grid; predicate form of DCI-1 v8 marker families (dci1v8dev/wording_v8.py)",
+   "role": "reference",
+   "semantic_spec": "the number of words equal to 'perhaps' (folded) is exactly 4",
+   "spec_hash": "46793c8ef715111b6111f53f5b808c98502c8bb48b12a0f4ac6aecdde1226d88",
+   "status": "prescribed_by_design",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_implementation_hash": "1f05a015063a7db4916b24e5ef7870198b4684ed903f37e6659b272d6634973f",
+   "wording": {
+    "F0": "Use the word perhaps exactly 4 times.",
+    "F1": "Your answer must contain the word perhaps exactly 4 times."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "ew.perhaps.6",
+   "design_row": "exact word count",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "exact_word_count",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "word",
+   "operation": "exact_count",
+   "params": {
+    "n": 6,
+    "word": "perhaps"
+   },
+   "provenance": "research design: fixed exact-word-count grid; predicate form of DCI-1 v8 marker families (dci1v8dev/wording_v8.py)",
+   "role": "reference",
+   "semantic_spec": "the number of words equal to 'perhaps' (folded) is exactly 6",
+   "spec_hash": "c34eb695ed1eb630575a09d3b223f97aceaf828bff72d14e4b3f0bfe66c2f8a8",
+   "status": "prescribed_by_design",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_implementation_hash": "1f05a015063a7db4916b24e5ef7870198b4684ed903f37e6659b272d6634973f",
+   "wording": {
+    "F0": "Use the word perhaps exactly 6 times.",
+    "F1": "Your answer must contain the word perhaps exactly 6 times."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "ew.although.2",
+   "design_row": "exact word count",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "exact_word_count",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "word",
+   "operation": "exact_count",
+   "params": {
+    "n": 2,
+    "word": "although"
+   },
+   "provenance": "research design: fixed exact-word-count grid; predicate form of DCI-1 v8 marker families (dci1v8dev/wording_v8.py)",
+   "role": "reference",
+   "semantic_spec": "the number of words equal to 'although' (folded) is exactly 2",
+   "spec_hash": "195e87135618c140406741bdd689a79fc77042d2933546d83a5dd9399324c1c1",
+   "status": "prescribed_by_design",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_implementation_hash": "1f05a015063a7db4916b24e5ef7870198b4684ed903f37e6659b272d6634973f",
+   "wording": {
+    "F0": "Use the word although exactly 2 times.",
+    "F1": "Your answer must contain the word although exactly 2 times."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "ew.although.4",
+   "design_row": "exact word count",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "exact_word_count",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "word",
+   "operation": "exact_count",
+   "params": {
+    "n": 4,
+    "word": "although"
+   },
+   "provenance": "research design: fixed exact-word-count grid; predicate form of DCI-1 v8 marker families (dci1v8dev/wording_v8.py)",
+   "role": "reference",
+   "semantic_spec": "the number of words equal to 'although' (folded) is exactly 4",
+   "spec_hash": "b8d7eb1a9500b7f839546d08bb9e95316c131afd68c6a9a6175408cff5da880b",
+   "status": "prescribed_by_design",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_implementation_hash": "1f05a015063a7db4916b24e5ef7870198b4684ed903f37e6659b272d6634973f",
+   "wording": {
+    "F0": "Use the word although exactly 4 times.",
+    "F1": "Your answer must contain the word although exactly 4 times."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "ew.although.6",
+   "design_row": "exact word count",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "exact_word_count",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "word",
+   "operation": "exact_count",
+   "params": {
+    "n": 6,
+    "word": "although"
+   },
+   "provenance": "research design: fixed exact-word-count grid; predicate form of DCI-1 v8 marker families (dci1v8dev/wording_v8.py)",
+   "role": "reference",
+   "semantic_spec": "the number of words equal to 'although' (folded) is exactly 6",
+   "spec_hash": "b111b8fa6c5bcec9aaa274a69c37790849fd1b7a2f973850aedb5b9af44de4d7",
+   "status": "prescribed_by_design",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_implementation_hash": "1f05a015063a7db4916b24e5ef7870198b4684ed903f37e6659b272d6634973f",
+   "wording": {
+    "F0": "Use the word although exactly 6 times.",
+    "F1": "Your answer must contain the word although exactly 6 times."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "ew.moreover.2",
+   "design_row": "exact word count",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "exact_word_count",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "word",
+   "operation": "exact_count",
+   "params": {
+    "n": 2,
+    "word": "moreover"
+   },
+   "provenance": "research design: fixed exact-word-count grid; predicate form of DCI-1 v8 marker families (dci1v8dev/wording_v8.py)",
+   "role": "reference",
+   "semantic_spec": "the number of words equal to 'moreover' (folded) is exactly 2",
+   "spec_hash": "d5a7c6596f28cd245503e178b33ada667102eb22726da0ebe7204cd8be081f49",
+   "status": "prescribed_by_design",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_implementation_hash": "1f05a015063a7db4916b24e5ef7870198b4684ed903f37e6659b272d6634973f",
+   "wording": {
+    "F0": "Use the word moreover exactly 2 times.",
+    "F1": "Your answer must contain the word moreover exactly 2 times."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "ew.moreover.4",
+   "design_row": "exact word count",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "exact_word_count",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "word",
+   "operation": "exact_count",
+   "params": {
+    "n": 4,
+    "word": "moreover"
+   },
+   "provenance": "research design: fixed exact-word-count grid; predicate form of DCI-1 v8 marker families (dci1v8dev/wording_v8.py)",
+   "role": "reference",
+   "semantic_spec": "the number of words equal to 'moreover' (folded) is exactly 4",
+   "spec_hash": "d74cea9317e5ca6201a4d98ce9930908d03c359bb89e1aded1579750794e553c",
+   "status": "prescribed_by_design",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_implementation_hash": "1f05a015063a7db4916b24e5ef7870198b4684ed903f37e6659b272d6634973f",
+   "wording": {
+    "F0": "Use the word moreover exactly 4 times.",
+    "F1": "Your answer must contain the word moreover exactly 4 times."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "ew.moreover.6",
+   "design_row": "exact word count",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "exact_word_count",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "word",
+   "operation": "exact_count",
+   "params": {
+    "n": 6,
+    "word": "moreover"
+   },
+   "provenance": "research design: fixed exact-word-count grid; predicate form of DCI-1 v8 marker families (dci1v8dev/wording_v8.py)",
+   "role": "reference",
+   "semantic_spec": "the number of words equal to 'moreover' (folded) is exactly 6",
+   "spec_hash": "993cdfdf0b98920848bbdd10c180f171aa4591d212a225169ffe0a986f313574",
+   "status": "prescribed_by_design",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_implementation_hash": "1f05a015063a7db4916b24e5ef7870198b4684ed903f37e6659b272d6634973f",
+   "wording": {
+    "F0": "Use the word moreover exactly 6 times.",
+    "F1": "Your answer must contain the word moreover exactly 6 times."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "ew.therefore.2",
+   "design_row": "exact word count",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "exact_word_count",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "word",
+   "operation": "exact_count",
+   "params": {
+    "n": 2,
+    "word": "therefore"
+   },
+   "provenance": "research design: fixed exact-word-count grid; predicate form of DCI-1 v8 marker families (dci1v8dev/wording_v8.py)",
+   "role": "reference",
+   "semantic_spec": "the number of words equal to 'therefore' (folded) is exactly 2",
+   "spec_hash": "55600a9a38b0213f27c68fadfa40d89be6678b164334c45f21694d5335469f51",
+   "status": "prescribed_by_design",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_implementation_hash": "1f05a015063a7db4916b24e5ef7870198b4684ed903f37e6659b272d6634973f",
+   "wording": {
+    "F0": "Use the word therefore exactly 2 times.",
+    "F1": "Your answer must contain the word therefore exactly 2 times."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "ew.therefore.4",
+   "design_row": "exact word count",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "exact_word_count",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "word",
+   "operation": "exact_count",
+   "params": {
+    "n": 4,
+    "word": "therefore"
+   },
+   "provenance": "research design: fixed exact-word-count grid; predicate form of DCI-1 v8 marker families (dci1v8dev/wording_v8.py)",
+   "role": "reference",
+   "semantic_spec": "the number of words equal to 'therefore' (folded) is exactly 4",
+   "spec_hash": "228a4595274ac367b9511fab8cc026174e1b4b074c8e20a82eedb59b5a341ad6",
+   "status": "prescribed_by_design",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_implementation_hash": "1f05a015063a7db4916b24e5ef7870198b4684ed903f37e6659b272d6634973f",
+   "wording": {
+    "F0": "Use the word therefore exactly 4 times.",
+    "F1": "Your answer must contain the word therefore exactly 4 times."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "ew.therefore.6",
+   "design_row": "exact word count",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "exact_word_count",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "word",
+   "operation": "exact_count",
+   "params": {
+    "n": 6,
+    "word": "therefore"
+   },
+   "provenance": "research design: fixed exact-word-count grid; predicate form of DCI-1 v8 marker families (dci1v8dev/wording_v8.py)",
+   "role": "reference",
+   "semantic_spec": "the number of words equal to 'therefore' (folded) is exactly 6",
+   "spec_hash": "edcb442e94b80a035c9be9ddc864e33e464793d816134d1e284285365e3e2b33",
+   "status": "prescribed_by_design",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_implementation_hash": "1f05a015063a7db4916b24e5ef7870198b4684ed903f37e6659b272d6634973f",
+   "wording": {
+    "F0": "Use the word therefore exactly 6 times.",
+    "F1": "Your answer must contain the word therefore exactly 6 times."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "ew.nonetheless.2",
+   "design_row": "exact word count",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "exact_word_count",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "word",
+   "operation": "exact_count",
+   "params": {
+    "n": 2,
+    "word": "nonetheless"
+   },
+   "provenance": "research design: fixed exact-word-count grid; predicate form of DCI-1 v8 marker families (dci1v8dev/wording_v8.py)",
+   "role": "reference",
+   "semantic_spec": "the number of words equal to 'nonetheless' (folded) is exactly 2",
+   "spec_hash": "92051acc063180adedbf6a3f58e82b4df84710537eab6f9c145038c552768834",
+   "status": "prescribed_by_design",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_implementation_hash": "1f05a015063a7db4916b24e5ef7870198b4684ed903f37e6659b272d6634973f",
+   "wording": {
+    "F0": "Use the word nonetheless exactly 2 times.",
+    "F1": "Your answer must contain the word nonetheless exactly 2 times."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "ew.nonetheless.4",
+   "design_row": "exact word count",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "exact_word_count",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "word",
+   "operation": "exact_count",
+   "params": {
+    "n": 4,
+    "word": "nonetheless"
+   },
+   "provenance": "research design: fixed exact-word-count grid; predicate form of DCI-1 v8 marker families (dci1v8dev/wording_v8.py)",
+   "role": "reference",
+   "semantic_spec": "the number of words equal to 'nonetheless' (folded) is exactly 4",
+   "spec_hash": "99313c3c3e407040d91bd19472993705eef20ce625cf971a34527f7674752153",
+   "status": "prescribed_by_design",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_implementation_hash": "1f05a015063a7db4916b24e5ef7870198b4684ed903f37e6659b272d6634973f",
+   "wording": {
+    "F0": "Use the word nonetheless exactly 4 times.",
+    "F1": "Your answer must contain the word nonetheless exactly 4 times."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "ew.consequently.2",
+   "design_row": "exact word count",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "exact_word_count",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "word",
+   "operation": "exact_count",
+   "params": {
+    "n": 2,
+    "word": "consequently"
+   },
+   "provenance": "research design: fixed exact-word-count grid; predicate form of DCI-1 v8 marker families (dci1v8dev/wording_v8.py)",
+   "role": "reference",
+   "semantic_spec": "the number of words equal to 'consequently' (folded) is exactly 2",
+   "spec_hash": "23bb40a7e2cd4e6175da2bf6ea5b146d186a2175affc3bba69909d0829150c08",
+   "status": "prescribed_by_design",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_implementation_hash": "1f05a015063a7db4916b24e5ef7870198b4684ed903f37e6659b272d6634973f",
+   "wording": {
+    "F0": "Use the word consequently exactly 2 times.",
+    "F1": "Your answer must contain the word consequently exactly 2 times."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "ew.consequently.4",
+   "design_row": "exact word count",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "exact_word_count",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "word",
+   "operation": "exact_count",
+   "params": {
+    "n": 4,
+    "word": "consequently"
+   },
+   "provenance": "research design: fixed exact-word-count grid; predicate form of DCI-1 v8 marker families (dci1v8dev/wording_v8.py)",
+   "role": "reference",
+   "semantic_spec": "the number of words equal to 'consequently' (folded) is exactly 4",
+   "spec_hash": "c9fa6b626171c688db83c73c7ed052abac815dcd86fc0868f4d16ad090220987",
+   "status": "prescribed_by_design",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.exact_word_count",
+   "verifier_implementation_hash": "1f05a015063a7db4916b24e5ef7870198b4684ed903f37e6659b272d6634973f",
+   "wording": {
+    "F0": "Use the word consequently exactly 4 times.",
+    "F1": "Your answer must contain the word consequently exactly 4 times."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "ec.comma.3",
+   "design_row": "exact punctuation, sentence or paragraph count",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "exact_char_count",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "punctuation",
+   "operation": "exact_count",
+   "params": {
+    "char": ",",
+    "n": 3
+   },
+   "provenance": "proposed for Batch 1 pilot review; family distinctions inspired by CSE (arXiv 2608.12426) and Harness-IF (arXiv 2608.11727), whose constraint lists are not in this workspace and are not claimed",
+   "role": "reference",
+   "semantic_spec": "the raw character ',' occurs exactly 3 times",
+   "spec_hash": "e6abe2fe2db1c08b4d82783d5f884c29b23b35f6ae65377d2abac3748de13811",
+   "status": "proposed_unapproved",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.exact_char_count",
+   "verifier_implementation_hash": "4e13356509815be8915af606cdf3d8d17ff057bb915ff49d33330a9962475740",
+   "wording": {
+    "F0": "Use exactly 3 commas.",
+    "F1": "Your answer must contain exactly 3 commas."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "ec.comma.6",
+   "design_row": "exact punctuation, sentence or paragraph count",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "exact_char_count",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "punctuation",
+   "operation": "exact_count",
+   "params": {
+    "char": ",",
+    "n": 6
+   },
+   "provenance": "proposed for Batch 1 pilot review; family distinctions inspired by CSE (arXiv 2608.12426) and Harness-IF (arXiv 2608.11727), whose constraint lists are not in this workspace and are not claimed",
+   "role": "reference",
+   "semantic_spec": "the raw character ',' occurs exactly 6 times",
+   "spec_hash": "4ebfbb43e6955f41e4ff06aaaed1293555bb2a29b53ebf4a215f685ddb4af592",
+   "status": "proposed_unapproved",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.exact_char_count",
+   "verifier_implementation_hash": "4e13356509815be8915af606cdf3d8d17ff057bb915ff49d33330a9962475740",
+   "wording": {
+    "F0": "Use exactly 6 commas.",
+    "F1": "Your answer must contain exactly 6 commas."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "ec.semicolon.1",
+   "design_row": "exact punctuation, sentence or paragraph count",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "exact_char_count",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "punctuation",
+   "operation": "exact_count",
+   "params": {
+    "char": ";",
+    "n": 1
+   },
+   "provenance": "proposed for Batch 1 pilot review; family distinctions inspired by CSE (arXiv 2608.12426) and Harness-IF (arXiv 2608.11727), whose constraint lists are not in this workspace and are not claimed",
+   "role": "reference",
+   "semantic_spec": "the raw character ';' occurs exactly 1 times",
+   "spec_hash": "7d5e564cb5173bc1ccba999863f195241626b8a7ab79fa028a756952e03195d1",
+   "status": "proposed_unapproved",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.exact_char_count",
+   "verifier_implementation_hash": "4e13356509815be8915af606cdf3d8d17ff057bb915ff49d33330a9962475740",
+   "wording": {
+    "F0": "Use exactly 1 semicolon.",
+    "F1": "Your answer must contain exactly 1 semicolon."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "ec.semicolon.2",
+   "design_row": "exact punctuation, sentence or paragraph count",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "exact_char_count",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "punctuation",
+   "operation": "exact_count",
+   "params": {
+    "char": ";",
+    "n": 2
+   },
+   "provenance": "proposed for Batch 1 pilot review; family distinctions inspired by CSE (arXiv 2608.12426) and Harness-IF (arXiv 2608.11727), whose constraint lists are not in this workspace and are not claimed",
+   "role": "reference",
+   "semantic_spec": "the raw character ';' occurs exactly 2 times",
+   "spec_hash": "a01ee65629112d2f29b24a236772a7fd9225c6041bc463e7b09a8a32ad137fb5",
+   "status": "proposed_unapproved",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.exact_char_count",
+   "verifier_implementation_hash": "4e13356509815be8915af606cdf3d8d17ff057bb915ff49d33330a9962475740",
+   "wording": {
+    "F0": "Use exactly 2 semicolons.",
+    "F1": "Your answer must contain exactly 2 semicolons."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "es.4",
+   "design_row": "exact punctuation, sentence or paragraph count",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "exact_sentence_count",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "sentence",
+   "operation": "exact_count",
+   "params": {
+    "n": 4
+   },
+   "provenance": "proposed for Batch 1 pilot review; family distinctions inspired by CSE (arXiv 2608.12426) and Harness-IF (arXiv 2608.11727), whose constraint lists are not in this workspace and are not claimed",
+   "role": "reference",
+   "semantic_spec": "the answer has exactly 4 sentences",
+   "spec_hash": "8bfc1acd9cd7127cfe0d73c9e93ccd8c9bbc3b9b8782b34f10ec6240fe76fb93",
+   "status": "proposed_unapproved",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.exact_sentence_count",
+   "verifier_implementation_hash": "b106d0c7245e3f480a1df42770100d6487915887c74f0c00ca8ee71470445bb7",
+   "wording": {
+    "F0": "Write exactly 4 sentences.",
+    "F1": "Your answer must contain exactly 4 sentences."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "es.7",
+   "design_row": "exact punctuation, sentence or paragraph count",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "exact_sentence_count",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "sentence",
+   "operation": "exact_count",
+   "params": {
+    "n": 7
+   },
+   "provenance": "proposed for Batch 1 pilot review; family distinctions inspired by CSE (arXiv 2608.12426) and Harness-IF (arXiv 2608.11727), whose constraint lists are not in this workspace and are not claimed",
+   "role": "reference",
+   "semantic_spec": "the answer has exactly 7 sentences",
+   "spec_hash": "467b9e079958e32b1a649ec00d4216acc9855d65967d941d4ad25f2e8cd20aa3",
+   "status": "proposed_unapproved",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.exact_sentence_count",
+   "verifier_implementation_hash": "b106d0c7245e3f480a1df42770100d6487915887c74f0c00ca8ee71470445bb7",
+   "wording": {
+    "F0": "Write exactly 7 sentences.",
+    "F1": "Your answer must contain exactly 7 sentences."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "ep.2",
+   "design_row": "exact punctuation, sentence or paragraph count",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "exact_paragraph_count",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "paragraph",
+   "operation": "exact_count",
+   "params": {
+    "n": 2
+   },
+   "provenance": "proposed for Batch 1 pilot review; family distinctions inspired by CSE (arXiv 2608.12426) and Harness-IF (arXiv 2608.11727), whose constraint lists are not in this workspace and are not claimed",
+   "role": "reference",
+   "semantic_spec": "the answer has exactly 2 blank-line-separated paragraphs",
+   "spec_hash": "3fa9f0d7ce9a2b9a652ae923f612c12b602662a65f22b9d06489d67299535a70",
+   "status": "proposed_unapproved",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.exact_paragraph_count",
+   "verifier_implementation_hash": "705759b4a5614ae0f13045d5510984c61077951525b3dfe3d37767036ed9b2b4",
+   "wording": {
+    "F0": "Write exactly 2 paragraphs, separated by blank lines.",
+    "F1": "Your answer must contain exactly 2 paragraphs, separated by blank lines."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "ep.3",
+   "design_row": "exact punctuation, sentence or paragraph count",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "exact_paragraph_count",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "paragraph",
+   "operation": "exact_count",
+   "params": {
+    "n": 3
+   },
+   "provenance": "proposed for Batch 1 pilot review; family distinctions inspired by CSE (arXiv 2608.12426) and Harness-IF (arXiv 2608.11727), whose constraint lists are not in this workspace and are not claimed",
+   "role": "reference",
+   "semantic_spec": "the answer has exactly 3 blank-line-separated paragraphs",
+   "spec_hash": "f2c81c5cc88e6c85f86401b70837f74fee3214a33a2ad0801f7f09ceb376850d",
+   "status": "proposed_unapproved",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.exact_paragraph_count",
+   "verifier_implementation_hash": "705759b4a5614ae0f13045d5510984c61077951525b3dfe3d37767036ed9b2b4",
+   "wording": {
+    "F0": "Write exactly 3 paragraphs, separated by blank lines.",
+    "F1": "Your answer must contain exactly 3 paragraphs, separated by blank lines."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "inc.simple",
+   "design_row": "include specified words",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "include_words",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "word",
+   "operation": "required_inclusion",
+   "params": {
+    "words": [
+     "simple"
+    ]
+   },
+   "provenance": "proposed for Batch 1 pilot review; family distinctions inspired by CSE (arXiv 2608.12426) and Harness-IF (arXiv 2608.11727), whose constraint lists are not in this workspace and are not claimed",
+   "role": "reference",
+   "semantic_spec": "every one of simple occurs at least once as a whole word",
+   "spec_hash": "7cfd3e643ed5c6c4f0f3473775b91f72d8c6d78790f53fcebccebf193e625777",
+   "status": "proposed_unapproved",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.include_words",
+   "verifier_implementation_hash": "e73dc9d106376b25de613ae4cfefc449c9181f36d1cb54ba3e3654ecbd137ee6",
+   "wording": {
+    "F0": "Use the word simple at least once.",
+    "F1": "Your answer must contain the word simple at least once."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "inc.window+garden",
+   "design_row": "include specified words",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "include_words",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "word",
+   "operation": "required_inclusion",
+   "params": {
+    "words": [
+     "window",
+     "garden"
+    ]
+   },
+   "provenance": "proposed for Batch 1 pilot review; family distinctions inspired by CSE (arXiv 2608.12426) and Harness-IF (arXiv 2608.11727), whose constraint lists are not in this workspace and are not claimed",
+   "role": "reference",
+   "semantic_spec": "every one of window and garden occurs at least once as a whole word",
+   "spec_hash": "0d926e0653e957a5435f12610fba734f1b10f679adbc8efe6a84a9104f88181e",
+   "status": "proposed_unapproved",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.include_words",
+   "verifier_implementation_hash": "e73dc9d106376b25de613ae4cfefc449c9181f36d1cb54ba3e3654ecbd137ee6",
+   "wording": {
+    "F0": "Use each of the words window and garden at least once.",
+    "F1": "Your answer must contain each of the words window and garden at least once."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "inc.silver+morning+quiet",
+   "design_row": "include specified words",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "include_words",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "word",
+   "operation": "required_inclusion",
+   "params": {
+    "words": [
+     "silver",
+     "morning",
+     "quiet"
+    ]
+   },
+   "provenance": "proposed for Batch 1 pilot review; family distinctions inspired by CSE (arXiv 2608.12426) and Harness-IF (arXiv 2608.11727), whose constraint lists are not in this workspace and are not claimed",
+   "role": "reference",
+   "semantic_spec": "every one of silver, morning and quiet occurs at least once as a whole word",
+   "spec_hash": "8c21081df3aab3fe6d9239ef7509e38af35443c8869602ba1278ce29dee4c53e",
+   "status": "proposed_unapproved",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.include_words",
+   "verifier_implementation_hash": "e73dc9d106376b25de613ae4cfefc449c9181f36d1cb54ba3e3654ecbd137ee6",
+   "wording": {
+    "F0": "Use each of the words silver, morning and quiet at least once.",
+    "F1": "Your answer must contain each of the words silver, morning and quiet at least once."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "inc.remarkable",
+   "design_row": "include specified words",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "include_words",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "word",
+   "operation": "required_inclusion",
+   "params": {
+    "words": [
+     "remarkable"
+    ]
+   },
+   "provenance": "proposed for Batch 1 pilot review; family distinctions inspired by CSE (arXiv 2608.12426) and Harness-IF (arXiv 2608.11727), whose constraint lists are not in this workspace and are not claimed",
+   "role": "reference",
+   "semantic_spec": "every one of remarkable occurs at least once as a whole word",
+   "spec_hash": "1f6a4672b32eb16fce6c05357b122967eebc15ff5ba0eae25b701a683c930a93",
+   "status": "proposed_unapproved",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.include_words",
+   "verifier_implementation_hash": "e73dc9d106376b25de613ae4cfefc449c9181f36d1cb54ba3e3654ecbd137ee6",
+   "wording": {
+    "F0": "Use the word remarkable at least once.",
+    "F1": "Your answer must contain the word remarkable at least once."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "pro.word.the",
+   "design_row": "avoid specified words or letters",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "forbid_words",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": 20,
+    "rule": "min_words"
+   },
+   "object_type": "word",
+   "operation": "prohibition",
+   "params": {
+    "words": [
+     "the"
+    ]
+   },
+   "provenance": "proposed for Batch 1 pilot review; family distinctions inspired by CSE (arXiv 2608.12426) and Harness-IF (arXiv 2608.11727), whose constraint lists are not in this workspace and are not claimed",
+   "role": "reference",
+   "semantic_spec": "none of the occurs as a whole word",
+   "spec_hash": "6dfcf1f9e4d05c4162634f567519949fb2e3b61a26732030bd0704a8fd28124d",
+   "status": "proposed_unapproved",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.forbid_words",
+   "verifier_implementation_hash": "6eb35cc4d5984c5c8125289fe1c0d7451e202cd45c9b7e367ea05031f3dc789b",
+   "wording": {
+    "F0": "Do not use the word the.",
+    "F1": "Your answer must not contain the word the."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "pro.word.very+really+just",
+   "design_row": "avoid specified words or letters",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "forbid_words",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": 20,
+    "rule": "min_words"
+   },
+   "object_type": "word",
+   "operation": "prohibition",
+   "params": {
+    "words": [
+     "very",
+     "really",
+     "just"
+    ]
+   },
+   "provenance": "proposed for Batch 1 pilot review; family distinctions inspired by CSE (arXiv 2608.12426) and Harness-IF (arXiv 2608.11727), whose constraint lists are not in this workspace and are not claimed",
+   "role": "reference",
+   "semantic_spec": "none of very, really or just occurs as a whole word",
+   "spec_hash": "b49933510a29d562664bd083af21f8c0895327775fd889c95e60d5fd440750f7",
+   "status": "proposed_unapproved",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.forbid_words",
+   "verifier_implementation_hash": "6eb35cc4d5984c5c8125289fe1c0d7451e202cd45c9b7e367ea05031f3dc789b",
+   "wording": {
+    "F0": "Do not use any of the words very, really or just.",
+    "F1": "Your answer must not contain any of the words very, really or just."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "pro.letter.z",
+   "design_row": "avoid specified words or letters",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "forbid_letter",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": 20,
+    "rule": "min_words"
+   },
+   "object_type": "letter",
+   "operation": "prohibition",
+   "params": {
+    "letter": "z"
+   },
+   "provenance": "proposed for Batch 1 pilot review; family distinctions inspired by CSE (arXiv 2608.12426) and Harness-IF (arXiv 2608.11727), whose constraint lists are not in this workspace and are not claimed",
+   "role": "reference",
+   "semantic_spec": "no word contains the letter 'z' in either case",
+   "spec_hash": "8955ac4d9af23e05a83727f2a044610b4d7dd0202df7cf1d8a15705679e92d29",
+   "status": "proposed_unapproved",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.forbid_letter",
+   "verifier_implementation_hash": "8c515807183d679015bd5b54d68603c885d4e34f1bc9dd0cb7d6941b86416138",
+   "wording": {
+    "F0": "Do not use the letter z.",
+    "F1": "Your answer must not contain the letter z."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "pro.letter.b",
+   "design_row": "avoid specified words or letters",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "forbid_letter",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": 20,
+    "rule": "min_words"
+   },
+   "object_type": "letter",
+   "operation": "prohibition",
+   "params": {
+    "letter": "b"
+   },
+   "provenance": "proposed for Batch 1 pilot review; family distinctions inspired by CSE (arXiv 2608.12426) and Harness-IF (arXiv 2608.11727), whose constraint lists are not in this workspace and are not claimed",
+   "role": "reference",
+   "semantic_spec": "no word contains the letter 'b' in either case",
+   "spec_hash": "8d735045b4398a5135792fc64a5d340f6c621d3fbb92144e28af2c712c5bb5b5",
+   "status": "proposed_unapproved",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.forbid_letter",
+   "verifier_implementation_hash": "8c515807183d679015bd5b54d68603c885d4e34f1bc9dd0cb7d6941b86416138",
+   "wording": {
+    "F0": "Do not use the letter b.",
+    "F1": "Your answer must not contain the letter b."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "nb.max20",
+   "design_row": "words per sentence",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "sentence_word_bound",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": 20,
+    "rule": "min_words"
+   },
+   "object_type": "sentence",
+   "operation": "numerical_bound",
+   "params": {
+    "bound": "max",
+    "k": 20
+   },
+   "provenance": "proposed for Batch 1 pilot review; family distinctions inspired by CSE (arXiv 2608.12426) and Harness-IF (arXiv 2608.11727), whose constraint lists are not in this workspace and are not claimed",
+   "role": "reference",
+   "semantic_spec": "every sentence has at most 20 words",
+   "spec_hash": "0322c4d20a778fdbc88ac4120ac5f84921ae6fb8a239ca37b56213d2067d61e4",
+   "status": "proposed_unapproved",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.sentence_word_bound",
+   "verifier_implementation_hash": "70932057b7b1d7e082a165fdedf7c9d23c357b38912f816861d574f21fdc0bfa",
+   "wording": {
+    "F0": "Keep every sentence to at most 20 words.",
+    "F1": "Every sentence in your answer must have at most 20 words."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "nb.max12",
+   "design_row": "words per sentence",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "sentence_word_bound",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": 20,
+    "rule": "min_words"
+   },
+   "object_type": "sentence",
+   "operation": "numerical_bound",
+   "params": {
+    "bound": "max",
+    "k": 12
+   },
+   "provenance": "proposed for Batch 1 pilot review; family distinctions inspired by CSE (arXiv 2608.12426) and Harness-IF (arXiv 2608.11727), whose constraint lists are not in this workspace and are not claimed",
+   "role": "reference",
+   "semantic_spec": "every sentence has at most 12 words",
+   "spec_hash": "3417999a145c44e7c861c023860ef3cee5dd00a2b9ae04ecfca38e0aa35e5d10",
+   "status": "proposed_unapproved",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.sentence_word_bound",
+   "verifier_implementation_hash": "70932057b7b1d7e082a165fdedf7c9d23c357b38912f816861d574f21fdc0bfa",
+   "wording": {
+    "F0": "Keep every sentence to at most 12 words.",
+    "F1": "Every sentence in your answer must have at most 12 words."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "nb.min10",
+   "design_row": "words per sentence",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "sentence_word_bound",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": 20,
+    "rule": "min_words"
+   },
+   "object_type": "sentence",
+   "operation": "numerical_bound",
+   "params": {
+    "bound": "min",
+    "k": 10
+   },
+   "provenance": "proposed for Batch 1 pilot review; family distinctions inspired by CSE (arXiv 2608.12426) and Harness-IF (arXiv 2608.11727), whose constraint lists are not in this workspace and are not claimed",
+   "role": "reference",
+   "semantic_spec": "every sentence has at least 10 words",
+   "spec_hash": "9f8ce3c5931e7cf38f986bf17e19beb3b289b3008ce437d736d6ef9dc35de1ea",
+   "status": "proposed_unapproved",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.sentence_word_bound",
+   "verifier_implementation_hash": "70932057b7b1d7e082a165fdedf7c9d23c357b38912f816861d574f21fdc0bfa",
+   "wording": {
+    "F0": "Make every sentence at least 10 words long.",
+    "F1": "Every sentence in your answer must have at least 10 words."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "unq.word5",
+   "design_row": "avoid repeated words or word sequences",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "no_repeated_words",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": 20,
+    "rule": "min_words"
+   },
+   "object_type": "word",
+   "operation": "uniqueness",
+   "params": {
+    "min_letters": 5
+   },
+   "provenance": "proposed for Batch 1 pilot review; family distinctions inspired by CSE (arXiv 2608.12426) and Harness-IF (arXiv 2608.11727), whose constraint lists are not in this workspace and are not claimed",
+   "role": "reference",
+   "semantic_spec": "no folded word of at least 5 letters occurs twice",
+   "spec_hash": "e36e87a21d70b986fe99dbdd0621825bb18038713195f298774cd8285d0b9ca6",
+   "status": "proposed_unapproved",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.no_repeated_words",
+   "verifier_implementation_hash": "9f9a4cab2b5432956e3dd6f306b7cacde9722bff0b19e7f78b5cf9762a30e858",
+   "wording": {
+    "F0": "Do not use any word of 5 or more letters more than once.",
+    "F1": "No word of 5 or more letters may appear more than once in your answer."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "unq.bigram",
+   "design_row": "avoid repeated words or word sequences",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "no_repeated_bigrams",
+   "non_vacuity": {
+    "min_sentences": null,
+    "min_words": 20,
+    "rule": "min_words"
+   },
+   "object_type": "word_sequence",
+   "operation": "uniqueness",
+   "params": {},
+   "provenance": "proposed for Batch 1 pilot review; family distinctions inspired by CSE (arXiv 2608.12426) and Harness-IF (arXiv 2608.11727), whose constraint lists are not in this workspace and are not claimed",
+   "role": "reference",
+   "semantic_spec": "no pair of consecutive folded words (over the whole answer) occurs twice",
+   "spec_hash": "538f28e1e9e043b29dd81ad936f2033420dc7e96982305736553ccc6ac3ec026",
+   "status": "proposed_unapproved",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.no_repeated_bigrams",
+   "verifier_implementation_hash": "0a6c6b719fc9b46bb455c582a1d07d496f7926a37dd1c231236fc717d15b26ba",
+   "wording": {
+    "F0": "Do not use any sequence of two consecutive words more than once.",
+    "F1": "No sequence of two consecutive words may appear more than once in your answer."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "unq.opener3",
+   "design_row": "avoid repeated words or word sequences",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "distinct_openers",
+   "non_vacuity": {
+    "min_sentences": 3,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "sentence",
+   "operation": "uniqueness",
+   "params": {
+    "min_sentences": 3
+   },
+   "provenance": "proposed for Batch 1 pilot review; family distinctions inspired by CSE (arXiv 2608.12426) and Harness-IF (arXiv 2608.11727), whose constraint lists are not in this workspace and are not claimed",
+   "role": "reference",
+   "semantic_spec": "at least 3 sentences, all first words distinct",
+   "spec_hash": "d77834dad4faa6289664dcce004d7c70face75123a0506705683bd1dfdb6cf85",
+   "status": "proposed_unapproved",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.distinct_openers",
+   "verifier_implementation_hash": "8f057c08320aca87b551f9014d08682fe8ecb6dd28302c5316c90caa7ed4c8e6",
+   "wording": {
+    "F0": "Write at least 3 sentences and begin each one with a different word.",
+    "F1": "Your answer must contain at least 3 sentences, each beginning with a different word."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "ord.inc4",
+   "design_row": "sentence length or first-word order",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "length_order",
+   "non_vacuity": {
+    "min_sentences": 4,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "sentence",
+   "operation": "ordering",
+   "params": {
+    "direction": "increasing",
+    "min_sentences": 4
+   },
+   "provenance": "proposed for Batch 1 pilot review; family distinctions inspired by CSE (arXiv 2608.12426) and Harness-IF (arXiv 2608.11727), whose constraint lists are not in this workspace and are not claimed",
+   "role": "reference",
+   "semantic_spec": "at least 4 sentences whose word counts are strictly increasing",
+   "spec_hash": "3558a26cff3e444bf39728da833138f841a39da8201cbbdea96466de0a08de1f",
+   "status": "proposed_unapproved",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.length_order",
+   "verifier_implementation_hash": "e6490a812f2f15cac4962558fffa96a3781f9fc20341eb305f88505f71b39f33",
+   "wording": {
+    "F0": "Write at least 4 sentences, each containing more words than the one before it.",
+    "F1": "Your answer must contain at least 4 sentences, each with more words than the sentence before it."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "ord.dec4",
+   "design_row": "sentence length or first-word order",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "length_order",
+   "non_vacuity": {
+    "min_sentences": 4,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "sentence",
+   "operation": "ordering",
+   "params": {
+    "direction": "decreasing",
+    "min_sentences": 4
+   },
+   "provenance": "proposed for Batch 1 pilot review; family distinctions inspired by CSE (arXiv 2608.12426) and Harness-IF (arXiv 2608.11727), whose constraint lists are not in this workspace and are not claimed",
+   "role": "reference",
+   "semantic_spec": "at least 4 sentences whose word counts are strictly decreasing",
+   "spec_hash": "f5ade9a529a12b2ca383da15b51290a222f5771fde0dd5ffa2578433a2188fe0",
+   "status": "proposed_unapproved",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.length_order",
+   "verifier_implementation_hash": "e6490a812f2f15cac4962558fffa96a3781f9fc20341eb305f88505f71b39f33",
+   "wording": {
+    "F0": "Write at least 4 sentences, each containing fewer words than the one before it.",
+    "F1": "Your answer must contain at least 4 sentences, each with fewer words than the sentence before it."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "ord.alpha4",
+   "design_row": "sentence length or first-word order",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "alphabetical_openers",
+   "non_vacuity": {
+    "min_sentences": 4,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "sentence",
+   "operation": "ordering",
+   "params": {
+    "min_sentences": 4
+   },
+   "provenance": "proposed for Batch 1 pilot review; family distinctions inspired by CSE (arXiv 2608.12426) and Harness-IF (arXiv 2608.11727), whose constraint lists are not in this workspace and are not claimed",
+   "role": "reference",
+   "semantic_spec": "at least 4 sentences whose folded first words are strictly increasing in code-point order",
+   "spec_hash": "11f3f58a2eb6f9bcebb088a81664816bdd0b888ec2316d16174d997117808b57",
+   "status": "proposed_unapproved",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.alphabetical_openers",
+   "verifier_implementation_hash": "440754601f32728697ed412084ddeba1ef8814fd6daada49f7b34ee46c232f16",
+   "wording": {
+    "F0": "Write at least 4 sentences and begin them with words in strict alphabetical order.",
+    "F1": "Your answer must contain at least 4 sentences whose first words are in strict alphabetical order."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "ord.inc6",
+   "design_row": "sentence length or first-word order",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "length_order",
+   "non_vacuity": {
+    "min_sentences": 6,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "sentence",
+   "operation": "ordering",
+   "params": {
+    "direction": "increasing",
+    "min_sentences": 6
+   },
+   "provenance": "proposed for Batch 1 pilot review; family distinctions inspired by CSE (arXiv 2608.12426) and Harness-IF (arXiv 2608.11727), whose constraint lists are not in this workspace and are not claimed",
+   "role": "reference",
+   "semantic_spec": "at least 6 sentences whose word counts are strictly increasing",
+   "spec_hash": "bc22ccee89555ffb0e32303c9b50c2d3d92170a783e4833c8a20a4df78a334c4",
+   "status": "proposed_unapproved",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.length_order",
+   "verifier_implementation_hash": "e6490a812f2f15cac4962558fffa96a3781f9fc20341eb305f88505f71b39f33",
+   "wording": {
+    "F0": "Write at least 6 sentences, each containing more words than the one before it.",
+    "F1": "Your answer must contain at least 6 sentences, each with more words than the sentence before it."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "rel.word3",
+   "design_row": "adjacent-sentence boundary relation",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "chain_word",
+   "non_vacuity": {
+    "min_sentences": 3,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "sentence_pair",
+   "operation": "relational_dependency",
+   "params": {
+    "min_sentences": 3
+   },
+   "provenance": "proposed for Batch 1 pilot review; family distinctions inspired by CSE (arXiv 2608.12426) and Harness-IF (arXiv 2608.11727), whose constraint lists are not in this workspace and are not claimed",
+   "role": "reference",
+   "semantic_spec": "at least 3 sentences; each later sentence's first word equals the previous sentence's last word",
+   "spec_hash": "b51e92d8819e605d22d31fff2476d85e5853e3ae832a8bbf72888cd80895e08f",
+   "status": "proposed_unapproved",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.chain_word",
+   "verifier_implementation_hash": "79b370cc0f52fa9150dccf52fad8aedcec132b4753f4ba4d82ad62aa6eaf45aa",
+   "wording": {
+    "F0": "Write at least 3 sentences and begin each sentence after the first with the last word of the sentence before it.",
+    "F1": "Your answer must contain at least 3 sentences, and each sentence after the first must begin with the last word of the previous sentence."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "rel.letter3",
+   "design_row": "adjacent-sentence boundary relation",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "chain_letter",
+   "non_vacuity": {
+    "min_sentences": 3,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "sentence_pair",
+   "operation": "relational_dependency",
+   "params": {
+    "min_sentences": 3
+   },
+   "provenance": "proposed for Batch 1 pilot review; family distinctions inspired by CSE (arXiv 2608.12426) and Harness-IF (arXiv 2608.11727), whose constraint lists are not in this workspace and are not claimed",
+   "role": "reference",
+   "semantic_spec": "at least 3 sentences; each later sentence's first letter equals the last letter of the previous sentence's last word",
+   "spec_hash": "d828fa78e38f09bd2349d35f6992cb5213bcc1dcd523536caabc8a8ec25d889c",
+   "status": "proposed_unapproved",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.chain_letter",
+   "verifier_implementation_hash": "248fb4bc5b931655ed72ea3a261f1920dd661de214eeb5e7258721f4e7de71ec",
+   "wording": {
+    "F0": "Write at least 3 sentences and begin each sentence after the first with the letter that ends the sentence before it.",
+    "F1": "Your answer must contain at least 3 sentences, and each sentence after the first must begin with the letter that ends the previous sentence."
+   }
+  },
+  {
+   "applicability": "any natural-language answer",
+   "cid": "rel.share4",
+   "design_row": "adjacent-sentence boundary relation",
+   "empty_response": "state EMPTY: scored, never compliant",
+   "family_id": "adjacent_shared_word",
+   "non_vacuity": {
+    "min_sentences": 3,
+    "min_words": null,
+    "rule": "forced_production"
+   },
+   "object_type": "sentence_pair",
+   "operation": "relational_dependency",
+   "params": {
+    "min_letters": 4,
+    "min_sentences": 3
+   },
+   "provenance": "proposed for Batch 1 pilot review; family distinctions inspired by CSE (arXiv 2608.12426) and Harness-IF (arXiv 2608.11727), whose constraint lists are not in this workspace and are not claimed",
+   "role": "reference",
+   "semantic_spec": "at least 3 sentences; each adjacent pair shares a folded word of at least 4 letters",
+   "spec_hash": "f6a0245483592c3e564e4c2fac5a2b6a9fe32ce7bd0b95827780c209d90f7bf0",
+   "status": "proposed_unapproved",
+   "truncated_response": "state TRUNCATED: scored, never compliant",
+   "verifier_id": "b1.adjacent_shared_word",
+   "verifier_implementation_hash": "8497b1fd91d15557719898b617f2e1c0b0975a19ff747f6583197a742cd97644",
+   "wording": {
+    "F0": "Write at least 3 sentences and make each sentence after the first repeat a word of 4 or more letters from the sentence before it.",
+    "F1": "Your answer must contain at least 3 sentences, and each sentence after the first must share a word of 4 or more letters with the previous sentence."
+   }
+  }
+ ],
+ "schema": "dci.batch1/library/v1",
+ "taxonomy": {
+  "object_types": [
+   "word",
+   "punctuation",
+   "sentence",
+   "paragraph",
+   "letter",
+   "word_sequence",
+   "sentence_pair"
+  ],
+  "operations": [
+   "exact_count",
+   "required_inclusion",
+   "prohibition",
+   "numerical_bound",
+   "uniqueness",
+   "ordering",
+   "relational_dependency"
+  ]
+ },
+ "verifier_bundle_hash": "5747faa9157c6c23a9988b4888321a3d09a780998352b73e38cbe03a9c9c04ce"
+}

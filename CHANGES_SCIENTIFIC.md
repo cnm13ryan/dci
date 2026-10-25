@@ -13,6 +13,62 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-10-19 — (Batch 1) second round after the re-audit: topic bank rewritten for paraphrases, Python pin and portable code hashes, coverage study, provenance binding
+
+**What changed.** Everything except `.python-version` at the repository root is inside `src/dci/batch1/`, `tests/batch1/` and `docs/batch1/`. The researcher-facing review package starts at `docs/batch1/RESEARCHER_REVIEW.md`; the technical record is `docs/batch1/REMEDIATION_REPORT.md` §R.
+
+- **Topics (D05).** 88 questions were rewritten under their ids; the split is unchanged. They were: the 11 historical restatements the re-audit named; 49 more found by a semantic review of every question against every historical one; one question from each of 5 internal duplicate pairs; and 23 "close" cases. The overlap screen adds a rare-word rule, and the report is unclean while a recorded restatement remains in the bank. The D05 payload binds both review files. The generated report `topic_review.md` is now `topic_screen_report.md`.
+- **Code hashes.** `store.code_hash` now hashes a canonical token stream: no comments, docstrings or layout, and f-strings rejoined. It is identical under Python 3.11, 3.12 and 3.13; the `ast.dump` hash was not. Every payload hash and Freeze 1 hash changed as a result.
+- **Python (D12).** The orchestrator is pinned to CPython 3.11 (researcher-approved 2026-10-19). This is recorded in every payload, the approvals file and Freeze 1, and enforced by every command. The vLLM backend's minor version is 3.12 (proposed), and a lock for any other version is refused.
+- **Execution safeguards (D04, D14).**
+  - Freeze 2 binds every backend-run provenance event. A real root accepts only seam-schema rows run under the attested environment.
+  - Each backend attempt keeps its own log directory.
+  - A row is not retried after 3 technical failures (`max_technical_attempts`, D04).
+  - The smoke test prompts no A or B candidate.
+  - Freeze 2 flags `FEASIBILITY_NEAR_THRESHOLD` (D14; not a gate).
+- **D11.** The rule in the code is unchanged (design minimum 2). A simulation study (`docs/batch1/COVERAGE_SIMULATION_REVIEW.md`) recommends a P3 minimum of 3 and awaits the researcher's choice.
+
+**Results affected.** None. Batch 1 has generated no data. The new simulation results are labelled as simulated.
+
+**Comparability.** The topic bank differs from the 2026-10-19 first-round bank in 88 questions. Freeze 1 manifests and approvals made under the earlier hash scheme do not validate; none had been made.
+
+---
+
+## 2026-10-19 — (Batch 1) remediation after the independent audit: outcome handling, stage gates, design authentication, revised A and B selection, topic bank, evidence binding
+
+**What changed.** Everything is inside `src/dci/batch1/`, `tests/batch1/` and `docs/batch1/`; no file under `dci1/`, `configs/`, `exploratory/` or elsewhere in `src/` changed. The audit and the fixes are in `docs/batch1/REMEDIATION_REPORT.md`.
+
+- **Outcome semantics (D04, implementation).** A completed blank generation (the vLLM seam's `CHANNEL_INVALID` under NO_THINKING, when the row shows a completed decode) is now an EMPTY answer: in every denominator, never compliant. Before, it was silently excluded from n. Technical failures are never evidence and are retried. Truncated passes are no longer counted as vacuous. The primary compliance definition is unchanged.
+- **Stage 2 (D06).** It is selected only from complete Stage 1 evidence, and is bound to its hash.
+- **B selection (D07).** It requires separation, cross-model consistency and headroom.
+- **A selection (D08).** It requires headroom in 6 of 8 model-frames across 3 models. Configurations whose A is outside the band never count toward feasibility.
+- **Topics.** 42 topic questions were rewritten under their ids, after an overlap check against every historical DCI bank (v2, v3 and v19 were previously unread).
+- **Approvals and freezes.** Approvals bind the implementing code. Freeze 1 binds the backend source and an attested environment lock. Freeze 2 binds every response and score.
+- **Diagnostics.** D12 adds a truncation review share. D14 (new, proposed) adds topic-bootstrap membership diagnostics.
+
+**Results affected.** None. Batch 1 has generated no data.
+
+**Comparability.** Every decision payload hash changed, so no earlier approval carries over; none had been given. The selection rules for A and B are different rules from the 2026-10-18 proposal. Their selections are not comparable across the two versions, and neither has been run.
+
+---
+
+## 2026-10-18 — (Batch 1) a new study line: pilot calibration and reference selection, implemented, not run
+
+**What changed.** `src/dci/batch1/` adds the stand-alone pilot for a new study of how reference-selection rules change estimated interference. It contains a 51-variant library, verifiers, B-specific compatibility, 576 new topics, selection logic for A, B and G1–G6, coverage diagnostics and two freezes. No existing file under `src/`, `dci1/`, `configs/` or `exploratory/` changed.
+
+**Results affected.** None. No DCI-1, v19 or exploratory number moves, and no data has been generated under Batch 1.
+
+**Comparability with v8.1.** Batch 1 deliberately differs from v8.1 in four places, all listed as decisions in `docs/batch1/decisions.md`:
+
+- compliance excludes empty, truncated and vacuous passes (D04);
+- A's counter folds each word after segmenting rather than folding first, which differs only on U+0130 (D03);
+- the wording frames pair A and B by grammar, not by v8.1's frame index (D02);
+- the topics are new (D05).
+
+Batch 1 rates are therefore not directly comparable with v8.1's, and are never pooled with them.
+
+---
+
 ## 2026-09-13 — (v19) three review findings closed: the verifier hash closure, the Stage 2 report's bundle identity, and stage gates that did not reach upstream stages
 
 **What changed.** Three findings from Codex reviews of PRs #12 and #13 were verified

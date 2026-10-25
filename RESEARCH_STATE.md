@@ -43,6 +43,16 @@ preregistrations, code and evidence. **DCI-1 v8.1 is the active study line** and
 has completed its frozen confirmatory run and analysis. The v19 protocol above
 is a different study, currently paused; v8.1 does not supersede it.
 
+A fourth line, **Batch 1** of a new reference-selection study, lives in
+`src/dci/batch1/` and imports nothing from `dci1/`. It reuses DCI-1's A, B,
+model panel and decoding, but has a new library, new topics and its own
+freezes. As of 2026-10-19 it is implemented, independently audited twice,
+remediated after both, and validated on synthetic data only. No pilot has run.
+Its 14 protocol decisions await the researcher's approval: Python 3.11 for the
+orchestrator is approved, and D11's coverage rule awaits a choice. The
+generation host is not yet attested. Review package:
+[`docs/batch1/RESEARCHER_REVIEW.md`](docs/batch1/RESEARCHER_REVIEW.md).
+
 ## 3. Experiment families
 
 Eleven, indexed with entrypoints, analysis code, reports and per-family status in
@@ -421,6 +431,7 @@ and §4p.
 | what was actually covered | `exploratory/EXPERIMENT_COVERAGE_MATRIX.md` (rebuilt from run configs) |
 | the v19 confirmatory protocol (a separate study, paused) | `README.md`, `docs/MIGRATION.md`, `docs/preregistration/` |
 | the frozen Stage 2 decisions | `src/dci/v19/stage2_frozen.json`, `docs/v19_stage2_specification_amendments.md` |
+| the Batch 1 pilot-calibration implementation, its decisions awaiting approval, its audit remediation, calibration precision and cost estimate | `docs/batch1/RESEARCHER_REVIEW.md` (start here), `docs/batch1/README.md`, `docs/batch1/decisions.md`, `docs/batch1/REMEDIATION_REPORT.md`, `docs/batch1/CALIBRATION_PRECISION_REVIEW.md`, `docs/batch1/estimate.md` |
 | the current DCI-1 protocol (v8.1), its result and the manuscript rewrite map | `dci1/docs/DCI1_preregistration_v8.1.md`, `manuscript/V8_1_POSTCONFIRM_PAPER_REWRITE_BUNDLE.md`, `manuscript/POSTCONFIRM_EXEC_SUMMARY.md`, `dci1/reports/dci1v8dev/postconfirm/` |
 | the v4r4 protocol (superseded) | `user-notes/DCI1_preregistration_v4r4.md` (incorporates v4r3's by reference) |
 | the v5 protocol (run and closed) | `user-notes/DCI1_preregistration_v5.md` (standalone), `user-notes/DCI1_v4r4_to_v5_changelog.md` |
